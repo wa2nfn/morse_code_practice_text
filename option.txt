@@ -1,0 +1,145 @@
+##########################################################################################################
+#
+#  This is a SAMPLE option file for MCPT. It has almost every option in it, with a brief comment
+#  about it. Get more information from: mcpt.exe -help or UserGuide.html.
+#
+#  You should COPY this file, and experiment with the copy.
+#
+#  Normally an option file will only contain a small set of the options below, and be
+#  given a name that provides a hint as to its use i.e. codeGroup.txt.
+#  It is typical for a user to have several option files and therefore rarely need to
+#  edit the file after it's tested, or use options on the command line.
+#
+#  There are important details about the option file not covered here, see the UserGuide.html.
+#
+#  A few options would never be in an option file: help, or opt.
+#
+#  This is a plain text file, do not use a Word Processor for editing unless it has a save as .txt option
+#
+#
+# How To Get Started Choosing Options
+# ===================================
+# You can edit a copy of this file, changing and removing unwanted options until you have
+# created an option file for the type of practice you want.
+#
+# Another alternative, is to type a minimal set of options on the command line (leaving out the <out>
+# option temporarily. After seeing the result, add/or change options, until satisfiled. 
+# The two steps are to add the <out=someFile> option to the command line, AND add <-opt=someOptFile.txt>.
+# MCPT will see that you asked for an option file that does not exist (this could be a typing error under 
+# other circumstances, but here its purposeful) entrer "y" to the question about creating a file. All the
+# command line options that you just tested will be written to the file.
+# The file is now ready to use eliminating the need to maunally enter options. You simply
+# enter: mcpt.exe -opt=someOptionFile.txt.
+############################################################################################################
+
+# Options with a # on the left of them are commented out - that is not in effect.
+# We will a multi-line or block comment notation to comment out many lines without using the #. 
+# You will see a /* some lines */.
+
+# to redefine the characters to match from <in> file. Use to match ?
+#inlist="A-Za-z?"
+
+# word file of choice
+in=words.txt
+
+# words from <in> will not have duplicates
+unique=false
+#
+# Output file name
+out=""
+
+# Set the min and max length of words from -in=file
+inlen=1:8
+
+# Number of words (or code groups) to output
+num=100
+
+# code groups
+codeGroups=false
+# Set of characters to make code groups
+cglist="a-z0-9/.,?="
+# Set the min and max lenght of a code group or cglen=5
+cglen=5:5
+
+# Print output in all capitals. (default false = lowercase)
+caps=flase
+# Length characters in an output line (max 500). (default 80)
+len=80
+
+# tutor and lesson to determin <inlist> and <cglist> characters
+tutor=LCWO
+lesson=0
+
+
+# use inter word delimiters
+# Delimiter multiple, 0 means do NOT use. A min and max are set with x:y format
+DM=0
+# make delimiters random
+DR
+# delimiter string
+delimiter=""
+
+
+/* See User Guide or -hemp=LCWO
+header=""
+
+# only one of these at a time
+# use ramp effective feature
+LCWO_effective_ramp
+# use ramp feature
+LCWO_ramp
+# random speed per word 
+LCWO_random
+# times to repeat each word with increasing speed
+LCWO_repeat=0
+
+# speed change increment
+LCWO_step int
+# number of words to slower speed
+LCWO_slow int
+# number of words at fast speed
+LCWO_fast=2
+# low character speed setting
+LCWO_low=
+# number of speed change steps
+LCWO_num=
+# effective (asa Farnsworth) speed
+LCWO_effective=
+# alert string LCWO_slow text to LCWO_fast text
+LCWO_sf=""
+# alert string LCWO_fast text to LCWO_slow text LCWO_fs="" 
+LCWO_fs=""
+*/
+
+# Mixed-Mode-Random, randomize code group occurance
+MMR=false
+#
+# Non-Randomized output words read from <in>
+NR=false
+#
+# permutations of current "lesson" characters (p,t,b)
+permute=""
+
+# prefix and suffix to words or code groups
+# The max number of prefix characters
+prelen=0:0
+# Characters for a word prefix
+prelist="0-9/,.?="
+# max number of suffix characters
+suflen=0:0
+# Characters for a word suffix
+suflist="0-9/,.?="
+# prefix/suffix random use
+random=false
+
+# ProSign file name
+prosign=""
+
+# Number of times to repeat word
+repeat=1
+
+# Reverses the spelling of words
+reverse=false
+
+# Number of the first unique words in <in> to skip over
+skip=0

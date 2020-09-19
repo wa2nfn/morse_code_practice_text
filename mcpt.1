@@ -1,0 +1,289 @@
+.TH MCPT 1 LOCAL
+.SH NAME
+mcpt \- morse code practice text
+Note: Ignore any space BEFORE an "=" in this file (linux issue).
+.SH SYNOPSIS
+.B mcpt -help | -help=options|files|tutors|international|lcwo
+
+.B mcpt -permute=p|t|b [-lesson=
+.I NUM
+.B -tutor=
+.I TUTOR
+.B ]
+
+.B mcpt -codeGroups [-cglen=
+.I NUM
+.B ] [-cglist=
+.I LIST
+.B | [-lesson=
+.I NUM
+.B -tutor=
+.I TUTOR
+.B ] [-prosign=
+.I FILE
+.B ] [ MISC ]
+
+.B mcpt -in=
+.I FILE 
+.B [-inlen=
+.I NUM
+.B ] [-nlist=
+.I LIST
+.B [[-suflen=
+.I NUM
+.B -suflist=
+.I LIST
+.B ]][[-prelen=
+.I NUM
+.B -prelist=
+.I LIST] [-random]]
+[ MISC ]
+
+.B mcpt -in=
+.I FILE 
+.B [-inlen=
+.I NUM
+.B ] [-nlist=
+.I LIST
+.B | [-lesson=
+.I NUM
+.B -tutor=
+.I TUTOR
+.B ] [-prosign=
+.I FILE
+.B ] [ MISC ]
+
+.B mcpt -in=
+.I
+FILE [-inlen=
+.I
+NUM
+.B ] [-nlist=
+.I
+LIST
+ | [-lesson=
+.I
+.I NUM
+.B -tutor=
+.I TUTOR
+.B ] [-mixedMode=
+.I NUM
+.B ] [-prosign=
+.I
+FILE
+.B
+] [ MISC ]
+.P
+
+.B mcpt -callSigns [-lesson=
+.I
+.INUM
+.B -tutor=
+.I TUTOR
+.B ] | [-cglist=
+.I LIST
+.B ] [-delimiter=
+.I DELIM
+.B -DM=
+.I NUM
+.B ] [-repeat=
+.I NUM
+.B ] [ MISC ]
+.P
+.I TUTOR=lcwo|JustLearnMorseCode|G4FON|MorseElmer|LockdownMorse|HamMorse|MorseCodeNinja|HameMorse]
+
+.I LIST="0-9,./?="
+
+.I INLIST="A-Za-z0-9,./?=" (plus international characters)
+
+.I MISC=[-num=NUM -len=NUM -prelen=NUM -prelist=LIST -suflen=NUM -suflist=NUM -random -DM=NUM -delimiter=DELIM 
+
+.I DELIM="STRING^PROSIGN^STRING"
+
+.I PROSIGN="<LetterLetter>"
+.SH DESCRIPTION
+.I MCPT generates text to be given to any Morse Code tutor which can create audible code from a text file.
+Generated text, can be: code groups, words from input file, or a hybrid. Options, provide alterntives to the user
+to customize details of the practice text.
+.SH OPTIONS
+.TP
+.IP -codeGroups
+set random code group generation vs. words from a file
+.TP
+.IP -callSigns
+makes call signs using the current characters from lesson/tutor (default all)
+.TP
+.IP -cglen=min:max
+set the length of a code group to be between a minimum and maximum value. 
+If the value is a single number, the minimum will equal the maximum.
+.IP -cglist=.IPST
+set the list of a characters to use in a code group. Range notation (A-D), for upper, lower case letters or numbers is supported..IPf an "=" is in the LIST, the LIST must be in double quotes. For international characters see: -help=international.
+.TP
+.IP -delimiter=DELIM
+DELIM is a set of "^" separated fields to use an inter-word delimiter string. Fields may be, literal (letters, numbers, punctuation) or range notation (0-4A-Z), a ProSign (<SK>), or international character.
+.IP -DM=min:max
+Min must be > 1, to get deminiters. The DelimiterMultiples is the number or delimiter fields that will be concatenated to create the inter-word delimiter.
+.TP
+.IP -DR
+DelimiterRandom, if "true" a delimiters appearance is random on a word by word basis. The default is false..TP
+.TP
+.IP -header
+STRIPNG set a string to be output at the head of any output text. With LCWO this could set audio tone,
+interword spacing, or just ouptut fixed text (i.e. vvv).
+.TP 
+.IP -help
+displays a usage for every option. With an parameter, as in the synopsis, the help will display extensive text about subject of the parameter (i.e. -help=files). -help=options displays the current state of all options
+after the impact of any values set by the command line or an option file.
+.TP
+.IP -in
+the input file name to parse for words matching criteria set by options: inlist, inlen, lesson/tutor.
+To keep a group of words in original order, and treated as a single entity by other options, replace the space between words with a tilde (~)..IP.e. CQ~CQ~CD~DE. Hypheated words are ignored, as are words with apostrophe.
+.TP
+.IP -inlist 
+the LIST of characters that determine what qualifies as a word from -in file.
+Users might want to add a question mark "?" to this .IPST if -in contains c.w. abbreviationas and/or Q-signalsto get text like: qrs? or hw~cpy?
+Note ProSigns do not need to be added to this option, thye will be treated as words if found in -in file.
+.TP
+.IP -inlen=min:max
+set the length of a word for the -in file to be between a minimum and maximum value. 
+If the value is a single number, the minimum will equal the maximum.
+.TP
+.IP -LCWO_slow=NUM 
+set the NUM of words to be sent an slow speed (-LCWO_low), in alternating slow/fast cycles.
+(see -help=LCWO).
+.TP
+.IP -LCWO_fast=NUM
+set the NUM of words to be sent an fast speed (-LCWO_low + -LCWO_step), in alternating slow/fast cycles.
+(see -help=LCWO).
+.TP
+.IP -LCWO_low=NUM
+set the low or starting speed for an LCWO feature.
+(see -help=LCWO).
+.TP
+.IP -LCWO_num=NUM 
+set the number of words or intervals in an LCWO feature.
+(see -help=LCWO).
+.TP
+.IP -LCWO_ramp
+if set true (-LCWO_ramp|-LCWO_ramp=true) indicates the LCWO strady ramp up of speeds intervals is desired.  
+(see -help=LCWO).
+.TP
+.IP -LCWO_effective_ramp
+if set true (-LCWO_effective_effective_ramp|-LCWO_effective_ramp=true) indicates the LCWO strady ramp up of effective speeds (aka Farnsworth) intervals is desired.
+(see -help=LCWO).
+.TP
+.IP -LCWO_repeat=NUM
+repeat each word at increased speed until NUM speeds have been used.
+(see -help=LCWO).
+.TP
+.IP -LCWO_random
+if set true (-LCWO_random|-LCWO_random=true) sets EACH word to a random speed determined by
+-LCWO_low, -LCWO_step,and -LCWO_num.
+(see -help=LCWO).
+.TP
+.IP -LCWO_step=NUM
+the step or speed increment to add to -LCWO_low to obtain a new speed setting, may be reapplied
+based on -LCWO_repeat or -LCWO_num.
+(see -help=LCWO).
+.TP
+.IP LCWO_sf=STRING
+a string of characters to output when the speed is transitioing from Slow to Fast (sf).
+(see -help=LCWO). 
+The string can cause other LCWO behaviors (audio frequency tone changes, delays, see User Guide)
+.TP
+.IP LCWO_fs=STRIPNG
+a string of characters to output when the speed is transitioing from Fast to Slow (fs).
+(see -help=LCWO).
+The string can cause other LCWO behaviors (audio frequency tone changes, delays, see User Guide)
+.TP
+.IP -len
+the character length of an output line. Length maybe exceeded to prevent a word break.
+.TP
+.IP -lesson=NUM
+a number greater than zero which indicates the "lesson" or character index as taught by the specified code tutor. All lesson and tutors are shown by -help=tutors. The lesson/tutor basically, replacecs both the -inlist and -cglist default values.
+.TP
+.IP
+-mixedMode-NUM
+combines words from -in file, and code groups in the same practice text. NUM determines the appearance rate of code groups (must be at least equal to 2).
+.TP
+.IP -MMR
+MixedModeRandom if set to true (-MMR|-MMR-true) makes the appearance of the code group random.
+.TP
+.IP -num
+the number or words or codeGroups the user wants.
+.TP
+.IP -NR
+NonRandom if set to true (-NR|-NR=true) reatins the original order of words found in an -in file.
+Words still must meet other criteria (inlen, inlist). 
+.TP
+.IP
+-opt=file where the file is a list of options instead of or in addition to command line options.
+(see -help=files)..IPf -opt=file is included on a command line AND the file does not exist, mcpt interprets this
+to mean the user wnts to create a file with the current command line values to avoid retyping them.
+.TP
+.IP -out=outfile
+create a file of text based on the evaluation of all options. Without this value STDOUT is used.
+Most code tutors accept text from a file, some have an input box which would allow copy-and-paste from STDOUT.
+.TP
+.IP -prelen=min:max
+set the length of a prefix or characters (-prelist=LIST) to put before a word or code group.
+If the value is a single number, the minimum will equal the maximum.
+.TP
+.IP -prelist=STRING
+a list of characters to be reandomly selected to create a prefix. 
+.TP
+.IP -prosign=FILE
+a file of ProSigns, one per line, to use intermittantly in input words and/or code groups.
+(see -help=files)
+.TP
+.IP -random
+makes the appearance or a prefix and/or a suffix random on a word(or code group) basis.
+.TP
+.IP -repeat=NUM
+for each word meeting th matching criteria, repeat it NUM times in sequence.
+.TP
+.IP -reverse
+reverses the spelling of all matched words in -in file. Retians the letter frequency or matches
+but reduces the word recongition factor.
+.TP
+.IP -skip=NUM
+Skips over the first NUM words in the -in file which meet the selection criteria.
+User might want to skip a large table of contents, or lists of illustrations, etc.
+.TP
+.IP -suflen=min:max
+set the length of a suffix or characters (-suflist=.IPST) to append to a word or code group.
+If the value is a single number, the minimum will equal the maximum.
+.TP
+.IP -suflist=STRING
+a list of characters to be reandomly selected to create a suffix. 
+.TP
+.IP -tutor=LIST
+the name of supported code tutors (case insensitive, and in some cases an abbreviated equalivalent)
+(see -help=tutors). If your favorite tutor is not listed, simply specify both -inlist and -cglist in your option file).
+.TP
+.IP -unique
+will not duplicate any words in output..IPts possible this will reduce the number requested by
+-num.
+.SH FILES
+.I prosign.txt
+.RS
+Any file name you like, given to the prosign option. One prosign per line in the format
+<LETTERLETTER>. 
+.BR
+see -help=files
+.RE
+.I option.txt
+.RS
+Any file name you like, given to the opt option. Each line has an option in the format in the OPTIONS
+section.
+.BR
+see -help=files
+.RE
+.I infile.txt
+.RS
+Any file name you like, given to the in option. File that will be parsed for words. It can be in any
+any format of a text file (online book, word list, etc.)
+.SH AUTHOR
+Bill Lanahan
+.SH SEE ALSO
+.SH DIAGNOSTICS

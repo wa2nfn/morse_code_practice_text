@@ -1,0 +1,1249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"/CWO_eff
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<META NAME="keywords" CONTENT="Morse Code, Amateur Radio, Ham Radio, MCPT, windows, linux, RaspberryPi">
+	<META NAME="description" CONTENT="Morse Code Practice Text User Guide">
+	<TITLE>mcpt User Guide</TITLE>
+</HEAD>
+<BODY>
+<P>
+<H1>
+MCPT User Guide
+</H1>
+Generate customized content for listening to Morse Code. Compatible with LCWO, G4FON, Lockdown Morse, and more. Simply drop the resulting text file into your favorite training software to hear Morse Code content the way you want it! Code groups, pro-signs, abbreviations, Q-codes or just plain words. Random or selected. You choose the, the word or group lengths, characters used, amount of practice material. 
+MCPT is very flexible. Beat the blues of boring training repetition by using MCPT to generate varied and fun Morse Code challenges for yourself.
+<P>
+Users of LCWO.net (here after LCWO), can enjoy the challenges and benefits of on-the-fly speed changes, with specialized features.
+<H2>
+Overview
+</H2>
+Current version 1.2.4 09/17/2020
+<P>
+This file contains examples of the usage of all optins.
+<P>
+mcpt overcomes some of the common issues with practice text, or its generation:
+	<ol>
+	<LI> limits typing or editing to create text</LI>
+	<LI> flexible input sources</LI>
+	<LI> better distribution of random data </LI>
+	<LI> user control of of input matching criteria</LI>
+	<LI> user control of duplication</LI>
+	<LI> random output to eliminate memorization</LI>
+	<LI> can produce output of mixed words and code groups</LI>
+	<LI> has many advanced features for LCWO users</LI>
+	</ol>
+<H2>
+Options
+</H2>
+There are many options to customize your text, but in any execution you may only use a few. 
+Options can be read from a file (see -opt) or the command line.
+These options, override defaults. The options in the file, will be overridden,
+if the same option appears on the command line. <I>So if you use both -opt and command line opts you will
+most likely want -opt to be the left most option.</I> When you run the tool, if you see a full screen list of options, check 
+the first line for the problem cause. Also, adding -help=options to a command line with you have used will show
+you the state of ALL options in mcpt, the ones you have set, plus those with defaults. The defaults may
+have impact on your output they you don't realize as a new user.
+<H3>
+Notation
+<P>
+To minimze typing, some option name are a concatentation or abbreviated words, for example: prelen for prefix length; cglist for code group list.
+<P>
+The following options all have a minimum and maximum value, the values are given in one option instead of
+requiring one for a minumum and one for a maximum. They are: prelen, suflen, cglen, inlen, and DM. (DM is a quantity not a length, thus the different spelling). The inlen=5, is a short hand for inlen=5:5, which means the minimun and maximum value for this opten is 5. A value such as 3:6, is a random value between 3 and 6.
+<P>
+The help usage will remind you about these obtions because you will see the default value written with the colon
+notation.
+<P>
+Options are shown preceded by a "-", "--" also works if you are are more accustomed to that.
+Additionally, where the option format shows an "=", a space may be used but its not recommended (command line typos more obvious without spaces). So "-num=30", "--num=30", "--num 30" and "-num 30" are equivalent.
+<B>If you do not use the format with "=", you cannot use -opt=file to CREATE and option file.</B>
+</H3>
+<P>
+<I>
+If you specify the option </I><B>opt</B><I>on the command line with other options, and that option file does not exist, MCPT will offer to create it for you. This is a simple way for a user build up a command line, and test it, and then to preserve that behavior for future use.
+</I>
+<P>
+An example options file, with comments, follows.
+<P>
+A few notes on option format:
+<ol>
+<LI> options MUST be separated with a space</LI>
+<LI> a "-" MUST precede the option name (no spaces)</LI>
+<LI> option names MUST be in the case shown</LI>
+<LI> after the name, if there is a value put an "=" immediately follow by the value</LI>
+<LI> values have 3 possible types as listed in the options table below</LI
+	<LI> int (integer) are digits, and always &gt;= 0, like: -inlen=8</LI>
+	<LI> bool (boolean) turn an option on/off, values are: true for on, false for off</LI>
+	<LI> string options should have values within double quotes, must be quoted if it has a space or "="</LI>
+	<LI> inlist values are case sensitive since its used to match input text</LI>
+	<LI> if inlist contains a "?", following a word such as: cpy?, qrl? will be matched</LI>
+	<LI> options: prelist, suflist, cglist, delimiter are not case sensitive
+</ol>
+List options can use a shorthand range entry notation. For example, "a-dz0-4" instead of the spelled out form  like "abcdz01234" (the order of the range is as shown, 4-0 would fail).
+<P>
+To increase the occurance of a character, you can increase its presence in the list option. For example, if 
+you want code groups to favor X and Z, you could make cglist="A-ZXXXZZZ", the odds of an A is 1/32, but X and Z
+is 4/32.
+</PRE>
+<P>
+<PRE>
+      # this is a comment line
+      // as is this (for geeks)
+      # a blank line as below, is OK too
+
+            # this line is indented with white space
+      # below are two formats for the "min" option 
+      # you can use either of these formats
+      inlen=4   # comments can be at the end of lines
+      inlen 4   # no equals NOT recommended
+      -inlen=4  # preceded with minus, unnecessary
+      #
+      # the option can also be indented with white space
+      # to temporarily eliminate an option just comment it out as below
+      # len=80
+      #
+      #DONE  A SPECIAL COMMENT, THIS ENDS THE PROCESSING OF THE OPTION FILE
+      #END   A SPECIAL COMMENT, THIS ENDS THE PROCESSING OF THE OPTION FILE
+             Lines below are ignored without the need to edit or comment them.
+
+      Note: To comment out a block of lines, use the standard programming 
+            block comment rather than many uses of the "#" character.
+	    See below:
+
+	    inlen 4
+	    /*
+	    num=100 
+	    len 80
+	    */
+	    # above the "/*" starts comments and "*/" ends comments
+
+</PRE>
+<P>
+There are currently two command line arguments, LF and TAB, which change the output. They are not options (no preceeding "-" AND they must come AFTER all other options. e.g. -mcpt -codeGroups -cglen=5 TAB LF.
+<P>
+They are are cosemetic in nature. They replace a space in output with a TAB, and LF adds a linefeed (or blank line) between output lines.
+These are for users that use output for sending practice, or some even use it for generation of typing practice (nothing to do with morse code).
+<H2>
+Delimiter vs. Code Groups
+</H2>
+You can skip this until you encounter the explanation of the following two options <B>delimiter</B> and <B>codeGroups</B>.
+<P>
+There are five <I>list type</I> options, the first three are: prelist, suflist, cglist. For now I want to just focus
+on how those 3 are given, and use input (how they are used is covered elsewhere).
+<P>
+Where on the command line or in the options file, these options are treated as if they were just a collection
+of characters AFTER 2 parsing operations for the users convenience. So if you want code groups to contain any of a set of characters it would look like this: cglist="eiota27?". Each character is a standalone entitiy. Now for the two special
+situations. To save you typing, LETTERS (upper or lowercase) or DIGITS can be entered using <I>range</I> notation.
+In range notation, A-H, is the same as typing ABCDEFGH - the only two criteria is the first character must come in dictionary
+order (A-D is good, D-A is invalid), and each range is independent (A-z invalid, A-Za-z good). Digits similarly go from 0-9.
+<P>
+ONLY for users interested in French, German, and Spanish characters. You can represent the letter you want using a simplified notation for UTF-8 characters. More on this later, basically you enter a sequence like %FC instead of '\u00FC'.
+<P>
+Here is the way you will represent the various supported non-English characters in any of the "list" options.
+<PRE>
+Enter: %C0 to represent '\u00C0' // Upper Case A grave
+Enter: %E0 to represent '\u00E0' // Lower Case a grave
+Enter: %C4 to represent '\u00C4' // Upper Case A diaeresis
+Enter: %E4 to represent '\u00E4' // Lower Case a diaeresis
+Enter: %C9 to represent '\u00C9' // Upper Case E acute
+Enter: %E9 to represent '\u00E9' // Lower Case e acute
+Enter: %C8 to represent '\u00C8' // Upper Case E grave
+Enter: %E8 to represent '\u00E8' // Upper Case E acute
+Enter: %C7 to represent '\u00C7' // Upper Case C cedilla
+Enter: %E7 to represent '\u00E7' // Lower Case c cedilla
+Enter: %D1 to represent '\u00D1' // Upper Case N tilde
+Enter: %F1 to represent '\u00F1' // Lower Case n tilde
+Enter: %D6 to represent '\u00D6' // Upper Case O diaeresis
+Enter: %F6 to represent '\u00F6' // Lower Case o diaeresis
+Enter: %DC to represent '\u00DC' // Upper Case U diaeresis
+Enter: %FC to represent '\u00FC' // Lower Case u diaeresis
+</PRE>
+The option <B>inlist</B> defaults to all the upper and low case English letters (A-Za-z), and the upper and lowercase non_English. A user will only change this if they do NOT know all the letters which might be in there input file and used to give "word" practice. 
+<P>
+<H3>
+Delimiter Option
+</H3>
+This option is the last of the 5 above. It is significantly different than the others, in order to provide
+its design flexibility.
+<P>
+Although this option in some case looks like the others, its processing and use are different. This option contains one or more fields of strings, they are NOT individual characters. Delimiter="abc" is one string of "abc", NOT an "a" or "b" or "c". If the delimiter were used with a word input file: "this is a test", the output would possibley be "test abc is abc this abc a".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="abc^34^z^?^,.".
+Now with the example above, the output might be: "is 34 test ,. a abc this". More useful delimiter now might be: "cq^de^qth^rst^&lt<SK>". Non-English letters can be used (but not range operator between them) e.g. "a%FC^%FC%C0^a-f^a-f123".
+<B>NOTE</B> lets look at those last two fields, this is the other way why a delimiter is different than the other lists.
+<P>
+If the field (data between the '^'s or a '^' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
+<B>HOWEVER</B> if the field contained, <B>ONLY</B> a simple range, as in the next to last field above "^a-f^" this is expanded as if you wanted <B>EACH</B> character to be treated as if it were its own field. Said another way the field "^a-f^" is treated as if you typed "a^b^c^d^e^f". (Much quicker and less error prone.)
+<H3>
+Use of Delimiter
+</H3>
+The delimiter option, works in conjuction with 2 other options. Delimiter-multipes (entered as DM=x), where x syas how many of the fields in the delimiter should be used (as a maximum) at any one time. Thus, with DM=1 and delimiter="a-d^1-3^?"
+as we said this expands and is the same as 9 single character fields A^B^C^D^a^2^3^?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "this 3a test dd? is c a".
+If the option DR is also set, that says even though we asked for delimiters in between each word, that choice is now random (DR means delimiter-random).
+<P>
+While the fields of a delimiter can be a word or meaningful sequence like "QTH" or a ProSign like <AR>, the code groups cannot. Later in the document you will see that many features can be used in one execution to generate practice text to suit your
+current training needs. Using input words, code groups, delimiters, ProSigns and some random flags you could get very varied
+practice like: "this 38 test 78 is 838 4f?,7j practice 321 generated nw4,7d.,".
+<P>
+<H2>
+Options Help Information
+</H2>
+You can get a full list of options by running: mcpt -help. To get the the CURRENT value of all the option defaults, after they may have been changed by resetting some on the command line or with the option file, you can
+add the option "-help=options" to the command line.
+.P
+A quick reference to all the options can be found in a Unix-like manpage downloaded as "mcpt.1.html" or "mcpt.1" depending on your operation system.
+.P
+Finally, if an invalid option is given, a complete list of otions is display. In this case,  scroll to the first line which gives a hint.  usually: a misspelling, missing "-", missing space before "-", illegal space after "-", unmatched ".
+.P
+LCWO prefixed options are only for use with LCWO's "Convert text to CW" screen for play back or MP3 creation.
+This LCWO feature does not require a login.
+<B>***** There are 3 Examples Sections: General Option Examples, LCWO Examples, Summary Example *****</B>
+<H2>
+General Option Examples:
+</H2>
+Examples will show the use of various options. In some case, highlighting is used to emphasize the new option
+from the previous example, or the main option for the given example. Remember almost all options
+have default values. Often they are not repeated in the command shown.
+<P>
+As with any new tool or skill, you will learn best by trying and experimenting. Copy commands and try 
+them yourself. 
+<H2>
+Example 1: 
+</H2>
+<B>mcpt -inlen=3:6 -num=30 -in=words.txt</B>
+USE LINE TEXT LINE WHICH TUTOR THAT TUTOR YOUR TRY YOU TRY TEXT MORSE YOU 
+YOUR FOR WHICH MAY ARE NOT NOT MAY THAT USE CAN OFFER OFFER 
+<PRE>
+NOTE: 30 words between 3 and 6 characters from text.txt
+NOTE: words are NOT in the order found, they are random 
+NOTE: there were less than 30 unique words found, so after at least one output 
+      of each we reuse them 
+</PRE>
+<H2>
+Example 2: 
+</H2>
+<B>mcpt -inlen=3:6 -num=30 -in=words.txt <mark>-len=30</mark></B>
+<PRE>
+MCPT MORSE MAY ARE YOUR TUTOR 
+THAT THAT TUTOR NOT FOR CAN 
+TRY USE MAY TRY OFFER TEXT 
+MCPT YOUR TEXT ARE LINE MORSE 
+LINE CAN WHICH YOU FOR NOT 
+
+NOTE: -len=30 shortened output to 30 charaters (words not truncated or split)
+NOTE: option value can use a space or equals separator e.g. -inlen 4, or -inlen=4
+
+*** In the following examples, we used more defaults options for brevity.
+</PRE>
+<H2>
+Example 3: 
+</H2>
+<PRE>
+<B>mcpt -opt=myOptions</B>
+
+Note: opt myOptions, will override default options.
+      Command line options have the final say.
+</PRE>
+<H2>
+Example 4:
+</H2>
+<B>mcpt -inlen=5 -num=10 -suflen=1:2 <MARK>-out=out.txt</MARK></B>
+<PRE>
+Writing to file: <MARK>out.txt</MARK>
+
+NOTE: out.txt shown below
+YOU<MARK>9</MARK> WHICH7 FOR= LINE1 TEXT/ MAY8 USE9 THAT5 CAN= 
+
+NOTE: <MARK>-suflen=1:2</MARK>, appends one random character from default suflist as a suffix. suflist defaults (see help).
+
+THAT/7 YOU04 LINE8 TEXT78 MCPT. WHICH95 FOR20 CAN7? MAY= USE18 
+
+NOTE: -prelen works just like -suflen and by default uses the same characters (see help)
+NOTE: below is example of -suflen=3 and -prelen=1
+
+8WHICH.. 3TEXT58 5YOU3 8USE2 ?MAY97 1CAN1, ,FOR/. 9LINE=8. 6THAT/7 
+
+*** Default suffixes and prefixes can be changed with -suflist and -prelist as appropriate. 
+*** Duplicating a character in suflist or prelist e.g. ".,???????" increases 
+    the probability of that character in output.
+</PRE>
+<H2>
+Example 5:
+</H2>
+<B>mcpt <MARK>-prelist="123"</MARK> -prelen=1 <MARK>-suflist="QZX" -suflen=1</MARK> -num=10</B>
+<PRE>
+1MORSEz 1OFFERZ <mark>2</mark>OFFERZ 1WHICHZ 3MORSEQ 2TUTOR<MARK>Q</MARK> 1TUTORZ 2WHICHQ 2WHICHX 3OFFERQ 
+
+NOTE: prefixes limited to values of: 1, 2, 3; suffixes are shown on the command line, 
+      output in upper case (as well as those of prefix, cglist in code groups, delimiters, 
+      and prosigns).
+</PRE>
+<H2>
+Example 6:
+</H2>
+<B>mcpt -num=10 -suflen=1:3</B> 
+<PRE>
+MORSE/, TUTOR245 MORSE1=7 WHICH?9 <U>OFFER</U> <U>WHICH= 36/</U> OFFER9 OFFER=5/ TUTOR7 WHICH57 
+
+NOTE: a space character added into the suflist or prelist set of characters.
+      The result of the space is seen above in the underlines output.
+      In the case of, "offer", the tool was going to put just 1 suffix character, since it was a space
+      its unseen. In the case of, "WHICH= 36/" the suffix length was 4, but the second random character 
+      was a space, so it "looks" like a non-word output.
+<PRE>
+<H2>
+Example 7:
+</H2>
+<B>mcpt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
+<PRE>
+OFFER ARE OFFER FOR USE USE ARE MORSE ARE ARE USE FOR OFFER OFFER MORSE MORSE 
+USE FOR MORSE FOR 
+
+NOTE: Use -inlist if you haven't learned the entire alphabet, or just want word practice on 
+      a limited set of characters. The output is limited to the inlist set (A-Za-z).
+NOTE: You can use a character range, like A-F, instead of ABCDEF - but it must be in ASCII table 
+      order (e.g. F-A will fail). "a-dhijx-z", "a-dD-G0-8" are good.
+NOTE: The set is NOT limited to letters, e.g. you could include an apostrophe to match "her's", but 
+      over doing this is going to start to look like code groups, if the input is not regular text.
+NOTE: Regardless of the value of inlist or lesson, a prosign found in the input file will be treated 
+      as a "word" as long as the option "min" is grater than 4. This &lt;SK> or &lt;sk>, for example 
+      are treated as a word. The two characters are NOT verified, so &lt;ZZ> is a good as a real 
+      prosign for matching purposes, its up to your tutor software to treat it appropriately.
+
+      If any <I>list</I> type option contains a "=" or " ", the value part MUST be quoted. 
+      E.g. prelist=".,="
+
+*** suflist and prelist can also use the character range notation.
+</PRE>
+<H2>
+Example 8:
+</H2>
+<B>mcpt -inlen=3:8 -num=30 -skip=20</B>
+<P>
+This command will find a lot of short words in a book for example. Like "I a to of in the an on etc."
+As a result if the short ones are encountered first, then you may not get to the longer ones, you could:
+pick a different input file, edit it to discard some early text or use the option "-skip <number>", as
+above. This will skip over the fist number of unique words that match your criteria (inlen, inlist).
+And then after skipping, proceed to record unique words to use.
+<H2>
+Example 9:
+</H2>
+<B>mcpt <MARK>-repeat=3</MARK></B>
+<P>
+Repeat whatever the output "word" is (including prefix and suffix), a number of times. Default is 1, 
+the max is 5. Maybe helpful for head copy. 
+Note: linking words in the input file with "~", treat the sequence as ONE word. E.g. my~name~is
+<BR>
+<MARK>AND AND AND</MARK> THE THE THE SO SO SO
+<H2>
+Example 10:
+</H2>
+<B>mcpt -inlen=3:5 -num=10 -suflen=1 <MARK>-prosign=prosignFile.txt<MARK></B>
+<PRE>
+YOU9 WHICH7 <MARK>&lt;BT&gt;</MARK>? FOR= MCPT. &lt;AR>&lt;AS>7 LINE1 &lt;SOS>, TEXT/ MAY8 USE9 THAT5 CAN= 
+
+NOTE: Each ProSign seen above is in the -prosign=prosignFile.txt.
+      Prosigns are treated SIMILARLY to matched words, as follows:
+      - they appear in upper case regarless of case in file
+      - ProSigns are stored BEFORE the input file is read, therefore they contribute toward 
+        the "-num XX" quantity.  <I> That is, if the number of ProSigns is greater than <B>num</B> 
+	you won't get any words in output.</I>
+      - -prelen and -suflen add to the ProSigns, just as if it were a word. The same is true for -random
+        option. e.g. "8&lt;HH>?"
+      - A file entry can have one ProSigns per line (see file sample below).
+      - File lines that do NOT match the ProSign format (&lt;LetterLetter>) or (^LetterLetter - this is for G4PON)
+        are silently ignored.
+
+      <U>Sample ProSign File:</U>
+      
+      # The above line is empty. or all spaces so its ignored. As is the next "random" text line.
+      This file created on: July 7, 2019
+
+      &lt;AR>
+      &lt;SK>
+      &lt;AS>
+      &lt;bt>
+      ^BT # this format supported to play output in G4FON
+      # spaces before or after a ProSign sequence is OK
+           &lt;KN>
+<PRE>
+<H2>
+Example 11:
+</H2>
+<B>mcpt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
+The option, "-delimiter", is a string of 1 or more characters (of any type) which will
+be displayed in between each output word (1 exception). For example, if the output WITHOUT this option were:
+<P>
+the man and is so
+<P>
+With the delimiter of '&lt;BT>', the output is:
+<P>
+THE <MARK>&lt;BT></MARK> MAN &lt;BT> AND &lt;BT> IS &lt;BT> SO
+<P>
+You might use this option to get extra practice for characters that might not appear in significant amount using
+the randomness of "-prelen" or "-suflen". The exception, noted above, is when used with the "-repeat" option. In this case,
+the delimiter appears AFTER the word repeating is done. as shown below. This is might be useful for doing head-copy, to separate the repeated words from the next group of repeated words. As belo
+<PRE>
+THE THE THE &lt;BT> MAN MAN MAN &lt;BT> AND AND AND &lt;BT>
+
+Note: the "-delimiter" option is NOT effected by any other option (random, skip, prelen, suflen)
+Note: it is literal, and what ever you want. e.g. '.?/', 'XYZ', '123', 'It can even have multiple parts'.
+
+Note: You can have multiple delimiters, which are selected randomly, by
+      separating them with a carat "^" (SHIFT 6) e.g. -delimiter="&lt;BT>^&^tAR>^&lt;SK>".
+      for output like: "THE ? AND 4 MEN &lt;SK> SAT . END".
+
+      Also: If delimiter is used, then -DM=X, where X is the number of delimiters, format X:Y gives a min and max.
+      DM=0 therefore means no delimiter, even though -delimiter might have a value.
+      As in: delimiter="1|?|=" -DM=1:3 then the inter-word delimiters might be: 1,?,=,11,=1=,??. 
+
+Note: If a field in the delimiter is only space(s) e.g. ".^?^ ^=", and DM=1, 
+      this will result in NO delimiter if the that field is selected. 
+      So output could be: word1 ? word2 = word3  word4. No delimiter between 
+      the last two words, your tutor will ignore the extra space.
+
+      If DM was a range from min:max, then a random number between min and max will be
+      the number of delimiter fields to concatenate together to make the value
+      for output e.g. DM=1:4 could produce "=??", output therefore could be:
+      word1 =?? word2. But if there is a space in the delimiter, you could get 
+      a multipart delimiter e.g. "=? ?", output could be: word1 =? ? word2.
+
+Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that will translate into 
+      a 1/2 second silence period during playback. This may be used with any feature where a delimiter
+      applies, but may be most effective in conjuction with the &lt;repeat&gt; option.
+</PRE>
+<H2>
+Example 12:
+</H2>
+<B>mcpt -inlen=1:3 -num=6 -unique</B>
+The -unique option, terminates the adding to output as soon as
+a duplicate would be required to meet the quantity in the -num option.
+<P>
+For example, if the output would have been: "HE SAW THE RAT HE RAT" because
+ "he, rat" needed to be duplicated to meet the num=6 quantity. The -unique
+stops creating output making each word unique. Output is reduced to: "HE SAW THE RAT".
+<H2>
+Example 13:
+</H2>
+<B>mcpt -codeGroups -cglist="aeiokmr0-4?" -cglen=6</B>
+<PRE>
+ie3?k 40kee ia?2?
+
+Note: case in cglist does not matter, output will be upper case
+Note: group length determined by and -cglen
+Note: groups can be separated by delimiters as previously described
+Note: limited options apply when using code groups, others are silently ignored
+      -len, -num, -delimiter, -DM, -out, -inlen apply.
+<H2>
+Example 14:
+</H2>
+<B>mcpt -inlen=5:8 -i="in.txt" <mark>-mixedMode=2</mark></B>
+<PRE>
+VISIT OTHER <mark>=,0-A0</mark> ABOUT SHARE <mark>-=?A=-?</mark> MYSELF THOSE 
+
+Note: Every "2" words printed from matching in the input file is followed by 
+      a random code group (from characters in cglist).
+Note: all options from word match word still apply if used (prelen, suflen, delimiter, etc.)
+Note: In mixedMode, the code group word is NOT counted into the -num word count.
+</PRE>`
+
+<H2>
+</PRE>
+<H2>
+Example 15: 
+</H2>
+<B>mcpt -lesson=2 -tutor=lcwo -num=1 <mark>-permute=p</mark></B>
+<PRE>
+The output from this option "looks" like a simple set of short code groups, but its special.
+
+Code groups are random, therefore it is possible you might never see some characters next to each other.
+Like wise, you might do a lot of word practice, and never encounter certain combinations. Rather than wait until 
+you encounter them on the air, maybe with call signs, this feature can help.
+
+The permute option, by default, will use the tutor and lesson options to determine which characters to permute.
+
+Note: 0 is the default lesson option. The supported tutors all start with lesson 1. 
+
+For the command line above, the characters to permute are: "KMU". The value "p", to permute means you want <I>pairs</I>,
+therefore the permutations would be: <I>KK MM UU KM KU MU MK UK UM</I>. Because this would be a very short practice session,
+there pairs will be repeated (in random order) until the value of the word option <B>num</B>, the default for num is 100.
+If you ONLY want the minimal set, simply use num=1. (Num will be ignored if it would cause a loss of a permutations, for the
+value of "p" or "t".)
+
+If <B>num</B> is larger than the lesson value squared, output "strings" or code groups will be repeated in random order.
+
+All the pairs are good, but in the practice of pairs, a character either follows a space, or has a 
+space after it, so permute has another value form permute=t, which indicates you want "triples". Changing the 
+command line above to -permute=t, gives the following: <I>MKM UKU KMK UMU KUK MUM</I>. We now have each character, where 
+it is not next to a space. (Some permutations have been suppressed; there is no <I>MMM</I>, for example 
+(3 M's doesn't give you anything that 2 didn't already), there is no <I>MMK, KMM</I> for the same reason.
+
+Lastly, you might want a practice session with both pairs and triples, use -permute=b (b for both).
+As the lesson number gets high, the output size get significant, LCWO will simply truncate a file that's too 
+big (8000 characters) (other tutors may act differently).
+
+For the case of "b" for both, this is <B>NOT</B> lower limit of output, tThe num option has total control of the 
+qunantity of output.
+
+Most word practice and code groups will of course hit many of these permutations, if you want to work on a set of 
+your choosing you can drop the lesson= option, and instead use the code groups list option. For example:
+
+mcpt -cglist="qrx5" -permute=b num=1 
+
+Generates:
+
+<I>QRQ 5R5 5X Q5Q QXQ X5 R5R XQ 55
+XR RXR 5X5 X5X XQX Q5 QQ RQR 5Q
+RX R5 XX QR RQ QX 5Q5 5R RR XRX</I>
+
+</PRE>
+<H2>
+Example 16: 
+</H2>
+<B>mcpt <mark>-prosign=myPs.txt</mark> -codeGroups ....</B>
+<PRE>
+Prosigns were previous supported with an input file &lt;in=my.txt>, but if used with options
+&lt;codeGroups> or &lt;mixedMode>, the Prosigns in the prosign file &lt;prosign=myps.txt>
+with ONE prosign per line (see below), will use these 4 character sequences (e.g. <&lt;SK>) as
+if the were a single character in the &lt;cglist> option for code groups.
+
+<U>File myPs.txt</U>
+<SK>
+<HH>
+<AR>
+
+A code group of fixed size of 4 (cglen=2:2)could look like:
+
+X3FQ JDUG J<SK>2S NEFS &lt;HH>&lt;SK>z&ltAR>
+
+Similarly if the command line ws using an input file for words but usig &lt;mixedMode> for
+codeGroups, as well, the codeGroups could have prosigns.
+
+<H2>
+Example 17:
+</H2>
+<B>mcpt ... -in myInput -NR <mark>-reverse</mark> ...</B>
+<P>
+Note: This example will demonstrate a few more things than the <B>reverse</B> option.
+<P>
+The following line is the contents of words.txt. 
+<P>
+<I>This is the content of myInput file to demonstrating reverse option.</I>
+<P>
+The following command, sets </B>inlen=1</B> and <B>inlen=15</B> so that no words will be discarded, Also, </B>
+num</B> was set to 11 so that no words are discarded and none are used more than once.
+<B>NR</B> means non-randomized, in other words the output stays in the same order as the input.
+<B>len</B> was set short, so that you can see that <I>if</I> a line is longer, but a word is
+straddling the length boundary, that that word is finished rather than having a word split.
+<P>
+mcpt -inlen=1:15 -num=11 -in=words.txt -NR -len=20 -out=myOut
+<P>
+The text below is the output now in file=<I>words.txt</I>.
+Note, that the first word was captured even though it started with an uppercase, that's because the 
+default character matching characters is option <B>inlist</B> is "A-Za-z".
+<P>
+<I>`
+this is the content of
+myinput file to demonstrating
+reverse option 
+</I>
+<P>
+Now we'll reuse the command, adding the <B>reverse</B> option, <I>and</I> changing the input file name
+to be that of the output above. The text following the command has each word reversed. (Suggested 
+William Pierpont's document. You retain letter frequency of the input, and eliminate anticipation.)
+<P>
+mcpt -inlen=1:15 -num=11 -in=words.txt -NR -len=20 -reverse -out=myReversed
+<P>
+<I>
+SIHT SI EHT TNETNOC FO
+TUPNIYM ELIF OT GNITARTSNOMED
+ESREVER NOITPO 
+</I>
+<P>
+Now for the acid test, lets reverse again to get back the original text (same words, same order, same 
+line length).
+<P>
+Note: I purposely have the option <B>in</B> two times, just to remind you that it is the right most 
+option that overrides a prior value, just as command line options overrides the same option in the 
+options file (if used), and that in turn overrides the built-in default. This may seem like over kill, 
+but with so many options it does make for easy and limited typing to change the tools behavior for 
+different practice text generation.
+<P>
+mcpt -inlen=1:15 -num=11 -in=words.txt -NR -len=20 -out=myOut -reverse -in=myReversed -out=myFinal
+<P>
+<I>
+THIS IS THE CONTENT OF
+MYINPUT FILE TO DEMONSTRATING
+REVERSE OPTION 
+</I>
+<P>
+Final comments. This was a carefully crafted to demonstrate several features. The fact that 
+this still looks like a logical sentence is based on the fact that all words in the input were 
+unique, nothing got discarded and we keep the same order. This is not the design intent of this tool, 
+use your input directly with a tutor (no mcpt) if you simply want text-to-cw without processing.
+<H2>
+Example 18:
+</H2>
+<B>mcpt -DM=1:2 -delimiter="1^A^?^&lt;BT>" -DR</B>
+<P>
+As previously discussed, DM=1:2, would give 1 or 2 delimiter strings concatenated between each word.
+<P>
+WORD 1 WORD A? WORD &Lt;BT> WORD AA WORD &lt;BT> WORD ?
+<P>
+with -DR (a.k.a. DR=true) you indicate that delimiter printing is random
+<P>
+WORD WORD WORD &lt;BT> WORD AA WORD WORD 1
+<H2>
+Example 19:
+</H2>
+<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
+ON AT OF 3,A??4 NO HE IS A4263?/ AND HAT FOUR ......
+<H2>
+Example 20:
+</H2>
+<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
+<PRE>
+This input file for this example is a simple list of short words. The first line of output follows:
+
+ON AT OF <U>3,A??4</U> NO HE IS <U>A4263?/</U> AND HAT FOUR ......
+
+NOTE: In the above, after every 3 words (mixedMode=3) we get a code group.
+      We can add an option -MMR (mixed mode random) which gives a 50/50 chance that a code group will be 
+      suppressed to lessen predictability.
+
+<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3  -in=words.txt<mark>-MMR</mark></B>
+
+NOTE: The stretch below with no code group due to -MMR.
+
+ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?.23D3 HE SO .....
+
+ <B>***
+ *** IF YOU ARE USING LCWO FOR PLAYBACK AND mixedMode=X, YOU CAN ALSO USE SPEED CHANGES ***
+ ***
+ </B>
+
+      Most users copy plain text faster than they can copy code groups, with this in mind you might want
+      to have the copy above configured with on-the-fly speed changes so the plain text "words" 
+      could be sent at a higher speed than the code groups. To do this, we use two more  options 
+      we've seen before; LCWO_low sets the low(slow) speed of the code group, and LCWO_step the incremental 
+      speed to add to LCWO_low to get the higher speed to use for the plain text.
+
+<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt <mark>-LCWO_low=20 -LCWO_step=5</mark></B>
+
+|w25 <I>TWO FOUR NINE </I>|w20 <U>FL,WE0</U> |w25 <I>FOUR TEN ONE </I>|w20 <U>YB251C</U> |w25 <I>ONE FIVE NINE</I> |w20 <U>AJRR7H</U>
+
+      You see the copy starts with the speed at 25 wpm (speed chages look like |wXX), that's 
+      LCWO_low=20 + LCWO_step=5.
+      You see prior to each code group (underlined above) the speed drops.
+
+      In the above generated text for LCWO (you can paste this line into "Convert text to CW" screen)
+      the in-line speed changes are underlined with dashes, the plain text (played at high speed) 
+      (in italics).
+
+      Of course -MMR could also be used as previously described (not shown again).
+
+      As shown in example 16, if the user desires two other options LCWO_sf (slow to fast transition) 
+      and/or LCWO_fs (fast to slow) can be given a string (character(s), ProSign) which provides an 
+      audible alert in Morse code that the speed will transition. If used, the alert string is sent 
+      PRIOR to the speed change.
+
+      Just to demonstrate, let LCWO_sf=,, and LCWO_fs=??
+
+|w25 four two nine <U>??</U>|w20 ha?l50 <U>,,</U>|w25 nine ten five <U>??</U>|w20 tof=u9 <U>,,</U>|w25 six four four 
+
+      Above the simple alert strings are underlined with dashes, they occur just before the LCWO speed
+      change.
+
+      *** What might be more fun, is instead of using LCWO_sf and LCWO_fs having some characters as an alert,
+          to instead make use of another LCWO feature, that is change the tone frequency of the code groups.
+	  The line below uses frequency changes, you can cut and paste this into LCWO's "Convert text to CW"
+	  to try it. (To generate this I used -LCWO_fs="|f750" and -LCWO_sf="|f600" the initial tone of 600 HZ 
+	  can be set in the browser with -header="|f600". 
+
+<U>|f600|w25</U> FOUR TWO NINE <U>|f750|w20</U> HA?l50 |f600|w25 NINE TEN FIVE |f750|w20 TOF=U9 |f600|w25 SIX FOUR FOUR 
+
+      The first underlined, sets: 600hz 25wpm.      
+      The second underlined, sets: 750hz 20wpm       
+
+      Or better yet! Instead of changing the tone of the code group, or using a text alert, we can 
+      generate a short signal by using letter E or T framed by a short amount of silence (200ms in 
+      this example) and just changing the tone of that one letter. Make LCWO_fs and 
+      LCWO_sf="|S200 |f860 E |S200 |f680" (note spaces are required.)
+
+      The copy is below. Start at 680 HZ, play 3 words at 25 wpm, a high pitched E framed by some 
+      silence, 2 words at 35 wpm, and repeat the cycle until the -num XX words have been output.
+
+|f680 |w25 ROWDYISM WAGONS SIN |S200 |f860 E |S200 |f680 |w35 IRKSOME UNICYCLE |S200 |f860 E |S200 |f680 |w25 SELLERS 
+
+</PRE>
+<H2>
+Example 21: 
+</H2>
+<B>mcpt ... <mark>-lesson=5 -tutor=lcwo</mark></B>
+<P>
+Setting a lesson number and tutor, will populate  cglist (for code groups) as well as inlist (for parsing and matching words in input file)
+In the command line given, cglist would now be "kmure", and inlist would be "kmureKMURE". This is the last option set, so it overrides any earlier setting
+of cglist and inlist, both option file and command line.
+<P>
+Range values are 1-40, setting 0 leaves inlist and cglist per their defaults, option file or command line which ever last last.
+<P>
+If you use Morse Elmer, Just Learn Morse Code, MorseCodeNinja, or G4FON you will specify the tutor with <B>tutor</B> option, this will populate the options 
+<B>inlist</B> and <B>cglist</B> with the characters and in the order that they are taught with those products.
+<H2>
+Example 22: 
+</H2>
+<B>mcpt -in=infile </B>
+<PRE>
+If you use word input mode via option <in>, you can have a "word" as defined by the <inlist> characters
+grouped with one or more other words by use of the character "~", for example: MY~QTH~IS. This group will be treated as
+a new word (if each piece conforms to <inlist><inlen>, this enable you to get an ordered sequence where words are
+normally random. Note: a " ~"  or "~ "  word (e.g. ~MY, MY~, ~M~) will be ignored.
+
+Since this new group is treated as ONE word, other options will apply to the group, NOT the words that make it up. That is
+if you are using prefixes, suffixes, repeat, delimiters, this applies. The following is an example:
+
+THIS89 HAS23 SUFFIX22 <U>THIS IS A GROUP99</U>
+
+TEST ?, WORD =. MORE ?? <U>THIS IS A GROUP</U> =? etc.
+<H2>
+Example 23: 
+</H2>
+<B>mcpt -callSigns ...</B>
+<P>
+The intent of this feature is to give the user the ability to get some call sign copy experience
+before learning all the characters, also to give some options that their tutor might not provide.
+<P>
+This is NOT a full fledged call sign trainer. The ITU has many exceptions to
+it's call sign format rules, as do the host countries. The call signs are 
+"generated", in ITU general format, with some limitations. The ITU specifies a 
+call as a PREFIX+NUMBER+SUFFIX. For prefix notation they use "P", so PPNS, 
+means 2 prefix characters, a number (0-9) and one suffix character. Most hams 
+would say W2AB is a 1x2, or 1-by-2 call vs. a PNSS.
+<P>
+MCPT will generate prefixs of P,PP,PPP (not PPPP since its rarer), also for each
+"P" it will use ONLY alpha characters (the left most is never a "Q").
+<P>
+Similarly, for the suffix, MCPT will generate S,SS,SSS not SSSS or SSSS, and again with alpha characters only.
+<P>
+The practice is for call sign "format", the actual generated prefixes may not be assigned to any country.
+For the same reason as above, a country code before the assigned call (e.g. DY/WB4ABC/QRP) are not
+generated.
+<P>
+*** LCWO lesson=23 is the first lesson with a number, "5" in this case. From this lesson on
+*** we can generate call signs for practice since a number is required.
+<P>
+<B>mcpt -callSigns -lesson=23 -tutor=lcwo</B>
+<P>
+SZ5R PN5LWT W5FAV GS5RZ K5WAW AK5UFR M5WO ME5J VT5RRM 
+<P>
+*** LCWO post lesson 27, we have learned "/" and now 2 numbers. We now have 
+*** randomly some common trailing information that can be appended to the call: /p=portable, /m=mobile, 
+*** /mm=maritime mobile, /qrp=low power station, as well as a fixed station at other than 
+*** their normal location e.g. /4 for W2AA, as in W2AA/4.
+<P>
+<B>mcpt -callSigns -lesson=27 -tutor=lcwo</B>
+<P>
+H0QG VD5CS/1 M0DU/7 SG2PE/P MJ3ZM RT7N/M BZ2WF/QRP SU4ZAP Y4B W9I/MM
+<P>
+*** For head copy practice, repeat a call more than once and with NO lesson or 
+*** tutor option, the full 40 characters (more precisely 26 alphas, 10 numbers,
+*** and slash) are used.
+<P>
+<B>mcpt -callSigns -lesson=27 -tutor=lcwo -repeat=2</B>
+<P>
+IM0G/2 IM0G/2 ET3WPQ ET3WPQ P9GW/QRP P9GW/QRP IH5GZX IH5GZX IT8MC/M IT8MC/M 
+<P>
+*** Lastly, you can still use the 2 options delimiter and DM, to get inter-call
+*** sign delimiters. This enables you to get NON call sign practice in the
+*** practice session. The example below is using a few prosigns and punctuation.
+<P>
+<B>mcpt -callSigns -delimiter="&lt;SK>^&lt;BT>^.^,^?" -DM=1:2 </B>
+<P>
+E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>. JU5RFP/QRP
+<P>
+*** Note 1: To check the tutor-to-lesson correlation use: 
+<P>
+	    <B>mcpt -help=tutors</B>
+<P>
+*** Note 2: You can customise your character use independent of a specific
+            tutor as with the cglist option. I.e.: 
+<P>
+	    <B>mcpt -callSigns -cglist="123abcdef"</B>
+<P>
+F2CFF B3F D1DCF EB2BC AB1DE FB3EBC DC4DAB CB2BFA ED4AAA 
+<P>
+<B>***** LCWO users should also review Example 20. *****</B>
+<H2>
+LCWO Option Overview:
+</H2>
+<PRE>
+This section can be skipped on first read or if you are NOT a user of LCWO.
+
+****************************************************************************************************
+For any practice session text where you want to have on-the-fly changes in word speed (wpm) and/or
+effective speed (a.k.a. Farnsworth), you will need "LCWO" options.
+
+LCWO Options are listed in the help file below and demonstrated in one or more examples, I want to 
+give you an over view because the combinations create very different practice material.
+LCWO options are used in <I>addition</I> to other options.
+
+The following names in <I>italics</I>, are not options and may not be directly seen in the rest
+of the text but short of repeating samples of what they create, I think (or hope) they give you a 
+mental image of what they will achieve. They can all also make use of other options beyond the 
+LCWO ones.
+
+I'll list the options, but not relevant values since that's in the examples.
+In the following, the word "sentence" means a collection of space separated words, no punctuation 
+or grammatical meaning is implied. E.g. "today tree name rig sunshine"
+
+<B>If math is implied below by '+' or "divide", that's done by the tool, not the user.</B>
+
+<I>LCWO_slow and LCWO_fast:</I> Alternating sentences of specified word counts, starting at a <B>LCWO_low</B> speed 
+
+   with <B>LCWO_slow</B> number of words, and then switching to <B>LCWO_low</B>+<B>LCWO_step</B> (think increment) 
+   fast speed where the length is <B>LCWO_fast</B> words. Optionally, you can use <B>LCWO_effective</B> 
+   (Farnsworth), and <B>LCWO_sf</B> and/or <B>LCWO_fs</B> (both explained in examples 16 and 23). The slow 
+   and fast sections alternate until the input words meet other criteria (all controlled by non-LCWO 
+   options (e.g. min, max, num, etc.) are exhausted. (Optional: LCWO_effective, if used it sets the same
+   effective or Farnsworth speed for both the _slow and _fast speed portions.)
+
+   (Required: <B>LCWO_slow, LCWO_fast, LCWO_low, LCWO_step</B>)
+
+<I>LCWO_ramp:</I> This is like walking up a ramp or staircase, <B>LCWO_ramp</B> enables the feature. You start 
+   at <B>LCWO_low</B> speed for a sentence, then speed increases (by <B>LCWO_step</B>) after a number of words 
+   are created (total words desired divided by the number of speed steps <B>LCWO_num</B>), increases. Ramp 
+   finishes when the total desired words count and number of steps are exhausted. Optionally, <B>LCWO_effective</B> 
+   and/or <B>LCWO_repeat</B>. <I>In this behavior, the effective speed remains a constant amount less 
+   then the speed.</I>
+
+   (Required: <B>LCWO_ramp, LCWO_low, LCWO_step, LCWO_num</B>)
+
+<I>LCWO_effective _ramp:</I> This is like walking up a ramp or staircase, but unlike <B>LCWO_ramp</B>, the
+   speed stays at <B>LCWO_low</B> for the entire session; instead the effective speed increases with each
+   section. <B>LCWO_effective_ramp</B> enables the feature. You start at <B>LCWO_effective</B> <I>effective speed</I>
+   for a sentence, than <I>effective speed</I> increases after a number of words are created 
+   (total words desired divided by the number of speed steps <B>LCWO_num</B>), increases. Each new effective
+   speed is <B>LCWO_step</B> added to the previous value. Ramp finishes when the total desired words count and 
+   number of steps are exhausted.  
+   This feature is help users with Farnsworth speed abilities like 20/12 move toward 20/20.
+   Optionally, <B>LCWO_repeat</B>.
+   In this behavior, the <I>character speed</I> remains a constant.
+
+   (Required: <B>LCWO_effective_ramp, LCWO_effective, LCWO_low, LCWO_step, LCWO_num</B>)
+
+<I>LCWO_repeat:</I> Functionally, this is similar to _ramp, in that it starts low and builds up, but its
+
+   on a word-by-word basis, not sections of sentences. <B>LCWO_repeat</B> enables the behavior.
+   It starts at <B>LCWO_low</B> speed, it sends one word, then the speed is incremented to <B>LCWO_low</B>
+   + <B>LCWO_step</B> then the SAME word is sent again, this repeats until <B>LCWO_num</B>
+   words of input meeting other criteria (all controlled by non-LCWO options (e.g. min, max, num, etc.)
+   are exhausted. Optionally, this can be used with either <B>LCWO_ramp</B> or <B>LCWO_effective_ramp</B> (Note:
+   if you use <B>LCWO_effective</B> with <B>LCWO_repeat</B>, the effective speed is <I>not</I> influenced by <B>LCWO_step</B>. 
+   That is the effective speed is always the same distance below the character speed set by the difference of
+   <B>LCWO_low</B> minus <B>LCWO_effective</B>. Ex. LCWO_low=20, LCWO_step=5, LCWO_effective=14 giving you what users refer to as 20/14
+   (a.k.a. Farnsworth), so the difference is 6 wpm. With LCWO_repeat=3 you could get copy like: 
+   "|e14 |w20 some |e19 |w25 some |e24 |w30 some |e14 |w20 word |e19 |w25 word |e24 |w30 word ...."
+
+   (Required: <B>LCWO_repeat, LCWO_low, LCWO_step</B>)
+
+<I>LCWO_random:</I> Random speed by word.  This behavior is enabled by the proper combinations of options. 
+   Think of a collection of words, EACH word with a its own tag specifies its speed (and optionally <B>LCWO_effective</B> 
+   speed, as in _ramp its a fixed amount less than the character speed), all the words are bounced around in a container 
+   and then extracted one-by-one.  The container has one constraint, it never outputs two sequential words with the 
+   same speed.  So you could get: word1@20wpm word2@12wpm word3@30wpm ....
+   Speeds determined by <B>LCWO_low</B>, and <B>LCWO_num</B> number of <B>LCWO_step</B>s added to it. The words
+   sent equals the value of option <I>num</I>. Optionally, <B>LCWO_repeat</B> means the current word will repeat
+   sequentially, but each with its own speed value.
+
+   (Required: <B>LCWO_low, LCWO_step, LCWO_num</B>)
+
+   This was an overview, examples show combinations with other options.
+
+<B>-help LCWO</B> gives a much abbreviated version of the above for command line use.
+
+Note: An '*' in a delimiter string gives a half-second of silence if played in LCWO. See delimiter.
+
+******************************************************************************************************
+</PRE>
+<H2>
+Example 24:
+</H2>
+<B>mcpt -LCWO_low=15 -LCWO_step=5 -LCWO_num=3 -num=20</B>
+<PRE>
+This example is for users of the LCWO to create MP3 files. Adding the above options (they have defaults)
+to options that create "word" practice will insert on-the-fly speed changes.
+In the order above the options mean: set the lowest code play speed to 15 wpm, create another speed 5 wpm higher, 
+repeat 3 times. The result is that the practice text will on a word by word basis be played at 15, 20 or 25 wpm.
+If delimiters are used, they play at the same speed as the preceding word. 
+
+For example, if the options would have generated:
+
+the and test radio end
+(randomly each of those words would play at speeds shown below - a.k.a. BOUNCE)
+
+the and test radio end
+20   15 30   30    15 (indicates wpm)
+
+Note: the actual output, looks like: |w20 the |w15 and |w30 test .... 
+      LCWO.net strips the speed commands. Other software WILL PROBABLY ignore
+      the "|" and send your the "wNN" in between words.
+
+Note: the "LCWO" options are ignored if you are using code groups (-codeGroups).
+<H2>
+Example 25:
+</H2>
+<B>mcpt -LCWO_low=15 -LCWO_step=5 -LCWO_num=3 <mark>-LCWO_ramp</mark> -num=20</B>
+<PRE>
+In this example I added the LCWO related option -LCWO_ramp. This indicates
+the user wants to LCWO_ramp up speed, starting with -LCWO_low, and then increasing by
+-LCWO_step after -num/-LCWO_num words were printed. In short making -LCWO_num sections at each speed.
+
+Example output for LCWO to use as its input file:
+
+!w15
+the and test radio end ham
+|w20
+it of man sat house end
+|w25
+he the radio sat end test it of
+<H2>
+Example 26:
+</H2>
+<B>mcpt -LCWO_low=15 -LCWO_step=5 <mark>-LCWO_slow=5 -LCWO_fast=2</mark> -num=20</B>
+<PRE>
+!w15
+the and test radio end 
+|w20
+it of 
+|w15
+he the radio sat end 
+|w20
+and the
+
+Note: LCWO_low and LCWO_step set the low speed in wpm, and the high (LCWO_low+LCWO_step)
+      the output will toggle between these two speeds until -num words have been      sent
+Note: the two new options LCWO_slow and LCWO_fast specify the number or "words"
+      sent at the respective speeds.
+
+      LCWO_fast can be equal or less than LCWO_low.
+      Then effect of this option is to allow short bursts of higher speed to
+      challenge you; then return to slower speed to recover.
+<H2>
+Example 27:
+</H2>
+<B>mcpt -LCWO_low=15 -LCWO_step=5 -LCWO_slow=5 -LCWO_fast=2 <mark>LCWO_sf=? LCWO_fs=/ </mark> -num=20</B>
+<PRE>
+|w15
+the and test radio end 
+? ++++++++++++++++++++++++++++++ LCWO_sf string alerts to speed change coming
+|w20
+it of 
+|w15
+he the radio sat end 
+/ ++++++++++++++++++++++++++++++ LCWO_fs string alerts to speed change coming
+|w20
+and the
+
+Note: No checks are done on the strings given to these options.
+      You can just specify one of them if desired.
+      The can be the same string.
+      Above I showed a single character, but they are strings, you could have used ?.? or UP DOWN etc.
+      
+      *** LCWO supports a "delay" in milliseconds with " |Sxxxx " where xxxx is the time. (as 
+      with all the in-line LCWO options the space after is needed.)
+      This could be useful used in conjunction with the alert character, like ES__sf="|S500 / |S500 ".
+
+Note: LCWO_sf and/or LCWO_fs are the only LCWO options which <I>may</I> be used in a non-LWCO tutor.
+      If they are specified with the option <B>mixedMode</B> they will frame the codeGroup 
+      inserted in the output. e.g. word1 word2 <U>xxx</U> 3h6d?9 <U>yyy</U> word3 word4. Where
+      xxx represents LCWO_sf, a nd yyy represents LCWO_fs.
+<H2>
+Example 28:
+</H2>
+<B>mcpt -LCWO_low=10 -LCWO_step=5 <mark>-LCWO_repeat=3 </mark> -num=5</B>
+<PRE>
+This is similar to using the -repeat option previously described, but now we will take advantage of LCWO's
+speed changes. Obviously this output generated by mcpt, will become the input file to LCWO, which
+is now your tutor software to create a playable mp3 file.
+
+|w10 women |w13 women |w16 women |w10 young |w13 young |w16 young |w10 darcy 
+
+Note: LCWO_low=10, creates the low speed 10 wpm command "|w10" for LCWO.
+Note: LCWO_step=3, causes each successive word to be sent +3 wpm from the prior value.
+Note: LCWO_repeat=3, each word found repeats 3 times, each a step up in speed by +3 wpm.
+
+Of course other options were gotten from the options file (see -opt), or the command line (-inlen, -num, etc.)
+
+In the following example, We added the delimiter option (previously described) to get a prosign as an audible 
+clue that the speed was going to drop back for the next set of words.
+
+|w10 hurst |w13 hurst |w16 hurst &lt;SK> |w10 darcy |w13 darcy |w16 darcy &lt;BT> |w10 young |w13 young
+
+To get this I added to the command line (or options.mcpt.: -delimiter="&lt;SK>|&lt;BT>" -DM 1
+<H2>
+Example 29:
+</H2>
+<B>mcpt ... usual options choices ... <mark>-header="|W3 |f600"</mark></B>
+<PRE>
+The output is inserted, verbatim before any generated output.
+
+Note: No checks are performed on the content of header, its passed to your 
+      tutor for evaluation.
+ 
+      A good use of this is to set multiple LCWO related options. The command above
+      would increase the inter word space by 3 times normal spacing; and set the tone 
+      to 600 HZ. <I>So no quotes for LCWO use or the
+      option will NOT take effect. Since an LCWO option sequence MUST be followed by a space between
+      the option and text, mcpt <B>will</B> add one trailing space. (e.g. -header="|f660 |w20"  would
+      create output like: |f660 |w20 word1 word2 etc.</I> (note the quotes are needed because the string 
+      contains a space.)
+
+<B>***** The following, examples combined general and LCWO options. *****</B>
+<H2>
+Example 30: 
+</H2>
+<B>mcpt -in=words.txt -mixedMode=3 -LCWO_low=10 -LCWO_step=5</B>
+<PRE>
+|W15 |W10 dk6hf |W15 killjoys outspoken |W10 at.,3 |W15 resale waspishly |W10 l98g4
+|W15 twig ballyhoo |W10 xuncr |W15 underbody sapped |W10 bqms? |W15 rosier semaphores
+|W10 y2o1v |W15 satanism parallels |W10 j7/iz |W15 im 
+
+Note: the code groups are sent at 10 wpm, while plain text words are at 15 wpm.
+Note: ignore the double speed option at the start, LCWO will work correctly.
+</PRE>
+<H2>
+Example 31: 
+</H2>
+<B>mcpt -opt demo.opt <mark>Combined Features Example</mark> ...</B>
+<PRE>
+
+This example combines about 80% of the available options, including many of the LCWO options.
+All defaults are overridden for demonstration purposes. The intent is to show flexibility of the
+tool, not that this combination would necessarily be used by many people. As stated before,
+EVERYTHING is optional, so look at the functionality not on the specific content (words, characters,
+ProSigns, lengths, etc. they are all configurable).
+
+The input and output are kept short here, for actual practice the user
+would most likely specify much larger sizes.
+
+First, I'll explain the three files utilized to create the output, then we'll look at how the LCWO
+options instrument the file so that LCWO can perform on-the-fly option changes.
+
+**** below is the input file <demo.txt> **********
+the quick brown fox jumped over the lazy dogs back
+
+**** below is the prosign file <prosign.txt> *****
+&lt;AS>
+&lt;BT>
+&lt;HH>
+
+**** below is the options file <demo.opt> *******
+**** line numbers are NOT part of the file, they are for the notes that follow
+     1	in=demo.txt
+     2	prosign=prosign.txt
+     3	out=fileToGiveLCWOToPlay
+       
+     4	inlist="A-Ya-y"
+     5	inlen=3:5
+       
+     7	num=11
+     8	len=60
+     9	NR
+    10	
+       
+    11	cglen=5:5
+    13	cglist="a-z0-9,.?/=@"
+       
+    14	repeat=2
+       
+    15	mixedMode=3
+    16	MMR
+       
+    17	prelen=1
+    18	prelist="012"
+    19	suflen=2
+    20	suflist=".,"
+    21	random
+       
+    22	DM=3
+    23	delimiter="?^/^&lt;SK> ^QTH "
+    24	DR
+       
+    25	#END
+       
+    26	header=|f650
+       
+    27	LCWO_ramp
+    28	LCWO_repeat=3
+    29	LCWO_num=4
+    30	LCWO_low=20
+    31	LCWO_step=5
+    32	LCWO_effective=18
+    33	LCWO_sf="|s400 |f1500 T |f650 |s400"
+       
+******* end of file
+1,2,3	Input file of potential words to be used; prosign file already listed, output file to give to 
+        tutor program.
+4       The characters an input word may contain or else its discarded. Note they is no "y", so the word "lazy" is
+        discarded.
+5       The minimum, and maximum length of an input word, or its discarded. Note "jumped" is longer than 6, 
+        so its discarded.
+7-10    Some global options. Num limits the words in output (note a sequential repeat of a word is not counted).
+        The output line len, is approximately this long unless it would split a word.  NR means the input 
+	words are Not-Randomized, so they are in the order they were found unless there were discards.
+11-13   Are for code groups. In this example, the code group is created because of the mixedMode option. 
+        The lengths for min and max are the same so the code groups are fixed size. The characters in a code 
+	group are not related to any other list option.
+14      Each "word" that passes the filter criteria of: min, max, and inlist, will be shown twice. 
+15,16   MixedMode means the user wants a code group mixed in with words read from file. Here the 3 means a 
+        code group will appear after every 3 words - normally. But MMR, indicates that the behavior is 
+	randomized, so you could see multiples of 3 words without a code group.
+17-21   Prefixes and/or suffixes may be added to words (note prosigns randomly replace a word, therefore 
+        they can get a prefix or suffix. The number as in suflen=1:2, means the word gets from 1-2 characters 
+	added. The suflist and prelist are the possible characters (they are limited and different in the 
+	example to easily see the effect.  The final option random, means either could be suppressed on any 
+	given word. Note that a space is a viable character, so it could make random character(s) just before 
+	or after a word.
+22-24   Delimiters are strings that delimit or separate words. The list of values are separated 
+        by "^". If DM is greater than 1 (DM - delimiter multiples), between 1 and the DM value of fields 
+	from the delimiter list may be concatenated together (spaces are supported). DR means the appearance 
+	is random.
+25      The #END stops the reading of the options file.
+
+The remainder of the options will be discussed below.
+
+***** Below is the practice text generated which does NOT use any LCWO features, I'll add them shortly.
+
+<I>
+0THE 0THE &lt;SK> QUICK QUICK QTH &lt;SK> 2BROWN 2BROWN QTH ? 0&lt;AS> 0&lt;AS> FOX FOX ?&lt;SK> k0OVER 0OVER
+?/&lt;SK> 0THE 0THE &lt;HH> &lt;HH> &lt;SK> /  DOGS. DOGS. ? 0BACK,. 0BACK,.  QTH  THE THE QTH &lt;SK>  
+</I>
+
+Comments:
+
+So you can see the words: THE, QUICK, BROWN, FOX, and OVER, are from the <B>in</B> file, in order.
+&lt;AS> and &lt;HH> were from the prosign file, they are treated as words. They were randomly injected 
+into into the word flow.
+`
+Note "lazy" and "jumped" were discarded for length or character make up respectively.
+
+THE, BROWN, &lt;AS>, and OVER got a prefix characters added (prefix=1) and its one of the characters in 
+prelist (012).
+
+QUICK and FOX got neither a prefix or suffix because the <B>random</B> option was set.
+
+DOGS and BACK got a suffix, 1 or 2 characters (suffix=2) from suflist (,.).
+
+BACK got both a prefix and suffix.
+
+Every other word is separated by a delimiter string, you see <SK>, /, QTH. Since the delimiter random 
+option <B>DR</B> is set, sometimes it was suppressed.
+
+All the "words" are duplicated due to the <B>repeat=2</B> option.
+
+
+Now lets go back to the options file, assume the #END line has been removed, leaving all the options as above,
+lets add as many LCWO options are possible. The output will be much more complex (thankfully without any need
+for typing) and allow LCWO.net to give us on-the-fly changes to speeds (character and effective, tones, etc.)
+
+26	The header |f650 tells sets the audio tone in HZ. (it will override the browser setting).
+27	Set the _ramp feature, character speed will increase throughout the session.
+28 	Repeat sets a second simultaneous feature which repeats EACH word at a higher speed, until the 
+        ramp speed increases.  Since its 3, each word is played at 3 speeds.
+29      Num specifies how many speed changes in the ramp from the start until the end of the session.
+        The number of words at each ramp speed is the total num/LCWO_num (don't worry about the math errors 
+	in values are flagged).
+30      The lowest or starting character speed in wpm is set by LCWO_low.
+31      LCWO_step is the number of wpm to increase the speed by in each ramp up.
+32      LCWO_effective indicates the user wants effective or Farnsworth timing. The 
+        delta between LCWO_low and LCWO_effective is maintained as the ramp or repeat speeds change.
+33	An optional alert tone (1 dah) is played before each change in ramp speed. The alert could just be text,
+        but this sequence tells LCWO to: sleep for 400 ms, change frequency to 1500 HZ, play a "T" (dah), then 
+	revert to the cw tone of 650 HZ, and finally sleep (or place silence 400 ms).
+
+
+What does this look like? The file is below. Since its wrappers around what we had above I'm not going to 
+bore you with the item by item description. You can see the character speeds set by |wNN, and the effective 
+speed by |eNN. |fNN is the audio tone.
+
+You can cut and paste the text below into LCWO to hear it, even with out using mcpt. You can use guest 
+credentials, test/test to login if you don't have login credentials of your own (it goes into the 
+"Convert text to CW" screen).
+
+Just to point out a few effects of the LCWO options:
+
+|w20 is from LCWO_low, the starting character speed wpm
+|e18 is from LCWO_effective the starting effective speed. In the rest of the session the effective 
+speed stays 2 wpm less than the character speed.
+
+Words are sent 4 times, twice as explained above due to repeat, then again at increased speed 
+from <B>LCWO_repeat=2</B>.
+
+The entire word repeat and speed repeats are within the <B>_ramp</B> progression, building from 
+<B>LCWO_low</B> wpm through <B>LCWO_num</B> speed increments of <B>LCWO_step</B> size.
+
+**** below is stored in the output file specified by out=, in the options file.
+
+|f650
+|w20 |e18 0THE 0THE |w22 |e20 0THE 0THE &lt;SK>  |w20 |e18
+QUICK QUICK |w22 |e20 QUICK QUICK QTH &lt;SK>   |s400 |f1500 T |f650
+|s400|e18 |w20 |w22 |e20 2BROWN 2BROWN |w24 |e22 2BROWN 2BROWN
+QTH ? |w22 |e20 0&lt;AS> 0&lt;AS> |w24 |e22 0&lt;AS> 0&lt;AS> |s400 |f1500
+T |f650 |s400 29,RJ  |s400 |f1500 T |f650 |s400|e20 |w22 |w24
+|e22 FOX FOX |w26 |e24 FOX FOX ?&lt;SK>  |w24 |e22 0OVER 0OVER |w26
+|e24 0OVER 0OVER ?/&lt;SK>   |s400 |f1500 T |f650 |s400|e22 |w24
+|w26 |e24 0THE 0THE |w28 |e26 0THE 0THE |w26 |e24 &lt;HH> &lt;HH> |w28
+|e26 &lt;HH> &lt;HH> &lt;SK> /  |s400 |f1500 T |f650 |s400|e24 |w26 |w26
+|e24 DOGS. DOGS. |w28 |e26 DOGS. DOGS. ? |w26 |e24 0BACK,. 0BACK,.
+|w28 |e26 0BACK,. 0BACK,. QTH  |w26 |e24 THE THE |w28 |e26 THE
+THE QTH &lt;SK>  
+
+When using LCWO_ramp with and without LCWO_repeat, if num is not significantly larger than LCWO_num, you will
+have a very steep ramp (a.k.a. fast changes in speed). This is amplified if you combine it with LCWO_repeat
+with a large value. So start out with small values for LCWO_step, LCWO_repeat until you see what's generated.
+
+-help=LCWO  should summarize the interactions without the need to refer to the user guide.
+
+**** mcpt -help=LCWO is shown below.
+
+Relationships and compatibilities for LCWO Options
+
+Option names starting with "LCWO_" are only for users that will input the generated practice text
+to LCWO's "Convert text to CW" screen.
+
+Other non-LCWO options can be used as well.
+
+LCWO_slow: (alternating slow/fast word groups)
+		requires: LCWO_slow, LCWO_low, LCWO_fast, LCWO_step
+		optional: LCWO_sf, LCWO_fs
+		non-compatible: LCWO_ramp, LCWO_effective_ramp, LCWO_num, LCWO_repeat
+
+LCWO_ramp: (steady increase of character speed sections of words)
+		requires: LCWO_ramp, LCWO_low, LCWO_step, LCWO_num
+		optional: LCWO_sf, LCWO_repeat, LCWO_effective
+		non-compatible: LCWO_effective_ramp
+
+LCWO_effective_ramp: (steady increase of effective speed sections, with fixed character speed)
+		requires: LCWO_effective_ramp, LCWO_low, LCWO_step, LCWO_num, LCWO_effective
+		optional: LCWO_sf
+		non-compatible: LCWO_ramp, LCWO_repeat
+
+LCWO_repeat: (each word repeated at increasing character speeds)
+		requires: LCWO_repeat, LCWO_low, LCWO_step
+		optional: LCWO_effective, LCWO_ramp (LCWO_num if LCWO_ramp)
+		non-compatible: LCWO_effective_ramp
+
+LCWO_random: LCWO_low, LCWO_num, LCWO_step (no other LCWO options): (each word has random character speed)
+		requires: LCWO_low, LCWO_step, LCWO_num
+		optional:
+		non-compatible: LCWO_effective_ramp, LCWO_ramp, LCWO_repeat, LCWO_slow, LCWO_fast, 
+		LCWO_sf, LCWO_fs
+
+Note: LCWO_sf and LCWO_fs MAY be used outside of LCWO. If used with option mixedMode,
+these will insert the specified string immediately before and/or after the codeGroup.
+
+If LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, then plain text is sent at the 
+<B>faster speed of LCWO_low + LCWO_step</B>, while the codeGroup (due to mixedMode) will be sent <B> at the slower speed of LCWO_low</B>.
+</H2>
+Contact me at: <B>WA2NFN@qsl.net</B>.
+</BODY>
+</HTML>

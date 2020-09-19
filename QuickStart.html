@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Welcome To The MCPT Quick Start</title>
+		<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	</head>
+	<body>
+<P>
+This file gives some quick introduction to <I>some</I> of the command options, even before you read
+the full details in the <B>UserGuide.html</B>.
+<P>
+For Windows users, you can run the <B>QuickStart.bat or QuickStart</B> file which will execute many of these. 
+Additional details are in the user guide and files available with the help options.
+the most complete detail.
+<P>
+For non-windows downloads, you will get a file <B>QuickStart.txt</B>, which are the commands line by line,
+which you can execute using copy-and-paste.
+<P>
+To take full advantage of the features, refer to the UserGuide.html, test and illustrative examples.
+<P>
+The tool name will be shown as mcpt.exe, non-windows users ignore the ".exe" extension.
+<P>
+For those not familar with command line entry, there are details in the UserGuide.html in the Options section.
+<P>
+Basically a command looks like: <I>mcpt -option=val or -option</I>.
+In many cases, there are multiple options! Copy and run the entire line starting with <B>mcpt</B>.
+<P>
+Windows users, can just read the rest of this file for details, if you are running <B>QuickStart.bat</B>.
+<P>
+There are many more possibilities to keep your practice varied, and to work on different deficiencies. 
+<P>
+<H1>
+Let's Go!
+</H1>
+<PRE>
+Each command shown writes to your <B>SCREEN</B>, just so you can verify its the content you want, to get that to
+your Morse Code tutor/training program, add the option: <I>-out=someOutputFile.txt</I>. This is placed in the current 
+directory, unless you specify a path to another location (i.e. -out="c:\documents\myOut.txt").
+<P>
+Getting the file to your tutor is dependent on your situation (email files to a phone; drag-and-drop 
+in windows; mv|cp in linux; LCWO.net users go to "Convert text to CW" screen, which has a Windows like browse feature).
+<P>
+Please run the command now, to get an overview of 4 other files, (they will be referred to in the next section)
+<P>
+mcpt -help=files
+<P>
+<B>
+This section will show you just a few types of practice material that can be generated.  In these examples, all output 
+goes to your screen. Examples will demonstrate minimal capability of features, and little explanation, the exmples in 
+the user guide are more thorough and provide detail information.  For now, this is just to give you some flavor of features.
+<P>
+EVERYTHING about the material generated is configurable, don't get hung up about the words, lenghts, the quantity, etc.
+<P>
+Where you see "-in=word.txt", you can use any TEXT file (not MS Word, word processor), email, book, etc.
+<P>
+For any of the following, you can add -out=output.txt, and capture text in a file instead of to your screen.
+</B>
+<H2>
+Commands for simple code groups
+</H2>
+<H3>
+mcpt -codeGroups -cglen=3:6
+</H3>
+code groups with lenght of 3-6 characters; letters, nimbers, punctuation
+<H3>
+mcpt -codeGroups -cglen=5:5 -num=200 -len=30
+</H3>
+this overrides some of the defaults that were used above
+<H3>
+mcpt -codeGroups -cglen=3:6 -lesson=12
+</H3>
+repeat the first case, but limit code groups to lesson 12 of LCWO (its the default tutor)
+<H3>
+mcpt -codeGroups -cglen=3:6 -lesson=12 -tutor=lcwo
+</H3>
+repeat the first case, but limit code groups to lesson 12, specify the tutor to use (half dozen to choose)
+<H2>
+Commands for WORD related practice
+</H2>
+<H3>
+mcpt -in=words.txt -inlen=3:10
+</H3>
+word length 3-10 characters from words.txt file (random order)
+<H3>
+mcpt -in=words.txt -mixedMode=3
+</H3>
+words with a code group eavey third entry
+<H3>
+mcpt -in=words.txt -mixedMode=3 -lesson=10 -tutor=g4fon
+</H3>
+repeat the above, adding -lesson=10, of the order taught in g4fon tutor
+<H3>
+mcpt -in=words.txt -mixedMode=3 -suflen=2
+</H3>
+words with a one or 2 character suffix (you can change to/add -prelen=1, and/or -random.)
+<H2>
+Commands using ProSigns from a prosign file
+</H2>
+The next few commands use prosigns from the file prosign.txt. That file and the User Guide
+provide additional information.
+<H3>
+mcpt -in=words.txt -prosign=prosign.txt -num=40
+</H3>
+Each prosign appears, and is used as it it were a word. It therefore can interact with other word
+options: suflen, prelen, repeat, etc.
+<H3>
+mcpt -in=words.txt -prosign=prosign.txt -num=40 -mixedMode=3 
+</H3>
+Each prosign appears, and is used as it it were a word AND in the interspersed code groups. Uppercase.
+<H3>
+mcpt -codeGroups -prosign=prosign.txt -num=40
+</H3>
+ProSigns used just like a SINGLE character.
+<H3>
+mcpt -callSigns
+</H3>
+Call signs generated for format practice. Can be limited to tutor/lesson.
+<H2>
+Help Commands
+</H2>
+This section demonstrates online informational help, and commands to get it.
+<P>
+The help output is a quick help while using the tool, rather than refering to the User Guide. 
+They are here just to give you an idea of the content.
+<H3>
+mcpt -help=LCWO
+</H3>
+ONLY for users of LCWO.net. Some ADVANCED training features which support on-the-fly changes of 
+played code speed, Farnsworth timing, extended silence, etc. LCWO is highly recommended and free.
+These features are shown in many examples toward the end of the user guide, but demonstrated here.
+<H3>
+mcpt -help 
+</H3>
+A listing of all options, their defaults, and values. Don't worry, you'll see shortly, that a given feature needs very few.
+Also, all the options you need can be put into a file, instead of the command line.
+(Run mcpt -help=files for information).
+<P>
+<H3>
+mcpt -help=options
+<H3/>
+Use this option in addition to other command line options to see the full set of options mcpt is 
+executing with. This will help you see the impact of default values that impact your output.
+<H3>
+mcpt -help=international
+</H3>
+This is ONLY for users that might want to use French, German, or Spanish alpha characters. 
+<H3>
+mcpt -help=tutors
+</H3>
+Displays a table of Morse Code tutors (programs or training systems) such as LCWO.net and 
+the characters taught by lesson number. Allows features to restrict practice to known characters.  
+<H3>
+mcpt -help=files
+</H3>
+Use of mcpt <I>may</I> use several other files. This command discusses them. 
+</body>
+</html>
