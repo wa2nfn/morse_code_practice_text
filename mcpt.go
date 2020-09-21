@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.2.3 09/08/2020 Copyright 2020"
+	version       = "1.2.4 09/21/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -359,7 +359,15 @@ func main() {
 			flagLF = true
 			cnt--
 		}
+		if sliceContains(flag.Args(), "lf") {
+			flagLF = true
+			cnt--
+		}
 		if sliceContains(flag.Args(), "TAB") {
+			flagTAB = true
+			cnt--
+		}
+		if sliceContains(flag.Args(), "tab") {
 			flagTAB = true
 			cnt--
 		}
