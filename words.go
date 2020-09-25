@@ -346,7 +346,7 @@ func doOutput(words []string, fp *os.File) {
 			if flagLCWOeff > 0 {
 				strOut += fmt.Sprintf("|w%d |e%d ", LCWOspeeds[0], flagLCWOeff)
 			} else {
-				strOut += fmt.Sprintf("|w%d |e0", LCWOspeeds[0])
+				strOut += fmt.Sprintf("|w%d |e0 ", LCWOspeeds[0])
 			}
 			speedCount++
 		}
