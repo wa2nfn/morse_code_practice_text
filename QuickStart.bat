@@ -37,17 +37,17 @@ CMD /c "echo. &&mcpt -codeGroups -cglen=3:6 -lesson=12 -tutor=lcwo&&echo.&&echo.
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -permute=p -lesson=15 -tutor=lcwo
+ECHO mcpt -permute=p -lesson=15 -tutor=lcwo
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -permute=p -lesson=15 -tutor=lcwo &&echo.&&echo."
+CMD /c "echo. &&mcpt -permute=p -lesson=15 -tutor=lcwo &&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -permute=b -lesson=15 -lesson=12 -tutor=g4fon
+ECHO mcpt -permute=b -lesson=15 -lesson=12 -tutor=g4fon
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -permute=b -lesson=12 -tutor=g4fon &&echo.&&echo."
+CMD /c "echo. &&mcpt -permute=b -lesson=12 -tutor=g4fon &&echo.&&echo."
 PAUSE
 CMD /c cls
 
