@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.3.0 09/25/2020 Copyright 2020"
+	version       = "1.3.1 10/01/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -68,7 +68,7 @@ var (
 	flagDMmin       int
 	flagDMmax       int
 	flagDR          bool
-	flaglesson      int
+	flaglesson      string
 	flagMixedMode   int
 	flagLCWOsf      string
 	flagLCWOfs      string
@@ -108,6 +108,8 @@ var (
 	flagprelen      string
 	flagsuflen      string
 	flagcglen       string
+	flaglessonend	int
+	flaglessonstart	int
 	flagcallsigns   bool
 )
 
@@ -133,7 +135,7 @@ func init() {
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
 	flag.StringVar(&flagtutor, "tutor", "", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse.\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) Between 1 and DM delimiter\nstrings are concatenated. DM=min:max")
-	flag.IntVar(&flaglesson, "lesson", 0, "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
+	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "DR", false, "Delimiter random, (if DM > 0) DR=true makes a delimiter randomly print on. (default false)")
 	flag.IntVar(&flagMixedMode, "mixedMode", 0, fmt.Sprintf("mixedMode X, If X > 1 and  X < %d , a code group will print every X words.", maxMixedMode))
 	flag.BoolVar(&flagreverse, "reverse", false, "Reverses the spelling of words from inlist file. (default false)")
@@ -346,6 +348,7 @@ func main() {
 	flagcgmin, flagcgmax = minmaxSplit("cglen", flagcglen)
 	flagpremin, flagpremax = minmaxSplit("prelen", flagprelen)
 	flagsufmin, flagsufmax = minmaxSplit("suflen", flagsuflen)
+	flaglessonstart, flaglessonend = minmaxSplit("lesson", flaglesson)
 	flagDMmin, flagDMmax = minmaxSplit("DM", flagDM)
 
 	//
@@ -688,20 +691,20 @@ func main() {
 
 	flagtutor = strings.ToUpper(flagtutor)
 
-	if flaglesson > 0 && flagtutor == "" {
+	if flaglesson != "0:0" && flagtutor == "" {
 		fmt.Printf("\nError: option <lesson> greater than 0 requires option <tutor>.\n")
 		os.Exit(1)
 	}
 
-	if flaglesson == 0 && flagtutor != "" {
-		fmt.Printf("\nError: option <tutor> requires option <lesson>.\n")
+	if (flaglesson == "0:0" || flaglesson == "0" ) && flagtutor != "" {
+		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
 		os.Exit(1)
 	}
 
 	// expand now before we reuse
 	flagcglist = strRangeExpand(flagcglist, "cglist")
 
-	if flaglesson >= 1 {
+	if flaglessonend >= 1 {
 
 		if flagtutor == "LCWO" {
 			kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X"
@@ -723,22 +726,33 @@ func main() {
 			os.Exit(1)
 		}
 
-		if (flaglesson+1 > len(kochChars)) && flagtutor == "LCWO" {
-			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <LCWO>.\n", flaglesson, 40)
+		if (flaglessonend+1 > len(kochChars)) && flagtutor == "LCWO" {
+			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <LCWO>.\n", flaglessonend, 40)
 			os.Exit(1)
 		}
 
-		if flaglesson > len(kochChars) {
-			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglesson, len(kochChars), flagtutor)
+		if flaglessonend > len(kochChars) {
+			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, len(kochChars), flagtutor)
 			os.Exit(1)
+		}
+
+		if flaglessonstart <= 0 {
+			fmt.Printf("\nError: Lesson values start at 1. (see -help=tutors)\n")
+			os.Exit(1)
+		}
+
+		if flaglessonstart == flaglessonend {
+			flaglessonstart = 0
+		} else {
+			flaglessonstart--
 		}
 
 		if flagtutor == "LCWO" {
-			if flaglesson < len(kochChars) {
-				flagcglist = kochChars[0 : flaglesson+1]
-			}
-		} else {
-			flagcglist = kochChars[0:flaglesson]
+			flaglessonend++
+		}
+
+		if flaglessonend < len(kochChars) {
+			flagcglist = kochChars[flaglessonstart : flaglessonend]
 		}
 
 		// now build inlist initially as lowercase
@@ -748,7 +762,7 @@ func main() {
 	}
 
 	// check inlist for %XX codes
-	if flaglesson == 0 {
+	if flaglesson == "" {
 		out := ""
 		m := regexp.MustCompile("%[C-F][0146789C]")
 
@@ -994,7 +1008,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0
-	if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" && flaglesson > 14 {
+	if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" && flaglessonend > 14 {
 		strBuf = "<KA>\n" + strBuf + "\n<AR>"
 		index = -5
 	}
@@ -1028,7 +1042,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 	}
 
 	// for MorseNinja
-	if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" && flaglesson >= 40 {
+	if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" && flaglessonend >= 40 {
 		res = re.ReplaceAllString(res, "<BK>")
 	}
 
