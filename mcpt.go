@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.3.1 10/01/2020 Copyright 2020"
+	version       = "1.4.0 10/07/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -91,6 +91,7 @@ var (
 	flagcglist      string
 	flagCglistRune  []rune
 	flaginput       string
+	flaginputStrings       string
 	flagoutput      string
 	flagopt         string
 	flagprosign     string
@@ -127,7 +128,8 @@ func init() {
 	flag.StringVar(&flagsuflist, "suflist", "0-9/,.?=", "Characters for a word suffix.")
 	flag.StringVar(&flagprelist, "prelist", "0-9/,.?=", "Characters for a word prefix.")
 	flag.StringVar(&flaginlist, "inlist", inListStr, "Characters to define an input word.")
-	flag.StringVar(&flaginput, "in", "", "Input text file name (including extension).")
+	flag.StringVar(&flaginput, "in", "", "Input text file name, for words (including extension).")
+	flag.StringVar(&flaginputStrings, "inStrings", "", "Input text file name, for any strings in file (including extension).")
 	flag.StringVar(&flagoutput, "out", "", "Output file name.")
 	flag.StringVar(&flagopt, "opt", "", "Specify an option file name to read or create.")
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
@@ -701,7 +703,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// expand now before we reuse
+	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cglist")
 
 	if flaglessonend >= 1 {
@@ -755,9 +757,8 @@ func main() {
 			flagcglist = kochChars[flaglessonstart : flaglessonend]
 		}
 
-		// now build inlist initially as lowercase
-		// cglist is LC
-		flaginlist = strings.ToUpper(flagcglist)
+		// cglist is UC
+		flaginlist = flagcglist + strings.ToLower(flagcglist)
 
 	}
 
@@ -799,7 +800,7 @@ func main() {
 	runeMap = nil
 	runeMapInt = nil
 
-	if flaginput == "" && flagCG == false && flagpermute == "" && flagcallsigns == false {
+	if flaginput == "" && flaginputStrings == "" && flagCG == false && flagpermute == "" && flagcallsigns == false {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
@@ -809,6 +810,17 @@ func main() {
 		fmt.Printf("\nError: Either you forgot a required option, or you are a New User.\n\n\tNew User - \n\t\trun: %s -help=tour\n\t\tor\n\n\t\trun: %s -help\n\t\tto review options\n\n\t\tor see the MCPT User Guide.\n", nm, nm)
 
 		os.Exit(99)
+	}
+
+	if flaginputStrings != "" {
+		if flaglesson == "0" || flaglesson == "0:0" {
+			fmt.Printf("\nError: <inStrings> requires option <lesson> greater than zero.\n")
+			os.Exit(98)
+		}
+		if flagtutor == ""{
+			fmt.Printf("\nError: <inStrings> requires option <tutor> to have a valid value.\n")
+			os.Exit(98)
+		}
 	}
 
 	//
@@ -843,6 +855,12 @@ func main() {
 		}
 
 		doCallSigns(flagcglist, fp)
+		os.Exit(0) // program done
+	}
+
+	if flaginputStrings != "" {
+		readStringsFile(localSkipFlag, localSkipCount, fp)
+		doOutput(wordArray, fp)
 		os.Exit(0) // program done
 	}
 

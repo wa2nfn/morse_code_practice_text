@@ -4,14 +4,14 @@
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
 	<META NAME="keywords" CONTENT="Morse Code, Amateur Radio, Ham Radio, MCPT, windows, linux">
 	<META NAME="description" CONTENT="Morse Code Practice Text User Guide">
-	<TITLE>mcpt User Guide</TITLE>
+	<TITLE>MCPT User Guide</TITLE>
 </HEAD>
 <BODY>
 <P>
 <H1>
 MCPT User Guide
 </H1>
-Generate customized content for listening to Morse Code. Compatible with LCWO, G4FON, Lockdown Morse, and more. Simply drop the resulting text file into your favorite training software to hear Morse Code content the way you want it! Code groups, pro-signs, abbreviations, Q-codes or just plain words. Random or selected. You choose the, the word or group lengths, characters used, amount of practice material. 
+Generate customized content for listening to Morse Code. Compatible with LCWO, G4FON, Lockdown Morse, and more. Simply drop the resulting text file into your favorite training software to hear Morse Code content the way you want it! Code groups, prosigns, abbreviations, Q-codes or just plain words. Random or selected. You choose the, the word or group lengths, characters used, amount of practice material. 
 MCPT is very flexible. Beat the blues of boring training repetition by using MCPT to generate varied and fun Morse Code challenges for yourself.
 <P>
 Users of LCWO.net (here after LCWO), can enjoy the challenges and benefits of on-the-fly speed changes, with specialized features.
@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.3.1 10/01/2020
+Current version 1.4.0 10/07/2020
 <P>
 This file contains examples of the usage of all optins.
 <P>
@@ -31,44 +31,53 @@ mcpt overcomes some of the common issues with practice text, or its generation:
 	<LI> user control of of input matching criteria</LI>
 	<LI> user control of duplication</LI>
 	<LI> random output to eliminate memorization</LI>
-	<LI> can produce output of mixed words and code groups</LI>
-	<LI> has many advanced features for LCWO users</LI>
 	</ol>
+<H1>
+Overview Of MCPT's Behaviors
+</H1>
+MCPT has several behaviors or modes of operation. One or two key options will determine the behavior during the execution of the tool. All of these behaviors are demonstrated in the examples in the document, as well as the mnay supporting options that you may use (many are used with multiple behaviors).
+The following is a simple list of a behavior and the key option that enables it. You can search for the use of the option of interest if you don't want to read the documetn in order.
+<P>
+<ol>
+	<LI> code groups: -codeGroups (typical random strings: UUMRK MU.4R)
+	<LI> permute: -permute (2-3 character code group giving every possible permutation: KMU, MUK, UKM)
+	<LI> words: -in (words from a file: NAME RIG QSO WX)
+	<LI> call signs: -callSigns (generated from known characters: W1KMU K2MM WA4QWE/QRP)
+	<LI> mixed words and code groups: -mixedMode (HELLO RIG KMU?3R BYE NAME 4RED=)
+	<LI> general strings: -inStrings (read from file: HELLO RIG 98.6 80KHZ KA2ABC &lt;SK> QRS?)
+</ol>
 <H2>
 Options
 </H2>
-There are many options to customize your text, but in any execution you may only use a few. 
+There are many options to customize your practice text, but in any execution you may only use a few. 
 Options can be read from a file (see -opt) or the command line.
 These options, override defaults. The options in the file, will be overridden,
 if the same option appears on the command line. <I>So if you use both -opt and command line opts you will
 most likely want -opt to be the left most option.</I> When you run the tool, if you see a full screen list of options, check 
 the first line for the problem cause. Also, adding -help=options to a command line with you have used will show
 you the state of ALL options in mcpt, the ones you have set, plus those with defaults. The defaults may
-have impact on your output they you don't realize as a new user.
+have impact on your output that you don't realize as a new user.
 <H3>
 Notation
 <P>
 To minimze typing, some option name are a concatentation or abbreviated words, for example: prelen for prefix length; cglist for code group list.
 <P>
 The following options all have a minimum and maximum value, the values are given in one option instead of
-requiring one for a minimum and one for a maximum. They are: prelen, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length, thus the different spelling). The inlen=5, is a short hand for inlen=5:5, which means the minimum and maximum value for this opten is 5. A value such as 3:6, is a random value between 3 and 6.
-<I>Note: -lesson=7 or -lesson=7:7 means ALL the characters from the first through lesson 7, where as -lesson=4:7 means those characters from 4 through 7 inclusive.</I>
+requiring one for each minimum and maximum. They are: prelen, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). The inlen=5, is a short hand for inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
 <P>
 The help usage will remind you about these options because you will see the default value written with the colon notation.
 <P>
 <PRE>
-Options on the command line MUST be preceded by a "-", (but not within an options file).
+Options on the command line MUST be preceded by a "-".
 Options on the command line MUST be separated with a space.
-Options with a value e.g. -opt=2 or -opt="abcd" use an "=" as a separater, a space may be used but it is <B>not</B> recommended <I>(typos are more obvious without spaces
-and you cannot use -opt=file to CREATE an option file.)</B>
+Options with a value e.g. -opt=2 or -opt="abcd" use an "=" as a separater, a space may be used but it is <B>not</B> recommended,
+You cannot use -opt=file to CREATE an option file, if you use space as a separater.</B>
 </PRE>
 </H3>
 <P>
 <I>
 If you specify the option </I><B>opt</B><I>on the command line with other options, and that option file does <B>not</B> exist, MCPT will offer to CREATE it for you. This is a simple way for a user to build up a command line, test it, and then preserve that behavior for future use.
 </I>
-<P>
-An example options file, with comments, follows.
 <P>
 A few more notes on option format:
 <ol>
@@ -89,6 +98,8 @@ To increase the occurance of a character, you can increase its presence in the l
 you want code groups to favor X and Z, you could make cglist="A-ZXXXZZZ", the odds of an A is 1/32, but X and Z
 is 4/32.
 </PRE>
+<P>
+An example options file, with comments, follows.
 <P>
 <PRE>
       # this is a comment line
@@ -220,6 +231,10 @@ NOTE: 30 words between 3 and 6 characters from text.txt
 NOTE: words are NOT in the order found, they are random 
 NOTE: there were less than 30 unique words found, so after at least one output 
       of each we reuse them 
+      
+<I>
+See example 32 for contrast of -in vs. -inStrings.
+</I>
 </PRE>
 <H2>
 Example 2: 
@@ -1246,7 +1261,16 @@ these will insert the specified string immediately before and/or after the codeG
 
 If LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, then plain text is sent at the 
 <B>faster speed of LCWO_low + LCWO_step</B>, while the codeGroup (due to mixedMode) will be sent <B> at the slower speed of LCWO_low</B>.
+<H2>
+Example 32: 
 </H2>
+<B>mcpt -inStrings=input.txt -tutor=lcwo -lesson=12</B>
+</H2>
+While the -in option searches the input file for words (strings of ONLY letters), the -inStrings options can find any contiguous string of characters which meet the selection criteria of the -tutor and -lesson options (plus ^ and &lt;> which can be used for proSigns). In other words, if you are at lesson=15 for a given tutor, and that means you know "kmuranes,/5" (just an example), then ANY space separated string in the input file which includes only those characters (and possibly proSigns) will me matched.
+<P>
+This feature allows a learner, to get a practice text that could include: words, numbers, puctuation, call signs, or code groups <I>if</I> they are in the file.
+Some learners do not want to just to code groups until they have learned all the characters, this gives them more practice alternatives. Of course, many other options can still be applied.
+<P>
 Contact me at: <B>WA2NFN@qsl.net</B>.
 </BODY>
 </HTML>
