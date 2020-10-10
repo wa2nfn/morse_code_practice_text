@@ -8,7 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
-	"net/url"
+	// "net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -1017,12 +1017,15 @@ func expandIt(lower string, upper string, whoAmI string) string {
 //
 func printStrBuf(strBuf string, fp *os.File) {
 
+	/* No loner needed. LCWO now does this truncation
+
 	//check if too long
 	if flagtutor == "LCWO" {
 		if len(url.PathEscape(strBuf)) > 8000 {
 			os.Stderr.WriteString("\n\nWarning:\n\nThe value for option <tutor> is <LCWO>, the text generated for you exceeds the http size limit.\nIf you are NOT using LCWO, ignore this message or set a different value for <tutor>. (output still created)\n\nIf using LCWO, you can:\n1- Just let LCWO truncate to 8000 characters.\n2- Or decrease output by reducing: <num> (less words), <repeat> (times word prints),\n   LCWO_repeat (times a word is repeated at different speeds), LCWO_num (number of speed increments).\n\n")
 		}
 	}
+	*/
 
 	re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0
