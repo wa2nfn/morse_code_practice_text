@@ -59,11 +59,11 @@ Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  L
 
 Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse
 ------  ----  ------------------  -----  ----------  --------------  --------  -------------
-11      W            W            W          W          H              W            K
+11      W            W            W          W          H              W            K (1)
 12      I            I            I          I          D              I            V
 13      .            .            .          .          L              .            B
 14      J            N            N          N          2              N            P
-15      Z            J            J          J          5              J            G (1)
+15      Z            J            J          J          5              J            G 
 16      = <BT>       E            E          E          C              G            W
 17      F            F            F          F          U              F            F
 18      O            0            0          0          M              0            C
