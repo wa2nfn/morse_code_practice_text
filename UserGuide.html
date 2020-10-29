@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.4.0 10/07/2020
+Current version 1.4.1 10/27/2020
 <P>
 This file contains examples of the usage of all optins.
 <P>
@@ -36,7 +36,7 @@ mcpt overcomes some of the common issues with practice text, or its generation:
 Overview Of MCPT's Behaviors
 </H1>
 MCPT has several behaviors or modes of operation. One or two key options will determine the behavior during the execution of the tool. All of these behaviors are demonstrated in the examples in the document, as well as the mnay supporting options that you may use (many are used with multiple behaviors).
-The following is a simple list of a behavior and the key option that enables it. You can search for the use of the option of interest if you don't want to read the documetn in order.
+The following is a simple list of a behavior and the key option that enables it. You can search for the use of the option of interest if you don't want to read the document in order.
 <P>
 <ol>
 	<LI> code groups: -codeGroups (typical random strings: UUMRK MU.4R)
@@ -134,7 +134,7 @@ An example options file, with comments, follows.
 
 </PRE>
 <P>
-There are currently two command line arguments, LF and TAB (upper or lowercase), which change the output. They are not options (no preceeding "-" AND they must come AFTER all other options. e.g. -mcpt -codeGroups -cglen=5 TAB LF.
+The command line option displayFormat ( with values LF, TAB,LF_TAB, TAB_LF in upper or lowercase), which change the whitespace in output. 
 <P>
 They are are cosemetic in nature. They replace a spaces in output with TABs, and LF adds a linefeed (or blank line) between output lines.
 These are for users that use output for sending practice, or some even use it for generation of typing practice (nothing to do with morse code).
@@ -783,13 +783,35 @@ E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>.
 	    <B>mcpt -help=tutors</B>
 <P>
 *** Note 2: You can customise your character use independent of a specific
-            tutor as with the cglist option. I.e.: 
+            tutor as with the cglist option.  I.e.: 
 <P>
 	    <B>mcpt -callSigns -cglist="123abcdef"</B>
 <P>
 F2CFF B3F D1DCF EB2BC AB1DE FB3EBC DC4DAB CB2BFA ED4AAA 
 <P>
-<B>***** LCWO users should also review Example 20. *****</B>
+<H2>
+Example 23A: 
+</H2>
+<B>mcpt -displayFormat=TAB_LF ...</B>
+<P>
+This option cosmetically changes the output. It can take 4 different options,
+LF (add an extra linefeed), TAB (conver spaces to TABs), and to get both actions you can use either TAB_LF or LF_TAB.
+<P>
+These are for user reading, that is if you are giving the output to a tutor/tainer to play code as audio they have have no value. Some users use MCPT ouput for sending practice, and some have even used it for keyboarding practice.
+The following shows a small example or code groups, first without the new options, and then using both.
+<P>
+wsdf5 dw34e des,. sdsdw
+aswss sdj23 sdsdr ./766
+36ffd fed34 dsdhh s43??
+<P>
+wsdf5    dw34e    des,.    sdsdw
+
+aswss    sdj23    sdsdr    ./766
+
+36ffd    fed34    dsdhh    s43??
+
+<P>
+<B>***** LCWO users should also review Example 20.*****</B>
 <H2>
 LCWO Option Overview:
 </H2>

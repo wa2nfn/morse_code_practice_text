@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.0 10/07/2020 Copyright 2020"
+	version       = "1.4.1 10/27/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -49,8 +49,9 @@ var (
 )
 
 var (
-	flagLF		bool //post -flags
-	flagTAB		bool //post -flags
+	flagLF		bool
+	flagTAB		bool
+	flagdisplayFormat string
 
 	flagmax         int
 	flagcgmax       int
@@ -161,6 +162,7 @@ func init() {
 	flag.StringVar(&flaghelp, "help", "", "[TOUR|FILES|LCWO|OPTIONS|INTERNATIONAL|TUTORS] more help of given topics.")
 	flag.StringVar(&flagpermute, "permute", "", "Selected permutations of current \"lesson\" characters [p,t,b([pairs,triples,both)].")
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
+	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
 	runeMap['a'] = struct{}{}
@@ -356,33 +358,12 @@ func main() {
 	//
 	// verify valid options
 	//
-	cnt := flag.NArg() 
-	if cnt > 0 {
-		// see if we have arguments after the last flag
 
-		if sliceContains(flag.Args(), "LF") {
-			flagLF = true
-			cnt--
-		}
-		if sliceContains(flag.Args(), "lf") {
-			flagLF = true
-			cnt--
-		}
-		if sliceContains(flag.Args(), "TAB") {
-			flagTAB = true
-			cnt--
-		}
-		if sliceContains(flag.Args(), "tab") {
-			flagTAB = true
-			cnt--
-		}
-
-	if cnt > 0 {
+	if flag.NArg() > 0 {
 		fmt.Printf("\nError processing the command line.\n\nYou may have:\n   forgotten a \"-\" before an option\n   or followed a \"-\" with a space\n   or added extra input\n   or put spaces around the \"=\"\n")
 		os.Exit(1)
 	}
 
-	}
 	if flagpermute != "" {
 		if flagpermute != "p" && flagpermute != "t" && flagpermute != "b" {
 			fmt.Printf("\nError: values for option <permute> are: p (pairs), t (triples), b (both).\n")
@@ -396,6 +377,27 @@ func main() {
 
 	if flagNR == false {
 		wordArray = nil // save space we're using the map not array
+	}
+
+	if flagdisplayFormat != "" {
+		// see if we have arguments after the last flag
+		flagdisplayFormat = strings.ToUpper(flagdisplayFormat)
+
+		switch(flagdisplayFormat) {
+			case "LF":
+				flagLF = true
+			case "LF_TAB":
+				flagLF = true
+				flagTAB = true
+			case "TAB_LF":
+				flagLF = true
+				flagTAB = true
+			case "TAB":
+				flagTAB = true
+			default:
+				fmt.Printf("\nError: option <displayFormat> < %s >  is invalid. Use: TAB, LF, LF_TAB, TAB_LF\n", flagdisplayFormat)
+					os.Exit(77)
+		}
 	}
 
 	//
