@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.1 10/27/2020 Copyright 2020"
+	version       = "1.4.2 11/2/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -759,8 +759,15 @@ func main() {
 			flagcglist = kochChars[flaglessonstart : flaglessonend]
 		}
 
-		// cglist is UC
-		flaginlist = flagcglist + strings.ToLower(flagcglist)
+		tmp_c := ""
+		for _,c := range flagcglist {
+			//flaginlist = flagcglist + strings.ToLower(flagcglist)
+			if c >= 'A' && c <= 'Z' {
+				tmp_c += string(c)
+			}
+		}
+		flaginlist = tmp_c
+		tmp_c = ""
 
 	}
 
