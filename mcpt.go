@@ -163,7 +163,7 @@ func init() {
 	flag.StringVar(&flagpermute, "permute", "", "Selected permutations of current \"lesson\" characters [p,t,b([pairs,triples,both)].")
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
 	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
-	flag.StringVar(&flagmust, "must", "", "A string of characters. Each codeGroup > 1, MUST have one from this string.")
+	flag.StringVar(&flagmust, "must", "", "A string of characters. Each codeGroup, MUST get one character from this string.")
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
 	runeMap['a'] = struct{}{}
