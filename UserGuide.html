@@ -810,6 +810,26 @@ aswss    sdj23    sdsdr    ./766
 
 36ffd    fed34    dsdhh    s43??
 
+<H2>
+Example 23B: 
+</H2>
+<B>mcpt -codeGroups -lesson=4 -must="ABCD"</B>
+<B>mcpt -codeGroups -cglist="MUKER" -must="ABCD"</B>
+<P>
+Either of the above generate code groups (assuming tutor=LCWO the default) with fixed length of 5 (default cglen=5 or 5:5);
+but the new option <-must> means that <B>every</B> group is guaranteed to have <B>one</B> character from the <must> option.
+This gives a means of concentrated practice on one or a small set of characters rather than just being random.
+<P>
+Note that the characters in <must> are not constrained by the lesson values.
+<P>
+MKURD KKBUR EUUAM
+<P>
+<B>mcpt -codeGroups -lesson=4 cglen=1:4 -must="E"</B>
+In this example the user gets random lenght groups from 1 to 4, of the letters KMURE; but the the <must> forces every groupd to have an "E" since its the new character for the user, or the one causing problems.
+<P>
+KRE E MUER EE EMUE 
+<P>
+If you want the "/" in <must>, do not put it as the first character, some operationg systems may have issue with that.
 <P>
 <B>***** LCWO users should also review Example 20.*****</B>
 <H2>
