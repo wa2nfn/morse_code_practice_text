@@ -9,8 +9,13 @@ import (
 func makeGroups(fp *os.File) {
 	strBuf := ""
 	var tmpOut []rune
+	var ll = 0 
+	var mustLen = 0
 
 	charSlice := buildCharSlice()
+	if len(flagmust) > 0 {
+		mustLen = len(flagmust)
+	}
 
 	// make the code groups
 	for i := 0; i < flagnum; i++ {
@@ -20,6 +25,13 @@ func makeGroups(fp *os.File) {
 
 		// tmpOut is our code group
 		tmpOut, charSlice = makeSingleGroup(charSlice)
+
+		// for flagmust - replace 1 char with one from flagmust
+		if mustLen > 0 {
+			ll = rng.Intn(len(tmpOut) - 1) // because there is a space appended
+			tmpOut[ll] = rune(flagmust[rng.Intn(mustLen)])
+		}
+
 		// do we need prefix or suffix
 
 		if flagrandom {
@@ -133,7 +145,6 @@ func getRandomChar(randCharSlice []rune) (rune, []rune) {
 
 	return newChar, randCharSlice
 }
-
 
 //
 // buildCharSlice - create a byte slice to use for codeGroups

@@ -8,7 +8,6 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
-	// "net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -20,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.2 11/2/2020 Copyright 2020"
+	version       = "1.4.3 11/12/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -49,70 +48,71 @@ var (
 )
 
 var (
-	flagLF		bool
-	flagTAB		bool
+	flagLF            bool
+	flagTAB           bool
 	flagdisplayFormat string
 
-	flagmax         int
-	flagcgmax       int
-	flaglen         int
-	flagmin         int
-	flagcgmin       int
-	flagrepeat      int
-	flagnum         int
-	flagskip        int
-	flagsufmin      int
-	flagsufmax      int
-	flagpremin      int
-	flagpremax      int
-	flagDM          string
-	flagDMmin       int
-	flagDMmax       int
-	flagDR          bool
-	flaglesson      string
-	flagMixedMode   int
-	flagLCWOsf      string
-	flagLCWOfs      string
-	flagLCWOstep    int
-	flagLCWOnum     int
-	flagLCWOslow    int
-	flagLCWOlow     int
-	flagLCWOfast    int
-	flagLCWOrepeat  int
-	flagLCWOeff     int
-	flagLCWOramp    bool
-	flagLCWOrandom  bool
-	flagLCWOefframp bool
-	flagheader      string
-	flagprelist     string
-	flagPrelistRune []rune
-	flagsuflist     string
-	flagSuflistRune []rune
-	flaginlist      string
-	flagcglist      string
-	flagCglistRune  []rune
-	flaginput       string
-	flaginputStrings       string
-	flagoutput      string
-	flagopt         string
-	flagprosign     string
-	flagdelimit     string
-	flagtutor       string
-	flagrandom      bool
-	flagunique      bool
-	flagNR          bool
-	flagMMR         bool
-	flagCG          bool
-	flagreverse     bool
-	flaghelp        string
-	flagpermute     string
-	flaginlen       string
-	flagprelen      string
-	flagsuflen      string
-	flagcglen       string
-	flaglessonend	int
-	flaglessonstart	int
-	flagcallsigns   bool
+	flagmax          int
+	flagcgmax        int
+	flaglen          int
+	flagmin          int
+	flagcgmin        int
+	flagrepeat       int
+	flagnum          int
+	flagskip         int
+	flagsufmin       int
+	flagsufmax       int
+	flagpremin       int
+	flagpremax       int
+	flagDM           string
+	flagDMmin        int
+	flagDMmax        int
+	flagDR           bool
+	flaglesson       string
+	flagMixedMode    int
+	flagLCWOsf       string
+	flagLCWOfs       string
+	flagLCWOstep     int
+	flagLCWOnum      int
+	flagLCWOslow     int
+	flagLCWOlow      int
+	flagLCWOfast     int
+	flagLCWOrepeat   int
+	flagLCWOeff      int
+	flagLCWOramp     bool
+	flagLCWOrandom   bool
+	flagLCWOefframp  bool
+	flagheader       string
+	flagprelist      string
+	flagPrelistRune  []rune
+	flagsuflist      string
+	flagSuflistRune  []rune
+	flaginlist       string
+	flagcglist       string
+	flagCglistRune   []rune
+	flaginput        string
+	flaginputStrings string
+	flagoutput       string
+	flagopt          string
+	flagprosign      string
+	flagdelimit      string
+	flagtutor        string
+	flagrandom       bool
+	flagunique       bool
+	flagNR           bool
+	flagMMR          bool
+	flagCG           bool
+	flagreverse      bool
+	flaghelp         string
+	flagpermute      string
+	flaginlen        string
+	flagprelen       string
+	flagsuflen       string
+	flagcglen        string
+	flaglessonend    int
+	flaglessonstart  int
+	flagcallsigns    bool
+	flagmust         string
 )
 
 func init() {
@@ -136,7 +136,7 @@ func init() {
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"^\" separates delimiters e.g. <SK>^abc^123.\nA blank field e.g. aa^ ^bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
-	flag.StringVar(&flagtutor, "tutor", "", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse.\nUse -help=tutors for more info.")
+	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse.\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) Between 1 and DM delimiter\nstrings are concatenated. DM=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "DR", false, "Delimiter random, (if DM > 0) DR=true makes a delimiter randomly print on. (default false)")
@@ -163,6 +163,7 @@ func init() {
 	flag.StringVar(&flagpermute, "permute", "", "Selected permutations of current \"lesson\" characters [p,t,b([pairs,triples,both)].")
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
 	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
+	flag.StringVar(&flagmust, "must", "", "A string of characters. Each codeGroup > 1, MUST have one from this string.")
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
 	runeMap['a'] = struct{}{}
@@ -383,20 +384,20 @@ func main() {
 		// see if we have arguments after the last flag
 		flagdisplayFormat = strings.ToUpper(flagdisplayFormat)
 
-		switch(flagdisplayFormat) {
-			case "LF":
-				flagLF = true
-			case "LF_TAB":
-				flagLF = true
-				flagTAB = true
-			case "TAB_LF":
-				flagLF = true
-				flagTAB = true
-			case "TAB":
-				flagTAB = true
-			default:
-				fmt.Printf("\nError: option <displayFormat> < %s >  is invalid. Use: TAB, LF, LF_TAB, TAB_LF\n", flagdisplayFormat)
-					os.Exit(77)
+		switch flagdisplayFormat {
+		case "LF":
+			flagLF = true
+		case "LF_TAB":
+			flagLF = true
+			flagTAB = true
+		case "TAB_LF":
+			flagLF = true
+			flagTAB = true
+		case "TAB":
+			flagTAB = true
+		default:
+			fmt.Printf("\nError: option <displayFormat> < %s >  is invalid. Use: TAB, LF, LF_TAB, TAB_LF\n", flagdisplayFormat)
+			os.Exit(77)
 		}
 	}
 
@@ -700,7 +701,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if (flaglesson == "0:0" || flaglesson == "0" ) && flagtutor != "" {
+	if (flaglesson == "0:0" || flaglesson == "0") && flagtutor != "" {
 		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
 		os.Exit(1)
 	}
@@ -756,11 +757,11 @@ func main() {
 		}
 
 		if flaglessonend < len(kochChars) {
-			flagcglist = kochChars[flaglessonstart : flaglessonend]
+			flagcglist = kochChars[flaglessonstart:flaglessonend]
 		}
 
 		tmp_c := ""
-		for _,c := range flagcglist {
+		for _, c := range flagcglist {
 			//flaginlist = flagcglist + strings.ToLower(flagcglist)
 			if c >= 'A' && c <= 'Z' {
 				tmp_c += string(c)
@@ -826,8 +827,17 @@ func main() {
 			fmt.Printf("\nError: <inStrings> requires option <lesson> greater than zero.\n")
 			os.Exit(98)
 		}
-		if flagtutor == ""{
+		if flagtutor == "" {
 			fmt.Printf("\nError: <inStrings> requires option <tutor> to have a valid value.\n")
+			os.Exit(98)
+		}
+	}
+
+	if flagmust != "" {
+		flagmust = strings.ToUpper(flagmust)
+		if flagCG == false || flagcgmin < 1 {
+			// cglen becomes cgmin and cgmax
+			fmt.Printf("\nError: option <must> requires <codeGroups>, and <cglen> > 1 (or 1:x)\n")
 			os.Exit(98)
 		}
 	}
@@ -884,7 +894,7 @@ func ckValidInString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
 	if strings.Contains(ck, ":/") {
-		fmt.Printf("\nWarning:\n\nIf you entered \":/\" in option <%s> as seen here <%s>, or you used the \"/\" character,\nyour operating system is incorrectly changing that into a PATH variable. Try to move the position of the \"/\"", whoAmI, ck)
+		fmt.Printf("\nWarning:\n\nIf you entered \":/ or / at the start of the string\" in option <%s> as seen here <%s>, or you used the \"/\" character,\nyour operating system is incorrectly changing that into a PATH variable. Try to move the position of the \"/\"", whoAmI, ck)
 		fmt.Printf("\nor put the option in an option file to prevent this.\n")
 		os.Exit(99)
 	}
@@ -1102,7 +1112,6 @@ func flipFlop() bool {
 	return false
 }
 
-
 func findPercent(in string) (string, string) {
 	out := ""
 
@@ -1178,10 +1187,10 @@ func minmaxSplit(name string, value string) (int, int) {
 
 // does slice of string contain a value
 func sliceContains(s []string, e string) bool {
-    for _, a := range s {
-        if a == e {
-            return true
-        }
-    }
-    return false
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
