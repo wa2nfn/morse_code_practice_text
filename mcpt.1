@@ -75,6 +75,19 @@ FILE
 ] [ MISC ]
 .P
 
+.B mcpt -inStrings=
+.I
+FILE 
+.I
+ -lesson=
+.I
+.I NUM
+.B -tutor=
+.I TUTOR
+.B 
+ [ MISC ]
+.P
+
 .B mcpt -callSigns [-lesson=
 .I
 .INUM
@@ -96,7 +109,7 @@ FILE
 
 .I INLIST="A-Za-z0-9,./?=" (plus international characters)
 
-.I MISC=[-num=NUM -len=NUM -prelen=NUM -prelist=LIST -suflen=NUM -suflist=NUM -random -DM=NUM -delimiter=DELIM 
+.I MISC=[-num=NUM -len=NUM -prelen=NUM -prelist=LIST -suflen=NUM -suflist=NUM -random -DM=NUM -delimiter=DELIM -must=STRING] 
 
 .I DELIM="STRING^PROSIGN^STRING"
 
@@ -147,6 +160,11 @@ Note ProSigns do not need to be added to this option, thye will be treated as wo
 .IP -inlen=min:max
 set the length of a word for the -in file to be between a minimum and maximum value. 
 If the value is a single number, the minimum will equal the maximum.
+.TP
+.IP -inStrings
+the input file name to parse for strings matching criteria set by options: lesson/tutor.
+Strings maybe letters, digits, proSigns, punctuation taught in lessons (i.e. ,./?@=+).
+.TP
 .TP
 .IP -LCWO_slow=NUM 
 set the NUM of words to be sent an slow speed (-LCWO_low), in alternating slow/fast cycles.
@@ -208,6 +226,9 @@ combines words from -in file, and code groups in the same practice text. NUM det
 .TP
 .IP -MMR
 MixedModeRandom if set to true (-MMR|-MMR-true) makes the appearance of the code group random.
+.TP
+.IP -must
+A string of 1 or more characters. One will be used as a substitue for character in a codeGroup/word/string.
 .TP
 .IP -num
 the number or words or codeGroups the user wants.

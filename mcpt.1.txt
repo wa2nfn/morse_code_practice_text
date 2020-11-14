@@ -24,6 +24,8 @@ SYNOPSIS
 	| [-lesson= NUM -tutor= TUTOR ] [-mixedMode= NUM ] [-prosign= FILE ] [
        MISC ]
 
+       mcpt -inStrings= FILE -lesson=  NUM  -tutor= TUTOR [ MISC ]
+
        mcpt -callSigns [-lesson= -tutor= TUTOR ] | [-cglist= LIST  ]  [-delim-
        iter= DELIM -DM= NUM ] [-repeat= NUM ] [ MISC ]
 
@@ -35,7 +37,7 @@ SYNOPSIS
        INLIST="A-Za-z0-9,./?=" (plus international characters)
 
        MISC=[-num=NUM -len=NUM  -prelen=NUM  -prelist=LIST  -suflen=NUM
-       -suflist=NUM -random -DM=NUM -delimiter=DELIM
+       -suflist=NUM -random -DM=NUM -delimiter=DELIM -displayFormat=LF|TAB|LF_TAB|TAB_LF]
 
        DELIM="STRING^PROSIGN^STRING"
 
@@ -63,7 +65,7 @@ OPTIONS
 	      mum value.  If the value is a single number,  the  minimum  will
 	      equal the maximum.
 
-       -cglist=.IPST
+       -cglist=LIST
 	      set the list of a characters to use in a code group. Range nota-
 	      tion (A-D), for upper, lower case letters  or  numbers  is  sup-
 	      ported..IPf  an  "="  is in the LIST, the LIST must be in double
@@ -76,6 +78,12 @@ OPTIONS
 	      punctuation) or range notation (0-4A-Z), a  ProSign  (<SK>),  or
 	      international character.
 
+       -displayFormat=VALUE
+	     VALUE is LF for linefeed, TAB change space to tabs, LF_TAB or 
+	     TAB_LF to get both. These simply give more whitespacein output 
+	     formatting for user readability (Output to be fed to a tutor for
+	     playing audio don't have use for this option).
+
        -DM=min:max
 	      Min  must  be  > 1, to get deminiters. The DelimiterMultiples is
 	      the number or delimiter fields that will be concatenated to cre-
@@ -87,7 +95,7 @@ OPTIONS
 
 
        -header
-	      STRIPNG set a string to be output at  the  head  of  any	output
+	      STRING set a string to be output at  the  head  of  any	output
 	      text. With LCWO this could set audio tone, interword spacing, or
 	      just ouptut fixed text (i.e. vvv).
 
@@ -178,7 +186,7 @@ OPTIONS
 	      User Guide)
 
 
-       LCWO_fs=STRIPNG
+       LCWO_fs=STRING
 	      a string of characters to output when the speed is  transitioing
 	      from Fast to Slow (fs).  (see -help=LCWO).  The string can cause
 	      other LCWO behaviors (audio frequency tone changes, delays,  see
@@ -204,6 +212,9 @@ OPTIONS
 
        -MMR   MixedModeRandom  if  set	to  true  (-MMR|-MMR-true)  makes  the
 	      appearance of the code group random.
+
+       -must  A string of 1 or more characters. One will be used as a substitue
+        	for character in a codeGroup/word/string.
 
 
        -num   the number or words or codeGroups the user wants.
