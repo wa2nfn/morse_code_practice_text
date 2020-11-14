@@ -41,7 +41,8 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	// to match what user wants
 	var s string
 	flaginlist += "^<>" // for prosigns
-	re := fmt.Sprintf(`^[%s]{%d,%d}$`, flaginlist, flagmin, flagmax)
+
+	re := fmt.Sprintf(`[%s]{%d,%d}$`, flaginlist, flagmin, flagmax)
 	isInSet := regexp.MustCompile(re).MatchString
 
 	ps := regexp.MustCompile(`^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`)
@@ -65,6 +66,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			// tokens now a string of space separated characters
 
 			tmpWord := textWords[index]
+			tmpWord = strings.ToUpper(tmpWord)
 
 			if isInSet(tmpWord) {
 
@@ -78,7 +80,6 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 					}
 				}
 
-				tmpWord = strings.ToUpper(tmpWord)
 
 				// if prosign check it or ignore it
 				if len(tmpWord) == 3 || len(tmpWord) == 4 {

@@ -87,6 +87,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			// every token is now a string of space separated characters
 			tmpWord := strings.TrimRight(textWords[index], trimChars)
 			tmpWord = strings.TrimLeft(tmpWord, "\"")
+			tmpWord = strings.ToUpper(tmpWord)
 
 			if word.MatchString(tmpWord) {
 
@@ -100,8 +101,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 					}
 				}
 
-				// set case before storing
-				tmpWord = strings.ToUpper(tmpWord)
 
 				// if prosign check it or ignore it
 				if len(tmpWord) == 3 || len(tmpWord) == 4 {
@@ -520,12 +519,25 @@ func doOutput(words []string, fp *os.File) {
 func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (string, []rune) {
 	strOut := ""
 	rand := 3
+	mustLen := len(flagmust)
 
 	if flagrandom {
 		if flagsufmin >= 1 || flagpremin >= 1 {
 			// 0 - neither ix, 1 prefix,2 do suffix, 3 both
 			rand = rng.Intn(4)
 		}
+	}
+
+	// see if -must set, if so do one substitution now
+	if mustLen > 0 {
+		ll := 0
+		bytearr := make([]byte,len(wordOut))
+		for k, v := range wordOut {
+			bytearr[k] = byte(v)
+		}
+		ll = rng.Intn(len(wordOut))
+		bytearr[ll] = byte(flagmust[rng.Intn(mustLen)])
+		wordOut = string(bytearr)
 	}
 
 	// end raw word, and get back word to print
@@ -572,7 +584,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 	}
 
 	/*
-		// why? WDL old logic
+		// why? WDL old logic, can we remove it
 			if flagLCWOramp && flagLCWOrepeat == 0 {
 				strOut = wordOut
 				wordOut = ""

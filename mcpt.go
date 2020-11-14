@@ -19,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.3 11/12/2020 Copyright 2020"
+	version       = "1.4.4 11/13/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -163,7 +163,7 @@ func init() {
 	flag.StringVar(&flagpermute, "permute", "", "Selected permutations of current \"lesson\" characters [p,t,b([pairs,triples,both)].")
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
 	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
-	flag.StringVar(&flagmust, "must", "", "A string of characters. Each codeGroup, MUST get one character from this string.")
+	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
 	runeMap['a'] = struct{}{}
@@ -701,10 +701,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	if (flaglesson == "0:0" || flaglesson == "0") && flagtutor != "" {
-		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
-		os.Exit(1)
-	}
+//	if (flaglesson == "0:0" || flaglesson == "0") && flagtutor != "" {
+//		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
+//		os.Exit(1)
+//	}
 
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cglist")
@@ -835,11 +835,6 @@ func main() {
 
 	if flagmust != "" {
 		flagmust = strings.ToUpper(flagmust)
-		if flagCG == false || flagcgmin < 1 {
-			// cglen becomes cgmin and cgmax
-			fmt.Printf("\nError: option <must> requires <codeGroups>, and <cglen> > 1 (or 1:x)\n")
-			os.Exit(98)
-		}
 	}
 
 	//
