@@ -696,6 +696,7 @@ func main() {
 
 	flagtutor = strings.ToUpper(flagtutor)
 
+	/*
 	if flaglesson != "0:0" && flagtutor == "" {
 		fmt.Printf("\nError: option <lesson> greater than 0 requires option <tutor>.\n")
 		os.Exit(1)
@@ -705,6 +706,7 @@ func main() {
 //		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
 //		os.Exit(1)
 //	}
+*/
 
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cglist")
