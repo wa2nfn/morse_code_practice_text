@@ -19,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.4 11/13/2020 Copyright 2020"
+	version       = "1.4.5 11/17/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -696,6 +696,18 @@ func main() {
 
 	flagtutor = strings.ToUpper(flagtutor)
 
+	/*
+	if flaglesson != "0:0" && flagtutor == "" {
+		fmt.Printf("\nError: option <lesson> greater than 0 requires option <tutor>.\n")
+		os.Exit(1)
+	}
+
+//	if (flaglesson == "0:0" || flaglesson == "0") && flagtutor != "" {
+//		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
+//		os.Exit(1)
+//	}
+*/
+
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cglist")
 
@@ -752,6 +764,7 @@ func main() {
 
 		tmp_c := ""
 		for _, c := range flagcglist {
+			//flaginlist = flagcglist + strings.ToLower(flagcglist)
 			if c >= 'A' && c <= 'Z' {
 				tmp_c += string(c)
 			}
@@ -829,7 +842,7 @@ func main() {
 	//
 	// major flow decision - WORD_MODE , CODE_GROUPS, PERMUTE, CALLSIGN ?
 	//
-	if flagCG {
+	if flagCG || (flagpermute != "" && flagprosign != "") {
 		// read ProSigns
 		if flagprosign != "" {
 			psfile, err := os.Open(flagprosign)
@@ -843,8 +856,10 @@ func main() {
 			psfile.Close()
 		}
 
-		makeGroups(fp)
-		os.Exit(0) // program done
+		if flagpermute == "" {
+			makeGroups(fp)
+			os.Exit(0) // program done
+		}
 	}
 
 	if flagpermute != "" {
@@ -1019,6 +1034,16 @@ func expandIt(lower string, upper string, whoAmI string) string {
 // prints the bufStr adjusting the length per flaglen
 //
 func printStrBuf(strBuf string, fp *os.File) {
+
+	/* No loner needed. LCWO now does this truncation
+
+	//check if too long
+	if flagtutor == "LCWO" {
+		if len(url.PathEscape(strBuf)) > 8000 {
+			os.Stderr.WriteString("\n\nWarning:\n\nThe value for option <tutor> is <LCWO>, the text generated for you exceeds the http size limit.\nIf you are NOT using LCWO, ignore this message or set a different value for <tutor>. (output still created)\n\nIf using LCWO, you can:\n1- Just let LCWO truncate to 8000 characters.\n2- Or decrease output by reducing: <num> (less words), <repeat> (times word prints),\n   LCWO_repeat (times a word is repeated at different speeds), LCWO_num (number of speed increments).\n\n")
+		}
+	}
+	*/
 
 	re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0

@@ -12,92 +12,129 @@ func permute(mode string, fp *os.File) {
 	var cMap = make(map[string]struct{})
 	var tMap = make(map[string]struct{})
 	var numToPrt = flagnum
-	var str = flagcglist
 	var strBuf = ""
-	length := len(str)
 	cnt := 0
+	MAX := 10000
 
 	if len(flagcglist) == 0 {
 		flagcglist = kochChars
 	}
 
-	if length < 2 {
+	if len(flagcglist) < 2 {
 		fmt.Println("\nError: input string to short, increase <lesson> for your <tutor>.\n")
 		os.Exit(9)
 	}
 
-	fullstr := str
-	for str != "" {
-		for _, c := range str {
-			for _, full := range fullstr {
-				makeTuple(c, full, mode, cMap, tMap)
-			}
-		}
-
-		if len(str) >= 1 {
-			str = str[1:]
+	// see if we need to add the prosign runes
+	if ps2runeMap != nil {
+		for _, val := range ps2runeMap {
+			flagcglist += string(val)
 		}
 	}
 
-	// now do output
+	// make pairs
 	if cMap != nil && mode != "t" {
-		// if both, let user pick any length
-		if mode == "p" && len(cMap) >= flagnum {
-			numToPrt = len(cMap)
+
+		for _, H := range flagcglist {
+			for _, L := range flagcglist {
+				pair := string(H) + string(L)
+				cMap[pair] = struct{}{}
+				cnt++
+			}
+
+			if len(cMap) >= flagnum {
+				numToPrt = flagnum
+				break
+			} else if (cnt >= MAX) {
+				numToPrt = MAX
+				break
+			}
 		}
 
-		for cnt < numToPrt {
-			// print tuples, the triples unless "b" print all
-			for key := range cMap {
-				strBuf += key + " "
-				cnt++
-				if cnt >= numToPrt {
+		if mode == "p" {
+			cnt = 0
+			for out := range cMap {
+				if cnt  >= numToPrt {
 					break
 				}
+
+				strBuf += string(out) + " "
 			}
+
+			printStrBuf(convertRunes(strBuf), fp)
+			return
 		}
 	}
 
-	if tMap != nil && mode == "t" {
+	// triples 
+	if tMap != nil {
+		for _, H := range flagcglist {
+			for _, M := range flagcglist {
+				for _, L := range flagcglist {
+					triple := string(H) + string(M) + string(L)
+					tMap[triple] = struct{}{}
+					cnt++
+				}
+
+			}
+		}
+
 		if len(tMap) >= flagnum {
-			numToPrt = len(tMap)
+			numToPrt = flagnum
+		} else if (cnt >= MAX) {
+			numToPrt = MAX
 		}
 
-		// print triples
-		for cnt < numToPrt {
-			// print triples
-			for key := range tMap {
-				strBuf += key + " "
-				cnt++
-				if cnt >= numToPrt {
+		cnt = 0
+		if mode == "t" {
+			for out := range tMap {
+				if cnt  >= numToPrt {
 					break
 				}
+
+				strBuf += string(out) + " "
+				cnt++
 			}
+
+			printStrBuf(convertRunes(strBuf), fp)
+			return
+		} else {
+			// mode = b
+			for p := range cMap {
+				tMap[p] = struct{}{}
+			}
+
+			// now print b
+			for out := range tMap {
+				if cnt  >= numToPrt {
+					break
+				}
+
+				strBuf += string(out) + " "
+				cnt++
+			}
+
+			printStrBuf(convertRunes(strBuf), fp)
+			return
 		}
 	}
-
-	printStrBuf(strBuf, fp)
 }
 
-func makeTuple(low rune, high rune, m string, cMap map[string]struct{}, tMap map[string]struct{}) {
-	r := []rune{}
-	r = append(r, low)
-	r = append(r, high)
-	if m != "t" {
-		cMap[string(r)] = struct{}{}
-	}
 
-	r[0], r[1] = r[1], r[0]
-	if m != "t" {
-		cMap[string(r)] = struct{}{}
-	}
+func convertRunes(strBuf string ) string {
+	var out string
 
-	if m != "p" && low != high {
-		r = append(r, high)
-		if m == "t" {
-			tMap[string(r)] = struct{}{}
-		} else if m == "b" {
-			cMap[string(r)] = struct{}{}
+	if rune2psMap != nil {
+
+		for _,s := range strBuf {
+			if rune2psMap[s] != "" {
+				out += string(rune2psMap[s])
+			} else {
+				out += string(s)
+			}
 		}
+		return out
 	}
+
+	return strBuf
 }

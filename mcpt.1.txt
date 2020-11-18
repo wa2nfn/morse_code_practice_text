@@ -9,7 +9,7 @@ NAME
 SYNOPSIS
        mcpt -help | -help=options|files|tutors|international|lcwo
 
-       mcpt -permute=p|t|b [-lesson= NUM -tutor= TUTOR ]
+       mcpt -permute=p|t|b [-prosign=FILE] [-lesson= NUM -tutor= TUTOR]
 
        mcpt -codeGroups [-cglen= NUM ] [-cglist= LIST | [-lesson= NUM  -tutor=
        TUTOR ] [-prosign= FILE ] [ MISC ]

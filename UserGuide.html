@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.4.4 11/13/2020
+Current version 1.4.5 11/17/2020
 <P>
 This file contains examples of the usage of all optins.
 <P>
@@ -31,7 +31,7 @@ mcpt overcomes some of the common issues with practice text, or its generation:
 	<LI> user control of of input matching criteria</LI>
 	<LI> user control of duplication</LI>
 	<LI> random output to eliminate memorization</LI>
-	</ol>
+	</ol> 
 <H1>
 Overview Of MCPT's Behaviors
 </H1>
@@ -487,7 +487,8 @@ there pairs will be repeated (in random order) until the value of the word optio
 If you ONLY want the minimal set, simply use num=1. (Num will be ignored if it would cause a loss of a permutations, for the
 value of "p" or "t".)
 
-If <B>num</B> is larger than the lesson value squared, output "strings" or code groups will be repeated in random order.
+The <B>num</B> <I>may</I> limit permutations, but it will NOT create more the the valid number. Permutations grow quickly, so generally you'll use
+the option for limiting. (Remember -num=100 by default.)
 
 All the pairs are good, but in the practice of pairs, a character either follows a space, or has a 
 space after it, so permute has another value form permute=t, which indicates you want "triples". Changing the 
@@ -499,7 +500,7 @@ Lastly, you might want a practice session with both pairs and triples, use -perm
 As the lesson number gets high, the output size get significant, LCWO will simply truncate a file that's too 
 big (8000 characters) (other tutors may act differently).
 
-For the case of "b" for both, this is <B>NOT</B> lower limit of output, tThe num option has total control of the 
+For the case of "b" for both, this is <B>NOT</B> lower limit of output, the num option has total control of the 
 qunantity of output.
 
 Most word practice and code groups will of course hit many of these permutations, if you want to work on a set of 
@@ -514,6 +515,7 @@ XR RXR 5X5 X5X XQX Q5 QQ RQR 5Q
 RX R5 XX QR RQ QX 5Q5 5R RR XRX</I>
 
 </PRE>
+You can use the &lt;prosign> option as well.
 <H2>
 Example 16: 
 </H2>

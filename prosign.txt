@@ -26,7 +26,7 @@
 #     Note: <CT> and <KA> make the same sound, and have the same meaning. Comment out the one
 #     you have learned or your tutor does not support.
 #
-#     An atlernate format is: ^AA, ^sk, etc. The G4FON uses this format.
+#     An alternate format is: ^AA, ^sk, etc. The G4FON uses this format.
 #
 #     Retaining an unaltered copy of this file for future reference is recommended.
 ##################################################################################################
