@@ -42,15 +42,36 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	var trimChars string
 	var s string
 
+	// added to fix regex to have unicode for international
+	if strings.Contains(flaginlist, "%") {
+		flaginlist = strings.ReplaceAll(flaginlist, "%C0", "\u00C0")
+		flaginlist = strings.ReplaceAll(flaginlist, "%E0", "\u00E0")
+		flaginlist = strings.ReplaceAll(flaginlist, "%C4", "\u00C4")
+		flaginlist = strings.ReplaceAll(flaginlist, "%E4", "\u00E4")
+		flaginlist = strings.ReplaceAll(flaginlist, "%C9", "\u00C9")
+		flaginlist = strings.ReplaceAll(flaginlist, "%E9", "\u00E9")
+		flaginlist = strings.ReplaceAll(flaginlist, "%C8", "\u00C8")
+		flaginlist = strings.ReplaceAll(flaginlist, "%E8", "\u00E8")
+		flaginlist = strings.ReplaceAll(flaginlist, "%C7", "\u00C7")
+		flaginlist = strings.ReplaceAll(flaginlist, "%E7", "\u00E7")
+		flaginlist = strings.ReplaceAll(flaginlist, "%D1", "\u00D1")
+		flaginlist = strings.ReplaceAll(flaginlist, "%F1", "\u00F1")
+		flaginlist = strings.ReplaceAll(flaginlist, "%D6", "\u00D6")
+		flaginlist = strings.ReplaceAll(flaginlist, "%F6", "\u00F6")
+		flaginlist = strings.ReplaceAll(flaginlist, "%DC", "\u00DC")
+		flaginlist = strings.ReplaceAll(flaginlist, "%FC", "\u00FC")
+	}
+
 	if strings.Contains(flaginlist, "?") {
 		trimChars = ".\",!"
 		flaginlist = strings.ReplaceAll(flaginlist, "?", "")
 		re := fmt.Sprintf(`[%s]{%d,%d}\?{0,1}`, flaginlist, flagmin, flagmax)
-		s = fmt.Sprintf(`^(%s)(~%s)*$|^<[A-Za-z]{2}>$|^\\^[A-Za-z]{2}$`, re, re)
+		s = fmt.Sprintf(`^%s$|^%s[%s]*$^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`, re, flaginlist, trimChars)
+		//s = fmt.Sprintf(`^(%s)(~%s)*$|^<[A-Za-z]{2}>$|^\\^[A-Za-z]{2}$`, re, re)
 	} else {
 		trimChars = ".\",!?"
 		re := fmt.Sprintf(`[%s]{%d,%d}`, flaginlist, flagmin, flagmax)
-		s = fmt.Sprintf(`^(%s)(~%s)*$|^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`, re, re)
+		s = fmt.Sprintf(`^%s$|^%s[%s]*$^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`, re, flaginlist, trimChars)
 	}
 
 	word := regexp.MustCompile(s)
@@ -540,6 +561,22 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 		wordOut = string(bytearr)
 	}
 
+	// use delimiter
+	if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
+
+		wordOut += " "
+
+		if flagDMmin == flagDMmax {
+			for count := 0; count < flagDMmax; count++ {
+				wordOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
+			}
+		} else {
+			for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+				wordOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
+			}
+		}
+	}
+
 	// end raw word, and get back word to print
 	// do we need prefix?
 	if flagpremin >= 1 && (rand == 3 || rand == 1) {
@@ -622,7 +659,9 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 		strOut = wordOut
 	}
 
+	//WDL
 	// use delimiter
+	/*
 	if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
 		if flagDMmin == flagDMmax {
 			for count := 0; count < flagDMmax; count++ {
@@ -636,6 +675,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 
 		strOut += " "
 	}
+	*/
 
 	return strOut, charSlice
 }
