@@ -19,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.6 11/29/2020 Copyright 2020"
+	version       = "1.4.7 12/08/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -778,7 +778,6 @@ func main() {
 				flaginlist = strings.Replace(flaginlist, string(s), out, 1)
 				out = ""
 			} else {
-
 				break
 			}
 		}
