@@ -19,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.5 11/17/2020 Copyright 2020"
+	version       = "1.4.6 11/29/2020 Copyright 2020"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -136,7 +136,7 @@ func init() {
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"^\" separates delimiters e.g. <SK>^abc^123.\nA blank field e.g. aa^ ^bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
-	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse.\nUse -help=tutors for more info.")
+	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418.\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) Between 1 and DM delimiter\nstrings are concatenated. DM=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "DR", false, "Delimiter random, (if DM > 0) DR=true makes a delimiter randomly print on. (default false)")
@@ -696,18 +696,6 @@ func main() {
 
 	flagtutor = strings.ToUpper(flagtutor)
 
-	/*
-	if flaglesson != "0:0" && flagtutor == "" {
-		fmt.Printf("\nError: option <lesson> greater than 0 requires option <tutor>.\n")
-		os.Exit(1)
-	}
-
-//	if (flaglesson == "0:0" || flaglesson == "0") && flagtutor != "" {
-//		fmt.Printf("\nError: option <tutor> requires option <lesson> greater than 0.\n")
-//		os.Exit(1)
-//	}
-*/
-
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cglist")
 
@@ -728,6 +716,9 @@ func main() {
 		} else if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" {
 			flagtutor = "LOCKDOWNMORSE"
 			kochChars = "EOAIUYZQJXKVBPGWFCLDMHRSNT0516273849.,/?"
+		} else if flagtutor == "MFJ418" || flagtutor == "MFJ" {
+			flagtutor = "MFJ418"
+			kochChars = "WBMHATJSNIODELKZGCUQRVFPYX5.7/9,168?2043"
 		} else {
 			fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see the help.\n")
 			os.Exit(1)
@@ -1034,16 +1025,6 @@ func expandIt(lower string, upper string, whoAmI string) string {
 // prints the bufStr adjusting the length per flaglen
 //
 func printStrBuf(strBuf string, fp *os.File) {
-
-	/* No loner needed. LCWO now does this truncation
-
-	//check if too long
-	if flagtutor == "LCWO" {
-		if len(url.PathEscape(strBuf)) > 8000 {
-			os.Stderr.WriteString("\n\nWarning:\n\nThe value for option <tutor> is <LCWO>, the text generated for you exceeds the http size limit.\nIf you are NOT using LCWO, ignore this message or set a different value for <tutor>. (output still created)\n\nIf using LCWO, you can:\n1- Just let LCWO truncate to 8000 characters.\n2- Or decrease output by reducing: <num> (less words), <repeat> (times word prints),\n   LCWO_repeat (times a word is repeated at different speeds), LCWO_num (number of speed increments).\n\n")
-		}
-	}
-	*/
 
 	re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0

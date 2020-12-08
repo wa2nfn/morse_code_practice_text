@@ -43,58 +43,58 @@ Lesson is cumulative, that is if you enter lesson=5, all the characters from les
 If the value for <tutor>, the names are NOT case sensitive, and for ease of typing you can use the abbreviated 
 name given on the second line below.
 
-Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse
-                   (JLMC)                  (ME)        (MCN)          (HM)       (LDM)
-------  ----  ------------------  -----  ----------  --------------  --------  -------------
-1       K M          K            K          T          T               E           E
-2       U            M            M          M          A               M           O
-3       R            R            R          R          E               R           A
-4       E            S            S          S          N               S           I
-5       S            U            U          U          O               U           U
-6       N            A            A          A          I               A           Y
-7       A            P            P          P          S               P           Z
-8       P            T            T          T          1               T           Q
-9       T            L            L          L          4               L           J
-10      L            O            O          O          R               O           X
+Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
+                   (JLMC)                  (ME)        (MCN)          (HM)       (LDM)         (MFJ)
+------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
+1       K M          K            K          T          T               E           E           W
+2       U            M            M          M          A               M           O           B
+3       R            R            R          R          E               R           A           M
+4       E            S            S          S          N               S           M           H
+5       S            U            U          U          O               U           U           A
+6       N            A            A          A          I               A           Y           T
+7       A            P            P          P          S               P           Z           J
+8       P            T            T          T          1               T           Q           S
+9       T            L            L          L          4               L           J           N
+10      L            O            O          O          R               O           X           I
 
-Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse
-------  ----  ------------------  -----  ----------  --------------  --------  -------------
-11      W            W            W          W          H              W            K (1)
-12      I            I            I          I          D              I            V
-13      .            .            .          .          L              .            B
-14      J            N            N          N          2              N            P
-15      Z            J            J          J          5              J            G 
-16      = <BT>       E            E          E          C              G            W
-17      F            F            F          F          U              F            F
-18      O            0            0          0          M              0            C
-19      Y            Y            Y          Y          W              Y            L
-20      ,            V            V          ,          3              ,            D
+Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
+------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
+11      W            W            W          W          H              W            K (1)       O
+12      I            I            I          I          D              I            V           D
+13      .            .            .          .          L              .            B           E
+14      J            N            N          N          2              N            P           L
+15      Z            J            J          J          5              J            G           K
+16      = <BT>       E            E          E          C              G            W           Z
+17      F            F            F          F          U              F            F           G
+18      O            0            0          0          M              0            C           C
+19      Y            Y            Y          Y          W              Y            L           U
+20      ,            V            V          ,          3              ,            D           Q
 
-Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse
-------  ----  ------------------  -----  ----------  --------------  --------  -------------
-21      V            ,            ,          V          6              V            M
-22      G            G            G          G          ?              G            H
-23      5            5            5          5          F              5            R
-24      /            /            /          /          Y              /            S
-25      Q            Q            Q          Q          P              Q            N
-26      9            9            9          9          G              9            T
-27      2            Z            Z          Z          7              Z            0
-28      H            H            H          H          9              H            5
-29      3            3            3          3          /              3            1
-30      8            8            8          8          B              8            6
+Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
+------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
+21      V            ,            ,          V          6              V            M           R
+22      G            G            G          G          ?              G            H           V
+23      5            5            5          5          F              5            R           F
+24      /            /            /          /          Y              /            S           P
+25      Q            Q            Q          Q          P              Q            N           Y
+26      9            9            9          9          G              9            T           X
+27      2            Z            Z          Z          7              Z            0           5
+28      H            H            H          H          9              H            5           .
+29      3            3            3          3          /              3            1           7
+30      8            8            8          8          B              8            6           /
 
-Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse LockdownMorse
-------  ----  ------------------  -----  ----------  --------------  -------- -------------
-31      B            B            B          B          V              B            2
-32      ?            ?            ?          ?          K              ?            7
-33      4            4            4          4          J              4            3
-34      7            2            2          2          8              2            8
-35      C            7            7          7          0              7            4
-36      1            C            C          C          = <BT>         C            9
-37      D            1            1          1          X              1            . 
-38      6            D            D          D          Q              6            ,
-39      0            6            6          6          Z              X            /
-40      X            X            X          X          <BK>           = <BT>       ?
+Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse LockdownMorse  MFJ418
+------  ----  ------------------  -----  ----------  --------------  -------- -------------  ------
+31      B            B            B          B          V              B            2          9
+32      ?            ?            ?          ?          K              ?            7          ,
+33      4            4            4          4          J              4            3          1
+34      7            2            2          2          8              2            8          6
+35      C            7            7          7          0              7            4          8
+36      1            C            C          C          = <BT>         C            9          ?
+37      D            1            1          1          X              1            .          2
+38      6            D            D          D          Q              6            ,          0
+39      0            6            6          6          Z              X            /          4
+40      X            X            X          X          <BK>           = <BT>       ?          3
 
 Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja HamMorse LockdownMorse
 ------  ----  ------------------  -----  ----------  -------------- -------- -------------
