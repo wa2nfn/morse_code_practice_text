@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.4.7 12/08/2020
+Current version 1.4.8 12/11/2020
 <P>
 This file contains examples of the usage of all optins.
 <P>
@@ -44,7 +44,7 @@ The following is a simple list of a behavior and the key option that enables it.
 	<LI> words: -in (words from a file: NAME RIG QSO WX)
 	<LI> call signs: -callSigns (generated from known characters: W1KMU K2MM WA4QWE/QRP)
 	<LI> mixed words and code groups: -mixedMode (HELLO RIG KMU?3R BYE NAME 4RED=)
-	<LI> general strings: -inStrings (read from file: HELLO RIG 98.6 80KHZ KA2ABC &lt;SK> QRS?)
+	<LI> general strings: -text (read from file: HELLO RIG 98.6 80KHZ KA2ABC &lt;SK> QRS?)
 </ol>
 <H2>
 Options
@@ -233,7 +233,7 @@ NOTE: there were less than 30 unique words found, so after at least one output
       of each we reuse them 
       
 <I>
-See example 32 for contrast of -in vs. -inStrings.
+See example 32 for contrast of -in vs. -text.
 </I>
 </PRE>
 <H2>
@@ -823,7 +823,7 @@ but the new option &lt;-must> means that <B>every</B> group is guaranteed to hav
 This gives a means of concentrated practice on one or a small set of characters rather than just being random.
 <P>
 Note that the characters in &lt;must> are not constrained by the lesson values.
-Note that must can also be used with &lt;<in> or &lt;inStrings>, in a similar way to substitue one character from the must list.
+Note that must can also be used with &lt;<in> or &lt;text>, in a similar way to substitue one character from the must list.
 <P>
 MKURD KKBUR EUUAM
 <P>
@@ -1309,9 +1309,9 @@ If LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, 
 <H2>
 Example 32: 
 </H2>
-<B>mcpt -inStrings=input.txt -tutor=lcwo -lesson=12</B>
+<B>mcpt -text=input.txt -tutor=lcwo -lesson=12</B>
 </H2>
-While the -in option searches the input file for words (strings of ONLY letters), the -inStrings options can find any contiguous string of characters which meet the selection criteria of the -tutor and -lesson options (plus ^ and &lt;> which can be used for proSigns). In other words, if you are at lesson=15 for a given tutor, and that means you know "kmuranes,/5" (just an example), then ANY space separated string in the input file which includes only those characters (and possibly proSigns) will me matched.
+While the -in option searches the input file for words (strings of ONLY letters), the -text options can find any contiguous string of characters which meet the selection criteria of the -tutor and -lesson options (plus ^ and &lt;> which can be used for proSigns). In other words, if you are at lesson=15 for a given tutor, and that means you know "kmuranes,/5" (just an example), then ANY space separated string in the input file which includes only those characters (and possibly proSigns) will me matched.
 <P>
 This feature allows a learner, to get a practice text that could include: words, numbers, puctuation, call signs, or code groups <I>if</I> they are in the file.
 Some learners do not want to just to code groups until they have learned all the characters, this gives them more practice alternatives. Of course, many other options can still be applied.

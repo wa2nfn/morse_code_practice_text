@@ -20,17 +20,17 @@ SYNOPSIS
        mcpt -in= FILE [-inlen= NUM ] [-nlist= LIST  |  [-lesson=  NUM  -tutor=
        TUTOR ] [-prosign= FILE ] [ MISC ]
 
-       mcpt -in= FILE [-inlen= NUM ] [-nlist= LIST
-	| [-lesson= NUM -tutor= TUTOR ] [-mixedMode= NUM ] [-prosign= FILE ] [
+       mcpt -in=FILE [-inlen= NUM ] [-nlist= LIST
+	| [-lesson=NUM -tutor= TUTOR ] [-mixedMode= NUM ] [-prosign= FILE ] [
        MISC ]
 
-       mcpt -inStrings= FILE -lesson=  NUM  -tutor= TUTOR [ MISC ]
+       mcpt -text=FILE -lesson=  NUM  -tutor= TUTOR [ MISC ]
 
        mcpt -callSigns [-lesson= -tutor= TUTOR ] | [-cglist= LIST  ]  [-delim-
        iter= DELIM -DM= NUM ] [-repeat= NUM ] [ MISC ]
 
        TUTOR=lcwo|JustLearnMorseCode|G4FON|MorseElmer|LockdownMorse|Ham-
-       Morse|MorseCodeNinja|HameMorse]
+       Morse|MorseCodeNinja|HameMorse]|MFJ418
 
        LIST="0-9,./?="
 

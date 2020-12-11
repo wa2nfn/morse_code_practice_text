@@ -21,7 +21,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	discarded := false
 
 	if flaginputStrings == "" {
-		fmt.Printf("\nError: an input file must be given to -inStrings.\n")
+		fmt.Printf("\nError: an input file must be given to -text.\n")
 		os.Exit(0)
 	}
 
@@ -46,7 +46,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	isInSet := regexp.MustCompile(re).MatchString
 
 	ps := regexp.MustCompile(`^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`)
-	replacer := strings.NewReplacer("!","","#","","$","","%","","&","","*","","(","",")","","-","","{","","}","","[","","]","","`","",":","",";","","'","","\"","")
+	replacer := strings.NewReplacer("!","","#","","$","","%","","&","","*","","(","",")","","-"," ","_"," ","{","","}","","`","","'","",":","",";","","\"","")
 
 	for scanner.Scan() {
 		// first prune chars we don't want

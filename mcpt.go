@@ -130,7 +130,7 @@ func init() {
 	flag.StringVar(&flagprelist, "prelist", "0-9/,.?=", "Characters for a word prefix.")
 	flag.StringVar(&flaginlist, "inlist", inListStr, "Characters to define an input word.")
 	flag.StringVar(&flaginput, "in", "", "Input text file name, for words (including extension).")
-	flag.StringVar(&flaginputStrings, "inStrings", "", "Input text file name, for any strings in file (including extension).")
+	flag.StringVar(&flaginputStrings, "text", "", "Input ext file name, for any strings in file (including extension).")
 	flag.StringVar(&flagoutput, "out", "", "Output file name.")
 	flag.StringVar(&flagopt, "opt", "", "Specify an option file name to read or create.")
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
@@ -816,11 +816,11 @@ func main() {
 
 	if flaginputStrings != "" {
 		if flaglesson == "0" || flaglesson == "0:0" {
-			fmt.Printf("\nError: <inStrings> requires option <lesson> greater than zero.\n")
+			fmt.Printf("\nError: <text> requires option <lesson> greater than zero.\n")
 			os.Exit(98)
 		}
 		if flagtutor == "" {
-			fmt.Printf("\nError: <inStrings> requires option <tutor> to have a valid value.\n")
+			fmt.Printf("\nError: <text> requires option <tutor> to have a valid value.\n")
 			os.Exit(98)
 		}
 	}

@@ -3,7 +3,7 @@ CMD /c cls
 ECHO.
 ECHO MCPT Quick Start 
 ECHO.
-ECHO A quick look at the use of some features, without explanation. See the QuickStart.html for details.
+ECHO A quick look at the use of SOME features, without explanation. See the QuickStart.html for details.
 ECHO Ctrl-C will EXIT the Quick Start.
 ECHO.
 ECHO Look at the command and options before you hit Enter. Look at the  generated output and you will 
