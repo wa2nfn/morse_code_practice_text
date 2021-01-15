@@ -4,6 +4,8 @@ import (
 	"os"
 )
 
+var groupLengthDelta int  // only used if flaghead==t
+
 // make random code groups
 // uses the presaved chars in charSlice based on uniform distribution
 func makeGroups(fp *os.File) {
@@ -32,30 +34,32 @@ func makeGroups(fp *os.File) {
 			tmpOut[ll] = rune(flagmust[rng.Intn(mustLen)])
 		}
 
-		// do we need prefix or suffix
+		if flaghead == false {
+			// do we need prefix or suffix
 
-		if flagrandom {
-			if flagsufmin >= 1 || flagpremin >= 1 {
-				// 0 - neither ix, 1 prefix,2 do suffix, 3 both
-				rand = rng.Intn(4)
+			if flagrandom {
+				if flagsufmin >= 1 || flagpremin >= 1 {
+					// 0 - neither ix, 1 prefix,2 do suffix, 3 both
+					rand = rng.Intn(4)
+				}
 			}
-		}
 
-		// end raw word, and get back word to print
-		// do we need prefix?
-		if flagpremin >= 1 && (rand == 3 || rand == 1) {
-			xOut = []rune(ixStr("p"))
-			xOut = append(xOut, tmpOut...)
-			tmpOut = xOut
-		}
+			// end raw word, and get back word to print
+			// do we need prefix?
+			if flagpremin >= 1 && (rand == 3 || rand == 1) {
+				xOut = []rune(ixStr("p"))
+				xOut = append(xOut, tmpOut...)
+				tmpOut = xOut
+			}
 
-		// do we need a suffix or just a space
-		if flagsufmin >= 1 && (rand == 3 || rand == 2) {
-			tmpOut = tmpOut[0 : len(tmpOut)-1]
-			// make string to rune slice
-			xOut = []rune(ixStr("s"))
-			tmpOut = append(tmpOut, xOut...)
-			tmpOut = append(tmpOut, ' ')
+			// do we need a suffix or just a space
+			if flagsufmin >= 1 && (rand == 3 || rand == 2) {
+				tmpOut = tmpOut[0 : len(tmpOut)-1]
+				// make string to rune slice
+				xOut = []rune(ixStr("s"))
+				tmpOut = append(tmpOut, xOut...)
+				tmpOut = append(tmpOut, ' ')
+			}
 		}
 
 		// text repeat!
@@ -102,8 +106,12 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 	var tmp rune
 	gl := flagcgmin
 
+	if flaghead {
+		gl += groupLengthDelta
+	}
+
 	// choose random group len from min to max
-	if flagcgmax != flagcgmin {
+	if flagcgmax != flagcgmin && flaghead == false {
 		gl = rng.Intn(flagcgmax-flagcgmin+1) + flagcgmin
 	}
 
@@ -124,6 +132,14 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 			}
 		} else {
 			cg = append(cg, tmp)
+		}
+	}
+
+	if flaghead {
+		if flagcgmin + groupLengthDelta <  flagcgmax {
+			groupLengthDelta++
+		} else {
+			groupLengthDelta = 0  // reset
 		}
 	}
 

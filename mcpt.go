@@ -113,6 +113,7 @@ var (
 	flaglessonstart  int
 	flagcallsigns    bool
 	flagmust         string
+	flaghead           bool
 )
 
 func init() {
@@ -147,6 +148,7 @@ func init() {
 	flag.BoolVar(&flagMMR, "MMR", false, "Mixed-Mode-Random, randomize code group occurance in mixed mode. (default false)")
 	flag.StringVar(&flagcglist, "cglist", "A-Z0-9/.,?=", "Set of characters to make code groups.")
 	flag.StringVar(&flagheader, "header", "", "string copied verbatim to head of output")
+	flag.BoolVar(&flaghead, "headCopy", false, "Used with codeGroups to increment length by 1 for each group, until cglen is max")
 	flag.IntVar(&flagLCWOlow, "LCWO_low", 15, "low character speed setting (wpm).")
 	flag.IntVar(&flagLCWOstep, "LCWO_step", 0, "speed change increment (wpm).")
 	flag.IntVar(&flagLCWOslow, "LCWO_slow", 0, "number of words to send at slower speed.")

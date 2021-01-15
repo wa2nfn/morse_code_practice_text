@@ -12,7 +12,7 @@ SYNOPSIS
        mcpt -permute=p|t|b [-prosign=FILE] [-lesson= NUM -tutor= TUTOR]
 
        mcpt -codeGroups [-cglen= NUM ] [-cglist= LIST | [-lesson= NUM  -tutor=
-       TUTOR ] [-prosign= FILE ] [ MISC ]
+       TUTOR ] [-prosign= FILE ] [-codeGroups] [ MISC ]
 
        mcpt  -in=  FILE  [-inlen= NUM ] [-nlist= LIST [[-suflen= NUM -suflist=
        LIST ]][[-prelen= NUM -prelist= LIST] [-random]] [ MISC ]
@@ -98,6 +98,11 @@ OPTIONS
 	      STRING set a string to be output at  the  head  of  any	output
 	      text. With LCWO this could set audio tone, interword spacing, or
 	      just ouptut fixed text (i.e. vvv).
+
+       -headerCopy
+	      Used with codeGroups, so each successive group is one character 
+	      more than the last; upto the cglen maximum value. Helps the user
+	      develop a menatl buffer capability.
 
 
        -help  displays a usage for every option. With an parameter, as in  the

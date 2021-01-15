@@ -19,9 +19,9 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.4.8 12/11/2020
+Current version 1.4.9 1/14/2021
 <P>
-This file contains examples of the usage of all optins.
+This file contains examples of the usage of all options.
 <P>
 mcpt overcomes some of the common issues with practice text, or its generation:
 	<ol>
@@ -833,6 +833,18 @@ In this example the user gets random length groups from 1 to 4, of the letters K
 KRE E MUER EE EMUE 
 <P>
 If you want the "/" in <must>, do not put it as the first character, some operating systems may have issue with that.
+<<P>
+<H2>
+Example 23C: 
+</H2>
+<B>mcpt -codeGroups -cglen2:6 -headCopy</B>
+<P>
+The <B>headCopy</B> option will make each successive codeGroup have a length of
+one more than the previous, until the cglen hits its maximum value. In the example above, <B>without</B> the new option, the group length would be between 2 and 6 characters. Now, the first group has a length of 2, then 3, then 4 ... until 6. This may help the user to build their ability to mentally buffer the text, a skill needed for head copy. The difference is shown below.
+<PRE>
+Without -headCopy:   kmmu k ummkr km mm
+
+With -headCopy:      km kur rruk kmmur rummkm mm umu kumu uuurr urumkm 
 <P>
 <B>***** LCWO users should also review Example 20.*****</B>
 <H2>

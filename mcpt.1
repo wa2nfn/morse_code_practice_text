@@ -21,7 +21,7 @@ Note: Ignore any space BEFORE an "=" in this file (linux issue).
 .I TUTOR
 .B ] [-prosign=
 .I FILE
-.B ] [ MISC ]
+.B ] [ -headCopy] [ MISC ]
 
 .B mcpt -in=
 .I FILE 
@@ -141,12 +141,15 @@ Min must be > 1, to get deminiters. The DelimiterMultiples is the number or deli
 DelimiterRandom, if "true" a delimiters appearance is random on a word by word basis. The default is false..TP
 .TP
 .IP -header
-STRIPNG set a string to be output at the head of any output text. With LCWO this could set audio tone,
+STRING set a string to be output at the head of any output text. With LCWO this could set audio tone,
 interword spacing, or just ouptut fixed text (i.e. vvv).
 .TP 
 .IP -help
 displays a usage for every option. With an parameter, as in the synopsis, the help will display extensive text about subject of the parameter (i.e. -help=files). -help=options displays the current state of all options
 after the impact of any values set by the command line or an option file.
+.TP 
+.IP -headCopy
+Used with codeGroups, so each successive group is one character more than the last; upto the cglen maximum value. Helps the user develop a menatl buffer capability.
 .TP
 .IP -in
 the input file name to parse for words matching criteria set by options: inlist, inlen, lesson/tutor.
