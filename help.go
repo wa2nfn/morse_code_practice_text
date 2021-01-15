@@ -68,11 +68,11 @@ Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  L
 17      F            F            F          F          U              F            F           G
 18      O            0            0          0          M              0            C           C
 19      Y            Y            Y          Y          W              Y            L           U
-20      ,            V            V          ,          3              ,            D           Q
+20      ,            V            ,          ,          3              ,            D           Q
 
 Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
 ------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
-21      V            ,            ,          V          6              V            M           R
+21      V            ,            v          V          6              V            M           R
 22      G            G            G          G          ?              G            H           V
 23      5            5            5          5          F              5            R           F
 24      /            /            /          /          Y              /            S           P

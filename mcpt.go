@@ -19,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.4.8 12/11/2020 Copyright 2020"
+	version       = "1.4.9 1/14/2021 Copyright 2021"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -706,7 +706,7 @@ func main() {
 		} else if flagtutor == "JUSTLEARNMORSECODE" || flagtutor == "JLMC" {
 			kochChars = "KMRSUAPTLOWI.NJEF0YV,G5/Q9ZH38B?427C1D6X@=+"
 		} else if flagtutor == "G4FON" {
-			kochChars = "KMRSUAPTLOWI.NJEF0YV,G5/Q9ZH38B?427C1D6X"
+			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X"
 		} else if flagtutor == "MORSEELMER" || flagtutor == "ME" {
 			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
 		} else if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" {
