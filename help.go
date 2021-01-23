@@ -44,10 +44,10 @@ If the value for <tutor>, the names are NOT case sensitive, and for ease of typi
 name given on the second line below.
 
 Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
-                   (JLMC)                  (ME)        (MCN)          (HM)       (LDM)         (MFJ)
+Ch/Cnt
 ------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
-1       K M          K            K          T          T               E           E           W
-2       U            M            M          M          A               M           O           B
+1       K M                                  T          T               E           E           W
+2       U            K M          K M        M          A               M           O           B
 3       R            R            R          R          E               R           A           M
 4       E            S            S          S          N               S           M           H
 5       S            U            U          U          O               U           U           A
@@ -55,7 +55,7 @@ Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  L
 7       A            P            P          P          S               P           Z           J
 8       P            T            T          T          1               T           Q           S
 9       T            L            L          L          4               L           J           N
-10      L            O            O          O          R               O           X           I
+10      L            0            O          O          R               O           X           I
 
 Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
 ------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
@@ -94,10 +94,10 @@ Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse Lo
 37      D            1            1          1          X              1            .          2
 38      6            D            D          D          Q              6            ,          0
 39      0            6            6          6          Z              X            /          4
-40      X            X            X          X          <BK>           = <BT>       ?          3
+40      X            x            X          X          <BK>           = <BT>       ?          3
 
-Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja HamMorse LockdownMorse
-------  ----  ------------------  -----  ----------  -------------- -------- -------------
+Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418
+------  ----  ------------------  -----  ----------  --------------  --------  -------------  ------
 41                   @                     = <BT>       .  
 42                   = <BT>                + <AR>(2)
 43                   + <AR> 

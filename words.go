@@ -67,7 +67,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		flaginlist = strings.ReplaceAll(flaginlist, "?", "")
 		re := fmt.Sprintf(`[%s]{%d,%d}\?{0,1}`, flaginlist, flagmin, flagmax)
 		s = fmt.Sprintf(`^%s$|^%s[%s]*$^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`, re, flaginlist, trimChars)
-		//s = fmt.Sprintf(`^(%s)(~%s)*$|^<[A-Za-z]{2}>$|^\\^[A-Za-z]{2}$`, re, re)
 	} else {
 		trimChars = ".\",!?"
 		re := fmt.Sprintf(`[%s]{%d,%d}`, flaginlist, flagmin, flagmax)
@@ -97,7 +96,12 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	for scanner.Scan() {
 		// first way to split the string on spaces
 
-		textWords := strings.FieldsFunc(scanner.Text(), func(r rune) bool {
+		// lets preprocess for '_-
+		var line string;
+		replacer := strings.NewReplacer("!","","#","","$","","%","","&","","*","","(","",")","","-"," ","_"," ","{","","}","","`","",":","",";","","'","","\"","")
+		line = replacer.Replace(scanner.Text())
+
+		textWords := strings.FieldsFunc(line, func(r rune) bool {
 			if r == ' ' {
 				return true
 			}
@@ -222,9 +226,9 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 				wordArray = append(wordArray[:index], temp...)
 				j++
 			}
-			wordArray = wordArray[0:flagnum]
 		}
 
+		wordArray = wordArray[0:flagnum]
 	} else {
 		// RANDOM so use MAP to fill array
 		if len(wordMap) == 0 {
@@ -256,6 +260,119 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 		}
 		runtime.GC()
+
+		// wordsMap has already gotten appropriate words
+		// we just need to divide into length buckets
+		if flaghead {
+
+			const MaxWordLen int = 12
+			var capacity int = flagnum/(flagmax+1-flagmin)
+			var wlen [MaxWordLen]*[]string
+
+			w1 := make([]string,0,capacity)
+			w2 := make([]string,0,capacity)
+			w3 := make([]string,0,capacity)
+			w4 := make([]string,0,capacity)
+			w5 := make([]string,0,capacity)
+			w6 := make([]string,0,capacity)
+			w7 := make([]string,0,capacity)
+			w8 := make([]string,0,capacity)
+			w9 := make([]string,0,capacity)
+			w10 := make([]string,0,capacity)
+			w11 := make([]string,0,capacity)
+			w12 := make([]string,0,capacity)
+
+			for wd := range wordMap {  // put the words in separate slice by size
+				switch(len(wd)){
+					case 1: w1 = append(w1, wd)
+					case 2: w2 = append(w2, wd)
+					case 3: w3 = append(w3, wd)
+					case 4: w4 = append(w4, wd)
+					case 5: w5 = append(w5, wd)
+					case 6: w6 = append(w6, wd)
+					case 7: w7 = append(w7, wd)
+					case 8: w8 = append(w8, wd)
+					case 9: w9 = append(w9, wd)
+					case 10: w10 = append(w10, wd)
+					case 11: w10 = append(w10, wd)
+					case 12: w10 = append(w10, wd)
+					default: // just ignore
+				}
+			}
+
+			wordMap = nil //recover space
+
+			var arrInd = 0
+
+			if len(w1) > 0 {
+				wlen[arrInd] = &w1
+				arrInd++
+			}
+
+			if len(w2) > 0 {
+				wlen[arrInd] = &w2
+				arrInd++
+			}
+
+			if len(w3) > 0 {
+				wlen[arrInd] = &w3
+				arrInd++
+			}
+
+			if len(w4) > 0 {
+				wlen[arrInd] = &w4
+				arrInd++
+			}
+
+			if len(w5) > 0 {
+				wlen[arrInd] = &w5
+				arrInd++
+			}
+
+			if len(w6) > 0 {
+				wlen[arrInd] = &w6
+				arrInd++
+			}
+
+			if len(w7) > 0 {
+				wlen[arrInd] = &w7
+				arrInd++
+			}
+
+			if len(w8) > 0 {
+				wlen[arrInd] = &w8
+				arrInd++
+			}
+
+			if len(w9) > 0 {
+				wlen[arrInd] = &w9
+				arrInd++
+			}
+
+			if len(w11) > 0 {
+				wlen[arrInd] = &w10
+				arrInd++
+			}
+
+			if len(w12) > 0 {
+				wlen[arrInd] = &w10
+			}
+
+			// now use the slice to find words to use
+			for i := 0; i < flagnum; {
+				for ind := 0; wlen[ind] != nil && ind < MaxWordLen; ind++ { 
+
+					rand := rng.Intn(len(*wlen[ind]))
+					wordArray = append(wordArray,(*wlen[ind])[rand])
+					i++
+
+					if i == flagnum {
+						break
+					}
+				}
+			}
+			return
+		}
 
 		fillArray(fp)
 	}

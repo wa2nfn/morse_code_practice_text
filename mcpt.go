@@ -726,8 +726,8 @@ func main() {
 			os.Exit(1)
 		}
 
-		if (flaglessonend+1 > len(kochChars)) && flagtutor == "LCWO" {
-			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <LCWO>.\n", flaglessonend, 40)
+		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" ){
+			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, 40, flagtutor)
 			os.Exit(1)
 		}
 
@@ -742,26 +742,25 @@ func main() {
 		}
 
 		if flaglessonstart == flaglessonend {
-			flaglessonstart = 0
-		} else {
-			flaglessonstart--
+			flaglessonstart = 1
 		}
+		flaglessonstart-- // because strings start at 0
 
-		if flagtutor == "LCWO" {
+		if flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" {
 			flaglessonend++
 		}
 
-		if flaglessonend < len(kochChars) {
+		if flaglessonend <= len(kochChars) {
 			flagcglist = kochChars[flaglessonstart:flaglessonend]
 		}
 
 		tmp_c := ""
 		for _, c := range flagcglist {
-			//flaginlist = flagcglist + strings.ToLower(flagcglist)
 			if c >= 'A' && c <= 'Z' {
 				tmp_c += string(c)
 			}
 		}
+
 		flaginlist = tmp_c
 		tmp_c = ""
 

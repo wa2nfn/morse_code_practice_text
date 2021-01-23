@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.4.9 1/14/2021
+Current version 1.5.0 1/22/2021
 <P>
 This file contains examples of the usage of all options.
 <P>
@@ -838,6 +838,7 @@ If you want the "/" in <must>, do not put it as the first character, some operat
 Example 23C: 
 </H2>
 <B>mcpt -codeGroups -cglen2:6 -headCopy</B>
+<B>mcpt -in-file.txt -inlen2:6 -headCopy</B>
 <P>
 The <B>headCopy</B> option will make each successive codeGroup have a length of
 one more than the previous, until the cglen hits its maximum value. In the example above, <B>without</B> the new option, the group length would be between 2 and 6 characters. Now, the first group has a length of 2, then 3, then 4 ... until 6. This may help the user to build their ability to mentally buffer the text, a skill needed for head copy. The difference is shown below.
@@ -845,6 +846,8 @@ one more than the previous, until the cglen hits its maximum value. In the examp
 Without -headCopy:   kmmu k ummkr km mm
 
 With -headCopy:      km kur rruk kmmur rummkm mm umu kumu uuurr urumkm 
+<P>
+In the second command, the headCopy option does the same thing for words as it dod for code groups.
 <P>
 <B>***** LCWO users should also review Example 20.*****</B>
 <H2>

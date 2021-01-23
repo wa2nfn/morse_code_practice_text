@@ -100,9 +100,9 @@ OPTIONS
 	      just ouptut fixed text (i.e. vvv).
 
        -headerCopy
-	      Used with codeGroups, so each successive group is one character 
-	      more than the last; upto the cglen maximum value. Helps the user
-	      develop a menatl buffer capability.
+	      Used with codeGroups or word files, so each successive group/word 
+	      is one character more than the last; up to the cglen/inlen maximum
+	      value. Helps the user develop a mental buffer capability.
 
 
        -help  displays a usage for every option. With an parameter, as in  the
