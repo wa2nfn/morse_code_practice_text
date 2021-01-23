@@ -294,8 +294,8 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 					case 8: w8 = append(w8, wd)
 					case 9: w9 = append(w9, wd)
 					case 10: w10 = append(w10, wd)
-					case 11: w10 = append(w10, wd)
-					case 12: w10 = append(w10, wd)
+					case 11: w11 = append(w11, wd)
+					case 12: w12 = append(w12, wd)
 					default: // just ignore
 				}
 			}
@@ -349,13 +349,18 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 				arrInd++
 			}
 
-			if len(w11) > 0 {
+			if len(w10) > 0 {
 				wlen[arrInd] = &w10
 				arrInd++
 			}
 
+			if len(w11) > 0 {
+				wlen[arrInd] = &w11
+				arrInd++
+			}
+
 			if len(w12) > 0 {
-				wlen[arrInd] = &w10
+				wlen[arrInd] = &w12
 			}
 
 			// now use the slice to find words to use
