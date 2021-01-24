@@ -20,7 +20,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 	discarded := false
 
-	if flaginputStrings == "" {
+	if flagtext == "" {
 		fmt.Printf("\nError: an input file must be given to -text.\n")
 		os.Exit(0)
 	}
@@ -30,9 +30,9 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		os.Exit(0)
 	}
 
-	file, err := os.Open(flaginputStrings)
+	file, err := os.Open(flagtext)
 	if err != nil {
-		fmt.Printf("\n%s File name <%s>.\n", err, flaginputStrings)
+		fmt.Printf("\n%s File name <%s>.\n", err, flagtext)
 		os.Exit(1)
 	}
 	defer file.Close()
@@ -42,17 +42,19 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	var s string
 	flaginlist += "^<>" // for prosigns
 
-	re := fmt.Sprintf(`[%s]{%d,%d}$`, flaginlist, flagmin, flagmax)
+	re := fmt.Sprintf(`^[%s]{%d,%d}$`, flaginlist, flagmin, flagmax)
 	isInSet := regexp.MustCompile(re).MatchString
 
 	ps := regexp.MustCompile(`^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`)
-	replacer := strings.NewReplacer("!","","#","","$","","%","","&","","*","","(","",")","","-"," ","_"," ","{","","}","","`","","'","",":","",";","","\"","")
+	replacer := strings.NewReplacer("!","","#","","$","","%","","&","","*","","(","",")","","-"," ","_"," ","{","","}","","`","","'","",":","",";","","\"","","|","")
 
 	for scanner.Scan() {
 		// first prune chars we don't want
 		s = replacer.Replace(scanner.Text())
 		// now s is the input line pruned
 		// first way to split the string on spaces
+
+		s = strings.ToUpper(s)
 
 		textWords := strings.FieldsFunc(s, func(r rune) bool {
 			if r == ' ' {
@@ -66,7 +68,6 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			// tokens now a string of space separated characters
 
 			tmpWord := textWords[index]
-			tmpWord = strings.ToUpper(tmpWord)
 
 			if isInSet(tmpWord) {
 

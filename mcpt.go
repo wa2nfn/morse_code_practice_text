@@ -29,7 +29,7 @@ const (
 	maxRepeat     = 20
 	maxSkips      = 5000
 	maxMixedMode  = 20
-	inListStr     = "A-Za-z%C0%E0%C4%E4%C9%E9%C8%E8%C7%E7%D1%F1%D6%F6%DC%FC"
+	inListStr     = "A-Z%C0%E0%C4%E4%C9%E9%C8%E8%C7%E7%D1%F1%D6%F6%DC%FC"
 )
 
 var (
@@ -91,7 +91,7 @@ var (
 	flagcglist       string
 	flagCglistRune   []rune
 	flaginput        string
-	flaginputStrings string
+	flagtext string
 	flagoutput       string
 	flagopt          string
 	flagprosign      string
@@ -131,7 +131,7 @@ func init() {
 	flag.StringVar(&flagprelist, "prelist", "0-9/,.?=", "Characters for a word prefix.")
 	flag.StringVar(&flaginlist, "inlist", inListStr, "Characters to define an input word.")
 	flag.StringVar(&flaginput, "in", "", "Input text file name, for words (including extension).")
-	flag.StringVar(&flaginputStrings, "text", "", "Input ext file name, for any strings in file (including extension).")
+	flag.StringVar(&flagtext, "text", "", "Input ext file name, for any strings in file (including extension).")
 	flag.StringVar(&flagoutput, "out", "", "Output file name.")
 	flag.StringVar(&flagopt, "opt", "", "Specify an option file name to read or create.")
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
@@ -350,6 +350,12 @@ func main() {
 		flag.Parse() // second parse since options read
 	}
 
+	inListChanged := false
+	flaginlist = strings.ToUpper(flaginlist)
+	if flaginlist != inListStr {
+		inListChanged = true
+	}
+
 	// handle split length options
 	flagmin, flagmax = minmaxSplit("inlen", flaginlen)
 	flagcgmin, flagcgmax = minmaxSplit("cglen", flagcglen)
@@ -455,27 +461,27 @@ func main() {
 	}
 
 	if flagmin > flagmax {
-		fmt.Printf("\nError: min must <= max <%d>.\n", flagmax)
+		fmt.Printf("\nError: min must <= max <%d>, in -inlen.\n", flagmax)
 		os.Exit(1)
 	}
 
 	if flagmax < flagmin {
-		fmt.Printf("\nError: max must >= min <%d>.\n", flagmin)
+		fmt.Printf("\nError: max must >= min <%d>, in -inlen.\n", flagmin)
 		os.Exit(1)
 	}
 
 	if flagmax > maxWordLen {
-		fmt.Printf("\nError: max must <= <%d>, system max.\n", maxWordLen)
+		fmt.Printf("\nError: max in -inlen must <= <%d>, the system max.\n", maxWordLen)
 		os.Exit(1)
 	}
 
 	if flagcgmax < flagcgmin {
-		fmt.Println("\nError: cgmax must >= cgmin.")
+		fmt.Println("\nError: cgmax must >= cgmin, in -cglen.")
 		os.Exit(1)
 	}
 
 	if flagMixedMode < 0 || flagMixedMode == 1 || flagMixedMode > maxMixedMode {
-		fmt.Printf("\nError: mixedMode X Where X  minimum 2, maximum %d, default 0=off.\n", maxMixedMode)
+		fmt.Printf("\nError: mixedMode X Where X  min=2, max=%d, default 0=off.\n", maxMixedMode)
 		os.Exit(1)
 	}
 
@@ -505,9 +511,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	if flagMixedMode > 0 && flagCG == true {
-		fmt.Printf("\nError: mixedMode is mutually exclusive with codeGroups option.\n")
-		os.Exit(1)
+	if flagCG == true {
+		if flagMixedMode > 0 {
+			fmt.Printf("\nError: mixedMode is mutually exclusive with codeGroups option.\n")
+			os.Exit(1)
+		} 
+
+		flaginlist = "" // incompatible
 	}
 
 	if flagsufmin > 0 {
@@ -701,6 +711,13 @@ func main() {
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cglist")
 
+	// may need to concatenate
+	origInlist := ""
+	if flagtext != "" || flaginput != "" {
+		origInlist = strings.ToUpper(flaginlist)
+		origInlist = strRangeExpand(origInlist, "inlist")
+	}
+
 	if flaglessonend >= 1 {
 
 		if flagtutor == "LCWO" {
@@ -762,13 +779,17 @@ func main() {
 		}
 
 		flaginlist = tmp_c
-		tmp_c = ""
-
 	}
 
 	// check inlist for %XX codes
-	if flaglesson == "" {
+	if flagCG == false { // maybe text or words
 		out := ""
+
+		if inListChanged {
+			// lets lesson and inlist be used
+			flaginlist += origInlist 
+		}
+
 		m := regexp.MustCompile("%[C-F][0146789C]")
 
 		for {
@@ -785,7 +806,7 @@ func main() {
 	}
 
 	// must follow other cglist manipulation
-	// either case lets get cglist expanded now
+	// either case lets get cglist evaluated now
 	if flagCG || flagMixedMode > 0 {
 		// make sure we have chars to work with
 		if len(flagcglist) < 1 {
@@ -803,7 +824,7 @@ func main() {
 	runeMap = nil
 	runeMapInt = nil
 
-	if flaginput == "" && flaginputStrings == "" && flagCG == false && flagpermute == "" && flagcallsigns == false {
+	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
@@ -815,14 +836,22 @@ func main() {
 		os.Exit(99)
 	}
 
-	if flaginputStrings != "" {
-		if flaglesson == "0" || flaglesson == "0:0" {
-			fmt.Printf("\nError: <text> requires option <lesson> greater than zero.\n")
+	if flagtutor == "" && (flaglesson != "0" || flaglesson != "0:0") {
+		fmt.Printf("\nError: <lesson> requires option <tutor> to have a valid value.\n")
+		os.Exit(98)
+	}
+
+	if (flaglesson == "0" || flaglesson == "0:0" ) && flagCG {
+		if flagcglist == "" {
+			fmt.Printf("\nError: <codeGroups> requires option <lesson> greater than zero OR cglist must be used.\n")
 			os.Exit(98)
 		}
-		if flagtutor == "" {
-			fmt.Printf("\nError: <text> requires option <tutor> to have a valid value.\n")
-			os.Exit(98)
+	}
+
+	// if text or words we can have inlist added to lesson
+	if flagtext != "" || flaginput != "" {
+		if inListChanged {
+			flaginlist += origInlist
 		}
 	}
 
@@ -867,7 +896,7 @@ func main() {
 		os.Exit(0) // program done
 	}
 
-	if flaginputStrings != "" {
+	if flagtext != "" {
 		readStringsFile(localSkipFlag, localSkipCount, fp)
 		doOutput(wordArray, fp)
 		os.Exit(0) // program done
@@ -1003,7 +1032,7 @@ func expandIt(lower string, upper string, whoAmI string) string {
 
 	if up < low {
 		fmt.Printf("\nError: range in an option list is not in ASCII/UTF-8 order: i.e. C-A (invalid) vs. A-C (correct) \n")
-		fmt.Printf("       Delimiters support ONLY a single range in a field. i.e. ^[A-D]^ or ^[0-3]^\n")
+		fmt.Printf("       Delimiters support ONLY a single range in a field. i.e. ^A-D^ or ^0-3^\n")
 		os.Exit(7)
 	}
 
