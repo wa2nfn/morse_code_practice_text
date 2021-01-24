@@ -265,110 +265,36 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		// we just need to divide into length buckets
 		if flaghead {
 
-			const MaxWordLen int = 12
-			var capacity int = flagnum/(flagmax+1-flagmin)
-			var wlen [MaxWordLen]*[]string
+			mlw := map[int][]string{}
 
-			w1 := make([]string,0,capacity)
-			w2 := make([]string,0,capacity)
-			w3 := make([]string,0,capacity)
-			w4 := make([]string,0,capacity)
-			w5 := make([]string,0,capacity)
-			w6 := make([]string,0,capacity)
-			w7 := make([]string,0,capacity)
-			w8 := make([]string,0,capacity)
-			w9 := make([]string,0,capacity)
-			w10 := make([]string,0,capacity)
-			w11 := make([]string,0,capacity)
-			w12 := make([]string,0,capacity)
+			keys := make([]int,maxWordLen,maxWordLen)
+			for ind := flagmin; ind <= flagmax; ind++ {
+				keys[ind] = ind
+			}
 
-			for wd := range wordMap {  // put the words in separate slice by size
-				switch(len(wd)){
-					case 1: w1 = append(w1, wd)
-					case 2: w2 = append(w2, wd)
-					case 3: w3 = append(w3, wd)
-					case 4: w4 = append(w4, wd)
-					case 5: w5 = append(w5, wd)
-					case 6: w6 = append(w6, wd)
-					case 7: w7 = append(w7, wd)
-					case 8: w8 = append(w8, wd)
-					case 9: w9 = append(w9, wd)
-					case 10: w10 = append(w10, wd)
-					case 11: w11 = append(w11, wd)
-					case 12: w12 = append(w12, wd)
-					default: // just ignore
-				}
+			// Loop over map and append keys to empty slice.
+			for key, _ := range mlw {
+				keys = append(keys, key)
+			}
+
+			// put words in buckets by length
+			for wd := range wordMap {
+				l := len(wd)
+				mlw[l] = append(mlw[l], wd)
 			}
 
 			wordMap = nil //recover space
 
-			var arrInd = 0
-
-			if len(w1) > 0 {
-				wlen[arrInd] = &w1
-				arrInd++
-			}
-
-			if len(w2) > 0 {
-				wlen[arrInd] = &w2
-				arrInd++
-			}
-
-			if len(w3) > 0 {
-				wlen[arrInd] = &w3
-				arrInd++
-			}
-
-			if len(w4) > 0 {
-				wlen[arrInd] = &w4
-				arrInd++
-			}
-
-			if len(w5) > 0 {
-				wlen[arrInd] = &w5
-				arrInd++
-			}
-
-			if len(w6) > 0 {
-				wlen[arrInd] = &w6
-				arrInd++
-			}
-
-			if len(w7) > 0 {
-				wlen[arrInd] = &w7
-				arrInd++
-			}
-
-			if len(w8) > 0 {
-				wlen[arrInd] = &w8
-				arrInd++
-			}
-
-			if len(w9) > 0 {
-				wlen[arrInd] = &w9
-				arrInd++
-			}
-
-			if len(w10) > 0 {
-				wlen[arrInd] = &w10
-				arrInd++
-			}
-
-			if len(w11) > 0 {
-				wlen[arrInd] = &w11
-				arrInd++
-			}
-
-			if len(w12) > 0 {
-				wlen[arrInd] = &w12
-			}
-
 			// now use the slice to find words to use
 			for i := 0; i < flagnum; {
-				for ind := 0; wlen[ind] != nil && ind < MaxWordLen; ind++ { 
+				for ind := flagmin; ind <= flagmax; ind++ { 
 
-					rand := rng.Intn(len(*wlen[ind]))
-					wordArray = append(wordArray,(*wlen[ind])[rand])
+					if mlw[ind] == nil {
+						continue
+					}
+
+					rand := rng.Intn(len(mlw[ind]))
+					wordArray = append(wordArray,(mlw[ind])[rand])
 					i++
 
 					if i == flagnum {
