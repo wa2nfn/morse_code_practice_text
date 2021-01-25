@@ -12,6 +12,7 @@ import (
 // these are only valid prosigns
 //
 func ckProsign(ps string) bool {
+	ps = strings.ToUpper(ps)
 	switch ps {
 	case "<AA>", "<AR>", "<AS>", "<BT>", "<CT>", "<KA>", "<HH>", "<KN>", "<SK>", "<SN>":
 		return true
