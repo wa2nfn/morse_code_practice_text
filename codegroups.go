@@ -4,14 +4,14 @@ import (
 	"os"
 )
 
-var groupLengthDelta int  // only used if flaghead==t
+var groupLengthDelta int // only used if flaghead==t
 
 // make random code groups
 // uses the presaved chars in charSlice based on uniform distribution
 func makeGroups(fp *os.File) {
 	strBuf := ""
 	var tmpOut []rune
-	var ll = 0 
+	var ll = 0
 	var mustLen = 0
 
 	charSlice := buildCharSlice()
@@ -78,19 +78,21 @@ func makeGroups(fp *os.File) {
 			strBuf += string(tmpOut)
 		}
 
-		if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
-			if flagDMmin == flagDMmax {
-				for count := 0; count < flagDMmax; count++ {
-					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+		/*
+			if flagDMmin >= 1 && flaghead == true && (flagDR == false || (flagDR == true && flipFlop())) {
+				if flagDMmin == flagDMmax {
+					for count := 0; count < flagDMmax; count++ {
+						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+					}
+				} else {
+					for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+					}
 				}
-			} else {
-				for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
-					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
-				}
-			}
 
-			strBuf += " "
-		}
+				strBuf += " "
+			}
+		*/
 	}
 
 	printStrBuf(strBuf, fp)
@@ -136,10 +138,26 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 	}
 
 	if flaghead {
-		if flagcgmin + groupLengthDelta <  flagcgmax {
+		if flagcgmin+groupLengthDelta < flagcgmax {
 			groupLengthDelta++
 		} else {
-			groupLengthDelta = 0  // reset
+			groupLengthDelta = 0 // reset
+
+			// delimiter after each run
+			if flagDMmin >= 1 && flaghead == true && (flagDR == false || (flagDR == true && flipFlop())) {
+				cg = append(cg, ' ')
+
+				if flagDMmin == flagDMmax {
+					for count := 0; count < flagDMmax; count++ {
+						cg = append(cg, []rune(delimiterSlice[rng.Intn(len(delimiterSlice))])...)
+					}
+				} else {
+					for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+						cg = append(cg, []rune(delimiterSlice[rng.Intn(len(delimiterSlice))])...)
+					}
+				}
+
+			}
 		}
 	}
 

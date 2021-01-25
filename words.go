@@ -1,15 +1,14 @@
 package main
 
 import (
-	"os"
-	"strings"
 	"bufio"
+	"fmt"
+	"math/rand"
+	"os"
 	"regexp"
 	"runtime"
-	"math/rand"
-	"fmt"
+	"strings"
 )
-
 
 /*
 ** added for Ordered write of input "NR"
@@ -97,8 +96,8 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		// first way to split the string on spaces
 
 		// lets preprocess for '_-
-		var line string;
-		replacer := strings.NewReplacer("!","","#","","$","","%","","&","","*","","(","",")","","-"," ","_"," ","{","","}","","`","",":","",";","","'","","\"","")
+		var line string
+		replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", ":", "", ";", "", "'", "", "\"", "")
 		line = replacer.Replace(scanner.Text())
 
 		textWords := strings.FieldsFunc(line, func(r rune) bool {
@@ -125,7 +124,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 						localSkipFlag = false
 					}
 				}
-
 
 				// if prosign check it or ignore it
 				if len(tmpWord) == 3 || len(tmpWord) == 4 {
@@ -267,7 +265,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 			mlw := map[int][]string{}
 
-			keys := make([]int,maxWordLen,maxWordLen)
+			keys := make([]int, maxWordLen, maxWordLen)
 			for ind := flagmin; ind <= flagmax; ind++ {
 				keys[ind] = ind
 			}
@@ -287,19 +285,37 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 			// now use the slice to find words to use
 			for i := 0; i < flagnum; {
-				for ind := flagmin; ind <= flagmax; ind++ { 
+				ind := 0
+
+				for ind = flagmin; ind <= flagmax; ind++ {
 
 					if mlw[ind] == nil {
 						continue
 					}
 
 					rand := rng.Intn(len(mlw[ind]))
-					wordArray = append(wordArray,(mlw[ind])[rand])
+					wordArray = append(wordArray, (mlw[ind])[rand])
 					i++
 
 					if i == flagnum {
 						break
 					}
+				}
+
+				if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
+					buf := ""
+
+					if flagDMmin == flagDMmax {
+						for count := 0; count < flagDMmax; count++ {
+							buf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+						}
+					} else {
+						for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+							buf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+						}
+					}
+
+					wordArray = append(wordArray, buf)
 				}
 			}
 			return
@@ -600,7 +616,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 	// see if -must set, if so do one substitution now
 	if mustLen > 0 {
 		ll := 0
-		bytearr := make([]byte,len(wordOut))
+		bytearr := make([]byte, len(wordOut))
 		for k, v := range wordOut {
 			bytearr[k] = byte(v)
 		}
@@ -610,7 +626,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 	}
 
 	// use delimiter
-	if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
+	if flagDMmin >= 1 && flaghead == false && (flagDR == false || (flagDR == true && flipFlop())) {
 
 		wordOut += " "
 
@@ -710,19 +726,19 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 	//WDL
 	// use delimiter
 	/*
-	if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
-		if flagDMmin == flagDMmax {
-			for count := 0; count < flagDMmax; count++ {
-				strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
+		if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
+			if flagDMmin == flagDMmax {
+				for count := 0; count < flagDMmax; count++ {
+					strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
+				}
+			} else {
+				for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+					strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
+				}
 			}
-		} else {
-			for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
-				strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
-			}
-		}
 
-		strOut += " "
-	}
+			strOut += " "
+		}
 	*/
 
 	return strOut, charSlice
