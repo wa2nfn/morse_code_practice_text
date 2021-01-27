@@ -284,7 +284,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			wordMap = nil //recover space
 
 			// now use the slice to find words to use
-			for i := 0; i < flagnum; {
+			for i := 0; i <= flagnum; {
 				ind := 0
 
 				for ind = flagmin; ind <= flagmax; ind++ {
@@ -295,6 +295,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 					rand := rng.Intn(len(mlw[ind]))
 					wordArray = append(wordArray, (mlw[ind])[rand])
+
 					i++
 
 					if i == flagnum {
@@ -316,6 +317,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 					}
 
 					wordArray = append(wordArray, buf)
+					buf = ""
 				}
 			}
 			return
@@ -625,6 +627,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 		wordOut = string(bytearr)
 	}
 
+	/* WDL
 	// use delimiter
 	if flagDMmin >= 1 && flaghead == false && (flagDR == false || (flagDR == true && flipFlop())) {
 
@@ -640,6 +643,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 			}
 		}
 	}
+		*/
 
 	// end raw word, and get back word to print
 	// do we need prefix?
@@ -723,23 +727,20 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 		strOut = wordOut
 	}
 
-	//WDL
-	// use delimiter
-	/*
-		if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
-			if flagDMmin == flagDMmax {
-				for count := 0; count < flagDMmax; count++ {
-					strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
-				}
-			} else {
-				for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
-					strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
-				}
+	// use delimiter if NOT headcopy
+	if flagDMmin >= 1 && flaghead == false && (flagDR == false || (flagDR == true && flipFlop())) {
+		if flagDMmin == flagDMmax {
+			for count := 0; count < flagDMmax; count++ {
+				strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
 			}
-
-			strOut += " "
+		} else {
+			for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+				strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
+			}
 		}
-	*/
+
+		strOut += " "
+	}
 
 	return strOut, charSlice
 }
