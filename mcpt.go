@@ -19,7 +19,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.5.0 1/22/2021 Copyright 2021"
+	version       = "1.5.1 1/28/2021 Copyright 2021"
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -52,68 +52,68 @@ var (
 	flagTAB           bool
 	flagdisplayFormat string
 
-	flagmax          int
-	flagcgmax        int
-	flaglen          int
-	flagmin          int
-	flagcgmin        int
-	flagrepeat       int
-	flagnum          int
-	flagskip         int
-	flagsufmin       int
-	flagsufmax       int
-	flagpremin       int
-	flagpremax       int
-	flagDM           string
-	flagDMmin        int
-	flagDMmax        int
-	flagDR           bool
-	flaglesson       string
-	flagMixedMode    int
-	flagLCWOsf       string
-	flagLCWOfs       string
-	flagLCWOstep     int
-	flagLCWOnum      int
-	flagLCWOslow     int
-	flagLCWOlow      int
-	flagLCWOfast     int
-	flagLCWOrepeat   int
-	flagLCWOeff      int
-	flagLCWOramp     bool
-	flagLCWOrandom   bool
-	flagLCWOefframp  bool
-	flagheader       string
-	flagprelist      string
-	flagPrelistRune  []rune
-	flagsuflist      string
-	flagSuflistRune  []rune
-	flaginlist       string
-	flagcglist       string
-	flagCglistRune   []rune
-	flaginput        string
-	flagtext string
-	flagoutput       string
-	flagopt          string
-	flagprosign      string
-	flagdelimit      string
-	flagtutor        string
-	flagrandom       bool
-	flagunique       bool
-	flagNR           bool
-	flagMMR          bool
-	flagCG           bool
-	flagreverse      bool
-	flaghelp         string
-	flagpermute      string
-	flaginlen        string
-	flagprelen       string
-	flagsuflen       string
-	flagcglen        string
-	flaglessonend    int
-	flaglessonstart  int
-	flagcallsigns    bool
-	flagmust         string
-	flaghead           bool
+	flagmax         int
+	flagcgmax       int
+	flaglen         int
+	flagmin         int
+	flagcgmin       int
+	flagrepeat      int
+	flagnum         int
+	flagskip        int
+	flagsufmin      int
+	flagsufmax      int
+	flagpremin      int
+	flagpremax      int
+	flagDM          string
+	flagDMmin       int
+	flagDMmax       int
+	flagDR          bool
+	flaglesson      string
+	flagMixedMode   int
+	flagLCWOsf      string
+	flagLCWOfs      string
+	flagLCWOstep    int
+	flagLCWOnum     int
+	flagLCWOslow    int
+	flagLCWOlow     int
+	flagLCWOfast    int
+	flagLCWOrepeat  int
+	flagLCWOeff     int
+	flagLCWOramp    bool
+	flagLCWOrandom  bool
+	flagLCWOefframp bool
+	flagheader      string
+	flagprelist     string
+	flagPrelistRune []rune
+	flagsuflist     string
+	flagSuflistRune []rune
+	flaginlist      string
+	flagcglist      string
+	flagCglistRune  []rune
+	flaginput       string
+	flagtext        string
+	flagoutput      string
+	flagopt         string
+	flagprosign     string
+	flagdelimit     string
+	flagtutor       string
+	flagrandom      bool
+	flagunique      bool
+	flagNR          bool
+	flagMMR         bool
+	flagCG          bool
+	flagreverse     bool
+	flaghelp        string
+	flagpermute     string
+	flaginlen       string
+	flagprelen      string
+	flagsuflen      string
+	flagcglen       string
+	flaglessonend   int
+	flaglessonstart int
+	flagcallsigns   bool
+	flagmust        string
+	flaghead        bool
 )
 
 func init() {
@@ -515,7 +515,7 @@ func main() {
 		if flagMixedMode > 0 {
 			fmt.Printf("\nError: mixedMode is mutually exclusive with codeGroups option.\n")
 			os.Exit(1)
-		} 
+		}
 
 		flaginlist = "" // incompatible
 	}
@@ -743,7 +743,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" ){
+		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC") {
 			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, 40, flagtutor)
 			os.Exit(1)
 		}
@@ -787,7 +787,7 @@ func main() {
 
 		if inListChanged {
 			// lets lesson and inlist be used
-			flaginlist += origInlist 
+			flaginlist += origInlist
 		}
 
 		m := regexp.MustCompile("%[C-F][0146789C]")
@@ -841,7 +841,7 @@ func main() {
 		os.Exit(98)
 	}
 
-	if (flaglesson == "0" || flaglesson == "0:0" ) && flagCG {
+	if (flaglesson == "0" || flaglesson == "0:0") && flagCG {
 		if flagcglist == "" {
 			fmt.Printf("\nError: <codeGroups> requires option <lesson> greater than zero OR cglist must be used.\n")
 			os.Exit(98)
