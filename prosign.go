@@ -14,9 +14,9 @@ import (
 func ckProsign(ps string) bool {
 	ps = strings.ToUpper(ps)
 	switch ps {
-	case "<AA>", "<AR>", "<AS>", "<BT>", "<CT>", "<KA>", "<HH>", "<KN>", "<SK>", "<SN>":
+	case "<AA>", "<AR>", "<AS>", "<BT>", "<CT>", "<KA>", "<HH>", "<KN>", "<SK>", "<VA>", "<SN>":
 		return true
-	case "^AA", "^AR", "^AS", "^BT", "^CT", "^KA", "^HH", "^KN", "^SK", "^SN": // for g4fon
+	case "^AA", "^AR", "^AS", "^BT", "^CT", "^KA", "^HH", "^KN", "^SK", "^VA", "^SN": // for g4fon
 		return true
 	default:
 		return false

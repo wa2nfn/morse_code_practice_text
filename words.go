@@ -627,24 +627,6 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 		wordOut = string(bytearr)
 	}
 
-	/* WDL
-	// use delimiter
-	if flagDMmin >= 1 && flaghead == false && (flagDR == false || (flagDR == true && flipFlop())) {
-
-		wordOut += " "
-
-		if flagDMmin == flagDMmax {
-			for count := 0; count < flagDMmax; count++ {
-				wordOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
-			}
-		} else {
-			for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
-				wordOut += delimiterSlice[rng.Intn(len(delimiterSlice))]
-			}
-		}
-	}
-		*/
-
 	// end raw word, and get back word to print
 	// do we need prefix?
 	if flagpremin >= 1 && (rand == 3 || rand == 1) {
