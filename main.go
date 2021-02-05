@@ -319,7 +319,7 @@ func main() {
 					fmt.Printf("\n%s File name <%s>.\n", err, flagopt)
 				}
 
-				skip := regexp.MustCompile(`^vers|^help|^opt`)
+				skip := regexp.MustCompile(`^help|^opt`)
 				for _, arg := range os.Args[1:] {
 					arg = strings.TrimLeft(arg, "-")
 					if skip.MatchString(arg) {
@@ -744,7 +744,7 @@ func main() {
 			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
 		} else if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" {
 			flagtutor = "LOCKDOWNMORSE"
-			kochChars = "EOAIUYZQJXKVBPGWFCLDMHRSNT0516273849.,/?"
+			kochChars = "EOAIUYZQJXKVBPGWFCLDMHRSNT0156273849.,/?"
 		} else if flagtutor == "MFJ418" || flagtutor == "MFJ" {
 			flagtutor = "MFJ418"
 			kochChars = "WBMHATJSNIODELKZGCUQRVFPYX5.7/9,168?2043"
