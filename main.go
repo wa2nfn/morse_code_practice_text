@@ -136,7 +136,7 @@ func init() {
 	flag.StringVar(&flagoutput, "out", "", "Output file name.")
 	flag.StringVar(&flagopt, "opt", "", "Specify an option file name to read or create.")
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
-	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"^\" separates delimiters e.g. <SK>^abc^123.\nA blank field e.g. aa^ ^bb, is valid to get a space. ")
+	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa^ ^bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
 	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418.\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) Between 1 and DM delimiter\nstrings are concatenated. DM=min:max")
