@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.5.1 1/28/2021
+Current version 1.5.2
 <P>
 This file contains examples of the usage of all options.
 <P>
@@ -180,12 +180,12 @@ Delimiter Option
 This option is the last of the 5 above. It is significantly different than the others, in order to provide
 its design flexibility.
 <P>
-Although this option in some case looks like the others, its processing and use are different. This option contains one or more fields of strings, they are NOT individual characters. Delimiter="ABC" is one string of "ABC", NOT an "A" or "B" or "C". If the delimiter were used with a word input file: "this is a test", the output would possibley be "test abc is abc this abc a".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="ABC^34^Z^?^,.".
-Now with the example above, the output might be: "is 34 test ,. a abc this". More useful delimiter now might be: "cq^de^qth^rst^&lt<SK>". Non-English letters can be used (but not range operator between them) e.g. "a%FC^%FC%C0^a-f^a-f123".
+Although this option in some case looks like the others, its processing and use are different. This option contains one or more fields of strings, they are NOT individual characters. Delimiter="ABC" is one string of "ABC", NOT an "A" or "B" or "C". If the delimiter were used with a word input file: "this is a test", the output would possibly be "TEST ABC IS ABC THIS ABC A".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="ABC|34|Z|?|,.".
+Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". More useful delimiter now might be: "CQ|DE|QTH|RST|&lt<SK>". Non-English letters can be used (but not range operator between them) e.g. "a%FC|%FC%C0|a-f|a-f123".
 <B>NOTE</B> lets look at those last two fields, this is the other way why a delimiter is different than the other lists.
 <P>
-If the field (data between the '^'s or a '^' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
-<B>HOWEVER</B> if the field contained, <B>ONLY</B> a simple range, as in the next to last field above "^a-f^" this is expanded as if you wanted <B>EACH</B> character to be treated as if it were its own field. Said another way the field "^A-F^" is treated as if you typed "A^B^C^D^E^F". (Much quicker and less error prone.)
+If the field (data between the '|'s or a '|' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
+<B>HOWEVER</B> if the field contained, <B>ONLY</B> a simple range, as in the next to last field above "|a-f|" this is expanded as if you wanted <B>EACH</B> character to be treated as if it were its own field. Said another way the field "|A-F|" is treated as if you typed "A|B|C|D|E|F".
 <H3>
 Use of Delimiter
 </H3>
@@ -195,7 +195,7 @@ If the option DR is also set, that says even though we asked for delimiters in b
 <P>
 While the fields of a delimiter can be a word or meaningful sequence like "QTH" or a ProSign like <AR>, the code groups cannot. Later in the document you will see that many features can be used in one execution to generate practice text to suit your
 current training needs. Using input words, code groups, delimiters, ProSigns and some random flags you could get very varied
-practice like: "this 38 test 78 is 838 4f?,7j practice 321 generated nw4,7d.,".
+practice like: "THIS 38 TEST 78 IS 838 4F?,7J PRACTICE 321 GENERATED NW4,7D.,".
 <P>
 <H2>
 Options Help Information
@@ -322,7 +322,7 @@ NOTE: You can use a character range, like A-F, instead of ABCDEF - but it must b
 NOTE: The set is NOT limited to letters, e.g. you could include an apostrophe to match "her's", but 
       over doing this is going to start to look like code groups, if the input is not regular text.
 NOTE: Regardless of the value of inlist or lesson, a prosign found in the input file will be treated 
-      as a "word" as long as the option "min" is grater than 4. This &lt;SK> or &lt;sk>, for example 
+      as a "word" as long as the option "min" is greater than 3 or 4 (depending on format ^XX or <XX>). This &lt;SK>, ^sk, for example 
       are treated as a word. The two characters are NOT verified, so &lt;ZZ> is a good as a real 
       prosign for matching purposes, its up to your tutor software to treat it appropriately.
 
@@ -392,28 +392,29 @@ be displayed in between each output word (1 exception). For example, if the outp
 <P>
 the man and is so
 <P>
-With the delimiter of '&lt;BT>', the output is:
+With the delimiter of '&lt;BT&gt;', the output is:
 <P>
-THE <MARK>&lt;BT></MARK> MAN &lt;BT> AND &lt;BT> IS &lt;BT> SO
+THE <MARK>&lt;BT></MARK> MAN &lt;BT&gt; AND &lt;BT&gt; IS &lt;BT&gt; SO
 <P>
 You might use this option to get extra practice for characters that might not appear in significant amount using
 the randomness of "-prelen" or "-suflen". The exception, noted above, is when used with the "-repeat" option. In this case,
-the delimiter appears AFTER the word repeating is done. as shown below. This is might be useful for doing head-copy, to separate the repeated words from the next group of repeated words. As belo
+the delimiter appears AFTER the word repeating is done. as shown below. This is might be useful for doing head-copy, to separate the repeated words from the next group of repeated words. As below:
 <PRE>
-THE THE THE &lt;BT> MAN MAN MAN &lt;BT> AND AND AND &lt;BT>
+THE THE THE &lt;BT&gt; MAN MAN MAN &lt;BT&gt; AND AND AND &lt;BT&gt;
 
 Note: the "-delimiter" option is NOT effected by any other option (random, skip, prelen, suflen)
+`
 Note: it is literal, and what ever you want. e.g. '.?/', 'XYZ', '123', 'It can even have multiple parts'.
 
 Note: You can have multiple delimiters, which are selected randomly, by
-      separating them with a carat "^" (SHIFT 6) e.g. -delimiter="&lt;BT>^&^tAR>^&lt;SK>".
-      for output like: "THE ? AND 4 MEN &lt;SK> SAT . END".
+      separating them with a pipe "|" e.g. -delimiter="&lt;BT&gt;|&lt;AR&gt;SK&lt;".
+      for output like: "THE ? AND 4 MEN &lt;SK&gt; SAT . END"
 
       Also: If delimiter is used, then -DM=X, where X is the number of delimiters, format X:Y gives a min and max.
       DM=0 therefore means no delimiter, even though -delimiter might have a value.
       As in: delimiter="1|?|=" -DM=1:3 then the inter-word delimiters might be: 1,?,=,11,=1=,??. 
 
-Note: If a field in the delimiter is only space(s) e.g. ".^?^ ^=", and DM=1, 
+Note: If a field in the delimiter is only space(s) e.g. ".|?| |=", and DM=1, 
       this will result in NO delimiter if the that field is selected. 
       So output could be: word1 ? word2 = word3  word4. No delimiter between 
       the last two words, your tutor will ignore the extra space.
@@ -423,6 +424,8 @@ Note: If a field in the delimiter is only space(s) e.g. ".^?^ ^=", and DM=1,
       for output e.g. DM=1:4 could produce "=??", output therefore could be:
       word1 =?? word2. But if there is a space in the delimiter, you could get 
       a multipart delimiter e.g. "=? ?", output could be: word1 =? ? word2.
+
+Note: If a field contains a prosign of either format, ^XX or &lt;XX&gt;, the filed cannot conatain anything else.
 
 Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that will translate into 
       a 1/2 second silence period during playback. This may be used with any feature where a delimiter

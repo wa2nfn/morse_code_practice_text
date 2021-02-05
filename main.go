@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.5.1 1/28/2021"
+	version       = "1.5.2" // 2/4/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -283,7 +283,7 @@ func init() {
 }
 
 func init() {
-	fmt.Fprintf(os.Stderr, "\n\t\tMCPT - Morse Code Practice Text\n\t\t\t   by WA2NFN\n\t\t    version %s\n\n", version)
+	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                  version %s\n                                    by WA2NFN\n\n", version)
 }
 
 func main() {
@@ -428,20 +428,23 @@ func main() {
 		runeMap['>'] = struct{}{}
 		runeMap[' '] = struct{}{}
 		runeMap['*'] = struct{}{}
+		runeMap['^'] = struct{}{}
 
 		// first make sure any prosign is valid format
-		m := regexp.MustCompile("\\s*<[a-zA-Z]{2}>\\s*")
+		m := regexp.MustCompile(`\s*\^[a-zA-Z]{2}\s*|\s*<[a-zA-Z]{2}>\s*`)
 		tStr := flagdelimit // in case we need original later
 
-		for _, field := range strings.Split(tStr, "^") {
+		for _, field := range strings.Split(tStr, "|") {
+
 			if field == "" {
 				continue
 			}
 
 			if m.MatchString(field) {
 				field = strings.TrimSpace(field)
+
 				if !ckProsign(field) {
-					fmt.Printf("\nError: option <delimiter> has more than a prosign in a field < %s >.\n", field)
+					fmt.Printf("\nError: option <delimiter> has more than a prosign in a field: %s \n", field)
 					os.Exit(77)
 				}
 
@@ -449,12 +452,13 @@ func main() {
 				continue
 			} else {
 				if len(field) > 0 {
-					if strings.Contains(field, "<") || strings.Contains(field, ">") {
+					if strings.Contains(field, "<") || strings.Contains(field, ">") || strings.Contains(field,"^") {
 						fmt.Printf("\nError: option <delimiter> contains invalid prosign format < %s >.\n", field)
 						os.Exit(77)
 					}
 				}
 			}
+
 			processDelimiter(field)
 
 		}
@@ -463,6 +467,7 @@ func main() {
 		delete(runeMap, '<')
 		delete(runeMap, '>')
 		delete(runeMap, '*')
+		delete(runeMap, '^')
 	}
 
 	if flagmin > flagmax {
@@ -834,7 +839,6 @@ func main() {
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
 		}
-		// wdl fmt.Printf("\n%s version: %s \n", program, version)
 
 		fmt.Printf("\nError: Either you forgot a required option, or you are a new user.\n\n\tNew User - \n\t\trun: %s -help=tour\n\t\tor\n\n\t\trun: %s -help\n\t\tto review options\n\n\t\tor see the MCPT User Guide.\n", nm, nm)
 
@@ -967,8 +971,12 @@ func ckValidInString(ck string, whoAmI string) []rune {
 		if _, ok := runeMap[runeRead]; ok {
 			newRune = append(newRune, unicode.ToUpper(runeRead))
 		} else {
-			fmt.Printf("\nError: Invalid entry in string <%s> for option <%s>.\n", str, whoAmI)
-			os.Exit(99)
+			if whoAmI == "delimiter" && runeRead == '^' {
+				;
+			} else {
+				fmt.Printf("\nError: Invalid entry in string <%s> for option <%s>.\n", str, whoAmI)
+				os.Exit(99)
+			}
 		}
 	}
 
