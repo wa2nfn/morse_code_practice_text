@@ -49,7 +49,7 @@ Ch/Cnt
 1       K M                                  T          T               E           E           W
 2       U            K M          K M        M          A               M           O           B
 3       R            R            R          R          E               R           A           M
-4       E            S            S          S          N               S           M           H
+4       E            S            S          S          N               S           I           H
 5       S            U            U          U          O               U           U           A
 6       N            A            A          A          I               A           Y           T
 7       A            P            P          P          S               P           Z           J
@@ -79,8 +79,8 @@ Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse  L
 25      Q            Q            Q          Q          P              Q            N           Y
 26      9            9            9          9          G              9            T           X
 27      2            Z            Z          Z          7              Z            0           5
-28      H            H            H          H          9              H            5           .
-29      3            3            3          3          /              3            1           7
+28      H            H            H          H          9              H            1           .
+29      3            3            3          3          /              3            5           7
 30      8            8            8          8          B              8            6           /
 
 Lesson  LCWO  JustLearnMorseCode  G4FON  MorseElmer  MorseCodeNinja  HamMorse LockdownMorse  MFJ418
