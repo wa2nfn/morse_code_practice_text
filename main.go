@@ -1128,10 +1128,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 // simple random true or false
 func flipFlop() bool {
-	if rng.Intn(2) == 1 {
-		return true
-	}
-	return false
+	return rng.Int() % 2 == 0
 }
 
 func findPercent(in string) (string, string) {
