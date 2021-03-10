@@ -304,7 +304,8 @@ func main() {
 
 	if flagopt != "" {
 		_, err := os.Stat(flagopt)
-		if os.IsNotExist(err) {
+
+		if err != nil {
 			fmt.Printf("\nError: Can't find options file=<%s>.\n\nDo you want to create one with the current options? Enter \"y\" or \"n\": ", flagopt)
 
 			ans := ""
@@ -318,6 +319,20 @@ func main() {
 				if err != nil {
 					fmt.Printf("\n%s File name <%s>.\n", err, flagopt)
 				}
+
+				// exp WDL
+				defer  func() {
+					closeErr := fp.Close()
+					if closeErr != nil {
+						if err == nil {
+							err = closeErr
+						} else {
+							fmt.Println("Error occured while closing the file :", closeErr)
+							os.Exit(2)
+						}
+					}
+				}()
+				// end exp WDL
 
 				skip := regexp.MustCompile(`^help|^opt`)
 				for _, arg := range os.Args[1:] {

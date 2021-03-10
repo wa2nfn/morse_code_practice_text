@@ -342,11 +342,11 @@ func doOutput(words []string, fp *os.File) {
 	ebslowcnt := 0
 	ebfastcnt := 0
 	ebinslow := false
-	fRANDOM := false
-	fSLOWFAST := false
-	fRAMP := false
-	fEFFRAMP := false
-	fREPEAT := false
+	flagRANDOM := false
+	flagSLOWFAST := false
+	flagRAMP := false
+	flagEFFRAMP := false
+	flagREPEAT := false
 	speedCount := 0
 	anyLCWO := false
 	var charSlice []rune
@@ -367,18 +367,18 @@ func doOutput(words []string, fp *os.File) {
 
 	// for runtime efficiency?
 	if flagLCWOramp {
-		fRAMP = true
+		flagRAMP = true
 	}
 	if flagLCWOefframp {
-		fEFFRAMP = true
+		flagEFFRAMP = true
 	}
 	if flagLCWOslow > 0 {
-		fSLOWFAST = true
+		flagSLOWFAST = true
 		anyLCWO = true
 	}
 	if flagLCWOrandom {
-		if flagLCWOnum > 1 && flagLCWOlow > 0 && flagLCWOstep >= 1 && !fRAMP && !fSLOWFAST && !fEFFRAMP && !fREPEAT {
-			fRANDOM = true
+		if flagLCWOnum > 1 && flagLCWOlow > 0 && flagLCWOstep >= 1 && !flagRAMP && !flagSLOWFAST && !flagEFFRAMP && !flagREPEAT {
+			flagRANDOM = true
 			anyLCWO = true
 		} else {
 			fmt.Printf("\nError: Invalid combination of LCWO options.\n")
@@ -386,11 +386,11 @@ func doOutput(words []string, fp *os.File) {
 		}
 	}
 	if flagLCWOrepeat >= 1 {
-		fREPEAT = true
+		flagREPEAT = true
 		anyLCWO = true
 	}
 
-	if flagLCWOlow > 0 && flagLCWOstep > 0 && flagLCWOnum > 0 && (fRAMP == false && fRANDOM == false && fREPEAT == false) {
+	if flagLCWOlow > 0 && flagLCWOstep > 0 && flagLCWOnum > 0 && (flagRAMP == false && flagRANDOM == false && flagREPEAT == false) {
 		fmt.Printf("\nError: You're missing an LCWO option to indicate a feature: i.e. LCWO_random, LCWO_repeat, ...\n")
 		os.Exit(5)
 	}
@@ -418,8 +418,8 @@ func doOutput(words []string, fp *os.File) {
 		}
 	}
 
-	// LCWO fRAMP how many words per ramp section
-	if fRAMP && !fEFFRAMP {
+	// LCWO flagRAMP how many words per ramp section
+	if flagRAMP && !flagEFFRAMP {
 		sectionSize = flagnum / flagLCWOnum
 		if sectionSize < 1 {
 			fmt.Printf("\nError: LCWO_num is too large for the -num value.\nThere would not be any words in each speed change section.\n")
@@ -428,7 +428,7 @@ func doOutput(words []string, fp *os.File) {
 
 		lastSpeed = LCWOspeeds[0]
 
-		if !fREPEAT {
+		if !flagREPEAT {
 			if flagLCWOeff > 0 {
 				strOut += fmt.Sprintf("|w%d |e%d ", LCWOspeeds[0], flagLCWOeff)
 			} else {
@@ -439,11 +439,11 @@ func doOutput(words []string, fp *os.File) {
 	}
 
 	// LCWO effective_ramp how many words per ramp section
-	if fEFFRAMP && !fRAMP {
+	if flagEFFRAMP && !flagRAMP {
 		sectionSize = flagnum / flagLCWOnum
 
 		if sectionSize < 1 {
-			fmt.Printf("\nError: LCWO_num is too large for the -num value.\nThere would not be any words in each speed change section.\n")
+			fmt.Printf("\nError: LCWOnum is too large for the -num value.\nThere would not be any words in each speed change section.\n")
 			os.Exit(1)
 		}
 
@@ -460,9 +460,9 @@ func doOutput(words []string, fp *os.File) {
 	for index, wordOut := range words {
 
 		//////////////
-		// LCWO fRANDOM
+		// LCWO flagRANDOM
 		//////////////
-		if fRANDOM {
+		if flagRANDOM {
 			speed := LCWOspeeds[0]
 
 			if len(LCWOspeeds) >= 1 {
@@ -487,7 +487,7 @@ func doOutput(words []string, fp *os.File) {
 		/////////////////
 		/// LCWO FAST_SLOW
 		/////////////////
-		if fSLOWFAST {
+		if flagSLOWFAST {
 			s := flagLCWOlow
 
 			if ebinslow {
@@ -530,7 +530,7 @@ func doOutput(words []string, fp *os.File) {
 		// LCWO CHECK FOR SPEED MARKERS
 		///////////////////////////////////
 
-		if fRAMP {
+		if flagRAMP {
 
 			if counter >= sectionSize && speedCount < len(LCWOspeeds) {
 				sf := ""
@@ -558,9 +558,9 @@ func doOutput(words []string, fp *os.File) {
 		}
 
 		////////////
-		// fEFFRAMP
+		// flagEFFRAMP
 		///////////
-		if fEFFRAMP {
+		if flagEFFRAMP {
 			if counter == sectionSize {
 				// ck if eff is going to over take word speed
 				if lastSpeedEff+flagLCWOstep <= flagLCWOlow {
@@ -578,9 +578,9 @@ func doOutput(words []string, fp *os.File) {
 		}
 
 		//////////////
-		/// fSLOWFAST
+		/// flagSLOWFAST
 		//////////////
-		if fSLOWFAST {
+		if flagSLOWFAST {
 			if ebinslow {
 				ebslowcnt++
 			} else {
@@ -654,7 +654,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 	if flagLCWOrepeat > 1 {
 
 		for i := 0; i < flagLCWOrepeat; i++ {
-			// if we ALSO have fRAMP we must offset speed
+			// if we ALSO have flagRAMP we must offset speed
 			spd := lastSpeed + (i * flagLCWOstep)
 
 			if flagLCWOeff > 0 {
@@ -814,7 +814,6 @@ func fillArray(fp *os.File) {
 		}
 
 		// trim and then pad with proSign
-		//wordArray = wordArray[0:len(wordArray)-len(proSign)]
 		wordArray = append(wordArray, proSign...)
 	}
 
