@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.5.3" // 3/9/2021
+	version       = "1.5.4" // 3/20/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -115,6 +115,7 @@ var (
 	flagcallsigns   bool
 	flagmust        string
 	flaghead        bool
+	flagsend        string
 )
 
 func init() {
@@ -167,6 +168,7 @@ func init() {
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
 	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
 	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
+	flag.StringVar(&flagsend, "send", "", "A string of group numbers (1-5) to make sending practice groups.")
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
 	runeMap['a'] = struct{}{}
@@ -849,7 +851,7 @@ func main() {
 	runeMap = nil
 	runeMapInt = nil
 
-	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false {
+	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && flagsend == "" {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
@@ -923,6 +925,11 @@ func main() {
 	if flagtext != "" {
 		readStringsFile(localSkipFlag, localSkipCount, fp)
 		doOutput(wordArray, fp)
+		os.Exit(0) // program done
+	}
+
+	if flagsend != "" {
+		doSendGroups(fp)
 		os.Exit(0) // program done
 	}
 
@@ -1107,7 +1114,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 				continue
 			} else {
 				res = res + "\n"
-				// extra space if no -out 09/14
+				// extra space if no -out 
 				if flagLF {
 					res += "\n"
 				}
