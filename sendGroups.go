@@ -26,6 +26,7 @@ func doSendGroups(fp *os.File) {
 		outBuf = append(outBuf, tmpOut...)
 	}
 
+
 	printStrBuf(string(outBuf), fp)
 }
 
@@ -70,6 +71,10 @@ func getRandomSendChar(randCharSlice []rune) (rune, []rune) {
 	sLen--
 	randCharSlice[index] = randCharSlice[sLen]
 	randCharSlice = randCharSlice[:sLen]
+
+	if newChar == '0' {
+		 newChar = '\u00D8' // make zeros more readable ? wdl
+ 	}
 
 	return newChar, randCharSlice
 }
