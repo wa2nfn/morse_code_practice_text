@@ -61,23 +61,12 @@ func makeSingleSendGroup(charSlice []rune) ([]rune, []rune) {
 		tmp, charSlice = getRandomSendChar(charSlice)
 		// see if its from group6 prosigns
 		switch tmp {
-		case 'a':
-			cg = append(cg, rune2prosign[tmp]...)
-		case 'b':
-			cg = append(cg, rune2prosign[tmp]...)
-		case 'c':
-			cg = append(cg, rune2prosign[tmp]...)
-		case 'd':
-			cg = append(cg, rune2prosign[tmp]...)
-		case 'e':
-			cg = append(cg, rune2prosign[tmp]...)
-		case 'f':
+		case 'a','b','c','d','e','f','g':
 			cg = append(cg, rune2prosign[tmp]...)
 		default:
 			cg = append(cg, tmp)
 		}
 	}
-
 
 	return cg, charSlice
 }
@@ -126,7 +115,7 @@ func buildSendSlice() []rune {
 	}
 	// special: use lc letters which we will later map to prosigns
 	if strings.Contains(flagsend, "6") {
-		charSlice = append(charSlice, []rune("abcdef")...)
+		charSlice = append(charSlice, []rune("abcdefg")...)
 		// populate the map
 		rune2prosign['a'] = []rune("<AR>")
 		rune2prosign['b'] = []rune("<AS>")
@@ -134,6 +123,7 @@ func buildSendSlice() []rune {
 		rune2prosign['d'] = []rune("<KA>")
 		rune2prosign['e'] = []rune("<HH>")
 		rune2prosign['f'] = []rune("<SK>")
+		rune2prosign['g'] = []rune("<BK>")
 	}
 
 	if len(charSlice) < 5 {

@@ -859,14 +859,14 @@ In the second command, the headCopy option does the same thing for words as it d
 Example 27: 
 </H2>
 <B>mcpt -send=12</B>
-<B>mcpt -send=12 -cglen=2:6</B>
+<B>mcpt -send=1,2 -cglen=2:6</B>  <I>comma is ignored, just to show its 1 & 2 not 12</I>
 <B>mcpt -send=4 -cglen=2:4</B>
 <P>
 After learning to receive all the characters, this option can generate some groups for sending practice, particularly for keyers/bugs with dit/dah alternations.
-The following groups numbered from 1-5 determine the characters. The order should be from simplist to difficult (arguably).
+The following groups numbered from 1-6 determine the characters. The order should be from simplist to difficult (arguably).
 
-<B>Note the output from this command is meant to be displayed on your screen, not given to your trainer software. ZEROS are shown with a slash for easy reading
-during sending practice becasue capitol "O" looks too similar to ZERO. Trainers will very likely not interpret the character as a zero!</B>
+<B>Note the output from this command is meant to be displayed on your screen, for you to send from, not given to your trainer software. 
+ZEROS are shown with a slash for easy reading because upper case "O" looks too similar to ZERO when adjacent. Trainers will NOT interpret the character as a zero!</B>
 <PRE>
 
 1: EIHMOST50     # all dits or dahs
@@ -874,14 +874,23 @@ during sending practice becasue capitol "O" looks too similar to ZERO. Trainers 
 3: 12346789      # as above (2 and 3 same difficulty, just divided for group size)
 4: FKLRPQXY      # two dit/dah or dah/dit alternations
 5: C.,?/=        # three alternations or longer character
-6: &lt;AR&gt;&lt;AR&gt;&lt;HH&gt;&lt;KA&gt;&lt;BT&gt;&lt;SK&gt;  # prosigns
+6: &lt;AR&gt;&lt;AR&gt;&lt;BK&gt;&lt;HH&gt;&lt;KA&gt;&lt;BT&gt;&lt;SK&gt;  # prosigns
 
 The third command above, might generate:
 
 FFY RR QYYY XK
+XF LY QKP RPRY
 
-</PRE>
-The options <B>num, len, displayFormat</B> can also be used for readability.
+Adding the option displayFormat=LF, for readability, generates:
+
+mcpt -send=1,3 -num=200 -displayFormat=LF 
+
+ F5ØHE  OSEMP  OIPMM  RMEFH  RIYTO  R5XQI  THOXF  
+
+ THFRØ  LXLRO  SØIØK  LXEY5  XML5F  5IRØK  RKØQI 
+
+ TFEKP  I5PFP  TQFFH  IPYEX  TQTTY  EKMFO  ØKOIL
+
 <P>
 <B>***** LCWO users should also review Example 20.*****</B>
 <H2>
