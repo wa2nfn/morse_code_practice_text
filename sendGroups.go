@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+var (
+	rune2prosign = make(map[rune][]rune)
+)
+
 /*
 // based on codeGroups - this is used for -send option
 // generates groups for sending practice based on  number indicating a group of characters with similar attributes
@@ -14,7 +18,9 @@ import (
 // make random send groups
 func doSendGroups(fp *os.File) {
 	var tmpOut []rune
+	//wdl rune2prosign = make([]rune, 0, 6)  // only for group 6
 	outBuf := make([]rune, 0, (flagcgmax * flagnum)+flagnum ) 
+
 	sendCharSlice := buildSendSlice() // gets enough chars for entire output
 
 	// make the send groups
@@ -50,12 +56,28 @@ func makeSingleSendGroup(charSlice []rune) ([]rune, []rune) {
 		gl--
 	}
 
+	cg = append(cg, ' ')
 	for i := 0; i < gl; i++ {
 		tmp, charSlice = getRandomSendChar(charSlice)
-		cg = append(cg, tmp)
+		// see if its from group6 prosigns
+		switch tmp {
+		case 'a':
+			cg = append(cg, rune2prosign[tmp]...)
+		case 'b':
+			cg = append(cg, rune2prosign[tmp]...)
+		case 'c':
+			cg = append(cg, rune2prosign[tmp]...)
+		case 'd':
+			cg = append(cg, rune2prosign[tmp]...)
+		case 'e':
+			cg = append(cg, rune2prosign[tmp]...)
+		case 'f':
+			cg = append(cg, rune2prosign[tmp]...)
+		default:
+			cg = append(cg, tmp)
+		}
 	}
 
-	cg = append(cg, ' ')
 
 	return cg, charSlice
 }
@@ -74,7 +96,7 @@ func getRandomSendChar(randCharSlice []rune) (rune, []rune) {
 
 	if newChar == '0' {
 		 newChar = '\u00D8' // make zeros more readable ? wdl
- 	}
+	}
 
 	return newChar, randCharSlice
 }
@@ -101,6 +123,17 @@ func buildSendSlice() []rune {
 	}
 	if strings.Contains(flagsend, "5") {
 		charSlice = append(charSlice, []rune("C.,/?=")...)
+	}
+	// special: use lc letters which we will later map to prosigns
+	if strings.Contains(flagsend, "6") {
+		charSlice = append(charSlice, []rune("abcdef")...)
+		// populate the map
+		rune2prosign['a'] = []rune("<AR>")
+		rune2prosign['b'] = []rune("<AS>")
+		rune2prosign['c'] = []rune("<BT>")
+		rune2prosign['d'] = []rune("<KA>")
+		rune2prosign['e'] = []rune("<HH>")
+		rune2prosign['f'] = []rune("<SK>")
 	}
 
 	if len(charSlice) < 5 {
