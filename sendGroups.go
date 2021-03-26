@@ -20,6 +20,7 @@ func doSendGroups(fp *os.File) {
 	var tmpOut []rune
 	//wdl rune2prosign = make([]rune, 0, 6)  // only for group 6
 	outBuf := make([]rune, 0, (flagcgmax * flagnum)+flagnum ) 
+	outBuf = append(outBuf,'\u200B') // also detecting src file for file compare
 
 	sendCharSlice := buildSendSlice() // gets enough chars for entire output
 
@@ -56,7 +57,7 @@ func makeSingleSendGroup(charSlice []rune) ([]rune, []rune) {
 		gl--
 	}
 
-	cg = append(cg, ' ')
+	//wdl extra cg = append(cg, ' ')
 	for i := 0; i < gl; i++ {
 		tmp, charSlice = getRandomSendChar(charSlice)
 		// see if its from group6 prosigns
