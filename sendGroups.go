@@ -13,13 +13,17 @@ import (
 )
 
 var (
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
+	char2psReplacer *strings.Replacer
+	ps2charReplacer *strings.Replacer
+	gotCarat bool
+	validCharPS string
+	invalidCharPS string
 )
 
 // determine which funtion to do
 func doSendOpts(fp *os.File) {
 	if flagsend != "" && flagsendcheck != "" {
-		fmt.Printf("\nError: Option <send> and <sendCheck) are mutually exclusive.\n")
+		fmt.Printf("\nError: Option <send> and <sendCheck> are mutually exclusive.\n")
 		os.Exit(1)
 	} else if flagsend != "" {
 		doSendGroups(fp)
@@ -29,10 +33,28 @@ func doSendOpts(fp *os.File) {
 }
 
 func doSendCheck(fp *os.File) {
-	path := strings.Split(flagsendcheck, ",")
+	var path []string
+	var sep = ","
+
+	if strings.Contains(flagsendcheck,sep) {
+		// ps format <xx>
+		char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
+		ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g")
+		validCharPS = "<>"
+		invalidCharPS = "^"
+	} else {
+		// ps format ^xx
+		sep = "^"
+		validCharPS = sep
+		invalidCharPS = "<>"
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK")
+		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g")
+	}
+
+	path = strings.Split(flagsendcheck, sep)
 
 	if len(path) == 0 || len(path) != 2 {
-		fmt.Printf("\nError: Option <sendCheck> reuires 2 file names in format like: file1,file2.\n")
+		fmt.Printf("\nError: Option <sendCheck> requires 2 file names, in format like: file1,file2 (if prosigns have <XX> format\nor file1^file2, if prosigms have ^XX format.\n")
 		os.Exit(1)
 	}
 
@@ -42,7 +64,7 @@ func doSendCheck(fp *os.File) {
 
 	switch errVal {
 	case 1:
-		fmt.Printf("\nError: One file must be from MCPT's send option output, the other from a morse  sending output capture (not MCPT).\n")
+		fmt.Printf("\nError: One file must be from MCPT's send option output, the other from a morse sending output capture (not MCPT).\n")
 	default:
 		os.Exit(0)
 	}
@@ -63,7 +85,6 @@ func doSendGroups(fp *os.File) {
 
 	// make the send groups
 	for i := 0; i < flagnum; i++ {
-
 		// tmpOut is our send group
 		tmpOut, sendCharSlice = makeSingleSendGroup(sendCharSlice)
 		tmpOut = append(tmpOut, ' ')
@@ -115,7 +136,7 @@ func getRandomSendChar(randCharSlice []rune) (rune, []rune) {
 	randCharSlice = randCharSlice[:sLen]
 
 	if newChar == '0' {
-		newChar = '\u00D8' // make zeros more readable ? wdl
+		newChar = '\u00D8' // make zeros more readable 
 	}
 
 	return newChar, randCharSlice
@@ -182,35 +203,38 @@ func readLines(path []string) int {
 	var totalCorrect int
 	var totalChars int
 	var warningMsg string
-	var invalidPSchars bool
+	var invalidPScharsFlag bool
 	info := color.New(color.FgRed).SprintFunc() // make error visually readable
-	ps2charReplacer := strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g")
-	//char2psReplacer := strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
 
 	// do both files
 	for fIndex := 0; fIndex <= 1; fIndex++ {
 		// determine which file we have
 		whoIsIt, b := determineFile(path[fIndex])
+		b = bytes.ReplaceAll(b, []byte("0"), []byte("\u00D8"))  // fancy all zeros
 
 		if whoIsIt == 'm' {
 			// process MCPT file
 			gotMCPT = true
-			sendGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
+			MCPTps2charReplacer := strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g")
+			sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
 		} else {
 			// process User file
 			gotUser = true
-			// make zeros reformatted before compare
-			b = bytes.ReplaceAll(b, []byte("0"), []byte("\u00D8"))
+			// convert any NL to space
 			b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
 			tmpStr := ps2charReplacer.Replace(string(b))
 			// must see if the user had invalid prosign delimiters <> if so make them *
-			if strings.ContainsAny(tmpStr, "<>") {
-				invalidPSchars = true
+			if strings.ContainsAny(tmpStr, invalidCharPS) {
+				invalidPScharsFlag = true
 				b = []byte(tmpStr)
-				//b = bytes.ReplaceAll(b, []byte("^"), []byte("*"))
-				b = bytes.ReplaceAll(b, []byte("<"), []byte("*"))
-				b = bytes.ReplaceAll(b, []byte(">"), []byte("*"))
+
+				if gotCarat {
+					b = bytes.ReplaceAll(b, []byte("^"), []byte("*"))
+				} else {
+					b = bytes.ReplaceAll(b, []byte("<"), []byte("*"))
+					b = bytes.ReplaceAll(b, []byte(">"), []byte("*"))
+				}
 			}
 			userGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
 		}
@@ -306,8 +330,8 @@ func readLines(path []string) int {
 		fmt.Printf("%s", warningMsg)
 	}
 
-	if invalidPSchars {
-		fmt.Printf("\n%s", "Warning: Your file had unsupported ProSigns or ProSign characters \"^<>\",\nthey will be shown as \"*\" and will add to your errors.\n")
+	if invalidPScharsFlag {
+		fmt.Printf("\nWarning: Your file had unsupported ProSigns or ProSign character(s) \"%s\",\nthey will be shown as \"*\" and will add to your errors.\n",invalidCharPS)
 	}
 
 	return 0
@@ -323,7 +347,7 @@ func determineFile(path string) (byte, []byte) {
 	}
 
 	// see if its the MCPT file
-	if len(b) >=2 && b[len(b)-2] == byte(0x08) {
+	if len(b) >= 2 && b[len(b)-2] == byte(0x08) { //BS
 		// the MCPT file
 		return byte('m'), b[:len(b)-2]
 	} else {

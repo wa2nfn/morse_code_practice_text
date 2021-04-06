@@ -894,12 +894,20 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
 
  <B>mcpt -sendCheck=test.txt,mycw.txt</B>
 
- If you had run any of the commands at the beginning of this example, and added the -out=text.txt, your practice text would
- be in that file. To actually practice sending you would display that file on your screen.
- If you have other software which allows you to send morse and it can capture the morse you sent as text, then you can verify
- your sending by comparing the two files. Let's say your captured cw is in mycw.txt.
+ NOTE: If your "sending" software, records prosigns in the format like: <SK>, then use a comma "," to separate the file names.
+ NOTE: If your "sending" software, records prosigns in the format like: ^SK, then use a carat "^" to separate the file names.
+       MCPT files created with the -send option will use the <SK> format, but it can check either format from your software file.
+       MCPT files created with options other than -send (text, codeGroups, permutations, etc.) will use the format based on the prosign option file,
+       so use "," or "carat" as appropriate.
 
- The run: <B>mcpt -sendCheck=test.txt,mycw.txt</B>
+ If you had run any of the commands at the beginning of this example, and added the -out=text.txt, your practice text would
+ be in that file. To actually practice sending you would display that file on your screen, and do your sending.
+
+ If you have other software which allows you to send morse and capture it as text, then you can verify your sending by comparing the two files. 
+
+ Let's say your captured morse is in mycw.txt.
+
+ Then run: <B>mcpt -sendCheck=test.txt,mycw.txt</B>
 
  The order of the files and names do not matter.
  Below is a simple output. The erred characters will be shown in <span style="color:red">red</span> text.
