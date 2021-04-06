@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.5.4" // 3/20/2021
+	version       = "1.5.6" // 4/5/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -116,6 +116,7 @@ var (
 	flagmust        string
 	flaghead        bool
 	flagsend        string
+	flagsendcheck        string
 )
 
 func init() {
@@ -169,6 +170,7 @@ func init() {
 	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
 	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
 	flag.StringVar(&flagsend, "send", "", "A string of group numbers (1-5) to make sending practice groups.")
+	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
 	runeMap['a'] = struct{}{}
@@ -417,10 +419,7 @@ func main() {
 		switch flagdisplayFormat {
 		case "LF":
 			flagLF = true
-		case "LF_TAB":
-			flagLF = true
-			flagTAB = true
-		case "TAB_LF":
+		case "LF_TAB", "TAB_LF":
 			flagLF = true
 			flagTAB = true
 		case "TAB":
@@ -851,7 +850,7 @@ func main() {
 	runeMap = nil
 	runeMapInt = nil
 
-	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && flagsend == "" {
+	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "" ) {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
@@ -928,8 +927,9 @@ func main() {
 		os.Exit(0) // program done
 	}
 
-	if flagsend != "" {
-		doSendGroups(fp)
+	// does -send or -sendCheck
+	if flagsend != "" || flagsendcheck != "" {
+		doSendOpts(fp)
 		os.Exit(0) // program done
 	}
 
@@ -1138,6 +1138,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 		fmt.Printf("%s", res)
 		os.Exit(0)
 	} else {
+		res +=  string('\u0008') // marked as from mcpt
 		_, err := fp.WriteString(res)
 		if err != nil {
 			fmt.Println(err)

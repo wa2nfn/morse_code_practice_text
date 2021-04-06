@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.5.4
+Current version 1.5.6
 <P>
 This file contains examples of the usage of all options.
 <P>
@@ -863,17 +863,19 @@ Example 27:
 <B>mcpt -send=4 -cglen=2:4</B>
 <P>
 After learning to receive all the characters, this option can generate some groups for sending practice, particularly for keyers/bugs with dit/dah alternations.
+
+<I>See the latter text on -sendCheck too.</I>
+
 The following groups numbered from 1-6 determine the characters. The order should be from simplist to difficult (arguably).
 
 <B>Note the output from this command is meant to be displayed on your screen, for you to send from, not given to your trainer software. 
 ZEROS are shown with a slash for easy reading because upper case "O" looks too similar to ZERO when adjacent. Trainers will NOT interpret the character as a zero!</B>
-<PRE>
 
 1: EIHMOST50                      # all dits or dahs
 2: ABDGJNUVWZ                     # one dit/dah or dah/dit alternation
 3: 12346789                       # as above (2 and 3 same difficulty, just divided for group size)
 4: FKLRPQXY                       # two dit/dah or dah/dit alternations
-5: C.,?/=                         # three alternations or longer character
+5: C.,?/                          # three alternations or longer character
 6: &lt;AR&gt;&lt;AS&gt;&lt;BK&gt;&lt;HH&gt;&lt;KA&gt;&lt;BT&gt;&lt;SK&gt; 
 
 The third command above, might generate:
@@ -890,6 +892,31 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
 
  TFEKP  I5PFP  TQFFH  IPYEX  TQTTY  EKMFO  ØKOIL
 
+ <B>mcpt -sendCheck=test.txt,mycw.txt</B>
+
+ If you had run any of the commands at the beginning of this example, and added the -out=text.txt, your practice text would
+ be in that file. To actually practice sending you would display that file on your screen.
+ If you have other software which allows you to send morse and it can capture the morse you sent as text, then you can verify
+ your sending by comparing the two files. Let's say your captured cw is in mycw.txt.
+
+ The run: <B>mcpt -sendCheck=test.txt,mycw.txt</B>
+
+ The order of the files and names do not matter.
+ Below is a simple output. The erred characters will be shown in <span style="color:red">red</span> text.
+
+Note that <B>any</B> text file created by MCPT can be used as a practice file, not only those from the &lt;-send>.
+
+
+  Levenshtein    MCPT Created        User Sent
+   Distance          Group            Group
+ ============   ===============   ===============
+       0        &lt;BT>              &lt;BT>
+       1        &lt;SK>              <span style="color:red">&lt;AS&gt;</span>
+       4        HI                H<span style="color:red">GGFJ</span>
+
+Accuracy: 50.00%
+
+ </PRE>
 <P>
 <B>***** LCWO users should also review Example 20.*****</B>
 <H2>
