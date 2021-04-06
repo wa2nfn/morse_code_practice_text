@@ -185,7 +185,7 @@ func readLines(path []string) int {
 	var invalidPSchars bool
 	info := color.New(color.FgRed).SprintFunc() // make error visually readable
 	ps2charReplacer := strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g")
-	char2psReplacer := strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
+	//char2psReplacer := strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
 
 	// do both files
 	for fIndex := 0; fIndex <= 1; fIndex++ {
@@ -204,11 +204,11 @@ func readLines(path []string) int {
 			b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
 			tmpStr := ps2charReplacer.Replace(string(b))
-			// must see if the user had invalid prosign delimiters ^<> if so make them *
-			if strings.ContainsAny(tmpStr, "^<>") {
+			// must see if the user had invalid prosign delimiters <> if so make them *
+			if strings.ContainsAny(tmpStr, "<>") {
 				invalidPSchars = true
 				b = []byte(tmpStr)
-				b = bytes.ReplaceAll(b, []byte("^"), []byte("*"))
+				//b = bytes.ReplaceAll(b, []byte("^"), []byte("*"))
 				b = bytes.ReplaceAll(b, []byte("<"), []byte("*"))
 				b = bytes.ReplaceAll(b, []byte(">"), []byte("*"))
 			}
