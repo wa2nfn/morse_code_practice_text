@@ -19,7 +19,7 @@ LCWO features are shown using words from an input file, they can also be used wi
 <H2>
 Overview
 </H2>
-Current version 1.5.6
+Current version 2.0
 <P>
 This file contains examples of the usage of all options.
 <P>
@@ -152,27 +152,6 @@ situations. To save you typing, LETTERS (upper or lowercase) or DIGITS can be en
 In range notation, A-H, is the same as typing ABCDEFGH, the only two criteria is the first character must come in dictionary
 order (A-D is good, D-A is invalid), and each range is independent (A-z invalid, A-Z good). Digits similarly go from 0-9.
 <P>
-ONLY for users interested in French, German, and Spanish characters. You can represent the letter you want using a simplified notation for UTF-8 characters. More on this later, basically you enter a sequence like %FC instead of '\u00FC'.
-<P>
-Here is the way you will represent the various supported non-English characters in any of the "list" options.
-<PRE>
-Enter: %C0 to represent '\u00C0' // Upper Case A grave
-Enter: %E0 to represent '\u00E0' // Lower Case a grave
-Enter: %C4 to represent '\u00C4' // Upper Case A diaeresis
-Enter: %E4 to represent '\u00E4' // Lower Case a diaeresis
-Enter: %C9 to represent '\u00C9' // Upper Case E acute
-Enter: %E9 to represent '\u00E9' // Lower Case e acute
-Enter: %C8 to represent '\u00C8' // Upper Case E grave
-Enter: %E8 to represent '\u00E8' // Upper Case E acute
-Enter: %C7 to represent '\u00C7' // Upper Case C cedilla
-Enter: %E7 to represent '\u00E7' // Lower Case c cedilla
-Enter: %D1 to represent '\u00D1' // Upper Case N tilde
-Enter: %F1 to represent '\u00F1' // Lower Case n tilde
-Enter: %D6 to represent '\u00D6' // Upper Case O diaeresis
-Enter: %F6 to represent '\u00F6' // Lower Case o diaeresis
-Enter: %DC to represent '\u00DC' // Upper Case U diaeresis
-Enter: %FC to represent '\u00FC' // Lower Case u diaeresis
-</PRE>
 <P>
 <H3>
 Delimiter Option
@@ -181,7 +160,7 @@ This option is the last of the 5 above. It is significantly different than the o
 its design flexibility.
 <P>
 Although this option in some case looks like the others, its processing and use are different. This option contains one or more fields of strings, they are NOT individual characters. Delimiter="ABC" is one string of "ABC", NOT an "A" or "B" or "C". If the delimiter were used with a word input file: "this is a test", the output would possibly be "TEST ABC IS ABC THIS ABC A".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="ABC|34|Z|?|,.".
-Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". More useful delimiter now might be: "CQ|DE|QTH|RST|&lt<SK>". Non-English letters can be used (but not range operator between them) e.g. "a%FC|%FC%C0|a-f|a-f123".
+Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". More useful delimiter now might be: "CQ|DE|QTH|RST|&lt<SK>".
 <B>NOTE</B> lets look at those last two fields, this is the other way why a delimiter is different than the other lists.
 <P>
 If the field (data between the '|'s or a '|' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
@@ -193,7 +172,7 @@ The delimiter option, works in conjuction with 2 other options. Delimiter-multip
 as we said this expands and is the same as 9 single character fields A^B^C^D^a^2^3^?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "this 3a test dd? is c a".
 If the option DR is also set, that says even though we asked for delimiters in between each word, that choice is now random (DR means delimiter-random).
 <P>
-While the fields of a delimiter can be a word or meaningful sequence like "QTH" or a ProSign like <AR>, the code groups cannot. Later in the document you will see that many features can be used in one execution to generate practice text to suit your
+While the fields of a delimiter can be a word or meaningful sequence like "QTH" or a ProSign like &lt;AR>, the code groups cannot. Later in the document you will see that many features can be used in one execution to generate practice text to suit your
 current training needs. Using input words, code groups, delimiters, ProSigns and some random flags you could get very varied
 practice like: "THIS 38 TEST 78 IS 838 4F?,7J PRACTICE 321 GENERATED NW4,7D.,".
 <P>

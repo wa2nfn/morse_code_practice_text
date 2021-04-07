@@ -12,7 +12,6 @@ import (
 /*
   read input file looking for AnyString that matches current tutor/lesson.
   First we will strip characters out of the possible characters to listen to.
-  (i.e. we will NOT handle the internationals since they are NOT in any of the lessons)
 */
 
 func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {

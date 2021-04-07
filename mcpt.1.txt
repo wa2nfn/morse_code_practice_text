@@ -7,7 +7,7 @@ NAME
        this file (linux issue).
 
 SYNOPSIS
-       mcpt -help | -help=options|files|tutors|international|lcwo
+       mcpt -help | -help=options|files|tutors|lcwo
 
        mcpt -permute=p|t|b [-prosign=FILE] [-lesson= NUM -tutor= TUTOR]
 
@@ -34,7 +34,7 @@ SYNOPSIS
 
        LIST="0-9,./?="
 
-       INLIST="A-Za-z0-9,./?=" (plus international characters)
+       INLIST="A-Za-z0-9,./?=" 
 
        MISC=[-num=NUM -len=NUM  -prelen=NUM  -prelist=LIST  -suflen=NUM
        -suflist=NUM -random -DM=NUM -delimiter=DELIM -displayFormat=LF|TAB|LF_TAB|TAB_LF]
@@ -45,7 +45,7 @@ SYNOPSIS
 
 DESCRIPTION
        MCPT  generates text to be given to any Morse Code tutor which can cre-
-       ate audible code from a	text  file.   Generated  text,	can  be:  code
+       ate audible code from a	text  file. Generated  text,	can  be:  code
        groups,	words  from  input file, or a hybrid. Options, provide altern-
        tives to the user to customize details of the practice text.
 
@@ -68,15 +68,15 @@ OPTIONS
        -cglist=LIST
 	      set the list of a characters to use in a code group. Range nota-
 	      tion (A-D), for upper, lower case letters  or  numbers  is  sup-
-	      ported..IPf  an  "="  is in the LIST, the LIST must be in double
-	      quotes. For international characters see: -help=international.
+	      ported. If  an  "="  is in the LIST, the LIST must be in double
+	      quotes. 
 
 
        -delimiter=DELIM
 	      DELIM is a set of "^" separated  fields  to  use	an  inter-word
 	      delimiter  string.  Fields  may  be,  literal (letters, numbers,
-	      punctuation) or range notation (0-4A-Z), a  ProSign  (<SK>),  or
-	      international character.
+	      punctuation) or range notation (0-4A-Z), or a  ProSign  (<SK>)
+	      character.
 
        -displayFormat=VALUE
 	     VALUE is LF for linefeed, TAB change space to tabs, LF_TAB or 

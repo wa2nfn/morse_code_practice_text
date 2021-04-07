@@ -3,7 +3,7 @@
 mcpt \- morse code practice text
 Note: Ignore any space BEFORE an "=" in this file (linux issue).
 .SH SYNOPSIS
-.B mcpt -help | -help=options|files|tutors|international|lcwo
+.B mcpt -help | -help=options|files|tutors|lcwo
 
 .B mcpt -permute=p|t|b [-prosign=FILE] [-lesson=
 .I NUM
@@ -107,7 +107,7 @@ FILE
 
 .I LIST="0-9,./?="
 
-.I INLIST="A-Za-z0-9,./?=" (plus international characters)
+.I INLIST="A-Za-z0-9,./?=" 
 
 .I MISC=[-num=NUM -len=NUM -prelen=NUM -prelist=LIST -suflen=NUM -suflist=NUM -random -DM=NUM -delimiter=DELIM -must=STRING] 
 
@@ -129,11 +129,12 @@ makes call signs using the current characters from lesson/tutor (default all)
 .IP -cglen=min:max
 set the length of a code group to be between a minimum and maximum value. 
 If the value is a single number, the minimum will equal the maximum.
-.IP -cglist=.IPST
-set the list of a characters to use in a code group. Range notation (A-D), for upper, lower case letters or numbers is supported..IPf an "=" is in the LIST, the LIST must be in double quotes. For international characters see: -help=international.
+.IP -cglist=LIST
+set the list of a characters to use in a code group. Range notation (A-D), for upper, lower case letters or numbers is supported.
+If an "=" is in the LIST, the LIST must be in double quotes.
 .TP
 .IP -delimiter=DELIM
-DELIM is a set of "^" separated fields to use an inter-word delimiter string. Fields may be, literal (letters, numbers, punctuation) or range notation (0-4A-Z), a ProSign (<SK>), or international character.
+DELIM is a set of "^" separated fields to use an inter-word delimiter string. Fields may be, literal (letters, numbers, punctuation) or range notation (0-4A-Z), a ProSign (<SK>) character.
 .IP -DM=min:max
 Min must be > 1, to get deminiters. The DelimiterMultiples is the number or delimiter fields that will be concatenated to create the inter-word delimiter.
 .TP

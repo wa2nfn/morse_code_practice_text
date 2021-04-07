@@ -111,41 +111,6 @@ in an input file.
      **** Please scroll to the top of the screen. Use full screen to minimize line wraps. ****
 			`) // end of table
 
-	} else if flaghelp == "INTERNATIONAL" {
-		fmt.Println("\n\t\tINTERNATIONAL Characters Help Information")
-		fmt.Printf(`
-If the code tutor you intend to use knows how to send Morse for international characters, 
-you can specify them in the "list" options. All of the these are already included in the 
-option <inlist>, used to find words in your <in> file. They are in both upper and lowercase.
-
-You may include them in the following options: prelist, suflist, cglist, or delimiter. To 
-do that, they MUST be entered as %%XX, as shown below. No spaces are used, and the alphas MUST 
-be uppercase. You only need to include the leter you want in EITHER upper or lowercase 
-(mcpt will make the case correct based on the <caps> option. To include the "grave a" and 
-"acute e" to English vowels for use as word suffixes, as an example, you would set the option 
-like: suflist="aeiou%%C0%%C9".
-
-%%C0 to represent '\u00C0'  Upper Case A grave
-%%E0 to represent '\u00E0'  Lower Case a grave
-%%C4 to represent '\u00C4'  Upper Case A diaeresis
-%%E4 to represent '\u00E4'  Lower Case a diaeresis
-%%C9 to represent '\u00C9'  Upper Case E acute
-%%E9 to represent '\u00E9'  Lower Case e acute
-%%C8 to represent '\u00C8'  Upper Case E grave
-%%E8 to represent '\u00E8'  Upper Case E acute
-%%C7 to represent '\u00C7'  Upper Case C cedilla
-%%E7 to represent '\u00E7'  Lower Case c cedilla
-%%D1 to represent '\u00D1'  Upper Case N tilde
-%%F1 to represent '\u00F1'  Lower Case n tilde
-%%D6 to represent '\u00D6'  Upper Case O diaeresis
-%%F6 to represent '\u00F6'  Lower Case o diaeresis
-%%DC to represent '\u00DC'  Upper Case U diaeresis
-%%FC to represent '\u00FC'  Lower Case u diaeresis
-
-     **** Please scroll to the top of the screen. Use full screen to minimize line wraps. ****
-
-`)
-
 	} else if flaghelp == "TOUR" {
 		fmt.Println("\n\t\tWelcome To The MCPT Tour")
 		fmt.Printf(`
@@ -172,7 +137,6 @@ Approaches:
     mcpt -help
     mcpt -help=tutors
     mcpt -help=files
-    mcpt -help=international
     mcpt -help=LCWO
     mcpt -help=options
 
@@ -276,7 +240,7 @@ For certain features, or user convenience, you might specify a text file name in
 			}
 		})
 	} else {
-		fmt.Printf("\nError: Invalid value for the option <help>, \n\tchoices are (case insensitive): TOUR, FILES, TUTORS, LCWO, OPTIONS or INTERNATIONAL.\n")
+		fmt.Printf("\nError: Invalid value for the option <help>, \n\tchoices are (case insensitive): TOUR, FILES, TUTORS, LCWO, or OPTIONS.\n")
 	}
 	os.Exit(1)
 }

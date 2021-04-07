@@ -20,7 +20,7 @@ var (
 	invalidCharPS string
 )
 
-// determine which funtion to do
+// determine which function to do
 func doSendOpts(fp *os.File) {
 	if flagsend != "" && flagsendcheck != "" {
 		fmt.Printf("\nError: Option <send> and <sendCheck> are mutually exclusive.\n")
@@ -78,6 +78,8 @@ func doSendCheck(fp *os.File) {
 // make random send groups
 func doSendGroups(fp *os.File) {
 	var tmpOut []rune
+	// always use <> fomat
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
 
 	outBuf := make([]rune, 0, (flagcgmax*flagnum)+flagnum)
 
