@@ -22,7 +22,7 @@
 # 4-  Only the following prosigns are supported in this file. Any place the prosigns are used
 #     they can be in either upper or lowercase.
 #
-#     <AA>, <AS>, <AR>, <BT>, <CT> or <KA>, <HH>, <KN>, <SK> or <VA>, <SN>
+#     <AA>, <AS>, <AR>, <BT>, <CT> or <KA>, <HH>, <KN>, <SK> or <VA>, <SN>, <BK>
 #     Note: <CT> and <KA> make the same sound, and have the same meaning. Comment out the one
 #     you have learned or your tutor does not support.
 #
@@ -34,7 +34,7 @@
 <AA>  # Start New Line
 <AS>  # WAIT (wait A Second)
 <AR>  # End Message (All Rendered)
-<BT>  # BREAK, same as "=" in many tutors
+<BT>  # Pause or seperator in text , same as "=" in many tutors
 #<CT> # ATTENTION/ALERT, same sound as KA
 <KA>  # ATTENTION/ALERT, same sound as CT
 <HH>  # ERROR, followed by corrected text
@@ -42,4 +42,5 @@
 <SK>  # End Of Contact, same as <VA>
 #<VA>  # End Of Contact, same as <SK>
 <SN>  # Understood/Verified
+<BK>  # Break in transmission inviting rcvr to sedn
 

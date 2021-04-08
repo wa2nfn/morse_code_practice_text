@@ -38,8 +38,8 @@ func doSendCheck(fp *os.File) {
 
 	if strings.Contains(flagsendcheck,sep) {
 		// ps format <xx>
-		char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>")
-		ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g")
+		char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>","h","<AA>","i","<CT>","j","<KN>","k","VA","l","<SN>")
+		ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g","<AA>","h","<CT>","i","<KN>","j","<VA>","k","<SN>","l" )
 		validCharPS = "<>"
 		invalidCharPS = "^"
 	} else {
@@ -47,8 +47,8 @@ func doSendCheck(fp *os.File) {
 		sep = "^"
 		validCharPS = sep
 		invalidCharPS = "<>"
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK")
-		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g")
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK","h","^AA","i","^CT","j","^KN","k","^VA","l","^SN")
+		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g","^AA","h","^CT","i","^KN","j","^^VA","k","^SN","l")
 	}
 
 	path = strings.Split(flagsendcheck, sep)
@@ -217,7 +217,7 @@ func readLines(path []string) int {
 		if whoIsIt == 'm' {
 			// process MCPT file
 			gotMCPT = true
-			MCPTps2charReplacer := strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g")
+			MCPTps2charReplacer := strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g","<AA>","h","<CT>","i","<KN>","j","<VA>","k","<SN>","l")
 			sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
 		} else {
 			// process User file
