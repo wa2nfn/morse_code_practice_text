@@ -5,9 +5,9 @@
 package main
 
 import (
-	_"log"
 	"flag"
 	"fmt"
+	_ "log"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -51,70 +51,70 @@ var (
 	flagLF            bool
 	flagTAB           bool
 	flagdisplayFormat string
-	flagmax         int
-	flagcgmax       int
-	flaglen         int
-	flagmin         int
-	flagcgmin       int
-	flagrepeat      int
-	flagnum         int
-	flagskip        int
-	flagsufmin      int
-	flagsufmax      int
-	flagpremin      int
-	flagpremax      int
-	flagDM          string
-	flagDMmin       int
-	flagDMmax       int
-	flagDR          bool
-	flaglesson      string
-	flagMixedMode   int
-	flagLCWOsf      string
-	flagLCWOfs      string
-	flagLCWOstep    int
-	flagLCWOnum     int
-	flagLCWOslow    int
-	flagLCWOlow     int
-	flagLCWOfast    int
-	flagLCWOrepeat  int
-	flagLCWOeff     int
-	flagLCWOramp    bool
-	flagLCWOrandom  bool
-	flagLCWOefframp bool
-	flagheader      string
-	flagprelist     string
-	flagPrelistRune []rune
-	flagsuflist     string
-	flagSuflistRune []rune
-	flaginlist      string
-	flagcglist      string
-	flagCglistRune  []rune
-	flaginput       string
-	flagtext        string
-	flagoutput      string
-	flagopt         string
-	flagprosign     string
-	flagdelimit     string
-	flagtutor       string
-	flagrandom      bool
-	flagunique      bool
-	flagNR          bool
-	flagMMR         bool
-	flagCG          bool
-	flagreverse     bool
-	flaghelp        string
-	flagpermute     string
-	flaginlen       string
-	flagprelen      string
-	flagsuflen      string
-	flagcglen       string
-	flaglessonend   int
-	flaglessonstart int
-	flagcallsigns   bool
-	flagmust        string
-	flaghead        bool
-	flagsend        string
-	flagsendcheck        string
+	flagmax           int
+	flagcgmax         int
+	flaglen           int
+	flagmin           int
+	flagcgmin         int
+	flagrepeat        int
+	flagnum           int
+	flagskip          int
+	flagsufmin        int
+	flagsufmax        int
+	flagpremin        int
+	flagpremax        int
+	flagDM            string
+	flagDMmin         int
+	flagDMmax         int
+	flagDR            bool
+	flaglesson        string
+	flagMixedMode     int
+	flagLCWOsf        string
+	flagLCWOfs        string
+	flagLCWOstep      int
+	flagLCWOnum       int
+	flagLCWOslow      int
+	flagLCWOlow       int
+	flagLCWOfast      int
+	flagLCWOrepeat    int
+	flagLCWOeff       int
+	flagLCWOramp      bool
+	flagLCWOrandom    bool
+	flagLCWOefframp   bool
+	flagheader        string
+	flagprelist       string
+	flagPrelistRune   []rune
+	flagsuflist       string
+	flagSuflistRune   []rune
+	flaginlist        string
+	flagcglist        string
+	flagCglistRune    []rune
+	flaginput         string
+	flagtext          string
+	flagoutput        string
+	flagopt           string
+	flagprosign       string
+	flagdelimit       string
+	flagtutor         string
+	flagrandom        bool
+	flagunique        bool
+	flagNR            bool
+	flagMMR           bool
+	flagCG            bool
+	flagreverse       bool
+	flaghelp          string
+	flagpermute       string
+	flaginlen         string
+	flagprelen        string
+	flagsuflen        string
+	flagcglen         string
+	flaglessonend     int
+	flaglessonstart   int
+	flagcallsigns     bool
+	flagmust          string
+	flaghead          bool
+	flagsend          string
+	flagsendcheck     string
 )
 
 var message string = `
@@ -260,15 +260,15 @@ func init() {
 	runeMap['='] = struct{}{}
 	runeMap['+'] = struct{}{}
 	runeMap['@'] = struct{}{}
-	runeMap['!'] = struct{}{}      // added at bottom of LCWO
-	runeMap['"'] = struct{}{}      // added at bottom of LCWO
-	runeMap['\''] = struct{}{}     // added at bottom of LCWO
-	runeMap['('] = struct{}{}      // added at bottom of LCWO
-	runeMap[')'] = struct{}{}      // added at bottom of LCWO
-	runeMap['-'] = struct{}{}      // added at bottom of LCWO
-	runeMap[':'] = struct{}{}      // added at bottom of LCWO
-	runeMap[';'] = struct{}{}      // added at bottom of LCWO
-	runeMap['*'] = struct{}{}      // DUMMY value for delimiter and LCWO users
+	runeMap['!'] = struct{}{}  // added at bottom of LCWO
+	runeMap['"'] = struct{}{}  // added at bottom of LCWO
+	runeMap['\''] = struct{}{} // added at bottom of LCWO
+	runeMap['('] = struct{}{}  // added at bottom of LCWO
+	runeMap[')'] = struct{}{}  // added at bottom of LCWO
+	runeMap['-'] = struct{}{}  // added at bottom of LCWO
+	runeMap[':'] = struct{}{}  // added at bottom of LCWO
+	runeMap[';'] = struct{}{}  // added at bottom of LCWO
+	runeMap['*'] = struct{}{}  // DUMMY value for delimiter and LCWO users
 }
 
 func init() {
@@ -451,7 +451,7 @@ func main() {
 				continue
 			} else {
 				if len(field) > 0 {
-					if strings.Contains(field, "<") || strings.Contains(field, ">") || strings.Contains(field,"^") {
+					if strings.Contains(field, "<") || strings.Contains(field, ">") || strings.Contains(field, "^") {
 						fmt.Printf("\nError: option <delimiter> contains invalid prosign format < %s >.\n", field)
 						os.Exit(77)
 					}
@@ -809,13 +809,13 @@ func main() {
 	// no longer needed save space
 	runeMap = nil
 
-	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "" ) {
+	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "") {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
 		}
 
-		fmt.Printf("%s",message)
+		fmt.Printf("%s", message)
 
 		os.Exit(99)
 	}
@@ -924,7 +924,7 @@ func ckValidInString(ck string, whoAmI string) []rune {
 			newRune = append(newRune, unicode.ToUpper(runeRead))
 		} else {
 			if whoAmI == "delimiter" && runeRead == '^' {
-				;
+
 			} else {
 				fmt.Printf("\nError: Invalid entry in string <%s> for option <%s>.\n", str, whoAmI)
 				os.Exit(99)
@@ -1044,7 +1044,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 				continue
 			} else {
 				res = res + "\n"
-				// extra space if no -out 
+				// extra space if no -out
 				if flagLF {
 					res += "\n"
 				}
@@ -1069,12 +1069,12 @@ func printStrBuf(strBuf string, fp *os.File) {
 		os.Exit(0)
 	} else {
 		if res == "" {
-			fmt.Printf("%s",message)
+			fmt.Printf("%s", message)
 			fp.Close()
 			os.Exit(0)
 		}
 
-		res +=  string('\u0008') // marked as from mcpt
+		res += string('\u0008') // marked as from mcpt
 		_, err := fp.WriteString(res)
 		if err != nil {
 			fmt.Println(err)
@@ -1087,7 +1087,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 // simple random true or false
 func flipFlop() bool {
-	return rng.Int() % 2 == 0
+	return rng.Int()%2 == 0
 }
 
 //
