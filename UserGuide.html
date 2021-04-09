@@ -242,7 +242,7 @@ Note: opt myOptions, will override default options.
 <H2>
 Example 4:
 </H2>
-<B>mcpt -inlen=5 -num=10 -suflen=1:2 <MARK>-out=out.txt</MARK></B>
+<B>mcpt -in=words.txt -inlen=5 -num=10 -suflen=1:2 <MARK>-out=out.txt</MARK></B>
 <PRE>
 Writing to file: <MARK>out.txt</MARK>
 
@@ -276,7 +276,7 @@ NOTE: prefixes limited to values of: 1, 2, 3; suffixes are shown on the command 
 <H2>
 Example 6:
 </H2>
-<B>mcpt -num=10 -suflen=1:3</B> 
+<B>mcpt -in=words.txt -num=10 -suflen=1:3</B> 
 <PRE>
 MORSE/, TUTOR245 MORSE1=7 WHICH?9 <U>OFFER</U> <U>WHICH= 36/</U> OFFER9 OFFER=5/ TUTOR7 WHICH57 
 
@@ -289,7 +289,7 @@ NOTE: a space character added into the suflist or prelist set of characters.
 <H2>
 Example 7:
 </H2>
-<B>mcpt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
+<B>mcpt -in=words.txt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
 <PRE>
 OFFER ARE OFFER FOR USE USE ARE MORSE ARE ARE USE FOR OFFER OFFER MORSE MORSE 
 USE FOR MORSE FOR 
@@ -313,7 +313,7 @@ NOTE: Regardless of the value of inlist or lesson, a prosign found in the input 
 <H2>
 Example 8:
 </H2>
-<B>mcpt -inlen=3:8 -num=30 -skip=20</B>
+<B>mcpt -in=words.txt -inlen=3:8 -num=30 -skip=20</B>
 <P>
 This command will find a lot of short words in a book for example. Like "I a to of in the an on etc."
 As a result if the short ones are encountered first, then you may not get to the longer ones, you could:
@@ -323,7 +323,7 @@ And then after skipping, proceed to record unique words to use.
 <H2>
 Example 9:
 </H2>
-<B>mcpt <MARK>-repeat=3</MARK></B>
+<B>mcpt -in=words.txt <MARK>-repeat=3</MARK></B>
 <P>
 Repeat whatever the output "word" is (including prefix and suffix), a number of times. Default is 1, 
 the max is 5. Maybe helpful for head copy. 
@@ -333,7 +333,7 @@ Note: linking words in the input file with "~", treat the sequence as ONE word. 
 <H2>
 Example 10:
 </H2>
-<B>mcpt -inlen=3:5 -num=10 -suflen=1 <MARK>-prosign=prosignFile.txt<MARK></B>
+<B>mcpt -in=words.txt -inlen=3:5 -num=10 -suflen=1 <MARK>-prosign=prosignFile.txt<MARK></B>
 <PRE>
 YOU9 WHICH7 <MARK>&lt;BT&gt;</MARK>? FOR= MCPT. &lt;AR>&lt;AS>7 LINE1 &lt;SOS>, TEXT/ MAY8 USE9 THAT5 CAN= 
 
@@ -365,7 +365,7 @@ NOTE: Each ProSign seen above is in the -prosign=prosignFile.txt.
 <H2>
 Example 11:
 </H2>
-<B>mcpt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
+<B>mcpt -in=words.txt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
 The option, "-delimiter", is a string of 1 or more characters (of any type) which will
 be displayed in between each output word (1 exception). For example, if the output WITHOUT this option were:
 <P>
@@ -413,7 +413,7 @@ Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that w
 <H2>
 Example 12:
 </H2>
-<B>mcpt -inlen=1:3 -num=6 -unique</B>
+<B>mcpt -in=words.txt -inlen=1:3 -num=6 -unique</B>
 The -unique option, terminates the adding to output as soon as
 a duplicate would be required to meet the quantity in the -num option.
 <P>
@@ -435,7 +435,7 @@ Note: limited options apply when using code groups, others are silently ignored
 <H2>
 Example 14:
 </H2>
-<B>mcpt -inlen=5:8 -i="in.txt" <mark>-mixedMode=2</mark></B>
+<B>mcpt -inlen=5:8 -in="in.txt" <mark>-mixedMode=2</mark></B>
 <PRE>
 VISIT OTHER <mark>=,0-A0</mark> ABOUT SHARE <mark>-=?A=-?</mark> MYSELF THOSE 
 
@@ -522,7 +522,7 @@ codeGroups, as well, the codeGroups could have prosigns.
 <H2>
 Example 17:
 </H2>
-<B>mcpt ... -in myInput -NR <mark>-reverse</mark> ...</B>
+<B>mcpt ... -in=myInput -NR <mark>-reverse</mark> ...</B>
 <P>
 Note: This example will demonstrate a few more things than the <B>reverse</B> option.
 <P>
@@ -584,7 +584,7 @@ use your input directly with a tutor (no mcpt) if you simply want text-to-cw wit
 <H2>
 Example 18:
 </H2>
-<B>mcpt -DM=1:2 -delimiter="1^A^?^&lt;BT>" -DR</B>
+<B>mcpt -in=words.txt -DM=1:2 -delimiter="1^A^?^&lt;BT>" -DR</B>
 <P>
 As previously discussed, DM=1:2, would give 1 or 2 delimiter strings concatenated between each word.
 <P>

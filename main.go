@@ -1,5 +1,5 @@
 //
-// Copyright 2019, 2020 Bill Lanahan - WA2NFN
+// Copyright 2019, 2020, 2021 Bill Lanahan - WA2NFN
 //
 
 package main
@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.5.6" // 4/5/2021
+	version       = "2.0" // 4/6/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -30,7 +30,7 @@ const (
 	maxRepeat     = 20
 	maxSkips      = 5000
 	maxMixedMode  = 20
-	inListStr     = "A-Z%C0%E0%C4%E4%C9%E9%C8%E8%C7%E7%D1%F1%D6%F6%DC%FC"
+	inListStr     = "A-Za-z"
 )
 
 var (
@@ -43,7 +43,6 @@ var (
 	effDelta       int
 	proSign        []string
 	runeMap        = make(map[rune]struct{})
-	runeMapInt     = make(map[string]rune)
 	ps2runeMap     = make(map[string]rune)
 	rune2psMap     = make(map[rune]string)
 )
@@ -52,7 +51,6 @@ var (
 	flagLF            bool
 	flagTAB           bool
 	flagdisplayFormat string
-
 	flagmax         int
 	flagcgmax       int
 	flaglen         int
@@ -119,10 +117,30 @@ var (
 	flagsendcheck        string
 )
 
+var message string = `
+
+	Error: 
+
+	Either you forgot a required option (listed below), or your values were so restrictive that there was nothing to show.
+	If you are a new user, you might want to run: mcpt -help=tour or run: mcpt -help, to review options.
+        Examples are in the MCPT User Guide, as well.
+
+	One of these is required:
+	=========================
+	-text       (for strings/words from a file)
+	-in         (for only words from a file)
+	-codeGroups (code groups)
+	-permute    (permutations of characters based on tutor/lesson)
+	-help       (option lisiting)
+	-send       (create sending practice by specific groups of characters)
+	-sendCheck  (to verify your accuracy of sending)
+	-callsigns  (simple geretated call signs based on tutor/lesson)
+
+		`
+
 func init() {
 	flag.StringVar(&flaginlen, "inlen", "1:5", "# characters in a word. inlen=min:max")
 	flag.StringVar(&flagcglen, "cglen", "5:5", "# characters in a code group. cglen=min:max.")
-
 	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
 	flag.IntVar(&flagnum, "num", 100, fmt.Sprintf("Number of words (or code groups) to output. Min 1, max %d.\n", maxUserWords))
 	flag.IntVar(&flaglen, "len", 80, fmt.Sprintf("Length characters in an output line (max %d).", maxLineLen))
@@ -134,7 +152,7 @@ func init() {
 	flag.StringVar(&flagprelist, "prelist", "0-9/,.?=", "Characters for a word prefix.")
 	flag.StringVar(&flaginlist, "inlist", inListStr, "Characters to define an input word.")
 	flag.StringVar(&flaginput, "in", "", "Input text file name, for words (including extension).")
-	flag.StringVar(&flagtext, "text", "", "Input ext file name, for any strings in file (including extension).")
+	flag.StringVar(&flagtext, "text", "", "Input text file name, for any strings in file (including extension).")
 	flag.StringVar(&flagoutput, "out", "", "Output file name.")
 	flag.StringVar(&flagopt, "opt", "", "Specify an option file name to read or create.")
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
@@ -164,15 +182,15 @@ func init() {
 	flag.BoolVar(&flagLCWOefframp, "LCWO_effective_ramp", false, "ramp effective speed (char speed constant) must be < LCWO_low. (default false)")
 	flag.StringVar(&flagLCWOsf, "LCWO_sf", "", "to alert transition from LCWO_low to LCWO_low+LCWO_step for plain text in mixedMode\nor LCWO_slow text to LCWO_fast text,")
 	flag.StringVar(&flagLCWOfs, "LCWO_fs", "", "to alert transition from LCWO_low+LCWO_step speed for plain text to LCWO_low for codeGroup mixedMode\nor LCWO_fast text to LCWO_slow text.")
-	flag.StringVar(&flaghelp, "help", "", "[TOUR|FILES|LCWO|OPTIONS|INTERNATIONAL|TUTORS] more help of given topics.")
+	flag.StringVar(&flaghelp, "help", "", "[TOUR|FILES|LCWO|OPTIONS|TUTORS] more help of given topics.")
 	flag.StringVar(&flagpermute, "permute", "", "Selected permutations of current \"lesson\" characters [p,t,b([pairs,triples,both)].")
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
 	flag.StringVar(&flagdisplayFormat, "displayFormat", "", "LF, TAB, TAB_LF, LF_TAB. Cosmetic output options to give more whitespace for easier screen reading.")
 	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
 	flag.StringVar(&flagsend, "send", "", "A string of group numbers (1-5) to make sending practice groups.")
 	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
-	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 
+	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
 	runeMap['a'] = struct{}{}
 	runeMap['b'] = struct{}{}
 	runeMap['c'] = struct{}{}
@@ -250,40 +268,7 @@ func init() {
 	runeMap['-'] = struct{}{}      // added at bottom of LCWO
 	runeMap[':'] = struct{}{}      // added at bottom of LCWO
 	runeMap[';'] = struct{}{}      // added at bottom of LCWO
-	runeMap['\u00C0'] = struct{}{} // cap A grave
-	runeMap['\u00E0'] = struct{}{} // low a grave
-	runeMap['\u00C4'] = struct{}{} // cap A diaeresis
-	runeMap['\u00E4'] = struct{}{} // low a diaeresis
-	runeMap['\u00C9'] = struct{}{} // cap E acute
-	runeMap['\u00E9'] = struct{}{} // low e acute
-	runeMap['\u00C8'] = struct{}{} // cap E grave
-	runeMap['\u00E8'] = struct{}{} // cap E acute
-	runeMap['\u00C7'] = struct{}{} // cap C cedilla
-	runeMap['\u00E7'] = struct{}{} // low c cedilla
-	runeMap['\u00D1'] = struct{}{} // cap N tilde
-	runeMap['\u00F1'] = struct{}{} // low n tilde
-	runeMap['\u00D6'] = struct{}{} // cap O diaeresis
-	runeMap['\u00F6'] = struct{}{} // low o diaeresis
-	runeMap['\u00DC'] = struct{}{} // cap U diaeresis
-	runeMap['\u00FC'] = struct{}{} // low u diaeresis
 	runeMap['*'] = struct{}{}      // DUMMY value for delimiter and LCWO users
-
-	runeMapInt["C0"] = '\u00C0' // cap A grave
-	runeMapInt["E0"] = '\u00E0' // low a grave
-	runeMapInt["C4"] = '\u00C4' // cap A diaeresis
-	runeMapInt["E4"] = '\u00E4' // low a diaeresis
-	runeMapInt["C9"] = '\u00C9' // cap E acute
-	runeMapInt["E9"] = '\u00E9' // low e acute
-	runeMapInt["C8"] = '\u00C8' // cap E grave
-	runeMapInt["E8"] = '\u00E8' // cap E acute
-	runeMapInt["C7"] = '\u00C7' // cap C cedilla
-	runeMapInt["E7"] = '\u00E7' // low c cedilla
-	runeMapInt["D1"] = '\u00D1' // cap N tilde
-	runeMapInt["F1"] = '\u00F1' // low n tilde
-	runeMapInt["D6"] = '\u00D6' // cap O diaeresis
-	runeMapInt["F6"] = '\u00F6' // low o diaeresis
-	runeMapInt["DC"] = '\u00DC' // cap U diaeresis
-	runeMapInt["FC"] = '\u00FC' // low u diaeresis
 }
 
 func init() {
@@ -324,8 +309,7 @@ func main() {
 					fmt.Printf("\n%s File name <%s>.\n", err, flagopt)
 				}
 
-				// exp WDL
-				defer  func() {
+				defer func() {
 					closeErr := fp.Close()
 					if closeErr != nil {
 						if err == nil {
@@ -336,7 +320,6 @@ func main() {
 						}
 					}
 				}()
-				// end exp WDL
 
 				skip := regexp.MustCompile(`^help|^opt`)
 				for _, arg := range os.Args[1:] {
@@ -425,7 +408,7 @@ func main() {
 		case "TAB":
 			flagTAB = true
 		default:
-			fmt.Printf("\nError: option <displayFormat> < %s >  is invalid. Use: TAB, LF, LF_TAB, TAB_LF\n", flagdisplayFormat)
+			fmt.Printf("\nError: option <displayFormat> < %s > is invalid. Use: TAB, LF, LF_TAB, TAB_LF\n", flagdisplayFormat)
 			os.Exit(77)
 		}
 	}
@@ -433,7 +416,7 @@ func main() {
 	//
 	// out of range checks
 	if flagDMmax > maxDelimChars {
-		fmt.Printf("\nError: DM, delimiter multiple min >=0, max <= %d.\n", maxDelimChars)
+		fmt.Printf("\nError: DM, delimiter multiple min >= 0, max <= %d.\n", maxDelimChars)
 		os.Exit(1)
 	} else if flagDMmin >= 1 {
 		// ok DM is in range
@@ -533,7 +516,7 @@ func main() {
 	}
 
 	if flagsufmax > maxSuffix {
-		fmt.Printf("\nError: suflen, 0=no suffix, max number of characters is %d.\n", maxSuffix)
+		fmt.Printf("\nError: suflen, 0 = no suffix, max number of characters is %d.\n", maxSuffix)
 		os.Exit(1)
 	}
 
@@ -807,33 +790,10 @@ func main() {
 		flaginlist = tmp_c
 	}
 
-	// check inlist for %XX codes
-	if flagCG == false { // maybe text or words
-		out := ""
-
-		if inListChanged {
-			// lets lesson and inlist be used
-			flaginlist += origInlist
-		}
-
-		m := regexp.MustCompile("%[C-F][0146789C]")
-
-		for {
-			if m.MatchString(flaginlist) {
-				s := m.FindString(flaginlist)
-				out = strings.TrimLeft(s, "%")
-				out = string(runeMapInt[out])
-				flaginlist = strings.Replace(flaginlist, string(s), out, 1)
-				out = ""
-			} else {
-				break
-			}
-		}
-	}
-
 	// must follow other cglist manipulation
 	// either case lets get cglist evaluated now
 	if flagCG || flagMixedMode > 0 {
+
 		// make sure we have chars to work with
 		if len(flagcglist) < 1 {
 			fmt.Printf("\nError: you requested codeGroups or mixedMode, so cglist must have at least 1 characters.\n")
@@ -848,7 +808,6 @@ func main() {
 
 	// no longer needed save space
 	runeMap = nil
-	runeMapInt = nil
 
 	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "" ) {
 		nm := filepath.Base(os.Args[0])
@@ -856,7 +815,7 @@ func main() {
 			nm = strings.ReplaceAll(nm, ".exe", "")
 		}
 
-		fmt.Printf("\nError: Either you forgot a required option, or you are a new user.\n\n\tNew User - \n\t\trun: %s -help=tour\n\t\tor\n\n\t\trun: %s -help\n\t\tto review options\n\n\t\tor see the MCPT User Guide.\n", nm, nm)
+		fmt.Printf("%s",message)
 
 		os.Exit(99)
 	}
@@ -955,39 +914,10 @@ func ckValidInString(ck string, whoAmI string) []rune {
 	// also build a new string that is in the proper case
 	newRune := []rune{}
 
-	gotEscSymbol := false
-	strInternational := ""
-
 	for _, runeRead := range []rune(str) {
 		if whoAmI != "delimiter" && runeRead == '*' {
 			fmt.Printf("\nError: Invalid character <%s>, in option <%s>.\nOnly used in delimiter option, as a special case delay for LCWO users.\n", string(runeRead), whoAmI)
 			os.Exit(98)
-		}
-
-		if runeRead == '%' && gotEscSymbol == false {
-
-			// we potenially have an international
-			gotEscSymbol = true
-			continue
-		}
-
-		if gotEscSymbol == true && len(strInternational) < 2 {
-			if runeRead == '%' {
-				// two %s NG
-				fmt.Printf("\nError: Invalid <%%>, in string <%s> for option <%s>, not followed by appropriate 2 uppercase letters.\n", str, whoAmI)
-				os.Exit(98)
-			}
-
-			// need to get two proper uppercase
-			strInternational += string(runeRead)
-			if len(strInternational) < 2 {
-				continue
-			}
-
-			runeRead = runeMapInt[strInternational]
-			// reset these two
-			gotEscSymbol = false
-			strInternational = ""
 		}
 
 		if _, ok := runeMap[runeRead]; ok {
@@ -1138,6 +1068,12 @@ func printStrBuf(strBuf string, fp *os.File) {
 		fmt.Printf("%s", res)
 		os.Exit(0)
 	} else {
+		if res == "" {
+			fmt.Printf("%s",message)
+			fp.Close()
+			os.Exit(0)
+		}
+
 		res +=  string('\u0008') // marked as from mcpt
 		_, err := fp.WriteString(res)
 		if err != nil {
@@ -1152,23 +1088,6 @@ func printStrBuf(strBuf string, fp *os.File) {
 // simple random true or false
 func flipFlop() bool {
 	return rng.Int() % 2 == 0
-}
-
-func findPercent(in string) (string, string) {
-	out := ""
-
-	m := regexp.MustCompile("%[C-F][0146789C]")
-	if m.MatchString(in) {
-		s := m.FindString(in)
-		in = strings.Replace(in, string(s), "", 1)
-		out = strings.TrimLeft(s, "%")
-		out = string(runeMapInt[out])
-	} else {
-		fmt.Printf("\nError: invalid character in delimiter option\n")
-		os.Exit(88)
-	}
-
-	return in, out
 }
 
 //
