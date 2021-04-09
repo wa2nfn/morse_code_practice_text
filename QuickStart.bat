@@ -1,4 +1,5 @@
 @echo OFF
+SET PATH=%PATH%;.
 CMD /c cls
 ECHO.
 ECHO MCPT Quick Start 

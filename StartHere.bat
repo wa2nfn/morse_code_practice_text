@@ -1,4 +1,5 @@
 @echo OFF
+SET PATH=%PATH%;.
 PROMPT=$SMCPT$G$S
 ECHO.
 ECHO.
