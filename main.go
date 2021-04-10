@@ -119,27 +119,30 @@ var (
 
 var message string = `
 
-	Error: 
+  Error: 
 
-	Either you forgot a required option (listed below), or your values were so restrictive that there was nothing to show.
-	If you are a new user, you might want to run: mcpt -help=tour or run: mcpt -help, to review options.
-        Examples are in the MCPT User Guide, as well.
+  Either you forgot a required option (listed below), or your values were so 
+  restrictive that there was nothing to show.
 
-	One of these is required:
-	=========================
-	-text       (for strings/words from a file)
-	-in         (for only words from a file)
-	-codeGroups (code groups)
-	-permute    (permutations of characters based on tutor/lesson)
-	-help       (option lisiting)
-	-send       (create sending practice by specific groups of characters)
-	-sendCheck  (to verify your accuracy of sending)
-	-callsigns  (simple geretated call signs based on tutor/lesson)
+  If you are a new user, you might want to run: mcpt -help=tour or 
+  run: mcpt -help, to review options.
+  Examples are in the MCPT User Guide, as well.
 
-		`
+  One of these is required:
+  =========================
+  -text       (for strings/words from a file)
+  -in         (for only words from a file)
+  -codeGroups (code groups)
+  -permute    (permutations of characters based on tutor/lesson)
+  -help       (option lisiting)
+  -send       (create sending practice by specific groups of characters)
+  -sendCheck  (to verify your accuracy of sending)
+  -callsigns  (simple generated call signs based on tutor/lesson)
+
+  	` // end message
 
 func init() {
-	flag.StringVar(&flaginlen, "inlen", "1:5", "# characters in a word. inlen=min:max")
+  flag.StringVar(&flaginlen, "inlen", "1:5", "# characters in a word. inlen=min:max")
 	flag.StringVar(&flagcglen, "cglen", "5:5", "# characters in a code group. cglen=min:max.")
 	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
 	flag.IntVar(&flagnum, "num", 100, fmt.Sprintf("Number of words (or code groups) to output. Min 1, max %d.\n", maxUserWords))

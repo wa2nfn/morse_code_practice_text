@@ -1,16 +1,22 @@
 @echo OFF
-SET PATH=%PATH%;.
+SET PATH=%PATH%;%CD%
 PROMPT=$SMCPT$G$S
+cls
 ECHO.
 ECHO.
 ECHO                         MCPT Terminal For Windows Users
 ECHO.
 ECHO  New users: 
-ECHO        run: mcpt -help=tour
 ECHO.
-ECHO        run: QuickStart    
-ECHO        *** This is show you the scope of possibilities. Some very busy pages may not be used by all users,
-ECHO            or under unique circumstances don't let extra information be a concern. ***
+ECHO     Note: If this directory is not in the PATH, then prefix mcpt like: 
+ECHO           .\mcpt etc. etc. To use mcpt without a bat file.
 ECHO.
-PAUSE
-CMD /b start
+ECHO     run: .\mcpt -help=tour and/or
+ECHO.
+ECHO     run: QuickStart      and/or
+ECHO.
+ECHO     run: .\mcpt etc.     any options you'd like to try
+ECHO.
+ECHO     *** This just shows the scope of possibilities. A typical user,
+ECHO         may only use a subset. ***
+ECHO.
