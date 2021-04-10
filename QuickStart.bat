@@ -1,10 +1,10 @@
 @echo OFF
-SET PATH=%PATH%;.
+SET PATH=%PATH%;%CD%
 CMD /c cls
 ECHO.
 ECHO MCPT Quick Start 
 ECHO.
-ECHO A quick look at the use of SOME features, without explanation. See the QuickStart.html for details.
+ECHO A quick look at the use of SOME features, without explanation. See the QuickStart.html for more details.
 ECHO Ctrl-C will EXIT the Quick Start.
 ECHO.
 ECHO Look at the command and options before you hit Enter. Look at the  generated output and you will 
@@ -92,7 +92,7 @@ PAUSE
 CMD /c cls
 
 ECHO mcpt -in=words.txt -delimiter=1-5 -DM=2:2 -num=20
-ECHO Note: delimiters are very flexible, they can do prosigns, and more - but not from a batch file.
+ECHO Note: delimiters are very flexible, they can do prosigns, and more - but not from a demo batch file.
 ECHO.
 PAUSE
 CMD /c "echo.&&mcpt -in=words.txt -delimiter=1-5 -DM=2:2 -num=20&&echo.&&echo."
@@ -152,6 +152,13 @@ ECHO mcpt -callSigns
 ECHO.
 PAUSE
 CMD /c  "echo.&&mcpt -callSigns&&echo."
+PAUSE
+CMD /c cls
+
+ECHO mcpt -send=1,6 -num=30 -displayFormat=LF
+ECHO.
+PAUSE
+CMD /c  "echo.&&mcpt -send=1,6 -num=30 -displayFormat=LF&&echo."
 PAUSE
 CMD /c cls
 
