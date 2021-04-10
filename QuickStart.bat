@@ -152,6 +152,7 @@ ECHO mcpt -callSigns
 ECHO.
 PAUSE
 CMD /c  "echo.&&mcpt -callSigns&&echo."
+ECHO.
 PAUSE
 CMD /c cls
 
