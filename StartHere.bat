@@ -20,3 +20,4 @@ ECHO.
 ECHO     *** This just shows the scope of possibilities. A typical user,
 ECHO         may only use a subset. ***
 ECHO.
+cmd \c
