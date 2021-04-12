@@ -1064,6 +1064,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 	}
 
 	if flagTAB {
+		res = strings.TrimRight(res," ")
 		res = strings.ReplaceAll(res, " ", "	")
 	}
 
