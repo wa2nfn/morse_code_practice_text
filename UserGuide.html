@@ -847,7 +847,7 @@ Example 27:
 <P>
 After learning to receive all the characters, this option can generate some groups for sending practice, particularly for keyers/bugs with dit/dah alternations.
 
-<I>See the latter text on -sendCheck too.</I>
+<I>See the following text on -sendCheck too.</I>
 
 The following groups numbered from 1-6 determine the characters. The order should be from simplist to difficult (arguably).
 
@@ -898,14 +898,19 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
 Note that <B>any</B> text file created by MCPT can be used as a practice file, not only those from the &lt;-send>.
 
 
-  Levenshtein    MCPT Created        User Sent
+  Levenshtein    MCPT Created        Your Sent
    Distance          Group            Group
  ============   ===============   ===============
-       0        &lt;BT>              &lt;BT>
-       1        &lt;SK>              <span style="color:red">&lt;AS&gt;</span>
+       0        &lt;BT>           &lt;BT>
+       1        &lt;SK>           <span style="color:red">&lt;AS&gt;</span>
        4        HI                H<span style="color:red">GGFJ</span>
+       1        XYZ               XYZ<span style="color:green">123</span>
+       3        ABCDE -3          ABC
 
 Accuracy: 50.00%
+
+Note: In the last case with GREEN text, it indicates that the Your Sent Group is extra.
+Note: In the last case, the -3 indicates that the Your Sent Group is missing 3 characters.
 
  </PRE>
 <P>
