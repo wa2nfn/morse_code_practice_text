@@ -17,6 +17,7 @@ import (
 var (
 	char2psReplacer *strings.Replacer
 	ps2charReplacer *strings.Replacer
+	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g","<AA>","h","<CT>","i","<KN>","j","<VA>","k","<SN>","l" )
 	gotCarat bool
 	validCharPS string
 	invalidCharPS string
@@ -25,7 +26,7 @@ var (
 // determine which function to do
 func doSendOpts(fp *os.File) {
 	if flagsend != "" && flagsendcheck != "" {
-		fmt.Printf("\n     Error: Option <send> and <sendCheck> are mutually exclusive.\n")
+		fmt.Printf("\n     Error: Option <-send> and <-sendCheck> are mutually exclusive.\n")
 	} else if flagsend != "" {
 		doSendGroups(fp)
 	} else {
@@ -51,12 +52,13 @@ func doSendCheck(fp *os.File) {
 		invalidCharPS = "<>"
 		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK","h","^AA","i","^CT","j","^KN","k","^VA","l","^SN")
 		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g","^AA","h","^CT","i","^KN","j","^VA","k","^SN","l")
+		gotCarat = true
 	}
 
 	path = strings.Split(flagsendcheck, sep)
 
 	if len(path) == 0 || len(path) != 2 {
-		fmt.Printf("\n     Error: Option <sendCheck> requires 2 file names, in format like: file1,file2 (if prosigns have <XX> format\nor file1^file2, if prosigms have ^XX format.\n")
+		fmt.Printf("\n     Error: Option <-sendCheck> requires 2 file names, in format like: file1,file2 (if Pro~igns have <XX> format\nor file1^file2, if ProSigns have ^XX format.\n")
 		os.Exit(1)
 	}
 
@@ -66,9 +68,9 @@ func doSendCheck(fp *os.File) {
 
 	switch errVal {
 	case 1:
-		fmt.Printf("\n     Error: One of files MUST be the captured text from your morse sending.\n")
+		fmt.Printf("\n     Error: One file MUST be the captured text from your morse sending.\n")
 	case 2:
-		fmt.Printf("\n     Error: One of files MUST be an MCPT generated file of practice material.\n")
+		fmt.Printf("\n     Error: One file MUST be a MCPT generated file of practice material.\n")
 	default:
 		os.Exit(0)
 	}
@@ -176,7 +178,7 @@ func buildSendSlice() []rune {
 	}
 
 	if len(charSlice) < 5 {
-		fmt.Printf("\n     Error: option -send must include at least one digit from 1-5\n")
+		fmt.Printf("\n     Error: option <-send> must include at least one digit from 1-5\n")
 		os.Exit(1)
 	}
 
@@ -208,10 +210,7 @@ func readLines(path []string) int {
 	var totalCorrect int
 	var totalChars int
 	var warningMsg string
-	var invalidPScharsFlag bool
-	//var colorError = gchalk.WithBgBlack().BrightRed
 	var colorExtra = gchalk.BrightGreen
-	//var colorError = gchalk.WithBgBlack().BrightRed
 	var colorError = gchalk.BrightRed
 	var miss bool
 	var extra bool
@@ -222,31 +221,44 @@ func readLines(path []string) int {
 	for fIndex := 0; fIndex <= 1; fIndex++ {
 		// determine which file we have
 		whoIsIt, b := determineFile(path[fIndex])
-		b = bytes.ReplaceAll(b, []byte("0"), []byte("\u00D8"))  // unfancy all zeros
 
 		if whoIsIt == 'm' {
 			// process MCPT file
 			gotMCPT = true
-			sendGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
+			sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
 		} else {
 			// process User file
 			gotUser = true
+
+
+			if gotCarat {
+				// got carat so PS needs looklike ^BT NOT <BT>
+				if bytes.ContainsAny(b, "<>") {
+					// used ^ sep should use ","
+					fmt.Printf("\n     Warning: Your file <%s> had unsupported ProSign format characters \"<>\" (i.e. <BT>).",path[fIndex])
+					fmt.Printf("\n              If those are correct for your ProSigns, use a comma \",\" between your file names (i.e.-send=file1,file2).\n")
+					os.Exit(88)
+				}
+			} else {
+				// have , so need <>  ie <BT> NOT ^BT
+				if bytes.ContainsAny(b, "^") {
+					// used , sep should use "^"
+					fmt.Printf("\n     Warning: Your file <%s> had unsupported ProSign format character \"^\" (i.e. ^BT ).",path[fIndex])
+					fmt.Printf("\n              If that is correct for your ProSigns, use a carat \"^\" between your file names (i.e.-send=file1^file2).\n")
+					os.Exit(88)
+				}
+			}
+			b = bytes.ReplaceAll(b, []byte("0"), []byte("\u00D8"))  // unfancy all zeros
 			// convert any NL to space
 			b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
-			tmpStr := ps2charReplacer.Replace(string(b))
-			// must see if the user had invalid prosign delimiters <> if so make them *
-			if strings.ContainsAny(tmpStr, invalidCharPS) {
-				invalidPScharsFlag = true
-				b = []byte(tmpStr)
-
-				if gotCarat {
-					b = bytes.ReplaceAll(b, []byte("^"), []byte("*"))
-				} else {
-					b = bytes.ReplaceAll(b, []byte("<"), []byte("*"))
-					b = bytes.ReplaceAll(b, []byte(">"), []byte("*"))
-				}
+			var tmp = ps2charReplacer.Replace(string(b))
+			if gotCarat == false && (strings.Contains(tmp, "<") || strings.Contains(tmp, ">")) {
+				fmt.Printf("     Warning: Your file contains unsupported ProSigns or \"< or >\", they will add to errors.\n")
+			} else if gotCarat == true && strings.Contains(tmp, "^") {
+				fmt.Printf("     Warning: Your file contains unsupported ProSigns or \"^\", they will add to errors.\n")
 			}
+
 			userGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
 		}
 	}
@@ -300,6 +312,7 @@ func readLines(path []string) int {
 			for ; Index < len(sgChar) && Index < len(ugChar); Index++ {
 
 				if Index < len(sgChar) && Index < len(ugChar) {
+
 					if sgChar[Index] != ugChar[Index] {
 						// mismatch - color bad data
 						tmpChar = char2psReplacer.Replace(string(ugChar[Index]))
@@ -331,7 +344,7 @@ func readLines(path []string) int {
 
 		} else {
 			totalCorrect += len(sgChar)
-			out = ugChar
+			out = char2psReplacer.Replace(ugChar)
 		}
 
 		// FINN
@@ -365,21 +378,18 @@ func readLines(path []string) int {
 	}
 
 	if totalCorrect == totalChars {
-		fmt.Printf("\n     Accuracy: 100%%\n")
+		fmt.Printf("\n     Accuracy: 100%%\n\n")
 	} else {
-		fmt.Printf("\n     Accuracy: %3.2f%%\n", float32(totalCorrect)*100.0/float32(totalChars))
+		fmt.Printf("\n     Accuracy: %3.2f%%\n\n", float32(totalCorrect)*100.0/float32(totalChars))
 	}
 
 	if warningMsg != "" {
 		fmt.Printf("%s", warningMsg)
 	}
 
-	if invalidPScharsFlag {
-		fmt.Printf("\n     Warning: Your file had unsupported ProSigns or ProSign character(s) \"%s\",\nthey will be shown as \"*\" and will add to your errors.\n",invalidCharPS)
-	}
 
 	if miss {
-		fmt.Printf("\n     Warning: You MISSED sending some characters, noted by -X (a prosign counts as 1).\n")
+		fmt.Printf("\n     Warning: You MISSED sending some characters, noted by -X (a ProSign counts as 1).\n")
 		fmt.Printf("\n              If your send groups following the missed indicator are (errors), an EXTRA sent space may have split a group.")
 		fmt.Printf("\n              Edit your send file, fix the space error, and rerun.\n")
 		fmt.Printf("\n              The space should be just before the user groups turned RED.\n")
@@ -402,7 +412,7 @@ func determineFile(path string) (byte, []byte) {
 	// see if its the MCPT file
 	if  bytes.Contains(b,[]byte("\u0008")) {
 		// the MCPT file
-		b = b[:len(b) - 2]
+		b = bytes.ReplaceAll(b, []byte("\u0008"), []byte("")) 
 		return byte('m'), b
 	} else {
 		// the users send groups
