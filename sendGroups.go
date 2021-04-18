@@ -254,9 +254,9 @@ func readLines(path []string) int {
 
 			var tmp = ps2charReplacer.Replace(string(b))
 			if gotCarat == false && (strings.Contains(tmp, "<") || strings.Contains(tmp, ">")) {
-				fmt.Printf("     Warning: Your file contains unsupported ProSigns or \"< or >\", they will add to errors.\n")
+				fmt.Printf("     Warning: Your file contains unsupported ProSigns or \"< or >\",\n     they will add to errors.\n")
 			} else if gotCarat == true && strings.Contains(tmp, "^") {
-				fmt.Printf("     Warning: Your file contains unsupported ProSigns or \"^\", they will add to errors.\n")
+				fmt.Printf("     Warning: Your file contains unsupported ProSigns or \"^\",     they will add to errors.\n")
 			}
 
 			userGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
