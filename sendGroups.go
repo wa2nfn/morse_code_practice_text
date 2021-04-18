@@ -15,9 +15,13 @@ import (
 )
 
 var (
-	char2psReplacer *strings.Replacer
-	ps2charReplacer *strings.Replacer
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>","h","<AA>","i","<CT>","j","<KN>","k","<VA>","l","<SN>")
+
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g","<AA>","h","<CT>","i","<KN>","j","<VA>","k","<SN>","l" )
+
+	// wdl *strings.Replacer
 	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g","<AA>","h","<CT>","i","<KN>","j","<VA>","k","<SN>","l" )
+
 	gotCarat bool
 	validCharPS string
 	invalidCharPS string
@@ -41,8 +45,6 @@ func doSendCheck(fp *os.File) {
 
 	if strings.Contains(flagsendcheck,sep) {
 		// ps format <xx>
-		char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>","h","<AA>","i","<CT>","j","<KN>","k","<VA>","l","<SN>")
-		ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g","<AA>","h","<CT>","i","<KN>","j","<VA>","k","<SN>","l" )
 		validCharPS = "<>"
 		invalidCharPS = "^"
 	} else {
@@ -235,16 +237,16 @@ func readLines(path []string) int {
 				// got carat so PS needs looklike ^BT NOT <BT>
 				if bytes.ContainsAny(b, "<>") {
 					// used ^ sep should use ","
-					fmt.Printf("\n     Warning: Your file <%s> had unsupported ProSign format characters \"<>\" (i.e. <BT>).",path[fIndex])
-					fmt.Printf("\n              If those are correct for your ProSigns, use a comma \",\" between your file names (i.e.-send=file1,file2).\n")
+					fmt.Printf("\n     Warning: Your file <%s> had unsupported ProSign format\n              characters \"<>\" (i.e. <BT>).",path[fIndex])
+					fmt.Printf("\n\n              If those are correct for your ProSigns, use a comma \",\"\n              between the file names (i.e.-send=file1,file2).\n")
 					os.Exit(88)
 				}
 			} else {
 				// have , so need <>  ie <BT> NOT ^BT
 				if bytes.ContainsAny(b, "^") {
 					// used , sep should use "^"
-					fmt.Printf("\n     Warning: Your file <%s> had unsupported ProSign format character \"^\" (i.e. ^BT ).",path[fIndex])
-					fmt.Printf("\n              If that is correct for your ProSigns, use a carat \"^\" between your file names (i.e.-send=file1^file2).\n")
+					fmt.Printf("\n     Warning: Your file <%s> had unsupported ProSign format\n              character \"^\" (i.e. ^BT ).",path[fIndex])
+					fmt.Printf("\n\n              If that is correct for your ProSigns, use a carat \"^\"\n              between the file names (i.e.-send=file1^file2).\n")
 					os.Exit(88)
 				}
 			}
@@ -390,7 +392,7 @@ func readLines(path []string) int {
 
 	if miss {
 		fmt.Printf("\n     Warning: You MISSED sending some characters, noted by -X (a ProSign counts as 1).\n")
-		fmt.Printf("\n              If your send groups following the missed indicator are (errors), an EXTRA sent space may have split a group.")
+		fmt.Printf("\n              If your send groups following the missed indicator are (errors),\n     an EXTRA sent space may have split a group.")
 		fmt.Printf("\n              Edit your send file, fix the space error, and rerun.\n")
 		fmt.Printf("\n              The space should be just before the user groups turned RED.\n")
 	}

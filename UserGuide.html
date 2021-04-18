@@ -410,6 +410,8 @@ Note: If a field in the delimiter is only space(s) e.g. ".|?| |=", and DM=1,
 
 Note: If a field contains a prosign of either format, ^XX or &lt;XX&gt;, the filed cannot conatain anything else.
 
+Note: A delimiter is NOT counted as a "word" or codeGroup, so -num=4 for examplecould display "one xx two yy three xx four xx" even though the delimiter in some cases might look just like a word or codeGroup.
+
 Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that will translate into 
       a 1/2 second silence period during playback. This may be used with any feature where a delimiter
       applies, but may be most effective in conjuction with the &lt;repeat&gt; option.

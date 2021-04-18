@@ -134,7 +134,7 @@ var message string = `
   -in         (for only words from a file)
   -codeGroups (code groups)
   -permute    (permutations of characters based on tutor/lesson)
-  -help       (option lisiting)
+  -help       (option listing)
   -send       (create sending practice by specific groups of characters)
   -sendCheck  (to verify your accuracy of sending)
   -callsigns  (simple generated call signs based on tutor/lesson)
@@ -275,7 +275,7 @@ func init() {
 }
 
 func init() {
-	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                  version %s\n                                    by WA2NFN\n\n", version)
+	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                     v. %s\n                                    by WA2NFN\n\n", version)
 }
 
 func main() {
@@ -309,7 +309,7 @@ func main() {
 				// create the file
 				fp, err := os.Create(flagopt)
 				if err != nil {
-					fmt.Printf("\n%s File name <%s>.\n", err, flagopt)
+					fmt.Printf("\n%s\nFile name <%s>.\n", err, flagopt)
 				}
 
 				defer func() {
@@ -1069,7 +1069,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 	}
 
 	if flagoutput == "" {
-		fmt.Printf("%s", res)
+		fmt.Printf("%s\n", res)
 		os.Exit(0)
 	} else {
 		if res == "" {
