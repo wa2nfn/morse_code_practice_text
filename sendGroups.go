@@ -17,7 +17,7 @@ import (
 var (
 	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>", "h", "<AA>", "i", "<CT>", "j", "<KN>", "k", "<VA>", "l", "<SN>", "0", "\u00D8")
 
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0","<err>","*")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0","<ERR>","*")
 
 	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0")
 
@@ -51,7 +51,7 @@ func doSendCheck(fp *os.File) {
 		sep = "^"
 		validCharPS = sep
 		invalidCharPS = "<>"
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8","<err>","*")
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8","<ERR>","*")
 		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g", "^AA", "h", "^CT", "i", "^KN", "j", "^VA", "k", "^SN", "l", "\u00D8", "0")
 		gotCarat = true
 	}
@@ -85,7 +85,7 @@ func doSendCheck(fp *os.File) {
 // make random send groups
 func doSendGroups(fp *os.File) {
 	var tmpOut []rune
-	// always use <> fomat
+	// always use <> format
 
 	outBuf := make([]rune, 0, (flagcgmax*flagnum)+flagnum)
 
@@ -101,6 +101,7 @@ func doSendGroups(fp *os.File) {
 
 	// substitue prosigns
 	printStrBuf(char2psReplacer.Replace(string(outBuf)), fp)
+
 }
 
 /*
@@ -207,16 +208,20 @@ func readLines(path []string) int {
 	var totalCorrect int
 	var totalChars int
 	var warningMsg string
-	var colorExtra = gchalk.BrightGreen
-	var colorError = gchalk.BrightRed
-	var colorMiss = gchalk.BrightYellow
+	//var colorExtra = gchalk.BrightGreen
+	//var colorError = gchalk.BrightRed
+	//var colorMiss = gchalk.WithBgBlue().BrightCyan
+	var colorExtra = gchalk.Green
+	var colorError = gchalk.Red
+	var colorMiss = gchalk.Cyan
+	//var colorMiss = gchalk.WithBgBlue().Cyan
 	var miss bool
 	var extra bool
 	var extraForever bool
 	m := regexp.MustCompile(`<[\-.]+>`)  // find <..--..> errors
 	hh := regexp.MustCompile(`<.{8,8}>`) // find <HH> as code
 
-	gchalk.SetLevel(gchalk.LevelAnsi16m)
+	gchalk.SetLevel(gchalk.LevelAnsi256)
 
 	// do both files
 	for fIndex := 0; fIndex <= 1; fIndex++ {
@@ -330,7 +335,12 @@ Levenshtein             MCPT Created                       Your Sent
 						if sgChar[Index] != ugChar[Index] {
 							// mismatch - color bad data
 							tmpChar = char2psReplacer.Replace(string(ugChar[Index]))
-							out += colorError(tmpChar)
+
+							if tmpChar == "*" {
+								out += gchalk.BrightMagenta(tmpChar)
+							} else {
+								out += colorError(tmpChar)
+							}
 						} else {
 							// both matched good!
 							out += char2psReplacer.Replace(string(sgChar[Index]))
@@ -346,6 +356,7 @@ Levenshtein             MCPT Created                       Your Sent
 				// one array is done
 				if len(ugChar[Index:]) >= 1 && Index+1 > len(sgChar) { // walked off the sgChar
 					// extra sent by user
+					// but there might also be invaild as *
 					tmpChar = char2psReplacer.Replace(ugChar[Index:])
 					tmpChar = out + colorExtra(tmpChar)
 					extra = true // once set, forever set
@@ -364,7 +375,7 @@ Levenshtein             MCPT Created                       Your Sent
 			if missed != "" {
 				olen := len(sgChar)
 				padded := sgChar[:Index] + missed + strings.Repeat(" ", 30 - olen)
-				fmt.Printf("      %-30s    %-30s", padded, ugChar) // missed stuff from col 1
+				fmt.Printf("      %-30s    %-30s", padded, out) // missed stuff from col 1
 				missed = ""
 			} else if extra {
 				fmt.Printf("      %-30s    %-30s", sgChar, tmpChar) // extra stuff in second col
@@ -404,18 +415,22 @@ Levenshtein             MCPT Created                       Your Sent
 		}
 
 		if miss {
-			fmt.Printf("\n Warning: You %s sending some characters (ProSign counts as 1).\n",colorMiss("missed"))
+			fmt.Printf("\n Warning: You %s sending some characters, column 2 in %s (ProSign counts as 1).\n",colorMiss("missed"), colorMiss("cyan"))
 			fmt.Printf("\n          If your sent groups following the %s characters are all (%s),\n          you may have split a group with an extra space.", colorMiss("missed"),colorError("errors"))
 			fmt.Printf("\n          The space should be just before your sent groups turned %s.\n", colorError("red"))
 			fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.\n")
 		}
 
 		if extraForever {
-			fmt.Printf("\n Warning: You sent some %s characters.\n",colorExtra("extra"))
+			fmt.Printf("\n Warning: You sent some %s characters, column 3 in %s.\n",colorExtra("extra"),colorExtra("green"))
 			fmt.Printf("\n          Or you missed a space and combined two groups.")
 			fmt.Printf("\n          The space should be just before your sent groups all turned %s.\n", colorError("red"))
 			fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.")
 		}
+
+		fmt.Printf("\n\n Note:    INVALID morse characters show in column 3 as asterisks \"%s%s\".\n",gchalk.BrightMagenta("*"),gchalk.Green("*"))
+
+
 
 	}
 	return 0 

@@ -161,7 +161,7 @@ func init() {
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa| |bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
-	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418.\nUse -help=tutors for more info.")
+	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor.\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) Between 1 and DM delimiter\nstrings are concatenated. DM=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "DR", false, "Delimiter random, (if DM > 0) DR=true makes a delimiter randomly print on. (default false)")
@@ -750,12 +750,15 @@ func main() {
 		} else if flagtutor == "MFJ418" || flagtutor == "MFJ" {
 			flagtutor = "MFJ418"
 			kochChars = "WBMHATJSNIODELKZGCUQRVFPYX5.7/9,168?2043"
+		} else if flagtutor == "PCWTUTOR" || flagtutor == "PCWT" {
+			flagtutor = "PCWT"
+			kochChars = "QSEMTADJIRC5NLG0UB41HOZY69KW27FX.?38PV,/="
 		} else {
 			fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see the help.\n")
 			os.Exit(1)
 		}
 
-		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC") {
+		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT" ) {
 			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, 40, flagtutor)
 			os.Exit(1)
 		}
@@ -775,7 +778,7 @@ func main() {
 		}
 		flaglessonstart-- // because strings start at 0
 
-		if flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" {
+		if flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT" {
 			flaglessonend++
 		}
 
