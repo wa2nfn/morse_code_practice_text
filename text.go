@@ -61,7 +61,17 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			return false
 		})
 
-		for index := 0; index < len(textWords) && index <= flagnum; index++ {
+		//FINN
+		for ;len(textWords) < flagnum; {
+			for _,val := range textWords {
+				textWords = append(textWords,  val)
+				if len(textWords) >= flagnum {
+					break
+				}
+			}
+		}
+
+		for index := 0; index < len(textWords); index++ {
 			// tokens now a string of space separated characters
 
 			tmpWord := textWords[index]
@@ -99,6 +109,10 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 				wordArray = append(wordArray, tmpWord)
 			} else {
 				discarded = true
+			}
+
+			if index >= flagnum {
+				break
 			}
 		}
 	}

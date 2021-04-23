@@ -41,26 +41,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	var trimChars string
 	var s string
 
-	// added to fix regex to have unicode for international
-	if strings.Contains(flaginlist, "%") {
-		flaginlist = strings.ReplaceAll(flaginlist, "%C0", "\u00C0")
-		flaginlist = strings.ReplaceAll(flaginlist, "%E0", "\u00E0")
-		flaginlist = strings.ReplaceAll(flaginlist, "%C4", "\u00C4")
-		flaginlist = strings.ReplaceAll(flaginlist, "%E4", "\u00E4")
-		flaginlist = strings.ReplaceAll(flaginlist, "%C9", "\u00C9")
-		flaginlist = strings.ReplaceAll(flaginlist, "%E9", "\u00E9")
-		flaginlist = strings.ReplaceAll(flaginlist, "%C8", "\u00C8")
-		flaginlist = strings.ReplaceAll(flaginlist, "%E8", "\u00E8")
-		flaginlist = strings.ReplaceAll(flaginlist, "%C7", "\u00C7")
-		flaginlist = strings.ReplaceAll(flaginlist, "%E7", "\u00E7")
-		flaginlist = strings.ReplaceAll(flaginlist, "%D1", "\u00D1")
-		flaginlist = strings.ReplaceAll(flaginlist, "%F1", "\u00F1")
-		flaginlist = strings.ReplaceAll(flaginlist, "%D6", "\u00D6")
-		flaginlist = strings.ReplaceAll(flaginlist, "%F6", "\u00F6")
-		flaginlist = strings.ReplaceAll(flaginlist, "%DC", "\u00DC")
-		flaginlist = strings.ReplaceAll(flaginlist, "%FC", "\u00FC")
-	}
-
 	if strings.Contains(flaginlist, "?") {
 		trimChars = ".\",!"
 		flaginlist = strings.ReplaceAll(flaginlist, "?", "")
