@@ -6,6 +6,7 @@
 	<META NAME="description" CONTENT="Morse Code Practice Text User Guide">
 	<TITLE>MCPT User Guide</TITLE>
 </HEAD>
+
 <BODY>
 <P>
 <H1>
@@ -24,14 +25,14 @@ Current version 2.0
 This file contains examples of the usage of all options.
 <P>
 mcpt overcomes some of the common issues with practice text, or its generation:
-	<ol>
+	<OL>
 	<LI> limits typing or editing to create text</LI>
 	<LI> flexible input sources</LI>
 	<LI> better distribution of random data </LI>
 	<LI> user control of of input matching criteria</LI>
 	<LI> user control of duplication</LI>
 	<LI> random output to eliminate memorization</LI>
-	</ol> 
+	</OL> 
 <H1>
 Overview Of MCPT's Behaviors
 </H1>
@@ -57,6 +58,9 @@ most likely want -opt to be the left most option.</I> When you run the tool, if 
 the first line for the problem cause. Also, adding -help=options to a command line with you have used will show
 you the state of ALL options in mcpt, the ones you have set, plus those with defaults. The defaults may
 have impact on your output that you don't realize as a new user.
+<P>
+Note: Zeros written to the screen have a slash for readability, they are stripped with the &lt;-out> option so tutor/trainer software does not
+have problems. For this reason do <B>not</B> use the commmon command line practice of file redirection using ">".
 <H3>
 Notation
 <P>
@@ -289,7 +293,7 @@ NOTE: a space character added into the suflist or prelist set of characters.
       In the case of, "offer", the tool was going to put just 1 suffix character, since it was a space
       its unseen. In the case of, "WHICH= 36/" the suffix length was 4, but the second random character 
       was a space, so it "looks" like a non-word output.
-<PRE>
+</PRE>
 <H2>
 Example 7:
 </H2>
@@ -365,7 +369,7 @@ NOTE: Each ProSign seen above is in the -prosign=prosignFile.txt.
       ^BT # this format supported to play output in G4FON
       # spaces before or after a ProSign sequence is OK
            &lt;KN>
-<PRE>
+</PRE>
 <H2>
 Example 11:
 </H2>
@@ -438,6 +442,7 @@ Note: group length determined by and -cglen
 Note: groups can be separated by delimiters as previously described
 Note: limited options apply when using code groups, others are silently ignored
       -len, -num, -delimiter, -DM, -out, -inlen apply.
+</PRE>
 <H2>
 Example 14:
 </H2>
@@ -450,9 +455,6 @@ Note: Every "2" words printed from matching in the input file is followed by
 Note: all options from word match word still apply if used (prelen, suflen, delimiter, etc.)
 Note: In mixedMode, the code group word is NOT counted into the -num word count.
 </PRE>`
-
-<H2>
-</PRE>
 <H2>
 Example 15: 
 </H2>
@@ -514,9 +516,9 @@ with ONE prosign per line (see below), will use these 4 character sequences (e.g
 if the were a single character in the &lt;cglist> option for code groups.
 
 <U>File myPs.txt</U>
-<SK>
-<HH>
-<AR>
+&lt;SK>
+&lt;HH>
+&lt;AR>
 
 A code group of fixed size of 4 (cglen=2:2)could look like:
 
@@ -524,7 +526,7 @@ X3FQ JDUG J<SK>2S NEFS &lt;HH>&lt;SK>z&ltAR>
 
 Similarly if the command line ws using an input file for words but usig &lt;mixedMode> for
 codeGroups, as well, the codeGroups could have prosigns.
-
+</PRE>
 <H2>
 Example 17:
 </H2>
@@ -603,6 +605,7 @@ WORD WORD WORD &lt;BT> WORD AA WORD WORD 1
 Example 19:
 </H2>
 <B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
+<P>
 ON AT OF 3,A??4 NO HE IS A4263?/ AND HAT FOUR ......
 <H2>
 Example 20:
@@ -680,7 +683,6 @@ ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?
       silence, 2 words at 35 wpm, and repeat the cycle until the -num XX words have been output.
 
 |f680 |w25 ROWDYISM WAGONS SIN |S200 |f860 E |S200 |f680 |w35 IRKSOME UNICYCLE |S200 |f860 E |S200 |f680 |w25 SELLERS 
-
 </PRE>
 <H2>
 Example 21: 
@@ -711,6 +713,7 @@ if you are using prefixes, suffixes, repeat, delimiters, this applies. The follo
 THIS89 HAS23 SUFFIX22 <U>THIS IS A GROUP99</U>
 
 TEST ?, WORD =. MORE ?? <U>THIS IS A GROUP</U> =? etc.
+</PRE>
 <H2>
 Example 23: 
 </H2>
@@ -786,7 +789,8 @@ Example 24:
 This option cosmetically changes the output. It can take 4 different options,
 LF (add an extra linefeed), TAB (conver spaces to TABs), and to get both actions you can use either TAB_LF or LF_TAB.
 <P>
-These are for user reading, that is if you are giving the output to a tutor/tainer to play code as audio they have have no value. Some users use MCPT ouput for sending practice, and some have even used it for keyboarding practice.
+These are for user reading, that is if you are giving the output to a tutor/tainer to play code as audio they have have
+no value. Some users use MCPT ouput for sending practice, and some have even used it for keyboarding practice.
 The following shows a small example or code groups, first without the new options, and then using both.
 <P>
 wsdf5 dw34e des,. sdsdw
@@ -798,7 +802,6 @@ wsdf5    dw34e    des,.    sdsdw
 aswss    sdj23    sdsdr    ./766
 
 36ffd    fed34    dsdhh    s43??
-
 <H2>
 Example 25: 
 </H2>
@@ -815,7 +818,8 @@ Note that must can also be used with &lt;<in> or &lt;text>, in a similar way to 
 MKURD KKBUR EUUAM
 <P>
 <B>mcpt -codeGroups -lesson=4 cglen=1:4 -must="E"</B>
-In this example the user gets random length groups from 1 to 4, of the letters KMURE; but the the <must> forces every group to have an "E" since its the new character for the user, or the one causing problems.
+In this example the user gets random length groups from 1 to 4, of the letters KMURE; but the the <must> forces every group 
+to have an "E" since its the new character for the user, or the one causing problems.
 <P>
 KRE E MUER EE EMUE 
 <P>
@@ -828,9 +832,12 @@ Example 26:
 <B>mcpt -in=file.txt -inlen2:6 -headCopy</B>
 <P>
 The <B>headCopy</B> option will make each successive codeGroup have a length of
-one more than the previous, until the cglen hits its maximum value. In the example above, <B>without</B> the new option, the group length would be between 2 and 6 characters. Now, the first group has a length of 2, then 3, then 4 ... until 6. This may help the user to build their ability to mentally buffer the text, a skill needed for head copy. If you use the delimiter option with headCopy, the delimiter will appear in between runs or elements NOT in between each word or code group.
-A delimiter is therefore an alert that the longest element is done, and the shortest one will follow; its also a handy way to get some practice of
-a prosign or puctuation. The difference is shown below.
+one more than the previous, until the cglen hits its maximum value. In the example above, <B>without</B> the new option, the 
+group length would be between 2 and 6 characters. Now, the first group has a length of 2, then 3, then 4 ... until 6. This may 
+help the user to build their ability to mentally buffer the text, a skill needed for head copy. If you use the delimiter option
+with headCopy, the delimiter will appear in between runs or elements NOT in between each word or code group.  A delimiter is 
+therefore an alert that the longest element is done, and the shortest one will follow; its also a handy way to get some practice
+of a prosign or puctuation. The difference is shown below.
 <PRE>
 Without -headCopy:   kmmu k ummkr km mm
 
@@ -839,22 +846,20 @@ With -headCopy:      km kur rruk kmmur rummkm mm umu kumu uuurr urumkm
 With a delimiter:    mm mkm rmkm mmrkm &lt;SK&gt; um urk rmmk rumkk &lt;AR&gt;
 <P>
 In the second command, the headCopy option does the same thing for words as it did for code groups.
-<P>
+</PRE>
 <H2>
 Example 27: 
 </H2>
 <B>mcpt -send=12</B>
 <B>mcpt -send=1,2 -cglen=2:6</B>  <I>comma is ignored, just to show its 1 & 2 not 12</I>
 <B>mcpt -send=4 -cglen=2:4</B>
-<P>
-After learning to receive all the characters, this option can generate some groups for sending practice, particularly for keyers/bugs with dit/dah alternations.
+<PRE>
+After learning to receive all the characters, this option can generate some groups for sending practice, particularly for 
+keyers/bugs with dit/dah alternations.
 
-<I>See the following text on -sendCheck too.</I>
+<I>See the following text on -sendCheck too, which can help verify sent text.</I>
 
 The following groups numbered from 1-6 determine the characters. The order should be from simplist to difficult (arguably).
-
-<B>Note the output from this command is meant to be displayed on your screen, for you to send from, not given to your trainer software. 
-ZEROS are shown with a slash for easy reading because upper case "O" looks too similar to ZERO when adjacent. Trainers will NOT interpret the character as a zero!</B>
 
 1: EIHMOST50                      # all dits or dahs
 2: ABDGJNUVWZ                     # one dit/dah or dah/dit alternation
@@ -876,54 +881,82 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
  THFRØ  LXLRO  SØIØK  LXEY5  XML5F  5IRØK  RKØQI 
 
  TFEKP  I5PFP  TQFFH  IPYEX  TQTTY  EKMFO  ØKOIL
+</PRE>
 
- <B>mcpt -sendCheck=test.txt,mycw.txt</B>
-
+ <B>Using The sendCheck option:  mcpt -sendCheck=test.txt,mycw.txt</B>
+ <P>
+ Caveats: 
+ <OL>
+ <LI> The feature uses color, a black or dark backgound works best. Use right mouse click, then options on Windows, or your 
+      terminal emulator as needed.</LI>
+ <LI> Even if color is a problem, the first column will indicates an issue.</LI>
+ <LI> Timing errors in some cases may be difficult to determine, see below.</LI>
+ </OL>
+<P>
+<PRE>
  NOTE: If your "sending" software, records ProSigns in the format like: <SK>, then use a comma "," to separate the file names.
  NOTE: If your "sending" software, records ProSigns in the format like: ^SK, then use a carat "^" to separate the file names.
        MCPT files created with the -send option will use the &lt;SK> format, but it can check either format from your software file.
-       MCPT files created with options other than -send (text, codeGroups, permutations, etc.) will use the format based on the ProSign option file,
-       so use "," or "carat" as appropriate.
+       MCPT files created with options other than -send (text, codeGroups, permutations, etc.) will use the format based on the 
+       ProSign option file,
+       So use "," or "carat" as appropriate.
 
  If you had run any of the commands at the beginning of this example, and added the -out=text.txt, your practice text would
  be in that file. To actually practice sending you would display that file on your screen, and do your sending.
 
- If you have other software which allows you to send morse and capture it as text (cwcomm for example), then you can verify your sending by comparing the two files. 
+ Sending practice material can be generated from ANY MCPT feature, with the exception of the LCWO options. You can use ANY 
+ source for practice material (e.g. notepad) as long as the file is a simple text file.
 
- Let's say your captured morse is in mycw.txt.
+ If you have other software which allows you to send morse and capture it as text (I.e. PCFistcheck, or CWcom), then you can 
+ verify your sending by comparing the two files. 
 
- Then run: <B>mcpt -sendCheck=test.txt,mycw.txt</B>
+ Let's say your captured morse is in mycw.txt. Then, in the option below ADD "M:" or "m:" immediately before that file name as below.
+
+ Then run: <B>mcpt -sendCheck=test.txt,M:mycw.txt</B>
 
  The order of the files and names do not matter.
- Below is a simple output. The erred characters will be shown in <span style="color:red">red</span> text.
+ Below is a simple output. The errored characters will be shown in <span style="color:red">red</span> text.
 
-Note that <B>any</B> text file created by MCPT can be used as a practice file, not only those from the &lt;-send>.
-
-
-  Levenshtein    MCPT Created        Your Sent
+  Levenshtein      MCPT Text         Your CW
    Distance          Group            Group
  ============   ===============   ===============
-       0        &lt;BT>           &lt;BT>
-       1        &lt;SK>           <span style="color:red">&lt;AS&gt;</span>
+       0        &lt;BT>              &lt;BT>
+       1        &lt;SK>              <span style="color:red">&lt;AS&gt;</span>
        4        HI                H<span style="color:red">GGFJ</span>
        1        XYZ               XYZ<span style="color:green">123</span>
-       3        ABC<span style="color.yellow">DE</span>          ABC
+       3        ABC<span style="color:blue">DE</span>             ABC
 
 Accuracy: 50.00%
 
-Note: GREEN text, indicates Your Sent Group has extra.
-Note: YELLOW text, indicates Your Sent Group is missing characters.
+Note: GREEN text, indicates Your CW Group has extra.
+Note: CYAN text, indicates Your CW Group is missing characters.
+Note: If your trainer reports INVALID morse as: &lt;<ERR>, &lt;ERROR>, or &lt;---> formats, those characters will be shown as 
+      an asterisk (magenta or green depending on the column).
+Note: Color key and diagnostics will display on screen for you.
 
- </PRE>
-<P>
-<B>***** LCWO users should also review Example 20.*****</B>
-<H2>
-LCWO Option Overview:
-</H2>
+<B>Timing problems with your sending</B>
+SendCheck can help diagnose some issues with timing in your sending, but not all. Let's look at some simple examples.
+Let's use the following short, trivial example of practice material, "This is a test.".
+
+Mixed case in practice text file and sending trainer file are converted to uppercase for comparison.
 <PRE>
-This section can be skipped on first read or if you are NOT a user of LCWO.
+<OL>
+<LI> Your "letter" timing is off, so when you are supposed to send "This", the trainer says you sent: "THIEI" or "THIIE" or "THIEEE"
+ because the final "S" was not decoded correctly by the trainer. We can detect this. These will all be shown as EXTRA characters.</LI>
+<LI> Your inter-word timing is too SHORT, so you compressed "TH" to look like a "6". Now a 4 character string "THIS" is compared to a 3 character
+ string "6IS" MCPT will show 3 errors, it will also say you are short a character. Looking at the screen you realise this was just a 
+ timing mistake. You can edit your file and rerun if you like.</LI>
+<LI> You let extra time between words. Like "THIS     IS A TEST", while not good for on the air sending, this does not cause any screen problem.</LI>
+<LI> The worst problem (in some cases) is if your inter-character spacing is too LONG. Here your trainer will split a word making two 
+ from one. I.e. "TH IS A TEST", MCPT will tell you the word "THIS" that it was expecting is MISSING two characters (that's good) 
+ but from this point on, you are going to see EVERY word with errors because the files are out of step. This can be corrected if you 
+ edit the file and delete the space.</LI>
+</OL>
+<H2>
+LCWO Option Overview: <I>LCWO users also review Example 20</I>
+</H2>
+This section can be skipped are NOT a user of LCWO.
 
-****************************************************************************************************
 For any practice session text where you want to have on-the-fly changes in word speed (wpm) and/or
 effective speed (a.k.a. Farnsworth), you will need "LCWO" options.
 
@@ -1033,6 +1066,7 @@ Note: the actual output, looks like: |w20 the |w15 and |w30 test ....
       the "|" and send your the "wNN" in between words.
 
 Note: the "LCWO" options are ignored if you are using code groups (-codeGroups).
+</PRE>
 <H2>
 Example 29:
 </H2>
@@ -1050,6 +1084,7 @@ the and test radio end ham
 it of man sat house end
 |w25
 he the radio sat end test it of
+</PRE>
 <H2>
 Example 30:
 </H2>
@@ -1072,6 +1107,7 @@ Note: the two new options LCWO_slow and LCWO_fast specify the number or "words"
       LCWO_fast can be equal or less than LCWO_low.
       Then effect of this option is to allow short bursts of higher speed to
       challenge you; then return to slower speed to recover.
+</PRE>
 <H2>
 Example 31:
 </H2>
@@ -1101,6 +1137,7 @@ Note: LCWO_sf and/or LCWO_fs are the only LCWO options which <I>may</I> be used 
       If they are specified with the option <B>mixedMode</B> they will frame the codeGroup 
       inserted in the output. e.g. word1 word2 <U>xxx</U> 3h6d?9 <U>yyy</U> word3 word4. Where
       xxx represents LCWO_sf, a nd yyy represents LCWO_fs.
+</PRE>
 <H2>
 Example 32:
 </H2>
@@ -1124,6 +1161,7 @@ clue that the speed was going to drop back for the next set of words.
 |w10 hurst |w13 hurst |w16 hurst &lt;SK> |w10 darcy |w13 darcy |w16 darcy &lt;BT> |w10 young |w13 young
 
 To get this I added to the command line (or options.mcpt.: -delimiter="&lt;SK>|&lt;BT>" -DM 1
+</PRE>
 <H2>
 Example 33:
 </H2>
@@ -1143,6 +1181,7 @@ Note: No checks are performed on the content of header, its passed to your
       contains a space.)
 
 <B>***** The following, examples combined general and LCWO options. *****</B>
+</PRE>
 <H2>
 Example 34: 
 </H2>
@@ -1388,6 +1427,7 @@ these will insert the specified string immediately before and/or after the codeG
 
 If LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, then plain text is sent at the 
 <B>faster speed of LCWO_low + LCWO_step</B>, while the codeGroup (due to mixedMode) will be sent <B> at the slower speed of LCWO_low</B>.
+</PRE>
 <H2>
 Example 36: 
 </H2>

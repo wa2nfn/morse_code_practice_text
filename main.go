@@ -142,7 +142,7 @@ var message string = `
   	` // end message
 
 func init() {
-  flag.StringVar(&flaginlen, "inlen", "1:5", "# characters in a word. inlen=min:max")
+	flag.StringVar(&flaginlen, "inlen", "1:5", "# characters in a word. inlen=min:max")
 	flag.StringVar(&flagcglen, "cglen", "5:5", "# characters in a code group. cglen=min:max.")
 	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
 	flag.IntVar(&flagnum, "num", 100, fmt.Sprintf("Number of words (or code groups) to output. Min 1, max %d.\n", maxUserWords))
@@ -758,7 +758,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT" ) {
+		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT") {
 			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, 40, flagtutor)
 			os.Exit(1)
 		}
@@ -1067,12 +1067,13 @@ func printStrBuf(strBuf string, fp *os.File) {
 	}
 
 	if flagTAB {
-		res = strings.TrimRight(res," ")
+		res = strings.TrimRight(res, " ")
 		res = strings.ReplaceAll(res, " ", "	")
 	}
 
 	if flagoutput == "" {
-		fmt.Printf("%s\n", res)
+		// fancy up zeros with a slash for SCREEN!
+		fmt.Printf("%s\n", strings.ReplaceAll(res, "0", "\u00D8"))
 		os.Exit(0)
 	} else {
 		if res == "" {
@@ -1081,7 +1082,6 @@ func printStrBuf(strBuf string, fp *os.File) {
 			os.Exit(0)
 		}
 
-		res += string('\u0008') // marked as from mcpt
 		_, err := fp.WriteString(res)
 		if err != nil {
 			fmt.Println(err)

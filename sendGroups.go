@@ -17,7 +17,7 @@ import (
 var (
 	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>", "h", "<AA>", "i", "<CT>", "j", "<KN>", "k", "<VA>", "l", "<SN>", "0", "\u00D8")
 
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0","<ERR>","*")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0", "<ERR>", "*", "<ERROR>", "*")
 
 	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0")
 
@@ -51,7 +51,7 @@ func doSendCheck(fp *os.File) {
 		sep = "^"
 		validCharPS = sep
 		invalidCharPS = "<>"
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8","<ERR>","*")
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8", "<ERR>", "*", "<ERROR>", "*")
 		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g", "^AA", "h", "^CT", "i", "^KN", "j", "^VA", "k", "^SN", "l", "\u00D8", "0")
 		gotCarat = true
 	}
@@ -69,9 +69,9 @@ func doSendCheck(fp *os.File) {
 
 	switch errVal {
 	case 1:
-		fmt.Printf("\n Error: One file MUST be the captured text from your morse sending.\n")
+		fmt.Printf("\n Error: One file MUST be the captured text from your CW sending (e.g. without a prefixed %s.)\n", gchalk.BrightRed("M: or m:"))
 	case 2:
-		fmt.Printf("\n Error: One file MUST be a MCPT generated file of practice material.\n")
+		fmt.Printf("\n Error: One file MUST be MCPT generated (or a source) file of practice material. E.g. for file <mcpt.txt>,\n        prefix it with %s, as in: sendCheck=%smcpt.txt,CW.txt.\n", gchalk.BrightRed("M: or m:"), gchalk.BrightRed("M:"))
 	default:
 		os.Exit(0)
 	}
@@ -100,7 +100,7 @@ func doSendGroups(fp *os.File) {
 	}
 
 	// substitue prosigns
-	printStrBuf(char2psReplacer.Replace(string(outBuf)), fp)
+	printStrBuf(strings.ReplaceAll(char2psReplacer.Replace(string(outBuf)), "\u00D8", "0"), fp)
 
 }
 
@@ -211,10 +211,10 @@ func readLines(path []string) int {
 	//var colorExtra = gchalk.BrightGreen
 	//var colorError = gchalk.BrightRed
 	//var colorMiss = gchalk.WithBgBlue().BrightCyan
+	//var colorMiss = gchalk.WithBgBlue().Cyan
 	var colorExtra = gchalk.Green
 	var colorError = gchalk.Red
 	var colorMiss = gchalk.Cyan
-	//var colorMiss = gchalk.WithBgBlue().Cyan
 	var miss bool
 	var extra bool
 	var extraForever bool
@@ -233,7 +233,6 @@ func readLines(path []string) int {
 			// process MCPT file
 			gotMCPT = true
 			sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
-			continue
 		} else if whoIsIt == 'u' {
 			// process User file
 			gotUser = true
@@ -252,8 +251,8 @@ func readLines(path []string) int {
 				// got carat so PS needs looklike ^BT NOT <BT>
 				if bytes.ContainsAny(b, "<>") {
 					// used ^ sep should use ","
-					fmt.Printf("\n Warning: Your file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <BT>).", path[fIndex])
-					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=file1,file2).\n")
+					fmt.Printf("\n Warning: Your CW file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <BT>).", path[fIndex])
+					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=M:file1,file2).\n")
 
 					os.Exit(88)
 				}
@@ -261,8 +260,8 @@ func readLines(path []string) int {
 				// have , so need <>  ie <BT> NOT ^BT
 				if bytes.ContainsAny(b, "^") {
 					// used , sep should use "^"
-					fmt.Printf("\n Warning: Your file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^BT ).", path[fIndex])
-					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=file1^file2).\n")
+					fmt.Printf("\n Warning: Your CW file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^BT ).", path[fIndex])
+					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=M:file1^file2).\n")
 					os.Exit(88)
 				}
 			}
@@ -271,173 +270,195 @@ func readLines(path []string) int {
 
 			var tmp = ps2charReplacer.Replace(string(b))
 			if gotCarat == false && (strings.Contains(tmp, "<") || strings.Contains(tmp, ">")) {
-				fmt.Printf(" Warning: Your file contains unsupported ProSigns or \"< or >\",\n          they will add to errors.\n")
+				fmt.Printf(" Warning: Your CW file contains unsupported ProSigns or \"< or >\",\n          they will add to errors.\n")
 			} else if gotCarat == true && strings.Contains(tmp, "^") {
-				fmt.Printf(" Warning: Your file contains unsupported ProSigns or \"^\",          they will add to errors.\n")
+				fmt.Printf(" Warning: Your CW file contains unsupported ProSigns or \"^\",          they will add to errors.\n")
 			}
 
 			userGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
 		} else {
-			panic ( "Got back bad file response")
+			panic("Got back bad file response")
 		}
+	}
 
-		if gotUser == false {
-			return 1
-		}
+	if gotUser == false {
+		return 1
+	}
 
-		if gotMCPT == false {
-			return 2
-		}
+	if gotMCPT == false {
+		return 2
+	}
 
-		// needed so we don't over run array
-		sendLen := len(sendGroupsCompare)
-		userLen := len(userGroupsCompare)
+	// needed so we don't over run array
+	sendLen := len(sendGroupsCompare)
+	userLen := len(userGroupsCompare)
 
-		if sendLen > userLen {
-			warningMsg = fmt.Sprintf("\n Note: The MCPT file had <%d> groups, your file had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", sendLen, userLen, userLen)
-			maxIndex = userLen
-		} else if userLen > sendLen {
-			warningMsg = fmt.Sprintf("\n Note: Your file had too many groups <%d>, the MCPT file only had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", userLen, sendLen, sendLen)
-			maxIndex = sendLen
-		} else {
-			maxIndex = sendLen
-		}
+	if sendLen > userLen {
+		warningMsg = fmt.Sprintf("\n Note: The MCPT file had <%d> groups, your CW file had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", sendLen, userLen, userLen)
+		maxIndex = userLen
+	} else if userLen > sendLen {
+		warningMsg = fmt.Sprintf("\n Note: Your CW file had too many groups <%d>, the MCPT file only had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", userLen, sendLen, sendLen)
+		maxIndex = sendLen
+	} else {
+		maxIndex = sendLen
+	}
 
-		fmt.Printf(`
-Levenshtein             MCPT Created                       Your Sent
-  Distance                 Group                             Group
+	fmt.Printf(`
+Levenshtein               MCPT Text                         Your CW
+  Distance                 Groups                            Groups
 ===========    ==============================    ==============================
 `)
 
-		// compare char by char the MCPT group to user Group
-		for index, sgChar := range sendGroupsCompare {
-			var out string
-			var missed string
-			var tmpChar string
-			var Index int
+	// compare char by char the MCPT group to user Group
+	var lineCnt int
+	var hadAsterisk bool
 
-			// get users groups
-			ugChar := userGroupsCompare[index]
+	for index, sgChar := range sendGroupsCompare {
+		var out string
+		var missed string
+		var tmpChar string
+		var Index int
 
-			// diff strings
-			totalChars += len(sgChar)
+		// get users groups
+		ugChar := userGroupsCompare[index]
 
-			// trim length if excessive
-			levErrors := levenshtein(sgChar, ugChar)
-			// print the table
+		// diff strings
+		totalChars += len(sgChar)
 
-			fmt.Printf("   %2d    ", levErrors) // first to keep alignment
-			if levErrors > 0 {
-				for ; Index < len(sgChar) && Index < len(ugChar); Index++ {
+		// trim length if excessive
+		levErrors := levenshtein(sgChar, ugChar)
+		// print the table
 
-					if Index < len(sgChar) && Index < len(ugChar) {
+		fmt.Printf("   %2d    ", levErrors) // first to keep alignment
+		if levErrors > 0 {
+			for ; Index < len(sgChar) && Index < len(ugChar); Index++ {
 
-						if sgChar[Index] != ugChar[Index] {
-							// mismatch - color bad data
-							tmpChar = char2psReplacer.Replace(string(ugChar[Index]))
+				if Index < len(sgChar) && Index < len(ugChar) {
 
-							if tmpChar == "*" {
-								out += gchalk.BrightMagenta(tmpChar)
-							} else {
-								out += colorError(tmpChar)
-							}
+					if sgChar[Index] != ugChar[Index] {
+						// mismatch - color bad data
+						tmpChar = char2psReplacer.Replace(string(ugChar[Index]))
+
+						if tmpChar == "*" {
+							out += gchalk.BrightMagenta(tmpChar)
+							hadAsterisk = true
 						} else {
-							// both matched good!
-							out += char2psReplacer.Replace(string(sgChar[Index]))
-							totalCorrect++
+							out += colorError(tmpChar)
 						}
+					} else {
+						// both matched good!
+						out += char2psReplacer.Replace(string(sgChar[Index]))
+						totalCorrect++
 					}
 				}
-
-				if Index+1 == len(sgChar) && Index+1 == len(ugChar) {
-					break // finished
-				}
-
-				// one array is done
-				if len(ugChar[Index:]) >= 1 && Index+1 > len(sgChar) { // walked off the sgChar
-					// extra sent by user
-					// but there might also be invaild as *
-					tmpChar = char2psReplacer.Replace(ugChar[Index:])
-					tmpChar = out + colorExtra(tmpChar)
-					extra = true // once set, forever set
-				} else if len(sgChar[Index:]) >= 1 {
-					// more in system column, user missed some
-					missed = colorMiss(char2psReplacer.Replace(sgChar[Index:]))
-					miss = true // once set, forever set
-				}
-
-			} else {
-				totalCorrect += len(sgChar)
-				out = char2psReplacer.Replace(ugChar)
 			}
 
-			sgChar = char2psReplacer.Replace(sgChar)
-			if missed != "" {
-				olen := len(sgChar)
-				padded := sgChar[:Index] + missed + strings.Repeat(" ", 30 - olen)
-				fmt.Printf("      %-30s    %-30s", padded, out) // missed stuff from col 1
-				missed = ""
-			} else if extra {
-				fmt.Printf("      %-30s    %-30s", sgChar, tmpChar) // extra stuff in second col
-				extra = false
-				extraForever = true
-			} else {
-				// matched OR errors
-				fmt.Printf("      %-30s    %-30s", sgChar, out)
+			if Index+1 == len(sgChar) && Index+1 == len(ugChar) {
+				break // finished
 			}
 
-			fmt.Println()
-
-			out = ""
-			tmpChar = ""
-			index++
-
-			if index == maxIndex {
-				break
+			// one array is done
+			if len(ugChar[Index:]) >= 1 && Index+1 > len(sgChar) { // walked off the sgChar
+				// extra sent by user
+				// but there might also be invaild as *
+				tmpChar = char2psReplacer.Replace(ugChar[Index:])
+				tmpChar = out + colorExtra(tmpChar)
+				extra = true // once set, forever set
+			} else if len(sgChar[Index:]) >= 1 {
+				// more in system column, user missed some
+				missed = colorMiss(char2psReplacer.Replace(sgChar[Index:]))
+				miss = true // once set, forever set
 			}
 
-		}
-
-		if totalChars == 0 {
-			fmt.Printf("\n\n Error: The MCPT file is empty.\n")
-			os.Exit(1)
-		}
-
-		if totalCorrect == totalChars {
-			grn := gchalk.BrightGreen("100%")
-			fmt.Printf("\n\n Accuracy: %s\n\n", grn)
 		} else {
-			fmt.Printf("\n\n Accuracy: %3.2f%%\n\n", float32(totalCorrect)*100.0/float32(totalChars))
+			totalCorrect += len(sgChar)
+			out = char2psReplacer.Replace(ugChar)
 		}
 
-		if warningMsg != "" {
-			fmt.Printf("%s", warningMsg)
+		sgChar = char2psReplacer.Replace(sgChar)
+		if missed != "" {
+			olen := len(sgChar)
+			padded := sgChar[:Index] + missed + strings.Repeat(" ", 30-olen)
+			fmt.Printf("      %-30s    %-30s", padded, out) // missed stuff from col 1
+			missed = ""
+		} else if extra {
+			fmt.Printf("      %-30s    %-30s", sgChar, tmpChar) // extra stuff in second col
+			extra = false
+			extraForever = true
+		} else {
+			// matched OR errors
+			fmt.Printf("      %-30s    %-30s", sgChar, out)
 		}
 
-		if miss {
-			fmt.Printf("\n Warning: You %s sending some characters, column 2 in %s (ProSign counts as 1).\n",colorMiss("missed"), colorMiss("cyan"))
-			fmt.Printf("\n          If your sent groups following the %s characters are all (%s),\n          you may have split a group with an extra space.", colorMiss("missed"),colorError("errors"))
-			fmt.Printf("\n          The space should be just before your sent groups turned %s.\n", colorError("red"))
-			fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.\n")
+		fmt.Println()
+		lineCnt++
+		if lineCnt >= 10 {
+			fmt.Printf("%s\n", strings.Repeat("-", 79))
+			lineCnt = 0
 		}
 
-		if extraForever {
-			fmt.Printf("\n Warning: You sent some %s characters, column 3 in %s.\n",colorExtra("extra"),colorExtra("green"))
-			fmt.Printf("\n          Or you missed a space and combined two groups.")
-			fmt.Printf("\n          The space should be just before your sent groups all turned %s.\n", colorError("red"))
-			fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.")
+		out = ""
+		tmpChar = ""
+		index++
+
+		if index == maxIndex {
+			break
 		}
-
-		fmt.Printf("\n\n Note:    INVALID morse characters show in column 3 as asterisks \"%s%s\".\n",gchalk.BrightMagenta("*"),gchalk.Green("*"))
-
-
 
 	}
-	return 0 
+
+	if totalChars == 0 {
+		fmt.Printf("\n\n Error: The MCPT file is empty.\n")
+		os.Exit(1)
+	}
+
+	if totalCorrect == totalChars {
+		grn := gchalk.BrightGreen("100%")
+		fmt.Printf("\n Accuracy: %s\n", grn)
+	} else {
+		fmt.Printf("\n Accuracy: %3.2f%%\n", float32(totalCorrect)*100.0/float32(totalChars))
+	}
+
+	if warningMsg != "" {
+		fmt.Printf("%s", warningMsg)
+	}
+
+	if miss {
+		fmt.Printf("\n Warning: You %s sending some characters, column 2 in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("cyan"))
+		fmt.Printf("\n          If your CW groups following the %s characters are all (%s),\n          you may have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
+		fmt.Printf("\n          The space should be just before your CW groups turned %s.\n", colorError("red"))
+		fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.\n")
+	}
+
+	if extraForever {
+		fmt.Printf("\n Warning: You sent some %s characters, column 3 in %s.\n", colorExtra("extra"), colorExtra("green"))
+		fmt.Printf("\n          Or you missed a space and combined two groups.")
+		fmt.Printf("\n          The space should be just before your CW groups all turned %s.\n", colorError("red"))
+		fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.")
+	}
+
+	if hadAsterisk {
+		fmt.Printf("\n\n Note:    INVALID morse characters show in column 3 as asterisks \"%s%s\".\n", gchalk.BrightMagenta("*"), gchalk.Green("*"))
+	}
+
+	return 0
 }
 
 // see if the file was the MCPT generated file, or from the users software
 func determineFile(path string) (byte, []byte) {
+	gotMCPT := false
+
+	// see if its the MCPT file
+	if strings.HasPrefix(path, "m:") || strings.HasPrefix(path, "M:") {
+		// the MCPT file
+		path = strings.TrimPrefix(path, "m:")
+		path = strings.TrimPrefix(path, "M:")
+		gotMCPT = true
+	} else {
+		// the users send groups
+		gotMCPT = false
+	}
+
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Printf("\n Error: reading file <%s>. %v\n", path, err)
@@ -446,10 +467,8 @@ func determineFile(path string) (byte, []byte) {
 
 	b = bytes.ToUpper(b) // in case source was not -send
 
-	// see if its the MCPT file
-	if bytes.Contains(b, []byte("\u0008")) {
+	if gotMCPT {
 		// the MCPT file
-		b = bytes.ReplaceAll(b, []byte("\u0008"), []byte(""))
 		return byte('m'), b
 	} else {
 		// the users send groups
