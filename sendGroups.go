@@ -60,6 +60,7 @@ func doSendCheck(fp *os.File) {
 
 	if len(path) == 0 || len(path) != 2 {
 		fmt.Printf("\n Error: Option <-sendCheck> requires 2 file names, in format like: file1,file2 (if Prosigns have <XX> format\nor file1^file2, if ProSigns have ^XX format.\n")
+		fmt.Printf("\n        The file from the CW capture, MUST have \"%s\" before it. E.g. -sendCheck=C:capture.txt,practice.txt\n")
 		os.Exit(1)
 	}
 
@@ -69,12 +70,13 @@ func doSendCheck(fp *os.File) {
 
 	switch errVal {
 	case 1:
-		fmt.Printf("\n Error: One file MUST be the captured text from your CW sending (e.g. without a prefixed %s.)\n", gchalk.BrightRed("M: or m:"))
+		fmt.Printf("\n Error: Only one file can be a CW captured text from your sending software. Prefix its name in the sendCheck with: %s.\n\n", gchalk.BrightRed("C: or c:"))
 	case 2:
-		fmt.Printf("\n Error: One file MUST be MCPT generated (or a source) file of practice material. E.g. for file <mcpt.txt>,\n        prefix it with %s, as in: sendCheck=%smcpt.txt,CW.txt.\n", gchalk.BrightRed("M: or m:"), gchalk.BrightRed("M:"))
+		fmt.Printf("\n Error: Only one file can be a practice text file. E.g. <practice.txt>.\n        Do NOT prefix its name, with \"C: or c:\".\n\n")
 	default:
 		os.Exit(0)
 	}
+	os.Exit(0)
 }
 
 /*
@@ -208,16 +210,14 @@ func readLines(path []string) int {
 	var totalCorrect int
 	var totalChars int
 	var warningMsg string
-	//var colorExtra = gchalk.BrightGreen
-	//var colorError = gchalk.BrightRed
-	//var colorMiss = gchalk.WithBgBlue().BrightCyan
-	//var colorMiss = gchalk.WithBgBlue().Cyan
-	var colorExtra = gchalk.Green
-	var colorError = gchalk.Red
-	var colorMiss = gchalk.Cyan
+	var colorExtra = gchalk.BrightGreen
+	var colorError = gchalk.BrightRed
+	var colorMiss = gchalk.WithBgBlue().BrightCyan
 	var miss bool
 	var extra bool
 	var extraForever bool
+	var captureFile = ""
+	var practiceFile = ""
 	m := regexp.MustCompile(`<[\-.]+>`)  // find <..--..> errors
 	hh := regexp.MustCompile(`<.{8,8}>`) // find <HH> as code
 
@@ -226,16 +226,27 @@ func readLines(path []string) int {
 	// do both files
 	for fIndex := 0; fIndex <= 1; fIndex++ {
 		// determine which file we have
-		whoIsIt, b := determineFile(path[fIndex])
+		whoIsIt, b, fName := determineFile(path[fIndex])
 		// b is already in UC
 
 		if whoIsIt == 'm' {
 			// process MCPT file
 			gotMCPT = true
+			practiceFile = fName
+			//sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
+			bStr := MCPTps2charReplacer.Replace(string(b))
+
+			if strings.ContainsAny(bStr, "<>^") {
+				fmt.Printf("\n Warning: Your practice file <%s> contains character(s) \"<>^\" in addition to those in supported ProSigns.", practiceFile)
+				fmt.Printf("\n          This will add to your error count.\n\n")
+			}
+
 			sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
+
 		} else if whoIsIt == 'u' {
 			// process User file
 			gotUser = true
+			captureFile = fName
 
 			// look for <HH>  errors first
 			if m.Match(b) {
@@ -251,8 +262,8 @@ func readLines(path []string) int {
 				// got carat so PS needs looklike ^BT NOT <BT>
 				if bytes.ContainsAny(b, "<>") {
 					// used ^ sep should use ","
-					fmt.Printf("\n Warning: Your CW file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <BT>).", path[fIndex])
-					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=M:file1,file2).\n")
+					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <BT>).", captureFile)
+					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%cature.txt,practice.txt).\n",gchalk.Yellow("C:"))
 
 					os.Exit(88)
 				}
@@ -260,8 +271,8 @@ func readLines(path []string) int {
 				// have , so need <>  ie <BT> NOT ^BT
 				if bytes.ContainsAny(b, "^") {
 					// used , sep should use "^"
-					fmt.Printf("\n Warning: Your CW file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^BT ).", path[fIndex])
-					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=M:file1^file2).\n")
+					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^BT ).", captureFile)
+					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=%scapture.txt^practice.txt).\n",gchalk.Yellow("C:"))
 					os.Exit(88)
 				}
 			}
@@ -270,14 +281,14 @@ func readLines(path []string) int {
 
 			var tmp = ps2charReplacer.Replace(string(b))
 			if gotCarat == false && (strings.Contains(tmp, "<") || strings.Contains(tmp, ">")) {
-				fmt.Printf(" Warning: Your CW file contains unsupported ProSigns or \"< or >\",\n          they will add to errors.\n")
+				fmt.Printf(" Warning: Your CW capture file <%s> contains unsupported ProSigns or \"< or >\",\n          they will add to errors.\n",captureFile)
 			} else if gotCarat == true && strings.Contains(tmp, "^") {
-				fmt.Printf(" Warning: Your CW file contains unsupported ProSigns or \"^\",          they will add to errors.\n")
+				fmt.Printf(" Warning: Your CW capture file <%s> contains unsupported ProSigns or \"^\",          they will add to errors.\n",captureFile)
 			}
 
 			userGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
 		} else {
-			panic("Got back bad file response")
+			panic("Got back file response: report program error")
 		}
 	}
 
@@ -294,17 +305,17 @@ func readLines(path []string) int {
 	userLen := len(userGroupsCompare)
 
 	if sendLen > userLen {
-		warningMsg = fmt.Sprintf("\n Note: The MCPT file had <%d> groups, your CW file had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", sendLen, userLen, userLen)
+		warningMsg = fmt.Sprintf("\n Note: The practice text file <%s> had <%d> groups, your CW capture file <%s> had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", practiceFile, sendLen, captureFile, userLen, userLen)
 		maxIndex = userLen
 	} else if userLen > sendLen {
-		warningMsg = fmt.Sprintf("\n Note: Your CW file had too many groups <%d>, the MCPT file only had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", userLen, sendLen, sendLen)
+		warningMsg = fmt.Sprintf("\n Note: Your CW capture file <%s> had too many groups <%d>, the practice test file <%s> only had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", captureFile, userLen, practiceFile, sendLen, sendLen)
 		maxIndex = sendLen
 	} else {
 		maxIndex = sendLen
 	}
 
 	fmt.Printf(`
-Levenshtein               MCPT Text                         Your CW
+Levenshtein             Practice Text                      CW Capture
   Distance                 Groups                            Groups
 ===========    ==============================    ==============================
 `)
@@ -408,7 +419,7 @@ Levenshtein               MCPT Text                         Your CW
 	}
 
 	if totalChars == 0 {
-		fmt.Printf("\n\n Error: The MCPT file is empty.\n")
+		fmt.Printf("\n\n Error: The practice file <%s>is empty.\n",practiceFile)
 		os.Exit(1)
 	}
 
@@ -424,17 +435,17 @@ Levenshtein               MCPT Text                         Your CW
 	}
 
 	if miss {
-		fmt.Printf("\n Warning: You %s sending some characters, column 2 in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("cyan"))
-		fmt.Printf("\n          If your CW groups following the %s characters are all (%s),\n          you may have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
-		fmt.Printf("\n          The space should be just before your CW groups turned %s.\n", colorError("red"))
-		fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.\n")
+		fmt.Printf("\n Warning: You %s sending some characters, column 2 in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("blue"))
+		fmt.Printf("\n          If your CW capture groups following the %s characters are all (%s),\n          you MAY have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
+		fmt.Printf("\n          The space should be just before your CW capture groups turned %s.\n", colorError("red"))
+		fmt.Printf("\n          Edit your CW capture file <%s>, fix the space error, and rerun.\n", captureFile)
 	}
 
 	if extraForever {
 		fmt.Printf("\n Warning: You sent some %s characters, column 3 in %s.\n", colorExtra("extra"), colorExtra("green"))
 		fmt.Printf("\n          Or you missed a space and combined two groups.")
-		fmt.Printf("\n          The space should be just before your CW groups all turned %s.\n", colorError("red"))
-		fmt.Printf("\n          Edit your sent file, fix the space error, and rerun.")
+		fmt.Printf("\n          The space should be just before your CW capture groups all turned %s.\n", colorError("red"))
+		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.",captureFile)
 	}
 
 	if hadAsterisk {
@@ -445,18 +456,17 @@ Levenshtein               MCPT Text                         Your CW
 }
 
 // see if the file was the MCPT generated file, or from the users software
-func determineFile(path string) (byte, []byte) {
+func determineFile(path string) (byte, []byte, string) {
 	gotMCPT := false
 
 	// see if its the MCPT file
-	if strings.HasPrefix(path, "m:") || strings.HasPrefix(path, "M:") {
-		// the MCPT file
-		path = strings.TrimPrefix(path, "m:")
-		path = strings.TrimPrefix(path, "M:")
-		gotMCPT = true
+	if strings.HasPrefix(path, "c:") || strings.HasPrefix(path, "C:") {
+		// the users cw capture groups
+		path = strings.TrimPrefix(path, "c:")
+		path = strings.TrimPrefix(path, "C:")
 	} else {
-		// the users send groups
-		gotMCPT = false
+		// the MCPT file or practice text  file
+		gotMCPT = true
 	}
 
 	b, err := ioutil.ReadFile(path)
@@ -468,11 +478,11 @@ func determineFile(path string) (byte, []byte) {
 	b = bytes.ToUpper(b) // in case source was not -send
 
 	if gotMCPT {
-		// the MCPT file
-		return byte('m'), b
+		// the MCPT or practice text file
+		return byte('m'), b, path
 	} else {
-		// the users send groups
-		return byte('u'), b
+		// the users cw capture groups
+		return byte('u'), b, path
 	}
 }
 

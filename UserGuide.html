@@ -883,36 +883,38 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
  TFEKP  I5PFP  TQFFH  IPYEX  TQTTY  EKMFO  ØKOIL
 </PRE>
 
- <B>Using The sendCheck option:  mcpt -sendCheck=test.txt,mycw.txt</B>
+ <B>Using The sendCheck option:  mcpt -sendCheck=test.txt,M:mycw.txt</B>
  <P>
  Caveats: 
  <OL>
- <LI> The feature uses color, a black or dark backgound works best. Use right mouse click, then options on Windows, or your 
-      terminal emulator as needed.</LI>
- <LI> Even if color is a problem, the first column will indicates an issue.</LI>
- <LI> Timing errors in some cases may be difficult to determine, see below.</LI>
+ <LI> This feature uses color, a black or dark backgound works best. For Windows CMD/Terminal window, click the top border to change colors; for
+      terminal emulators, look in settings, or mouse click menus (properties) .</LI>
+ <LI> Even if color is a problem, the first column will indicates if a groupd had an issue.</LI>
+ <LI> Timing errors in some cases may be difficult to determine, see the end of this example.</LI>
  </OL>
 <P>
 <PRE>
- NOTE: If your "sending" software, records ProSigns in the format like: <SK>, then use a comma "," to separate the file names.
- NOTE: If your "sending" software, records ProSigns in the format like: ^SK, then use a carat "^" to separate the file names.
+ NOTE: If your CW capture software, records ProSigns in the format like: <SK>, then use a comma "," to separate the file names.
+ NOTE: If your CW capture software, records ProSigns in the format like: ^SK, then use a carat "^" to separate the file names.
        MCPT files created with the -send option will use the &lt;SK> format, but it can check either format from your software file.
        MCPT files created with options other than -send (text, codeGroups, permutations, etc.) will use the format based on the 
-       ProSign option file,
-       So use "," or "carat" as appropriate.
+       ProSign option file.
+       So use "," or "carat" as appropriate, as the file separator.
 
- If you had run any of the commands at the beginning of this example, and added the -out=text.txt, your practice text would
- be in that file. To actually practice sending you would display that file on your screen, and do your sending.
+ If you had run any of the commands at the beginning of this example, and added the -out=text.txt, your practice text would 
+ be in that file. To actually practice sending you would display that file on your screen, and do your sending with your CW sending 
+ software (e.g. PCWFistcheck).
 
- Sending practice material can be generated from ANY MCPT feature, with the exception of the LCWO options. You can use ANY 
- source for practice material (e.g. notepad) as long as the file is a simple text file.
+ Sending practice tetx material can be generated from ANY MCPT feature, with the exception of the LCWO options. You can use ANY 
+ source for practice material (e.g. notepad) as long as the file is a simple text file, and only includes the practice text (no headers/footers etc.).
 
- If you have other software which allows you to send morse and capture it as text (I.e. PCFistcheck, or CWcom), then you can 
+ If you have other software which allows you to send morse and capture it as text (i.e. PCFistcheck, or CWcom), then you can 
  verify your sending by comparing the two files. 
 
- Let's say your captured morse is in mycw.txt. Then, in the option below ADD "M:" or "m:" immediately before that file name as below.
+ Let's say your captured morse is in mycw.txt. Then, in the option below ADD "C:" or "c:" immediately before that file name as below.
 
- Then run: <B>mcpt -sendCheck=test.txt,M:mycw.txt</B>
+ Then run: <B>mcpt -sendCheck=test.txt,C:mycw.txt</B>
+ (The C: is NOT part of the files name, it tells MCPT which of the two files is the CW capture text.)
 
  The order of the files and names do not matter.
  Below is a simple output. The errored characters will be shown in <span style="color:red">red</span> text.
@@ -922,35 +924,36 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
  ============   ===============   ===============
        0        &lt;BT>              &lt;BT>
        1        &lt;SK>              <span style="color:red">&lt;AS&gt;</span>
-       4        HI                H<span style="color:red">GGFJ</span>
+       4        HI                H<span style="color:red">G</span><span style="color:green">GGFJ</span>
        1        XYZ               XYZ<span style="color:green">123</span>
        3        ABC<span style="color:blue">DE</span>             ABC
 
 Accuracy: 50.00%
 
-Note: GREEN text, indicates Your CW Group has extra.
-Note: CYAN text, indicates Your CW Group is missing characters.
-Note: If your trainer reports INVALID morse as: &lt;<ERR>, &lt;ERROR>, or &lt;---> formats, those characters will be shown as 
-      an asterisk (magenta or green depending on the column).
+Note: GREEN text, indicates Your CW capture Group has extra charactes.
+Note: CYAN text, indicates Your CW capture Group is missing characters.
+Note: If your CW sending software reports INVALID morse as: &lt;ERR>, &lt;ERROR>, or &lt;---> formats, those characters will be shown as 
+      an asterisk (purple or green depending on the column).
 Note: Color key and diagnostics will display on screen for you.
 
-<B>Timing problems with your sending</B>
-SendCheck can help diagnose some issues with timing in your sending, but not all. Let's look at some simple examples.
-Let's use the following short, trivial example of practice material, "This is a test.".
+<B>Timing Problems With Your Captured Sending</B>
 
-Mixed case in practice text file and sending trainer file are converted to uppercase for comparison.
+SendCheck can help diagnose some issues with timing in your sending, but not all. Let's look at some simple examples.
+For the following discussion, let's use the following some variations of this simple practice text material, "This is a test.".
+
+Mixed case in practice text file and CW sending trainer file are converted to uppercase for comparison.
 <PRE>
 <OL>
-<LI> Your "letter" timing is off, so when you are supposed to send "This", the trainer says you sent: "THIEI" or "THIIE" or "THIEEE"
- because the final "S" was not decoded correctly by the trainer. We can detect this. These will all be shown as EXTRA characters.</LI>
-<LI> Your inter-word timing is too SHORT, so you compressed "TH" to look like a "6". Now a 4 character string "THIS" is compared to a 3 character
- string "6IS" MCPT will show 3 errors, it will also say you are short a character. Looking at the screen you realise this was just a 
+<LI> Problem: Your "character" timing is off, so when you are supposed to send "This", the capture software says you sent: "THIEI" or "THIIE" or "THEEE".
+ This is because the final "S" was not sent correctly, sending trainer detected other letters. We can detect this. These will all be shown as wrong 
+ and/or EXTRA characters.</LI>
+<LI> Problem: Your inter-word timing is too SHORT, so you compressed "TH" to look like a "6". Now a 4 character string "THIS" is compared to a 3 character
+ string "6IS", MCPT will show 3 errors, it will also say you are short a character. Looking at the screen you will realise this was just a 
  timing mistake. You can edit your file and rerun if you like.</LI>
-<LI> You let extra time between words. Like "THIS     IS A TEST", while not good for on the air sending, this does not cause any screen problem.</LI>
-<LI> The worst problem (in some cases) is if your inter-character spacing is too LONG. Here your trainer will split a word making two 
- from one. I.e. "TH IS A TEST", MCPT will tell you the word "THIS" that it was expecting is MISSING two characters (that's good) 
- but from this point on, you are going to see EVERY word with errors because the files are out of step. This can be corrected if you 
- edit the file and delete the space.</LI>
+<LI> Problem: You left extra time between words. Like "THIS     IS A TEST", while not good for on the air sending, this does not cause any screen problem.</LI>
+<LI> Problem: The worst problem to dectect, is if your inter-character spacing is too LONG. I.e. "TH IS IS A TEST", MCPT will tell you the word "THIS", which 
+it was expecting is MISSING two characters (that's good), but from that point on, you are going to see EVERY word with errors because the files are out of step. 
+This can be corrected if you edit the file and delete the space. (Note: a second error of this type could put the files back in step, leaving a set of errored words).</LI>
 </OL>
 <H2>
 LCWO Option Overview: <I>LCWO users also review Example 20</I>
