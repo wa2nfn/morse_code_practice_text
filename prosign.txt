@@ -39,8 +39,8 @@
 <KA>  # ATTENTION/ALERT, same sound as CT
 <HH>  # ERROR, followed by corrected text
 <KN>  # INVITATION for named station to transmit
-<SK>  # End Of Contact, same as <VA>
-#<VA>  # End Of Contact, same as <SK>
+<SK>  # End Of Contact, same as sound as <VA>
+#<VA>  # End Of Contact, same as sound as <SK>
 <SN>  # Understood/Verified
 <BK>  # Break in transmission inviting rcvr to sedn
 

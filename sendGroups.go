@@ -17,7 +17,7 @@ import (
 var (
 	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>", "h", "<AA>", "i", "<CT>", "j", "<KN>", "k", "<VA>", "l", "<SN>", "0", "\u00D8")
 
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0", "<ERR>", "*", "<ERROR>", "*")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0")
 
 	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0")
 
@@ -51,7 +51,7 @@ func doSendCheck(fp *os.File) {
 		sep = "^"
 		validCharPS = sep
 		invalidCharPS = "<>"
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8", "<ERR>", "*", "<ERROR>", "*")
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8")
 		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g", "^AA", "h", "^CT", "i", "^KN", "j", "^VA", "k", "^SN", "l", "\u00D8", "0")
 		gotCarat = true
 	}
@@ -206,6 +206,8 @@ func readLines(path []string) int {
 	var gotMCPT bool
 	var sendGroupsCompare []string
 	var userGroupsCompare []string
+	var sendGroupsCompareNoSpace string
+	var userGroupsCompareNoSpace string
 	var maxIndex int
 	var totalCorrect int
 	var totalChars int
@@ -218,8 +220,8 @@ func readLines(path []string) int {
 	var extraForever bool
 	var captureFile = ""
 	var practiceFile = ""
-	m := regexp.MustCompile(`<[\-.]+>`)  // find <..--..> errors
-	hh := regexp.MustCompile(`<.{8,8}>`) // find <HH> as code
+	badPS := regexp.MustCompile(`<[^>]*>`)  // find <..--..> errors and anything since supported PD already done
+	hhErr := regexp.MustCompile(`<.{8,8}>`) // find <HH> as code
 
 	gchalk.SetLevel(gchalk.LevelAnsi256)
 
@@ -228,67 +230,66 @@ func readLines(path []string) int {
 		// determine which file we have
 		whoIsIt, b, fName := determineFile(path[fIndex])
 		// b is already in UC
+		// convert any NL to space
+		b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
 		if whoIsIt == 'm' {
 			// process MCPT file
 			gotMCPT = true
 			practiceFile = fName
-			//sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
+			// good PS replace
 			bStr := MCPTps2charReplacer.Replace(string(b))
 
 			if strings.ContainsAny(bStr, "<>^") {
 				fmt.Printf("\n Warning: Your practice file <%s> contains character(s) \"<>^\" in addition to those in supported ProSigns.", practiceFile)
 				fmt.Printf("\n          This will add to your error count.\n\n")
+
+				// look for < anything> 
+				if hhErr.MatchString(bStr) {
+					bStr = hhErr.ReplaceAllString(bStr, "*")
+				}
 			}
 
-			sendGroupsCompare = strings.Fields(MCPTps2charReplacer.Replace(string(b)))
+			sendGroupsCompare = strings.Fields(bStr)
+			sendGroupsCompareNoSpace = strings.ReplaceAll(bStr," ","")
 
 		} else if whoIsIt == 'u' {
 			// process User file
 			gotUser = true
 			captureFile = fName
 
-			// look for <HH>  errors first
-			if m.Match(b) {
-				b = hh.ReplaceAll(b, []byte("e"))
-			}
+			// good PS replaced
+			var tmp = ps2charReplacer.Replace(string(b))
 
-			// look for <.......> errors first
-			if m.Match(b) {
-				b = m.ReplaceAll(b, []byte("*"))
+			// look for <.......> errors first and invalid prosigns 
+			if badPS.MatchString(tmp) {
+				tmp = badPS.ReplaceAllString(tmp, "*")
 			}
 
 			if gotCarat {
 				// got carat so PS needs looklike ^BT NOT <BT>
-				if bytes.ContainsAny(b, "<>") {
+				if strings.ContainsAny(tmp, "<>") {
 					// used ^ sep should use ","
-					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <BT>).", captureFile)
+					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <>).", captureFile)
 					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%cature.txt,practice.txt).\n",gchalk.Yellow("C:"))
 
 					os.Exit(88)
 				}
 			} else {
 				// have , so need <>  ie <BT> NOT ^BT
-				if bytes.ContainsAny(b, "^") {
+				if strings.ContainsAny(tmp, "^") {
 					// used , sep should use "^"
-					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^BT ).", captureFile)
+					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^ ).", captureFile)
 					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=%scapture.txt^practice.txt).\n",gchalk.Yellow("C:"))
 					os.Exit(88)
 				}
 			}
-			// convert any NL to space
-			b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
-			var tmp = ps2charReplacer.Replace(string(b))
-			if gotCarat == false && (strings.Contains(tmp, "<") || strings.Contains(tmp, ">")) {
-				fmt.Printf(" Warning: Your CW capture file <%s> contains unsupported ProSigns or \"< or >\",\n          they will add to errors.\n",captureFile)
-			} else if gotCarat == true && strings.Contains(tmp, "^") {
-				fmt.Printf(" Warning: Your CW capture file <%s> contains unsupported ProSigns or \"^\",          they will add to errors.\n",captureFile)
-			}
+			userGroupsCompare = strings.Fields(tmp)
+			userGroupsCompareNoSpace = strings.ReplaceAll(tmp," ", "")
 
-			userGroupsCompare = strings.Fields(ps2charReplacer.Replace(string(b)))
 		} else {
-			panic("Got back file response: report program error")
+			panic("Got bad file response: report program error.")
 		}
 	}
 
@@ -305,10 +306,10 @@ func readLines(path []string) int {
 	userLen := len(userGroupsCompare)
 
 	if sendLen > userLen {
-		warningMsg = fmt.Sprintf("\n Note: The practice text file <%s> had <%d> groups, your CW capture file <%s> had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", practiceFile, sendLen, captureFile, userLen, userLen)
+		warningMsg = fmt.Sprintf("\n Note: The practice text file <%s> had <%d> groups.       Your CW capture file <%s> had <%d>.\n       Only the first <%d> groups will be checked.\n\n Your accuracy score is limited to checked groups!\n", practiceFile, sendLen, captureFile, userLen, userLen)
 		maxIndex = userLen
 	} else if userLen > sendLen {
-		warningMsg = fmt.Sprintf("\n Note: Your CW capture file <%s> had too many groups <%d>, the practice test file <%s> only had <%d>.\n Only the first <%d> will be checked.\n\n Your accuracy score is limited to checked groups!\n", captureFile, userLen, practiceFile, sendLen, sendLen)
+		warningMsg = fmt.Sprintf("\n Note: Your CW capture file <%s> had too many groups <%d>.\n       Your practice text file <%s> only had <%d>.\n       Only the first <%d> groups will be checked.\n\n Your accuracy score is limited to checked groups!\n", captureFile, userLen, practiceFile, sendLen, sendLen)
 		maxIndex = sendLen
 	} else {
 		maxIndex = sendLen
@@ -322,7 +323,6 @@ Levenshtein             Practice Text                      CW Capture
 
 	// compare char by char the MCPT group to user Group
 	var lineCnt int
-	var hadAsterisk bool
 
 	for index, sgChar := range sendGroupsCompare {
 		var out string
@@ -352,7 +352,6 @@ Levenshtein             Practice Text                      CW Capture
 
 						if tmpChar == "*" {
 							out += gchalk.BrightMagenta(tmpChar)
-							hadAsterisk = true
 						} else {
 							out += colorError(tmpChar)
 						}
@@ -419,15 +418,15 @@ Levenshtein             Practice Text                      CW Capture
 	}
 
 	if totalChars == 0 {
-		fmt.Printf("\n\n Error: The practice file <%s>is empty.\n",practiceFile)
+		fmt.Printf("\n\n Error: The practice file <%s> is empty.\n",practiceFile)
 		os.Exit(1)
 	}
 
 	if totalCorrect == totalChars {
-		grn := gchalk.BrightGreen("100%")
+		grn := gchalk.BrightGreen("100 %")
 		fmt.Printf("\n Accuracy: %s\n", grn)
 	} else {
-		fmt.Printf("\n Accuracy: %3.2f%%\n", float32(totalCorrect)*100.0/float32(totalChars))
+		fmt.Printf("\n Accuracy: %3.2f %%\n", float32(totalCorrect)*100.0/float32(totalChars))
 	}
 
 	if warningMsg != "" {
@@ -435,21 +434,31 @@ Levenshtein             Practice Text                      CW Capture
 	}
 
 	if miss {
-		fmt.Printf("\n Warning: You %s sending some characters, column 2 in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("blue"))
+		fmt.Printf("\n Warning: You %s sending some characters, (column 2) in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("blue"))
 		fmt.Printf("\n          If your CW capture groups following the %s characters are all (%s),\n          you MAY have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
 		fmt.Printf("\n          The space should be just before your CW capture groups turned %s.\n", colorError("red"))
 		fmt.Printf("\n          Edit your CW capture file <%s>, fix the space error, and rerun.\n", captureFile)
 	}
 
 	if extraForever {
-		fmt.Printf("\n Warning: You sent some %s characters, column 3 in %s.\n", colorExtra("extra"), colorExtra("green"))
+		fmt.Printf("\n Warning: You sent some %s characters, (column 3) in %s.\n", colorExtra("extra"), colorExtra("green"))
 		fmt.Printf("\n          Or you missed a space and combined two groups.")
 		fmt.Printf("\n          The space should be just before your CW capture groups all turned %s.\n", colorError("red"))
-		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.",captureFile)
+		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.\n",captureFile)
 	}
 
-	if hadAsterisk {
-		fmt.Printf("\n\n Note:    INVALID morse characters show in column 3 as asterisks \"%s%s\".\n", gchalk.BrightMagenta("*"), gchalk.Green("*"))
+	fmt.Printf("\n\n Note: INVALID morse characters (or ProSigns) are shown as asterisks \"%s%s%s\".\n", gchalk.WithBgBlue().BrightCyan("*"), gchalk.BrightMagenta("*"), gchalk.BrightGreen("*"))
+
+	// look at timing compare
+	if totalCorrect != totalChars && miss || extraForever {
+		var reply string
+		fmt.Printf("\n Do you want to see the captured text from a timing perspective? (y or n): ")
+
+
+		fmt.Scanf("%s", &reply)
+		if reply != "" && reply[0] == byte('y') {
+			timingCheck(sendGroupsCompareNoSpace, userGroupsCompareNoSpace)
+		}
 	}
 
 	return 0
@@ -527,3 +536,66 @@ func minimum(a, b, c int) int {
 	}
 	return c
 }
+
+/*
+** chunk and compare just for errors to see if issue was spacing
+*/
+
+func timingCheck(practice string, capture string) {
+	var strLen int = 60 // how many chars will we display
+	var out string
+	var captureSection string
+	var practiceSection string
+
+	// need to compare to the length of shortest
+	var minLen int = len(practice)
+	if len(capture) < minLen {
+		minLen = len(capture)
+	}
+
+	for ; len(capture) >0; {
+		if len(practice) == 0 {
+			break
+		} else {
+			if len(practice) >= strLen {
+				practiceSection = practice[0:strLen]
+				captureSection = capture[0:strLen]
+				practice = practice[strLen:]
+				capture = capture[strLen:]
+			} else {
+				practiceSection = practice[0:]
+				captureSection = capture[0:]
+				practice = "" 
+				capture = ""
+			}
+		}
+
+		for i, pChar := range practiceSection {
+			if i >= len(captureSection) {
+				break
+			}
+
+
+			if byte(pChar) != captureSection[i] {
+				tmpChar := char2psReplacer.Replace(string(captureSection[i]))
+
+				if tmpChar == "*" {
+					out += gchalk.BrightMagenta(tmpChar)
+				} else {
+					out += gchalk.BrightRed(tmpChar)
+				}
+			} else {
+				// both matched good!
+				out += char2psReplacer.Replace(string(pChar))
+			}
+		}
+
+		fmt.Printf("\npractice: %s", char2psReplacer.Replace(practiceSection))
+		fmt.Printf("\n capture: %s\n", out)
+
+		out = ""
+	}
+
+	return
+}
+

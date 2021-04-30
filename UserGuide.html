@@ -951,9 +951,15 @@ Mixed case in practice text file and CW sending trainer file are converted to up
  string "6IS", MCPT will show 3 errors, it will also say you are short a character. Looking at the screen you will realise this was just a 
  timing mistake. You can edit your file and rerun if you like.</LI>
 <LI> Problem: You left extra time between words. Like "THIS     IS A TEST", while not good for on the air sending, this does not cause any screen problem.</LI>
-<LI> Problem: The worst problem to dectect, is if your inter-character spacing is too LONG. I.e. "TH IS IS A TEST", MCPT will tell you the word "THIS", which 
+<LI> Problem: The worst problem to detect, is if your inter-character spacing is too LONG. I.e. "TH IS IS A TEST", MCPT will tell you the word "THIS", which 
 it was expecting is MISSING two characters (that's good), but from that point on, you are going to see EVERY word with errors because the files are out of step. 
 This can be corrected if you edit the file and delete the space. (Note: a second error of this type could put the files back in step, leaving a set of errored words).</LI>
+<P>
+As indicated by the on screen notes and the above list, MISSING (in blue) followed by many errors (in red) are likely a timing issue. You can follow the directions
+or you will be prompted on screen to see if you want to look at the data comparison for a timing perspective. In this case, spacing of both the practice
+material and the capture aterial is stripped of spaces and the compared. If the amount of error characters (in red) is reduced, then your inter-character timing
+is being interpreted as more words than should be sent. Both parts of this option should help diagnose sending problems.
+
 </OL>
 <H2>
 LCWO Option Overview: <I>LCWO users also review Example 20</I>
