@@ -102,7 +102,7 @@ func doSendGroups(fp *os.File) {
 	}
 
 	// substitue prosigns
-	printStrBuf(strings.ReplaceAll(char2psReplacer.Replace(string(outBuf)), "\u00D8", "0"), fp)
+	printStrBuf(char2psReplacer.Replace(string(outBuf)), fp)
 
 }
 
@@ -244,14 +244,14 @@ func readLines(path []string) int {
 				fmt.Printf("\n Warning: Your practice file <%s> contains character(s) \"<>^\" in addition to those in supported ProSigns.", practiceFile)
 				fmt.Printf("\n          This will add to your error count.\n\n")
 
-				// look for < anything> 
+				// look for < anything>
 				if hhErr.MatchString(bStr) {
 					bStr = hhErr.ReplaceAllString(bStr, "*")
 				}
 			}
 
 			sendGroupsCompare = strings.Fields(bStr)
-			sendGroupsCompareNoSpace = strings.ReplaceAll(bStr," ","")
+			sendGroupsCompareNoSpace = strings.ReplaceAll(bStr, " ", "")
 
 		} else if whoIsIt == 'u' {
 			// process User file
@@ -261,7 +261,7 @@ func readLines(path []string) int {
 			// good PS replaced
 			var tmp = ps2charReplacer.Replace(string(b))
 
-			// look for <.......> errors first and invalid prosigns 
+			// look for <.......> errors first and invalid prosigns
 			if badPS.MatchString(tmp) {
 				tmp = badPS.ReplaceAllString(tmp, "*")
 			}
@@ -271,7 +271,7 @@ func readLines(path []string) int {
 				if strings.ContainsAny(tmp, "<>") {
 					// used ^ sep should use ","
 					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <>).", captureFile)
-					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%cature.txt,practice.txt).\n",gchalk.Yellow("C:"))
+					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%cature.txt,practice.txt).\n", gchalk.Yellow("C:"))
 
 					os.Exit(88)
 				}
@@ -280,13 +280,13 @@ func readLines(path []string) int {
 				if strings.ContainsAny(tmp, "^") {
 					// used , sep should use "^"
 					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^ ).", captureFile)
-					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=%scapture.txt^practice.txt).\n",gchalk.Yellow("C:"))
+					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=%scapture.txt^practice.txt).\n", gchalk.Yellow("C:"))
 					os.Exit(88)
 				}
 			}
 
 			userGroupsCompare = strings.Fields(tmp)
-			userGroupsCompareNoSpace = strings.ReplaceAll(tmp," ", "")
+			userGroupsCompareNoSpace = strings.ReplaceAll(tmp, " ", "")
 
 		} else {
 			panic("Got bad file response: report program error.")
@@ -306,7 +306,7 @@ func readLines(path []string) int {
 	userLen := len(userGroupsCompare)
 
 	if sendLen > userLen {
-		warningMsg = fmt.Sprintf("\n Note: The practice text file <%s> had <%d> groups.       Your CW capture file <%s> had <%d>.\n       Only the first <%d> groups will be checked.\n\n Your accuracy score is limited to checked groups!\n", practiceFile, sendLen, captureFile, userLen, userLen)
+		warningMsg = fmt.Sprintf("\n Note: The practice text file <%s> had <%d> groups.\n       Your CW capture file <%s> had <%d>.\n       Only the first <%d> groups will be checked.\n\n Your accuracy score is limited to checked groups!\n", practiceFile, sendLen, captureFile, userLen, userLen)
 		maxIndex = userLen
 	} else if userLen > sendLen {
 		warningMsg = fmt.Sprintf("\n Note: Your CW capture file <%s> had too many groups <%d>.\n       Your practice text file <%s> only had <%d>.\n       Only the first <%d> groups will be checked.\n\n Your accuracy score is limited to checked groups!\n", captureFile, userLen, practiceFile, sendLen, sendLen)
@@ -327,6 +327,7 @@ Levenshtein             Practice Text                      CW Capture
 	for index, sgChar := range sendGroupsCompare {
 		var out string
 		var missed string
+		var missedRaw string
 		var tmpChar string
 		var Index int
 
@@ -340,31 +341,27 @@ Levenshtein             Practice Text                      CW Capture
 		levErrors := levenshtein(sgChar, ugChar)
 		// print the table
 
-		fmt.Printf("   %2d    ", levErrors) // first to keep alignment
+		fmt.Printf("   %2d          ", levErrors) // first to keep alignment
 		if levErrors > 0 {
+			// so the string do NOT agree
 			for ; Index < len(sgChar) && Index < len(ugChar); Index++ {
 
-				if Index < len(sgChar) && Index < len(ugChar) {
+				if sgChar[Index] != ugChar[Index] {
+					// mismatch - color bad data
+					// col3
+					tmpChar = char2psReplacer.Replace(string(ugChar[Index]))
 
-					if sgChar[Index] != ugChar[Index] {
-						// mismatch - color bad data
-						tmpChar = char2psReplacer.Replace(string(ugChar[Index]))
-
-						if tmpChar == "*" {
-							out += gchalk.BrightMagenta(tmpChar)
-						} else {
-							out += colorError(tmpChar)
-						}
+					if tmpChar == "*" {
+						out += gchalk.BrightMagenta(tmpChar)
 					} else {
-						// both matched good!
-						out += char2psReplacer.Replace(string(sgChar[Index]))
-						totalCorrect++
+						out += colorError(tmpChar)
 					}
+				} else {
+					// both matched good!
+					// col3
+					out += char2psReplacer.Replace(string(sgChar[Index]))
+					totalCorrect++
 				}
-			}
-
-			if Index+1 == len(sgChar) && Index+1 == len(ugChar) {
-				break // finished
 			}
 
 			// one array is done
@@ -375,8 +372,10 @@ Levenshtein             Practice Text                      CW Capture
 				tmpChar = out + colorExtra(tmpChar)
 				extra = true // once set, forever set
 			} else if len(sgChar[Index:]) >= 1 {
-				// more in system column, user missed some
-				missed = colorMiss(char2psReplacer.Replace(sgChar[Index:]))
+				// more in column 2
+				missedRaw = char2psReplacer.Replace(sgChar[Index:])
+				//missed = colorMiss(char2psReplacer.Replace(sgChar[Index:]))
+				missed = colorMiss(missedRaw)
 				miss = true // once set, forever set
 			}
 
@@ -385,22 +384,29 @@ Levenshtein             Practice Text                      CW Capture
 			out = char2psReplacer.Replace(ugChar)
 		}
 
-		sgChar = char2psReplacer.Replace(sgChar)
+		sgCharToPrint := char2psReplacer.Replace(sgChar[:Index])
 		if missed != "" {
-			olen := len(sgChar)
-			padded := sgChar[:Index] + missed + strings.Repeat(" ", 30-olen)
-			fmt.Printf("      %-30s    %-30s", padded, out) // missed stuff from col 1
+			var padded string
+
+			olen := len(sgCharToPrint) + len(missedRaw) - strings.Count(sgCharToPrint, "\u00D8")
+
+			if olen < 30 {
+				padded = sgCharToPrint + missed + strings.Repeat(" ", 30-olen)
+			} else {
+				padded = sgCharToPrint + missed
+			}
+
+			fmt.Printf("%-30s    %-30s\n", padded, out) // missed stuff from col 1
 			missed = ""
 		} else if extra {
-			fmt.Printf("      %-30s    %-30s", sgChar, tmpChar) // extra stuff in second col
+			fmt.Printf("%-30s    %-30s\n", char2psReplacer.Replace(sgChar), tmpChar) // extra stuff in second col
 			extra = false
 			extraForever = true
 		} else {
 			// matched OR errors
-			fmt.Printf("      %-30s    %-30s", sgChar, out)
+			fmt.Printf("%-30s    %-30s\n", char2psReplacer.Replace(sgChar), out)
 		}
 
-		fmt.Println()
 		lineCnt++
 		if lineCnt >= 10 {
 			fmt.Printf("%s\n", strings.Repeat("-", 79))
@@ -418,15 +424,15 @@ Levenshtein             Practice Text                      CW Capture
 	}
 
 	if totalChars == 0 {
-		fmt.Printf("\n\n Error: The practice file <%s> is empty.\n",practiceFile)
+		fmt.Printf("\n\n Error: The practice file <%s> is empty.\n", practiceFile)
 		os.Exit(1)
 	}
 
 	if totalCorrect == totalChars {
 		grn := gchalk.BrightGreen("100 %")
-		fmt.Printf("\n Accuracy: %s\n", grn)
+		fmt.Printf("\n\n Accuracy: %s\n", grn)
 	} else {
-		fmt.Printf("\n Accuracy: %3.2f %%\n", float32(totalCorrect)*100.0/float32(totalChars))
+		fmt.Printf("\n\n Accuracy: %3.2f %%\n", float32(totalCorrect)*100.0/float32(totalChars))
 	}
 
 	if warningMsg != "" {
@@ -435,8 +441,8 @@ Levenshtein             Practice Text                      CW Capture
 
 	if miss {
 		fmt.Printf("\n Warning: You %s sending some characters, (column 2) in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("blue"))
-		fmt.Printf("\n          If your CW capture groups following the %s characters are all (%s),\n          you MAY have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
-		fmt.Printf("\n          The space should be just before your CW capture groups turned %s.\n", colorError("red"))
+		fmt.Printf("\n          If your CW capture groups following the %s characters are all %s,\n          you MAY have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
+		fmt.Printf("\n          The space should be just before practice group turned %s and your CW capture groups turned %s.\n", colorMiss("blue"), colorError("red"))
 		fmt.Printf("\n          Edit your CW capture file <%s>, fix the space error, and rerun.\n", captureFile)
 	}
 
@@ -444,7 +450,7 @@ Levenshtein             Practice Text                      CW Capture
 		fmt.Printf("\n Warning: You sent some %s characters, (column 3) in %s.\n", colorExtra("extra"), colorExtra("green"))
 		fmt.Printf("\n          Or you missed a space and combined two groups.")
 		fmt.Printf("\n          The space should be just before your CW capture groups all turned %s.\n", colorError("red"))
-		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.\n",captureFile)
+		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.\n", captureFile)
 	}
 
 	fmt.Printf("\n\n Note: INVALID morse characters (or ProSigns) are shown as asterisks \"%s%s%s\".\n", gchalk.WithBgBlue().BrightCyan("*"), gchalk.BrightMagenta("*"), gchalk.BrightGreen("*"))
@@ -453,7 +459,6 @@ Levenshtein             Practice Text                      CW Capture
 	if totalCorrect != totalChars && miss || extraForever {
 		var reply string
 		fmt.Printf("\n Do you want to see the captured text from a timing perspective? (y or n): ")
-
 
 		fmt.Scanf("%s", &reply)
 		if reply != "" && reply[0] == byte('y') {
@@ -539,7 +544,7 @@ func minimum(a, b, c int) int {
 
 /*
 ** chunk and compare just for errors to see if issue was spacing
-*/
+ */
 
 func timingCheck(practice string, capture string) {
 	var strLen int = 60 // how many chars will we display
@@ -553,7 +558,7 @@ func timingCheck(practice string, capture string) {
 		minLen = len(capture)
 	}
 
-	for ; len(capture) >0; {
+	for len(capture) > 0 {
 		if len(practice) == 0 {
 			break
 		} else {
@@ -565,7 +570,7 @@ func timingCheck(practice string, capture string) {
 			} else {
 				practiceSection = practice[0:]
 				captureSection = capture[0:]
-				practice = "" 
+				practice = ""
 				capture = ""
 			}
 		}
@@ -574,7 +579,6 @@ func timingCheck(practice string, capture string) {
 			if i >= len(captureSection) {
 				break
 			}
-
 
 			if byte(pChar) != captureSection[i] {
 				tmpChar := char2psReplacer.Replace(string(captureSection[i]))
@@ -598,4 +602,3 @@ func timingCheck(practice string, capture string) {
 
 	return
 }
-
