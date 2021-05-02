@@ -42,5 +42,5 @@
 <SK>  # End Of Contact, same as sound as <VA>
 #<VA>  # End Of Contact, same as sound as <SK>
 <SN>  # Understood/Verified
-<BK>  # Break in transmission inviting rcvr to sedn
+<BK>  # Break in transmission inviting rcvr to send
 
