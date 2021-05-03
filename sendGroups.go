@@ -153,6 +153,7 @@ func getRandomSendChar(randCharSlice []rune) (rune, []rune) {
 // buildSendSlice - create a byte slice to use for codeGroups
 //
 func buildSendSlice() []rune {
+	var gotDigit bool
 	// based on the ints in flagsend we populate the charSlice
 	sendCharSlice := make([]rune, 0, flagcgmax*flagnum) // may be extra
 
@@ -160,32 +161,39 @@ func buildSendSlice() []rune {
 
 	if strings.Contains(flagsend, "0") {
 		// no op allows use of cglist
+		gotDigit = true
 	}
 	if strings.Contains(flagsend, "1") {
 		charSlice = append(charSlice, []rune("EIHMOST50")...)
+		gotDigit = true
 	}
 	if strings.Contains(flagsend, "2") {
 		charSlice = append(charSlice, []rune("ABDGJNUVWZ")...)
+		gotDigit = true
 	}
 	if strings.Contains(flagsend, "3") {
 		charSlice = append(charSlice, []rune("12346789")...)
+		gotDigit = true
 	}
 	if strings.Contains(flagsend, "4") {
 		charSlice = append(charSlice, []rune("FKLRPQXY")...)
+		gotDigit = true
 	}
 	if strings.Contains(flagsend, "5") {
 		charSlice = append(charSlice, []rune("C.,/?")...)
+		gotDigit = true
 	}
 	// special: use lc letters which we will later map to prosigns
 	if strings.Contains(flagsend, "6") {
 		charSlice = append(charSlice, []rune("abcdefg")...)
+		gotDigit = true
 	}
 
 	if flagcglist != "" {
 		charSlice = append(charSlice, []rune(flagcglist)...)
 	}
 
-	if len(charSlice) < 5 {
+	if gotDigit == false {
 		fmt.Printf("\n Error: option <-send> must include at least one digit from 1-5\n")
 		os.Exit(1)
 	}
