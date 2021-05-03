@@ -907,6 +907,7 @@ keyers/bugs with dit/dah alternations.
 The following groups numbered from 1-6 determine the characters. The order 
 should be from simplist to difficult (arguably).
 
+0: Special case see the note at the end of the example.
 1: EIHMOST50                      # all dits or dahs
 2: ABDGJNUVWZ                     # one dit/dah or dah/dit alternation
 3: 12346789                       # as above (2 and 3 same difficulty)
@@ -927,7 +928,18 @@ mcpt -send=1,4 -num=200 -displayFormat=LF
  THFRØ  LXLRO  SØIØK  LXEY5  XML5F  5IRØK  RKØQI 
 
  TFEKP  I5PFP  TQFFH  IPYEX  TQTTY  EKMFO  ØKOIL
+
+Note: If taking on an all the characters of a group at one time is too
+      difficult, you can limit the set to those you specify. For example:
+      -send=1 -cglist="AN" will add "A" and "N" to the characters or group 1.
+      You only need the "0" if send does not include any other groups, e.g.
+      -send=0 -cglist="ABC" will ONLY use those three characters (you are 
+      basically doing: mcpt -cglist -CodeGroups). If any group from 1-6 is given      the zero is not needed. 
+
+      ** At this time cglist cannot include ProSigns. **
+       
 </PRE>
+
 
 <H2>Example 27-2: 
 &lt;sendCheck> for analyzing sending practice sessions

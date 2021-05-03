@@ -15,11 +15,11 @@ import (
 )
 
 var (
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<VA>", "h", "<SN>", "0", "\u00D8")
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8")
 
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<VA>", "g", "<SN>", "h", "\u00D8", "0")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0")
 
-	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<VA>", "g", "<SN>", "l", "\u00D8", "0")
+	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0")
 
 	gotCarat      bool
 	validCharPS   string
@@ -51,8 +51,8 @@ func doSendCheck(fp *os.File) {
 		sep = "^"
 		validCharPS = sep
 		invalidCharPS = "<>"
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^VA", "h", "^SN", "0", "\u00D8")
-		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^VA", "g", "^SN", "h", "\u00D8", "0")
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^SN", "0", "\u00D8")
+		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^SN", "g", "\u00D8", "0")
 		gotCarat = true
 	}
 
@@ -157,6 +157,10 @@ func buildSendSlice() []rune {
 	sendCharSlice := make([]rune, 0, flagcgmax*flagnum) // may be extra
 
 	charSlice := make([]rune, 0, 50) // may be extra
+
+	if strings.Contains(flagsend, "0") {
+		// no op allows use of cglist
+	}
 	if strings.Contains(flagsend, "1") {
 		charSlice = append(charSlice, []rune("EIHMOST50")...)
 	}
@@ -175,6 +179,10 @@ func buildSendSlice() []rune {
 	// special: use lc letters which we will later map to prosigns
 	if strings.Contains(flagsend, "6") {
 		charSlice = append(charSlice, []rune("abcdefg")...)
+	}
+
+	if flagcglist != "" {
+		charSlice = append(charSlice, []rune(flagcglist)...)
 	}
 
 	if len(charSlice) < 5 {
