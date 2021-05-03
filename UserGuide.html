@@ -19,7 +19,7 @@ Users of LCWO.net (here after LCWO), can enjoy the challenges and benefits of on
 <H2>
 Overview
 </H2>
-Current version 2.0
+Current version 1.6
 <P>
 This file contains examples of the usage of all options.
 <P>
@@ -50,6 +50,7 @@ The following is a simple list of a behavior and the key option that enables it.
 </ol>
 <H2>
 Options
+ - format, evaluation, use of &lt;opt> for file vs cmd line
 </H2>
 There are many options to customize your practice text, but in any execution you may only use a few. 
 Options can be read from a file (see -opt) or the command line.
@@ -145,6 +146,7 @@ They are are cosemetic in nature. They replace a spaces in output with TABs, and
 These are for users that use output for sending practice, or some even use it for generation of typing practice (nothing to do with morse code).
 <H2>
 Delimiter vs. Code Groups
+- &lt;delimiter> a code group like feature to use with words
 </H2>
 You can skip this until you encounter the explanation of the following two options <B>delimiter</B> and <B>codeGroups</B>.
 <P>
@@ -159,7 +161,7 @@ order (A-D is good, D-A is invalid), and each range is independent (A-z invalid,
 <P>
 <P>
 <H3>
-Delimiter Option
+Delimiter Option - what a delimiter is
 </H3>
 This option is the last of the 5 above. It is significantly different than the others, in order to provide
 its design flexibility.
@@ -171,7 +173,7 @@ Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". Mor
 If the field (data between the '|'s or a '|' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
 <B>HOWEVER</B> if the field contained, <B>ONLY</B> a simple range, as in the next to last field above "|a-f|" this is expanded as if you wanted <B>EACH</B> character to be treated as if it were its own field. Said another way the field "|A-F|" is treated as if you typed "A|B|C|D|E|F".
 <H3>
-Use of Delimiter
+Use of Delimiter - sample delimiter usage
 </H3>
 The delimiter option, works in conjuction with 2 other options. Delimiter-multiples (entered as DM=x), where x is the number of fields in the delimiter that should be used (as a maximum) at any one time. Thus, with DM=1 and delimiter="A-D^1-3^?"
 this expands and is the same as 9 single character fields A^B^C^D^1^2^3^?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "THIS 3A TEST DD? is C A".
@@ -183,6 +185,7 @@ practice like: "THIS 38 TEST 78 IS 838 4F?,7J PRACTICE 321 GENERATED NW4,7D.,".
 <P>
 <H2>
 Options Help Information
+- getting runtime help for options
 </H2>
 To list all options, run: mcpt -help. To get the CURRENT value of all option defaults, after they have been changed by on the command line or with the option file, you can
 add the option "-help=options" to the command line.
@@ -209,6 +212,7 @@ them yourself.
 <P>
 <H2>
 Example 1: 
+some options for "word" practice
 </H2>
 <B>mcpt -inlen=3:6 -num=30 -in=words.txt</B>
 USE LINE TEXT LINE WHICH TUTOR THAT TUTOR YOUR TRY YOU TRY TEXT MORSE YOU 
@@ -225,6 +229,7 @@ See example 32 for contrast of -in vs. -text.
 </PRE>
 <H2>
 Example 2: 
+controlling output line length
 </H2>
 <B>mcpt -inlen=3:6 -num=30 -in=words.txt <mark>-len=30</mark></B>
 <PRE>
@@ -241,6 +246,7 @@ NOTE: option value can use a space or equals separator e.g. -inlen 4, or -inlen=
 </PRE>
 <H2>
 Example 3: 
+options in a file instead of command line with &lt;opt>
 </H2>
 <PRE>
 <B>mcpt -opt=myOptions</B>
@@ -250,6 +256,7 @@ Note: opt myOptions, will override default options.
 </PRE>
 <H2>
 Example 4:
+saving practice material to a file, for your software tutor and into to suffix/prefix options
 </H2>
 <B>mcpt -in=words.txt -inlen=5 -num=10 -suflen=1:2 <MARK>-out=out.txt</MARK></B>
 <PRE>
@@ -273,6 +280,7 @@ NOTE: below is example of -suflen=3 and -prelen=1
 </PRE>
 <H2>
 Example 5:
+finer contro; of prefixes with &lt;prlen>, &lt;prelist>
 </H2>
 <B>mcpt -in=words.txt <MARK>-prelist="123"</MARK> -prelen=1 <MARK>-suflist="QZX" -suflen=1</MARK> -num=10</B>
 <PRE>
@@ -284,6 +292,7 @@ NOTE: prefixes limited to values of: 1, 2, 3; suffixes are shown on the command 
 </PRE>
 <H2>
 Example 6:
+finer control of suffixes with &lt;suflen>
 </H2>
 <B>mcpt -in=words.txt -num=10 -suflen=1:3</B> 
 <PRE>
@@ -297,6 +306,7 @@ NOTE: a space character added into the suflist or prelist set of characters.
 </PRE>
 <H2>
 Example 7:
+matching specific words in an input file
 </H2>
 <B>mcpt -in=words.txt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
 <PRE>
@@ -321,6 +331,7 @@ NOTE: Regardless of the value of inlist or lesson, a prosign found in the input 
 </PRE>
 <H2>
 Example 8:
+skipping over initial words from an input file
 </H2>
 <B>mcpt -in=words.txt -inlen=3:8 -num=30 -skip=20</B>
 <P>
@@ -331,6 +342,7 @@ above. This will skip over the fist number of unique words that match your crite
 And then after skipping, proceed to record unique words to use.
 <H2>
 Example 9:
+have matching words repeat in sequence
 </H2>
 <B>mcpt -in=words.txt <MARK>-repeat=3</MARK></B>
 <P>
@@ -341,6 +353,7 @@ Note: linking words in the input file with "~", treat the sequence as ONE word. 
 <MARK>AND AND AND</MARK> THE THE THE SO SO SO
 <H2>
 Example 10:
+inserting specified ProSigns in place of words
 </H2>
 <B>mcpt -in=words.txt -inlen=3:5 -num=10 -suflen=1 <MARK>-prosign=prosignFile.txt<MARK></B>
 <PRE>
@@ -373,6 +386,7 @@ NOTE: Each ProSign seen above is in the -prosign=prosignFile.txt.
 </PRE>
 <H2>
 Example 11:
+practical use of delimiters with word practice
 </H2>
 <B>mcpt -in=words.txt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
 The option, "-delimiter", is a string of 1 or more characters (of any type) which will
@@ -423,6 +437,7 @@ Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that w
 </PRE>
 <H2>
 Example 12:
+use of &lt;unique> when reading words from a file
 </H2>
 <B>mcpt -in=words.txt -inlen=1:3 -num=6 -unique</B>
 The -unique option, terminates the adding to output as soon as
@@ -433,6 +448,7 @@ For example, if the output would have been: "HE SAW THE RAT HE RAT" because
 stops creating output making each word unique. Output is reduced to: "HE SAW THE RAT".
 <H2>
 Example 13:
+controlling length and content of created code groups
 </H2>
 <B>mcpt -codeGroups -cglist="aeiokmr0-4?" -cglen=6</B>
 <PRE>
@@ -446,6 +462,7 @@ Note: limited options apply when using code groups, others are silently ignored
 </PRE>
 <H2>
 Example 14:
+intermixing of code groups and words in the same practice session
 </H2>
 <B>mcpt -inlen=5:8 -in="in.txt" <mark>-mixedMode=2</mark></B>
 <PRE>
@@ -458,6 +475,7 @@ Note: In mixedMode, the code group word is NOT counted into the -num word count.
 </PRE>`
 <H2>
 Example 15: 
+permutations of characters using your tutor's teaching sequence
 </H2>
 <B>mcpt -lesson=2 -tutor=lcwo -num=1 <mark>-permute=p</mark></B>
 <PRE>
@@ -508,6 +526,7 @@ RX R5 XX QR RQ QX 5Q5 5R RR XRX</I>
 You can use the &lt;prosign> option as well.
 <H2>
 Example 16: 
+ProSigns used with code groups
 </H2>
 <B>mcpt <mark>-prosign=myPs.txt</mark> -codeGroups ....</B>
 <PRE>
@@ -530,6 +549,7 @@ codeGroups, as well, the codeGroups could have prosigns.
 </PRE>
 <H2>
 Example 17:
+reverse the spelling of input words
 </H2>
 <B>mcpt ... -in=myInput -NR <mark>-reverse</mark> ...</B>
 <P>
@@ -592,6 +612,7 @@ unique, nothing got discarded and we keep the same order. This is not the design
 use your input directly with a tutor (no mcpt) if you simply want text-to-cw without processing.
 <H2>
 Example 18:
+delimiters on a random basis
 </H2>
 <B>mcpt -in=words.txt -DM=1:2 -delimiter="1^A^?^&lt;BT>" -DR</B>
 <P>
@@ -604,12 +625,14 @@ with -DR (a.k.a. DR=true) you indicate that delimiter printing is random
 WORD WORD WORD &lt;BT> WORD AA WORD WORD 1
 <H2>
 Example 19:
+controlling the length of code groups when intermixed with words
 </H2>
 <B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
 <P>
 ON AT OF 3,A??4 NO HE IS A4263?/ AND HAT FOUR ......
 <H2>
 Example 20:
+randomness of the intermixed code groups with words
 </H2>
 <B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
 <PRE>
@@ -621,7 +644,7 @@ NOTE: In the above, after every 3 words (mixedMode=3) we get a code group.
       We can add an option -MMR (mixed mode random) which gives a 50/50 chance that a code group will be 
       suppressed to lessen predictability.
 
-<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3  -in=words.txt<mark>-MMR</mark></B>
+<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt<mark>-MMR</mark></B>
 
 NOTE: The stretch below with no code group due to -MMR.
 
@@ -687,6 +710,7 @@ ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?
 </PRE>
 <H2>
 Example 21: 
+using the options &lt;tutor> and &lt;lesson> to limit genearted material to characters you have learned
 </H2>
 <B>mcpt ... <mark>-lesson=5 -tutor=lcwo</mark></B>
 <P>
@@ -700,6 +724,7 @@ If you use Morse Elmer, Just Learn Morse Code, MorseCodeNinja, or G4FON you will
 <B>inlist</B> and <B>cglist</B> with the characters and in the order that they are taught with those products.
 <H2>
 Example 22: 
+an example of linking words in a word file to be treated as one word
 </H2>
 <B>mcpt -in=infile </B>
 <PRE>
@@ -717,6 +742,7 @@ TEST ?, WORD =. MORE ?? <U>THIS IS A GROUP</U> =? etc.
 </PRE>
 <H2>
 Example 23: 
+generation of some call sign formats
 </H2>
 <B>mcpt -callSigns ...</B>
 <P>
@@ -785,6 +811,7 @@ F2CFF B3F D1DCF EB2BC AB1DE FB3EBC DC4DAB CB2BFA ED4AAA
 <P>
 <H2>
 Example 24: 
+&lt;displayFormat> for better readability of displayed output (usually for sending practice)
 </H2>
 <B>mcpt -displayFormat=TAB_LF ...</B>
 <P>
@@ -809,6 +836,7 @@ aswss    sdj23    sdsdr    ./766
 36ffd    fed34    dsdhh    s43??
 <H2>
 Example 25: 
+&lt;must> to ENSURE a given character is used in every output word/code group
 </H2>
 <B>mcpt -codeGroups -lesson=4 -must="ABCD"</B>
 <B>mcpt -codeGroups -cglist="MUKER" -must="ABCD"</B>
@@ -837,6 +865,7 @@ operating systems may have issue with that.
 <P>
 <H2>
 Example 26: 
+&lt;headCopy> make words progressively longer 
 </H2>
 <B>mcpt -codeGroups -cglen2:6 -headCopy</B>
 <B>mcpt -in=file.txt -inlen2:6 -headCopy</B>
@@ -862,6 +891,7 @@ In the second command, the headCopy option does the same thing for words as it d
 </PRE>
 <H2>
 Example 27: 
+&lt;send> creating special code groups for learning to SEND.
 </H2>
 <B>mcpt -send=12</B>
 <BR>
@@ -889,7 +919,7 @@ The third command above, might generate:
 FFY RR QYYY XK
 XF LY QKP RPRY
 
-mcpt -send=1,3 -num=200 -displayFormat=LF 
+mcpt -send=1,4 -num=200 -displayFormat=LF 
 (Adding the option displayFormat=LF, for readability, generates: )
 
  F5ØHE  OSEMP  OIPMM  RMEFH  RIYTO  R5XQI  THOXF  
@@ -899,9 +929,14 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
  TFEKP  I5PFP  TQFFH  IPYEX  TQTTY  EKMFO  ØKOIL
 </PRE>
 
-<B>Using The sendCheck Option.
+<H2>Example 27-2: 
+&lt;sendCheck> for analyzing sending practice sessions
+</H2>
 <BR> mcpt -sendCheck=practice.txt,C:capture.txt</B>
 <PRE>
+ If you have other software which allows you to send morse and capture it as 
+ text (i.e. PCFistcheck, CWcom, vband), then you can verify your sending by 
+ comparing the two files. 
 <P>
  Caveats: 
  <OL>
@@ -935,10 +970,6 @@ mcpt -send=1,3 -num=200 -displayFormat=LF
  practice material (e.g. notepad) as long as the file is a simple text file, 
  and only includes the practice text (no: formatting, headers/footers etc.).
 
- If you have other software which allows you to send morse and capture it as 
- text (i.e. PCFistcheck, CWcom, vband), then you can verify your sending by 
- comparing the two files. 
-
  Let's use <B>practice.txt</B> as the name of the generated practice material 
  (from MCPT, Notepad, etc.), is the file to view at to know what to key.
  Let's say your captured morse is in <B>capture.txt</B>. Then, in the option
@@ -964,14 +995,13 @@ Accuracy: 50.00%
 
 Note: GREEN text, indicates Your CW capture Group has extra charactes.
 Note: BLUE text, indicates Your CW capture Group is missing characters.
-Note: If your CW sending software reports INVALID morse as: &lt;ERR>, &lt;ERROR>, or
-      &lt;---> formats, those characters will be shown as an asterisk (purple or 
-      green depending on the column).
 Note: Color key and diagnostics will display on screen for you.
+Note: INVALID morse shown as: &lt;ERR>, &lt;ERROR>, or &lt;--->, be 
+      dispay as an asterisk (purple or green depending on the column).
 
 <B>Timing Problems With Your Sending</B>
 
-SendCheck can help diagnose some timing issues in your sending.  For the 
+SendCheck can help diagnose some timing issues in your sending. For the 
 following discussion, let's use the simple practice phrase,
 "THIS IS A TEST.".
 
@@ -1012,7 +1042,7 @@ Let's look at a more difficult analysis. Checking of "word" sending is not
 nearly as difficult as code groups or other complex material.
 <P>
 Assume your practice file (practice.txt) contained: 
-"1OOO01 WMNM D34K 6,.8/ VU <BT>THE END".
+"1OOO01 WMNM D34K 6,.8/ VU &lt;BT>THE END".
 
 Assume your capture file (capture.txt), as the decoder of that software 
 (PCWFistcheck, cwcom, vband, etc.) 
@@ -1028,7 +1058,7 @@ Let's look at what mcpt might be able to tell you about this sending session
 from the output below (I've eliminated all the screen titles and notes).
 (Note that for the purpose of the document I have used the first column for 
 line numbers to refer to.)
-<PRE>
+
      Line           MCPT Text         Your CW
      Number          Group            Group
  ============   ===============   ===============
@@ -1066,8 +1096,10 @@ Hopefully these two outputs can help you see where your sending needs more pract
 
 </PRE>
 <H2>
-LCWO Option Overview: <I>LCWO users also review Example 20</I>
+LCWO Option Overview: 
 </H2>
+(LCWO users also review Example 20)
+
 This section can be skipped if you are NOT a user of LCWO.
 
 For any practice session text where you want to have on-the-fly changes in word speed (wpm) and/or
@@ -1157,8 +1189,9 @@ Note: An '*' in a delimiter string gives a half-second of silence if played in L
 </PRE>
 <H2>
 Example 28:
+each sent word with play at a different speed
 </H2>
-<B>mcpt -LCWO_low=15 -LCWO_step=5 -LCWO_num=3 -num=20</B>
+<B>mcpt -LCWO_random -LCWO_low=15 -LCWO_step=5 -LCWO_num=3 -num=20</B>
 <PRE>
 This example is for users of the LCWO to create MP3 files. Adding the above options (they have defaults)
 to options that create "word" practice will insert on-the-fly speed changes.
@@ -1182,6 +1215,7 @@ Note: the "LCWO" options are ignored if you are using code groups (-codeGroups).
 </PRE>
 <H2>
 Example 29:
+words ramp up in speed from low to high
 </H2>
 <B>mcpt -LCWO_low=15 -LCWO_step=5 -LCWO_num=3 <mark>-LCWO_ramp</mark> -num=20</B>
 <PRE>
@@ -1200,6 +1234,7 @@ he the radio sat end test it of
 </PRE>
 <H2>
 Example 30:
+create alternating section of slow/fast sending
 </H2>
 <B>mcpt -LCWO_low=15 -LCWO_step=5 <mark>-LCWO_slow=5 -LCWO_fast=2</mark> -num=20</B>
 <PRE>
@@ -1223,6 +1258,7 @@ Note: the two new options LCWO_slow and LCWO_fast specify the number or "words"
 </PRE>
 <H2>
 Example 31:
+add an audible marker for the slow/fast section as an alert
 </H2>
 <B>mcpt -LCWO_low=15 -LCWO_step=5 -LCWO_slow=5 -LCWO_fast=2 <mark>LCWO_sf=? LCWO_fs=/ </mark> -num=20</B>
 <PRE>
@@ -1253,6 +1289,7 @@ Note: LCWO_sf and/or LCWO_fs are the only LCWO options which <I>may</I> be used 
 </PRE>
 <H2>
 Example 32:
+word repetition withn the context of LCWO
 </H2>
 <B>mcpt -LCWO_low=10 -LCWO_step=5 <mark>-LCWO_repeat=3 </mark> -num=5</B>
 <PRE>
@@ -1277,6 +1314,7 @@ To get this I added to the command line (or options.mcpt.: -delimiter="&lt;SK>|&
 </PRE>
 <H2>
 Example 33:
+start LCWO session with a header for options to apply to entire session
 </H2>
 <B>mcpt ... usual options choices ... <mark>-header="|W3 |f600"</mark></B>
 <PRE>
@@ -1297,6 +1335,7 @@ Note: No checks are performed on the content of header, its passed to your
 </PRE>
 <H2>
 Example 34: 
+mixed mode words and code groups in LCWO context
 </H2>
 <B>mcpt -in=words.txt -mixedMode=3 -LCWO_low=10 -LCWO_step=5</B>
 <PRE>
@@ -1309,6 +1348,7 @@ Note: ignore the double speed option at the start, LCWO will work correctly.
 </PRE>
 <H2>
 Example 35: 
+a large example combining the use of many previous options
 </H2>
 <B>mcpt -opt demo.opt <mark>Combined Features Example</mark> ...</B>
 <PRE>
@@ -1543,6 +1583,7 @@ If LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, 
 </PRE>
 <H2>
 Example 36: 
+an alternative to the &lt;in> option for word match only
 </H2>
 <B>mcpt -text=input.txt -tutor=lcwo -lesson=12</B>
 </H2>
