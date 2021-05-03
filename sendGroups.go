@@ -15,11 +15,11 @@ import (
 )
 
 var (
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<BK>", "h", "<AA>", "i", "<CT>", "j", "<KN>", "k", "<VA>", "l", "<SN>", "0", "\u00D8")
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<VA>", "h", "<SN>", "0", "\u00D8")
 
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<VA>", "g", "<SN>", "h", "\u00D8", "0")
 
-	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<BK>", "g", "<AA>", "h", "<CT>", "i", "<KN>", "j", "<VA>", "k", "<SN>", "l", "\u00D8", "0")
+	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<VA>", "g", "<SN>", "l", "\u00D8", "0")
 
 	gotCarat      bool
 	validCharPS   string
@@ -51,8 +51,8 @@ func doSendCheck(fp *os.File) {
 		sep = "^"
 		validCharPS = sep
 		invalidCharPS = "<>"
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^BK", "h", "^AA", "i", "^CT", "j", "^KN", "k", "^VA", "l", "^SN", "0", "\u00D8")
-		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^BK", "g", "^AA", "h", "^CT", "i", "^KN", "j", "^VA", "k", "^SN", "l", "\u00D8", "0")
+		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^VA", "h", "^SN", "0", "\u00D8")
+		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^VA", "g", "^SN", "h", "\u00D8", "0")
 		gotCarat = true
 	}
 

@@ -22,25 +22,21 @@
 # 4-  Only the following prosigns are supported in this file. Any place the prosigns are used
 #     they can be in either upper or lowercase.
 #
-#     <AA>, <AS>, <AR>, <BT>, <CT> or <KA>, <HH>, <KN>, <SK> or <VA>, <SN>, <BK>
+#     <AS>, <AR>, <BT>, <KA>, <HH>, <SK> or <VA>, <SN>
 #     Note: <CT> and <KA> make the same sound, and have the same meaning. Comment out the one
 #     you have learned or your tutor does not support.
 #
-#     An alternate format is: ^AA, ^sk, etc. The G4FON uses this format.
+#     An alternate format is: ^AS, ^sk, etc. The G4FON uses this format.
 #
 #     Retaining an unaltered copy of this file for future reference is recommended.
 ##################################################################################################
 
-<AA>  # Start New Line
 <AS>  # WAIT (wait A Second)
 <AR>  # End Message (All Rendered)
 <BT>  # Pause or seperator in text , same as "=" in many tutors
-#<CT> # ATTENTION/ALERT, same sound as KA
 <KA>  # ATTENTION/ALERT, same sound as CT
 <HH>  # ERROR, followed by corrected text
-<KN>  # INVITATION for named station to transmit
 <SK>  # End Of Contact, same as sound as <VA>
 #<VA>  # End Of Contact, same as sound as <SK>
 <SN>  # Understood/Verified
-<BK>  # Break in transmission inviting rcvr to send
 
