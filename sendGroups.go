@@ -162,9 +162,11 @@ func buildSendSlice() []rune {
 
 	var myList = flag.Args()
 	if myList[0] != "" {
+		tStr := myList[0]
 		// no op allows use of cglist
-		myList[0] = strings.ToUpper(myList[0])
-		charSlice = append(charSlice, []rune(myList[0])...)
+		tStr = ps2charReplacer.Replace(strings.ToUpper(tStr))
+
+		charSlice = append(charSlice, []rune(tStr)...)
 
 		gotDigit = true
 	}

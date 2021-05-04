@@ -36,8 +36,8 @@ mcpt overcomes some of the common issues with practice text, or its generation:
 <H1>
 Overview Of MCPT's Behaviors
 </H1>
-MCPT has several behaviors or modes of operation. One or two key options will determine the behavior during the execution of the tool. All of these behaviors are demonstrated in the examples in the document, as well as many supporting options (many are used with multiple behaviors).
-The following is a simple list of a behavior and the key option that enables it. You can search for the use of the option of interest if you don't want to read the document in order.
+MCPT has several behaviors of operation. One or two key options will determine the behavior during the execution of the tool. All behaviors are demonstrated in the examples, as well as many supporting options (many are used with multiple behaviors).
+The following is a simple list of a behavior and the key option that enables it.
 <P>
 <ol>
 	<LI> code groups: -codeGroups (typical random strings: UUMRK MU.4R)
@@ -219,9 +219,8 @@ USE LINE TEXT LINE WHICH TUTOR THAT TUTOR YOUR TRY YOU TRY TEXT MORSE YOU
 YOUR FOR WHICH MAY ARE NOT NOT MAY THAT USE CAN OFFER OFFER 
 <PRE>
 NOTE: 30 words between 3 and 6 characters from text.txt
-NOTE: words are NOT in the order found, they are random 
-NOTE: there were less than 30 unique words found, so after at least one output 
-      of each we reuse them 
+NOTE: words in random order
+NOTE: less than 30 unique words found, so we reuse some 
       
 <I>
 See example 32 for contrast of -in vs. -text.
@@ -256,7 +255,7 @@ Note: opt myOptions, will override default options.
 </PRE>
 <H2>
 Example 4:
-saving practice material to a file, for your software tutor and into to suffix/prefix options
+save practice material to a file, for your software tutor; and  suffix/prefix options
 </H2>
 <B>mcpt -in=words.txt -inlen=5 -num=10 -suflen=1:2 <MARK>-out=out.txt</MARK></B>
 <PRE>
@@ -280,7 +279,7 @@ NOTE: below is example of -suflen=3 and -prelen=1
 </PRE>
 <H2>
 Example 5:
-finer contro; of prefixes with &lt;prlen>, &lt;prelist>
+finer control of prefixes with &lt;prlen>, &lt;prelist>
 </H2>
 <B>mcpt -in=words.txt <MARK>-prelist="123"</MARK> -prelen=1 <MARK>-suflist="QZX" -suflen=1</MARK> -num=10</B>
 <PRE>
@@ -710,7 +709,7 @@ ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?
 </PRE>
 <H2>
 Example 21: 
-using the options &lt;tutor> and &lt;lesson> to limit genearted material to characters you have learned
+using the options &lt;tutor> and &lt;lesson> to limit generated material to characters you have learned
 </H2>
 <B>mcpt ... <mark>-lesson=5 -tutor=lcwo</mark></B>
 <P>
@@ -903,7 +902,7 @@ keyers/bugs with dit/dah alternations.
 
 <PRE>
 
-The following groups numbered from 1-6 determine the characters. The order 
+The following groups numbered from 1-6 determine the characters. The ord<er 
 should be from simplist to difficult (arguably).
 
 0: Special case see the note at the end of the example.
@@ -939,7 +938,7 @@ Note: If taking on an all the characters of a group at one time is too
 Note: If you use your own character string as described above, it MUST be the
       the RIGHT most entry on the command line. </B>
 
-      ** At this time we cannot include ProSigns in the this string. **
+      Your character string can include supported ProSignas in the &lt;> format.
        
 </PRE>
 
