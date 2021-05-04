@@ -34,12 +34,12 @@ func doSendOpts(fp *os.File) {
 	} else if flagsend != "" {
 		doSendGroups(fp)
 	} else {
-		doSendCheck(fp)
+		doSendCheck()
 	}
 	os.Exit(1)
 }
 
-func doSendCheck(fp *os.File) {
+func doSendCheck() {
 	var path []string
 	var sep = ","
 
@@ -162,6 +162,11 @@ func buildSendSlice() []rune {
 
 	var myList = flag.Args()
 	if myList[0] != "" {
+		if len(myList) > 1 {
+			fmt.Printf("\n Error: you cannot have options to the right of string <%s>.\n", myList[0])
+			os.Exit(1)
+		}
+
 		tStr := myList[0]
 		// no op allows use of cglist
 		tStr = ps2charReplacer.Replace(strings.ToUpper(tStr))
