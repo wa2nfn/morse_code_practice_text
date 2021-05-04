@@ -931,12 +931,12 @@ mcpt -send=1,4 -num=200 -displayFormat=LF
 
 Note: If taking on an all the characters of a group at one time is too
       difficult, you can limit the set to those you specify. For example:
-      -send=1 -cglist="AN" will add "A" and "N" to the characters or group 1.
-      You only need the "0" if send does not include any other groups, e.g.
-      -send=0 -cglist="ABC" will ONLY use those three characters (you are 
-      basically doing: mcpt -cglist -CodeGroups). If any group from 1-6 is given      the zero is not needed. 
+      -send=1 "AN" will add "A" and "N" to the characters or group 1.
+      You only need the "0" if send does <B>not></B> include any other 
+      groups, e.g.  -send=0 "ABC" will ONLY use those three characters (you 
+      are basically doing: mcpt -cglist -CodeGroups). 
 
-      ** At this time cglist cannot include ProSigns. **
+      ** At this time cannot include ProSigns. **
        
 </PRE>
 

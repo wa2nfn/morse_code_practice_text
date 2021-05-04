@@ -12,6 +12,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"flag"
 )
 
 var (
@@ -159,8 +160,12 @@ func buildSendSlice() []rune {
 
 	charSlice := make([]rune, 0, 50) // may be extra
 
-	if strings.Contains(flagsend, "0") {
+	var myList = flag.Args()
+	if myList[0] != "" {
 		// no op allows use of cglist
+		myList[0] = strings.ToUpper(myList[0])
+		charSlice = append(charSlice, []rune(myList[0])...)
+
 		gotDigit = true
 	}
 	if strings.Contains(flagsend, "1") {
@@ -189,12 +194,8 @@ func buildSendSlice() []rune {
 		gotDigit = true
 	}
 
-	if flagcglist != "" {
-		charSlice = append(charSlice, []rune(flagcglist)...)
-	}
-
 	if gotDigit == false {
-		fmt.Printf("\n Error: option <-send> must include at least one digit from 1-5\n")
+		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-5.\n        Digit \"0\" is required, if it's the only digit and you are specifying your only group list.\n        E.g. -send=0 \"EOMT5\"")
 		os.Exit(1)
 	}
 

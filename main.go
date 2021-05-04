@@ -20,7 +20,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "2.0" // 4/6/2021
+	version       = "1.6" // 5/3/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -378,7 +378,7 @@ func main() {
 	// verify valid options
 	//
 
-	if flag.NArg() > 0 {
+	if flag.NArg() > 0 && flagsend == "" {
 		fmt.Printf("\nError processing the command line.\n\nYou may have:\n   forgotten a \"-\" before an option\n   or followed a \"-\" with a space\n   or added extra input\n   or put spaces around the \"=\"\n")
 		os.Exit(1)
 	}
