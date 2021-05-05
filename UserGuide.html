@@ -945,8 +945,10 @@ Note: If you use your own character string as described above, it MUST be the
 <H2>Example 27-2: 
 &lt;sendCheck> for analyzing sending practice sessions
 </H2>
-<BR> mcpt -sendCheck=practice.txt,C:capture.txt</B>
+<BR> mcpt -sendCheck=practice.txt,capture.txt</B>
 <PRE>
+ <B>The first file is the <I>practice or source file</I>, the second file is the <I>captured sending</I></B>.
+ <P>
  If you have other software which allows you to send morse and capture it as 
  text (i.e. PCFistcheck, CWcom, vband), then you can verify your sending by 
  comparing the two files. 
@@ -984,15 +986,12 @@ Note: If you use your own character string as described above, it MUST be the
  and only includes the practice text (no: formatting, headers/footers etc.).
 
  Let's use <B>practice.txt</B> as the name of the generated practice material 
- (from MCPT, Notepad, etc.), is the file to view at to know what to key.
- Let's say your captured morse is in <B>capture.txt</B>. Then, in the option
- below ADD "C:" or "c:" immediately before that file name as below.
+ (from MCPT, Notepad, etc.), as the file to view at to know what to key.
+ Let's say your captured morse is in <B>capture.txt</B>. 
 
- Then run: <B>mcpt -sendCheck=practice.txt,C:capture.txt</B>
- (The C: is NOT part of the files name, it tells MCPT which of the two files 
- is the CW capture text.)
+ Then run: <B>mcpt -sendCheck=practice.txt,capture.txt</B>
+ (File order is important.)
 
- The order of the files and names do not matter.
  Below is a simple output. The errored characters will be shown in <span style="color:red">red</span> text.
 
   Levenshtein      MCPT Text         Your CW
@@ -1064,8 +1063,7 @@ saved it as: "1OO0O1   WNNN    D34K 6, .8/   VU &lt;BT>THE      END:.
 Notice, right away your captured files spacing is rather random (but is wrong?)
 and also that comparing this by eye is not a trivail task.
 <P>
-So lets run: mcpt -sendCheck="practice.txt,C:capture.txt" 
-(don't forget the "C:" as a prefix to the capturre files name.)
+So lets run: mcpt -sendCheck="practice.txt,C:capture.txt".
 <P>
 Let's look at what mcpt might be able to tell you about this sending session 
 from the output below (I've eliminated all the screen titles and notes).

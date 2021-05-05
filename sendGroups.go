@@ -65,18 +65,7 @@ func doSendCheck() {
 		os.Exit(1)
 	}
 
-	var errVal int
-
-	errVal = readLines(path)
-
-	switch errVal {
-	case 1:
-		fmt.Printf("\n Error: Only one file can be a CW captured text from your sending software. Prefix its name in the sendCheck with: %s.\n\n", gchalk.BrightRed("C: or c:"))
-	case 2:
-		fmt.Printf("\n Error: Only one file can be a practice text file. E.g. <practice.txt>.\n        Do NOT prefix its name, with \"C: or c:\".\n\n")
-	default:
-		os.Exit(0)
-	}
+	readLines(path)
 	os.Exit(0)
 }
 
@@ -225,9 +214,7 @@ func buildSendSlice() []rune {
 
 // readLines reads a whole file into memory
 // and returns a slice of its lines.
-func readLines(path []string) int {
-	var gotUser bool
-	var gotMCPT bool
+func readLines(path []string) {
 	var sendGroupsCompare []string
 	var userGroupsCompare []string
 	var sendGroupsCompareNoSpace string
@@ -251,16 +238,21 @@ func readLines(path []string) int {
 
 	// do both files
 	for fIndex := 0; fIndex <= 1; fIndex++ {
-		// determine which file we have
-		whoIsIt, b, fName := determineFile(path[fIndex])
+
+		b, err := ioutil.ReadFile(path[fIndex])
+		if err != nil {
+			fmt.Printf("\n Error: reading file <%s>. %v\n", path[fIndex], err)
+			os.Exit(1)
+		}
+
 		// b is already in UC
+		b = bytes.ToUpper(b) 
 		// convert any NL to space
 		b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
-		if whoIsIt == 'm' {
-			// process MCPT file
-			gotMCPT = true
-			practiceFile = fName
+		// practice file
+		if fIndex == 0 {
+			practiceFile = path[0]
 			// good PS replace
 			bStr := MCPTps2charReplacer.Replace(string(b))
 
@@ -276,11 +268,13 @@ func readLines(path []string) int {
 
 			sendGroupsCompare = strings.Fields(bStr)
 			sendGroupsCompareNoSpace = strings.ReplaceAll(bStr, " ", "")
+			continue
+		}
 
-		} else if whoIsIt == 'u' {
+		// capture file
+		if fIndex == 1 {
 			// process User file
-			gotUser = true
-			captureFile = fName
+			captureFile = path[1]
 
 			// good PS replaced
 			var tmp = ps2charReplacer.Replace(string(b))
@@ -312,17 +306,7 @@ func readLines(path []string) int {
 			userGroupsCompare = strings.Fields(tmp)
 			userGroupsCompareNoSpace = strings.ReplaceAll(tmp, " ", "")
 
-		} else {
-			panic("Got bad file response: report program error.")
 		}
-	}
-
-	if gotUser == false {
-		return 1
-	}
-
-	if gotMCPT == false {
-		return 2
 	}
 
 	// needed so we don't over run array
@@ -398,7 +382,6 @@ Levenshtein             Practice Text                      CW Capture
 			} else if len(sgChar[Index:]) >= 1 {
 				// more in column 2
 				missedRaw = char2psReplacer.Replace(sgChar[Index:])
-				//missed = colorMiss(char2psReplacer.Replace(sgChar[Index:]))
 				missed = colorMiss(missedRaw)
 				miss = true // once set, forever set
 			}
@@ -490,38 +473,7 @@ Levenshtein             Practice Text                      CW Capture
 		}
 	}
 
-	return 0
-}
-
-// see if the file was the MCPT generated file, or from the users software
-func determineFile(path string) (byte, []byte, string) {
-	gotMCPT := false
-
-	// see if its the MCPT file
-	if strings.HasPrefix(path, "c:") || strings.HasPrefix(path, "C:") {
-		// the users cw capture groups
-		path = strings.TrimPrefix(path, "c:")
-		path = strings.TrimPrefix(path, "C:")
-	} else {
-		// the MCPT file or practice text  file
-		gotMCPT = true
-	}
-
-	b, err := ioutil.ReadFile(path)
-	if err != nil {
-		fmt.Printf("\n Error: reading file <%s>. %v\n", path, err)
-		os.Exit(1)
-	}
-
-	b = bytes.ToUpper(b) // in case source was not -send
-
-	if gotMCPT {
-		// the MCPT or practice text file
-		return byte('m'), b, path
-	} else {
-		// the users cw capture groups
-		return byte('u'), b, path
-	}
+	return
 }
 
 // compute the levenshtein error distance of the two groups
