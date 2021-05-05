@@ -953,6 +953,7 @@ Note: If you use your own character string as described above, it MUST be the
  text (i.e. PCFistcheck, CWcom, vband), then you can verify your sending by 
  comparing the two files. 
 <P>
+</PRE>
  Caveats: 
  <OL>
  <LI> This feature uses color, a black or dark backgound works best. For Windows
@@ -963,7 +964,7 @@ Note: If you use your own character string as described above, it MUST be the
  <LI> Timing errors in may be difficult to determine, see the end of this example.</LI>
  </OL>
 <P>
-
+<PRE>
  NOTE: If your capture software, records ProSigns in the format like: &lt;SK>,
        then use a comma "," to separate the file names.
  NOTE: If your capture software, records ProSigns in the format like: ^SK, then
@@ -1012,20 +1013,33 @@ Note: INVALID morse shown as: &lt;ERR>, &lt;ERROR>, or &lt;--->, be
       dispay as an asterisk (purple or green depending on the column).
 
 <B>Timing Problems With Your Sending</B>
+<P>
+Let's look at the ITU timing criteria, which is what your decorder should be using.
+</PRE>
+<P>
+<OL>
+<LI>A dash is equal to three dots.</LI>
+<LI>The space between the signals forming the same letter is equal to one dot.</LI>
+<LI>The space between two letters is equal to three dots.</LI>
+<LI>The space between two words is equal to seven dots.</LI>
+</OL>
+<PRE>
+
+With the exception of EXCESS space in the last item, any of these will likely cause the decoding of your CW
+to have a negative impact on detection.
 
 SendCheck can help diagnose some timing issues in your sending. For the 
 following discussion, let's use the simple practice phrase,
 "THIS IS A TEST.".
 
 Mixed case in files are converted to uppercase for comparison.
-<PRE>
 <OL>
-<LI> Problem: Your "intra-character" timing is off, when you are supposed to 
+<LI> Problem: Your "intra-character" timing is too LONG, when you are supposed to 
 send "This", the capture software says you sent: "THIEI" or "THIIE" or "THEEE".
 This is because the final "S" was not sent correctly, the sending trainer
 decoded it as two (or more) letters. We can detect this. These will all be 
 shown as wrong and/or EXTRA characters (in red and blue respectively).</LI>
-<LI> Problem: Your "inter-word" timing is too SHORT, so you compressed "TH" to
+<LI> Problem: Your "inter-character" timing is too SHORT, so you compressed "TH" to
 look like a "6". Now a 4 character string "THIS" is compared to a 3 character
 string "6IS", MCPT will show 3 errors, it will also say you are missing a 
 character (in green). Looking at the screen you will realise this was just a
