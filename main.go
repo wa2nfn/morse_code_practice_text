@@ -1,4 +1,3 @@
-//
 // Copyright 2019, 2020, 2021 Bill Lanahan - WA2NFN
 //
 
@@ -15,7 +14,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode"
 )
 
 const (
@@ -45,6 +43,8 @@ var (
 	runeMap        = make(map[rune]struct{})
 	ps2runeMap     = make(map[string]rune)
 	rune2psMap     = make(map[rune]string)
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0")
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8")
 )
 
 var (
@@ -172,7 +172,7 @@ func init() {
 	flag.BoolVar(&flagMMR, "MMR", false, "Mixed-Mode-Random, randomize code group occurance in mixed mode. (default false)")
 	flag.StringVar(&flagcglist, "cglist", "A-Z0-9/.,?=", "Set of characters to make code groups.")
 	flag.StringVar(&flagheader, "header", "", "string copied verbatim to head of output")
-	flag.BoolVar(&flaghead, "headCopy", false, "Used with codeGroups to increment length by 1 for each group, until cglen is max")
+	flag.BoolVar(&flaghead, "headCopy", false, "Used with codeGroups (or -in) to increment length by 1 for each group, until cglen is max")
 	flag.IntVar(&flagLCWOlow, "LCWO_low", 15, "low character speed setting (wpm).")
 	flag.IntVar(&flagLCWOstep, "LCWO_step", 0, "speed change increment (wpm).")
 	flag.IntVar(&flagLCWOslow, "LCWO_slow", 0, "number of words to send at slower speed.")
@@ -472,6 +472,11 @@ func main() {
 		delete(runeMap, '^')
 	}
 
+	if flaghead && flagtext != "" {
+		fmt.Printf("\nError: option <headCopy> cannot be used with option <text>, use option <headCopy> with <in>.\n")
+		os.Exit(1)
+	}
+
 	if flagmin > flagmax {
 		fmt.Printf("\nError: min must <= max <%d>, in -inlen.\n", flagmax)
 		os.Exit(1)
@@ -534,7 +539,7 @@ func main() {
 
 	if flagsufmin > 0 {
 		if flagsuflist != "" {
-			flagSuflistRune = ckValidInString(flagsuflist, "suflist")
+			flagSuflistRune = ckValidListString(flagsuflist, "suflist")
 		} else {
 			fmt.Printf("\nError: if suffix > 0, the suflist must contain characters, its empty.\n")
 			os.Exit(1)
@@ -549,7 +554,7 @@ func main() {
 	if flagpremin > 0 {
 		if flagprelist != "" {
 			// return expanded
-			flagPrelistRune = ckValidInString(flagprelist, "prelist")
+			flagPrelistRune = ckValidListString(flagprelist, "prelist")
 		} else {
 			fmt.Printf("\nError: if prelen > 0, the prelist must contain characters, its empty.\n")
 			os.Exit(1)
@@ -807,7 +812,7 @@ func main() {
 		} else {
 			if flagcglist != "" {
 				// return expanded
-				flagCglistRune = ckValidInString(flagcglist, "cglist")
+				flagCglistRune = ckValidListString(flagcglist, "cglist")
 			}
 		}
 	}
@@ -846,7 +851,7 @@ func main() {
 	}
 
 	if flagmust != "" {
-		flagmust = strings.ToUpper(flagmust)
+		flagmust = string(ckValidListString(flagmust,"must"))
 	}
 
 	//
@@ -905,7 +910,7 @@ func main() {
 
 //
 // make sure the string can be expanded into visable ASCII since all Morse is limited to that
-func ckValidInString(ck string, whoAmI string) []rune {
+func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
 	if strings.Contains(ck, ":/") {
@@ -914,24 +919,29 @@ func ckValidInString(ck string, whoAmI string) []rune {
 		os.Exit(99)
 	}
 
-	str := strRangeExpand(ck, whoAmI)
+	str := strings.ToUpper(ck)
+	str = ps2charReplacer.Replace(str)
+
+	if strings.Contains(str,"<>") {
+		fmt.Printf("\nError: Option <%s> contains an unsopported ProSign or the character \"<\" or\" >\".\n", whoAmI)
+		os.Exit(99)
+	}
+
+	str = strRangeExpand(str, whoAmI)
 
 	// check each rune to make sure its in the runeMap
 	// also build a new string that is in the proper case
-	newRune := []rune{}
 
-	for _, runeRead := range []rune(str) {
-		if whoAmI != "delimiter" && runeRead == '*' {
-			fmt.Printf("\nError: Invalid character <%s>, in option <%s>.\nOnly used in delimiter option, as a special case delay for LCWO users.\n", string(runeRead), whoAmI)
+	for _, read := range str {
+		if whoAmI != "delimiter" && read == '*' {
+			fmt.Printf("\nError: Invalid character <%s>, in option <%s>.\nOnly used in delimiter option, as a special case delay for LCWO users.\n", read, whoAmI)
 			os.Exit(98)
 		}
 
-		if _, ok := runeMap[runeRead]; ok {
-			newRune = append(newRune, unicode.ToUpper(runeRead))
+		if _, ok := runeMap[read]; ok {
+			continue
 		} else {
-			if whoAmI == "delimiter" && runeRead == '^' {
-
-			} else {
+			if whoAmI != "delimiter" && read == '^' {
 				fmt.Printf("\nError: Invalid entry in string <%s> for option <%s>.\n", str, whoAmI)
 				os.Exit(99)
 			}
@@ -939,13 +949,11 @@ func ckValidInString(ck string, whoAmI string) []rune {
 	}
 
 	if whoAmI == "delimiter" {
-		s := string(newRune)
-		s = strings.ReplaceAll(s, "*", "|S250 ")
-		delimiterSlice = append(delimiterSlice, s)
-		newRune = nil
+		str = strings.ReplaceAll(str, "*", "|S250 ")
+		delimiterSlice = append(delimiterSlice, str)
 	}
 
-	return newRune
+	return []rune(str)
 }
 
 /*
@@ -1071,9 +1079,11 @@ func printStrBuf(strBuf string, fp *os.File) {
 		res = strings.ReplaceAll(res, " ", "	")
 	}
 
+	// revert lc to ProSigns
+	res = char2psReplacer.Replace(res)
+
 	if flagoutput == "" {
-		// fancy up zeros with a slash for SCREEN!
-		fmt.Printf("%s\n", strings.ReplaceAll(res, "0", "\u00D8"))
+		fmt.Printf("%s\n", res)
 		os.Exit(0)
 	} else {
 		if res == "" {
@@ -1082,6 +1092,9 @@ func printStrBuf(strBuf string, fp *os.File) {
 			os.Exit(0)
 		}
 
+		if strings.Contains(res,string('\u00D8')) {
+			res = strings.ReplaceAll(res, "\u00D8", "0")
+		}
 		_, err := fp.WriteString(res)
 		if err != nil {
 			fmt.Println(err)
@@ -1107,7 +1120,7 @@ func processDelimiter(inStr string) {
 		return
 	}
 
-	ckValidInString(inStr, "delimiter")
+	ckValidListString(inStr, "delimiter")
 }
 
 // to split min and max from combined input

@@ -139,7 +139,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 		ll := len(wordArray) - len(proSign)
 		if ll <= 0 {
-			fmt.Printf("\nError: matched words <%d> must be > number of proSigns in file <%s>.\n", len(wordArray), flagprosign)
+			fmt.Printf("\n Error: matched words <%d> must be > number of ProSigns in file <%s>.\n", len(wordArray), flagprosign)
 			os.Exit(56)
 		}
 

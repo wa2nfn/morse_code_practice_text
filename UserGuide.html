@@ -88,6 +88,7 @@ If you specify the option </I><B>opt</B><I>on the command line with other option
 A few more notes on option format:
 <ol>
 <LI> a "-" MUST precede the option name (no spaces)</LI>
+<LI> list options may contain supported ProSigns whith format like &lt;AS></LI>
 <LI> option names MUST be in the case shown</LI>
 <LI> after the name, if there is a value put an "=" immediately follow by the value</LI>
 <LI> values have 3 possible types as listed in the options table below</LI
@@ -98,7 +99,7 @@ A few more notes on option format:
 	<LI> if inlist contains a "?", then a "?" following a word such as: cpy?, qrl? will be matched</LI>
 	<LI> option values in: prelist, suflist, cglist, delimiter are not case sensitive
 </ol>
-List options can use a shorthand range entry notation. For example, "a-dz0-4" instead of the spelled out form  like "abcdz01234" (the order of the range is as shown, 4-0 would fail).
+List options can use a shorthand range entry notation. For example, "A-DZ0-4" instead of the spelled out form  like "ABCDZ01234" (the order of the range is as shown, 4-0 would fail).
 <P>
 To increase the occurance of a character, you can increase its presence in the list option. For example, if 
 you want code groups to favor X and Z, you could make cglist="A-ZXXXZZZ", the odds of an A is 1/32, but X and Z
@@ -868,6 +869,8 @@ Example 26:
 </H2>
 <B>mcpt -codeGroups -cglen2:6 -headCopy</B>
 <B>mcpt -in=file.txt -inlen2:6 -headCopy</B>
+<P>
+Note: headCopy may not be used with -text option.
 <P>
 The <B>headCopy</B> option will make each successive codeGroup have a length of
 one more than the previous, until the cglen hits its maximum value. In the 

@@ -16,12 +16,6 @@ import (
 )
 
 var (
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8")
-
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0")
-
-	MCPTps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0")
-
 	gotCarat      bool
 	validCharPS   string
 	invalidCharPS string
@@ -149,21 +143,16 @@ func buildSendSlice() []rune {
 
 	charSlice := make([]rune, 0, 50) // may be extra
 
-	var myList = flag.Args()
-	if myList[0] != "" {
-		if len(myList) > 1 {
-			fmt.Printf("\n Error: you cannot have options to the right of string <%s>.\n", myList[0])
-			os.Exit(1)
-		}
+	var myList string 
 
-		tStr := myList[0]
-		// no op allows use of cglist
-		tStr = ps2charReplacer.Replace(strings.ToUpper(tStr))
-
-		charSlice = append(charSlice, []rune(tStr)...)
-
-		gotDigit = true
+	if flag.Arg(0) != "" {
+		myList = flag.Arg(0)
 	}
+	if len(flag.Args()) > 1 {
+		fmt.Printf("\n Error: you can only have 1 string to the right of the option <-send=value>.\n")
+		os.Exit(1)
+	}
+
 	if strings.Contains(flagsend, "1") {
 		charSlice = append(charSlice, []rune("EIHMOST50")...)
 		gotDigit = true
@@ -190,8 +179,17 @@ func buildSendSlice() []rune {
 		gotDigit = true
 	}
 
+	if myList != "" {
+		tStr := ""
+		// no op allows use of cglist
+		tStr = ps2charReplacer.Replace(strings.ToUpper(myList))
+
+		charSlice = append(charSlice, []rune(tStr)...)
+		gotDigit = true
+	}
+
 	if gotDigit == false {
-		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-5.\n        Digit \"0\" is required, if it's the only digit and you are specifying your only group list.\n        E.g. -send=0 \"EOMT5\"")
+		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-5.\n        Digit \"0\" is required, if it's the only digit and you are specifying your only group list.\n        E.g. -send=0 \"EOMT5\"\n")
 		os.Exit(1)
 	}
 
@@ -254,7 +252,7 @@ func readLines(path []string) {
 		if fIndex == 0 {
 			practiceFile = path[0]
 			// good PS replace
-			bStr := MCPTps2charReplacer.Replace(string(b))
+			bStr := ps2charReplacer.Replace(string(b))
 
 			if strings.ContainsAny(bStr, "<>^") {
 				fmt.Printf("\n Warning: Your practice file <%s> contains character(s) \"<>^\" in addition to those in supported ProSigns.", practiceFile)
