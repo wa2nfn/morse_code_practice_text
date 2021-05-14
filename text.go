@@ -113,11 +113,9 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 				discarded = true
 			}
 
-			/*
-			if index >= flagnum {
+			if index >= maxUserWords {
 				break
 			}
-			*/
 		}
 
 	}
