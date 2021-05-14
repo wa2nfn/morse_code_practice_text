@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"regexp"
+	"time"
 	"strings"
 )
 
@@ -61,7 +62,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			return false
 		})
 
-		//FINN
+		/*
 		for ;len(textWords) < flagnum; {
 			for _,val := range textWords {
 				textWords = append(textWords,  val)
@@ -70,6 +71,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 				}
 			}
 		}
+		*/
 
 		for index := 0; index < len(textWords); index++ {
 			// tokens now a string of space separated characters
@@ -111,10 +113,13 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 				discarded = true
 			}
 
+			/*
 			if index >= flagnum {
 				break
 			}
+			*/
 		}
+
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -170,6 +175,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	}
 
 	if flagNR == false {
+		rand.Seed(time.Now().UTC().UnixNano())
 		rand.Shuffle(len(wordArray), func(i, j int) { wordArray[i], wordArray[j] = wordArray[j], wordArray[i] })
 	}
 
