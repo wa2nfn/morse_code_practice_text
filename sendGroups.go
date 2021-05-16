@@ -178,6 +178,11 @@ func buildSendSlice() []rune {
 		charSlice = append(charSlice, []rune("abcdefg")...)
 		gotDigit = true
 	}
+	if strings.Contains(flagsend, "7") {
+		// cut numbers
+		charSlice = append(charSlice, []rune("TAUV456BDN")...)
+		gotDigit = true
+	}
 
 	if myList != "" {
 		tStr := ""
@@ -189,7 +194,7 @@ func buildSendSlice() []rune {
 	}
 
 	if gotDigit == false {
-		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-5.\n        Digit \"0\" is required, if it's the only digit and you are specifying your only group list.\n        E.g. -send=0 \"EOMT5\"\n")
+		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-7.\n        Digit \"0\" is required, if it's the only digit and you are specifying your only group list.\n        E.g. -send=0 \"EOMT5\"\n")
 		os.Exit(1)
 	}
 
