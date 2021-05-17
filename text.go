@@ -37,8 +37,13 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("\nError: your input lines are too long to be read.\n\n")
+		os.Exit(9)
+	}
+
 	// to match what user wants
-	var s string
+	//var s string
 	flaginlist += "^<>" // for prosigns
 
 	re := fmt.Sprintf(`^[%s]{%d,%d}$`, flaginlist, flagmin, flagmax)
@@ -47,75 +52,48 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	ps := regexp.MustCompile(`^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`)
 	replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
 
+	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
+
 		// first prune chars we don't want
-		s = replacer.Replace(scanner.Text())
-		// now s is the input line pruned
+		textWord := replacer.Replace(scanner.Text())
+		// input line pruned
 		// first way to split the string on spaces
+		textWord = strings.ToUpper(textWord)
 
-		s = strings.ToUpper(s)
+		if isInSet(textWord) {
 
-		textWords := strings.FieldsFunc(s, func(r rune) bool {
-			if r == ' ' {
-				return true
-			}
-			return false
-		})
-
-		/*
-		for ;len(textWords) < flagnum; {
-			for _,val := range textWords {
-				textWords = append(textWords,  val)
-				if len(textWords) >= flagnum {
-					break
+			// skip only viable matching words
+			if localSkipFlag {
+				if localSkipCount > 0 {
+					localSkipCount--
+					continue
+				} else {
+					localSkipFlag = false
 				}
 			}
-		}
-		*/
 
-		for index := 0; index < len(textWords); index++ {
-			// tokens now a string of space separated characters
-
-			tmpWord := textWords[index]
-
-			if isInSet(tmpWord) {
-
-				// skip only viable matching words
-				if localSkipFlag {
-					if localSkipCount > 0 {
-						localSkipCount--
+			// if prosign check it or ignore it
+			if len(textWord) == 3 || len(textWord) == 4 {
+				if ps.MatchString(textWord) {
+					if !ckProsign(textWord) {
+						// its invalid so skip it
 						continue
-					} else {
-						localSkipFlag = false
 					}
 				}
-
-				// if prosign check it or ignore it
-				if len(tmpWord) == 3 || len(tmpWord) == 4 {
-					if ps.MatchString(tmpWord) {
-						if !ckProsign(tmpWord) {
-							// its invalid so skip it
-							continue
-						}
-					}
-				}
-
-				// reverse the string
-				if flagreverse {
-					tmpWord = reverse(tmpWord)
-				}
-
-				/*
-				** always ordered
-				 */
-				wordArray = append(wordArray, tmpWord)
-			} else {
-				discarded = true
 			}
 
-			if index >= maxUserWords {
-				break
+			// reverse the string
+			if flagreverse {
+				textWord = reverse(textWord)
 			}
+
+			/*
+			** always ordered
+			 */
+			wordArray = append(wordArray, textWord)
+		} else {
+			discarded = true
 		}
 
 	}

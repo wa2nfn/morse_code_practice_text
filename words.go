@@ -72,6 +72,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		psfile.Close()
 	}
 
+	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
 		// first way to split the string on spaces
 
@@ -80,16 +81,18 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", ":", "", ";", "", "'", "", "\"", "")
 		line = replacer.Replace(scanner.Text())
 
+		/*
 		textWords := strings.FieldsFunc(line, func(r rune) bool {
 			if r == ' ' {
 				return true
 			}
 			return false
 		})
+		*/
 
-		for index := 0; index < len(textWords); index++ {
+		//for index := 0; index < len(textWords); index++ {
 			// every token is now a string of space separated characters
-			tmpWord := strings.TrimRight(textWords[index], trimChars)
+			tmpWord := strings.TrimRight(line, trimChars)
 			tmpWord = strings.TrimLeft(tmpWord, "\"")
 			tmpWord = strings.ToUpper(tmpWord)
 
@@ -135,7 +138,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			} else {
 				discarded = true
 			}
-		}
+		//}
 	}
 
 	if err := scanner.Err(); err != nil {

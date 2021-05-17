@@ -6,7 +6,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	_ "log"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -194,6 +193,7 @@ func init() {
 	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
 
 	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
+	/*
 	runeMap['a'] = struct{}{}
 	runeMap['b'] = struct{}{}
 	runeMap['c'] = struct{}{}
@@ -220,6 +220,7 @@ func init() {
 	runeMap['x'] = struct{}{}
 	runeMap['y'] = struct{}{}
 	runeMap['z'] = struct{}{}
+	*/
 	runeMap['A'] = struct{}{}
 	runeMap['B'] = struct{}{}
 	runeMap['C'] = struct{}{}
@@ -287,8 +288,8 @@ func main() {
 
 	}
 
-	kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X" // default for LCWO
 	var fp *os.File
+	kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X" // default for LCWO
 	localSkipFlag := false
 	localSkipCount := 0
 
@@ -429,7 +430,6 @@ func main() {
 		runeMap['<'] = struct{}{}
 		runeMap['>'] = struct{}{}
 		runeMap[' '] = struct{}{}
-		runeMap['*'] = struct{}{}
 		runeMap['^'] = struct{}{}
 
 		// first make sure any prosign is valid format
@@ -468,7 +468,6 @@ func main() {
 		delete(runeMap, ' ')
 		delete(runeMap, '<')
 		delete(runeMap, '>')
-		delete(runeMap, '*')
 		delete(runeMap, '^')
 	}
 
@@ -910,6 +909,7 @@ func main() {
 
 //
 // make sure the string can be expanded into visable ASCII since all Morse is limited to that
+// HERE
 func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
