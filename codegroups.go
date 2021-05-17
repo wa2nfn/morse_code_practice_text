@@ -9,10 +9,10 @@ var groupLengthDelta int // only used if flaghead==t
 // make random code groups
 // uses the presaved chars in charSlice based on uniform distribution
 func makeGroups(fp *os.File) {
-	strBuf := ""
 	var tmpOut []rune
 	var ll = 0
 	var mustLen = 0
+	strBuf := ""
 
 	charSlice := buildCharSlice()
 	if len(flagmust) > 0 {
@@ -78,21 +78,19 @@ func makeGroups(fp *os.File) {
 			strBuf += string(tmpOut)
 		}
 
-		/*
-			if flagDMmin >= 1 && flaghead == true && (flagDR == false || (flagDR == true && flipFlop())) {
-				if flagDMmin == flagDMmax {
-					for count := 0; count < flagDMmax; count++ {
-						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
-					}
-				} else {
-					for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
-						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
-					}
+		if (flagDMmin >= 1 || flaghead == true) && (flagDR == false || (flagDR == true && flipFlop())) {
+			if flagDMmin == flagDMmax {
+				for count := 0; count < flagDMmax; count++ {
+					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
 				}
-
-				strBuf += " "
+			} else {
+				for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+				}
 			}
-		*/
+
+			strBuf += " "
+		}
 	}
 
 	printStrBuf(strBuf, fp)
@@ -156,7 +154,6 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 						cg = append(cg, []rune(delimiterSlice[rng.Intn(len(delimiterSlice))])...)
 					}
 				}
-
 			}
 		}
 	}
