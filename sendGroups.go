@@ -54,8 +54,7 @@ func doSendCheck() {
 	path = strings.Split(flagsendcheck, sep)
 
 	if len(path) == 0 || len(path) != 2 {
-		fmt.Printf("\n Error: Option <-sendCheck> requires 2 file names, in format like: file1,file2 (if Prosigns have <XX> format\nor file1^file2, if ProSigns have ^XX format.\n")
-		fmt.Printf("\n        The file from the CW capture, MUST have \"%s\" before it. E.g. -sendCheck=C:capture.txt,practice.txt\n")
+		fmt.Printf("\n Error: Option <-sendCheck> requires 2 file names, in format like: file1,file2 (if Prosigns have <XX> format\n        or file1^file2, if ProSigns have ^XX format.\n")
 		os.Exit(1)
 	}
 
