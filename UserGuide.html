@@ -141,31 +141,22 @@ An example options file, with comments, follows.
 
 </PRE>
 <P>
-The command line option displayFormat ( with values LF, TAB,LF_TAB, TAB_LF in upper or lowercase), which change the whitespace in output. 
+The command line option displayFormat (with values LF, TAB,LF_TAB, TAB_LF in upper or lowercase), which change the whitespace in output. 
 <P>
-They are are cosemetic in nature. They replace a spaces in output with TABs, and LF adds a linefeed (or blank line) between output lines.
-These are for users that use output for sending practice, or some even use it for generation of typing practice (nothing to do with morse code).
-<H2>
-Delimiter vs. Code Groups
-- &lt;delimiter> a code group like feature to use with words
-</H2>
-You can skip this until you encounter the explanation of the following two options <B>delimiter</B> and <B>codeGroups</B>.
+They are only for readability, if desired. They replace spaces in output with TABs, and LF adds a linefeed (or blank line) between output lines.
 <P>
-There are five <I>list type</I> options, the first three are: prelist, suflist, cglist. For now I want to just focus
-on how those 3 are given, and use input (how they are used is covered elsewhere).
+Additionally, there are several <I>list type</I> options: prelist, suflist, cglist, inlist, and must.
 <P>
-When on the command line or in the options file, these options are treated as if they were just a collection
+On the command line or in the options file, these options are treated as if they were just a collection
 of characters AFTER 2 parsing operations for the users convenience. So if you want code groups to contain any of a set of characters it would look like this: cglist="eiota27?". Each character is a standalone entity. Now for the two special
 situations. To save you typing, LETTERS (upper or lowercase) or DIGITS can be entered using <I>range</I> notation.
 In range notation, A-H, is the same as typing ABCDEFGH, the only two criteria is the first character must come in dictionary
 order (A-D is good, D-A is invalid), and each range is independent (A-z invalid, A-Z good). Digits similarly go from 0-9.
 <P>
-<P>
-<H3>
+<H2>
 Delimiter Option - what a delimiter is
-</H3>
-This option is the last of the 5 above. It is significantly different than the others, in order to provide
-its design flexibility.
+</H2>
+This option &lt;delimiter> is a special list option.
 <P>
 Although this option in some case looks like the others, its processing and use are different. This option contains one or more fields of strings, they are NOT individual characters. Delimiter="ABC" is one string of "ABC", NOT an "A" or "B" or "C". If the delimiter were used with a word input file: "this is a test", the output would possibly be "TEST ABC IS ABC THIS ABC A".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="ABC|34|Z|?|,.".
 Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". More useful delimiter now might be: "CQ|DE|QTH|RST|&lt<SK>".
@@ -173,9 +164,9 @@ Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". Mor
 <P>
 If the field (data between the '|'s or a '|' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
 <B>HOWEVER</B> if the field contained, <B>ONLY</B> a simple range, as in the next to last field above "|a-f|" this is expanded as if you wanted <B>EACH</B> character to be treated as if it were its own field. Said another way the field "|A-F|" is treated as if you typed "A|B|C|D|E|F".
-<H3>
+<H2>
 Use of Delimiter - sample delimiter usage
-</H3>
+</H2>
 The delimiter option, works in conjuction with 2 other options. Delimiter-multiples (entered as DM=x), where x is the number of fields in the delimiter that should be used (as a maximum) at any one time. Thus, with DM=1 and delimiter="A-D^1-3^?"
 this expands and is the same as 9 single character fields A^B^C^D^1^2^3^?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "THIS 3A TEST DD? is C A".
 The option DR says even though we asked for delimiters between each word, that will be random (DR means delimiter-random).
