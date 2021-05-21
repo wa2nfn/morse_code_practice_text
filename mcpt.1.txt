@@ -29,6 +29,10 @@ SYNOPSIS
        mcpt -callSigns [-lesson= -tutor= TUTOR ] | [-cglist= LIST  ]  [-delim-
        iter= DELIM -DM= NUM ] [-repeat= NUM ] [ MISC ]
 
+       mcpt -send=NUM [,NUM....]
+
+       mcpt -sendCheck=FILEpractice,FILEcaptured
+
        TUTOR=lcwo|JustLearnMorseCode|G4FON|MorseElmer|LockdownMorse|Ham-
        Morse|MorseCodeNinja|HameMorse]|MFJ418
 
@@ -276,6 +280,13 @@ OPTIONS
 	      the letter frequency or matches but reduces the word recongition
 	      factor.
 
+	-send=NUM,NUM...
+	      create special code groups for sending practice
+
+	-sendCheck=FILE,FILE
+	      compare file of practice material to file of decoded morse sent
+	      in an appropraite tutor which can decode audio morse and create
+	      a text file
 
        -skip=NUM
 	      Skips  over  the	first NUM words in the -in file which meet the

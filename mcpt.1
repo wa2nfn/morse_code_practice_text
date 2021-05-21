@@ -102,6 +102,9 @@ FILE
 .B ] [-repeat=
 .I NUM
 .B ] [ MISC ]
+.B mcpt -send=digit,digit
+.B mcpt -sendCheck=
+.I FILE,FILE 
 .P
 .I TUTOR=lcwo|JustLearnMorseCode|G4FON|MorseElmer|LockdownMorse|HamMorse|MorseCodeNinja|HameMorse|MFJ418]
 
@@ -270,6 +273,12 @@ for each word meeting th matching criteria, repeat it NUM times in sequence.
 .IP -reverse
 reverses the spelling of all matched words in -in file. Retians the letter frequency or matches
 but reduces the word recongition factor.
+.TP
+.IP -send=NUM,NUM...
+create special code groups for learning to send
+.TP
+.IP -sendCheck=FILE,FILE
+verify sending practice to decoded morse from your trainer software
 .TP
 .IP -skip=NUM
 Skips over the first NUM words in the -in file which meet the selection criteria.
