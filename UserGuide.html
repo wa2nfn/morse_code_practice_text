@@ -942,6 +942,8 @@ Note: If you use your own character string as described above, it MUST be the
 </H2>
 <BR> mcpt -sendCheck=practice.txt,capture.txt</B>
 <PRE>
+ <I>Reminder: any files given in command line options must be in the current directory, or they must be specified with a relative/full path name. I.e. practice.txt, C:\Users\myHome\practice.txt etc. as appropriate for your environment.</I>
+ <P>
  <B>The first file is the <I>practice or source file</I>, the second file is the <I>captured sending</I></B>.
  <P>
  If you have other software which allows you to send morse and capture it as 
@@ -1072,7 +1074,7 @@ saved it as: "1OO0O1   WNNN    D34K 6, .8/   VU &lt;BT>THE      END:.
 Notice, right away your captured files spacing is rather random (but is wrong?)
 and also that comparing this by eye is not a trivail task.
 <P>
-So lets run: mcpt -sendCheck="practice.txt,C:capture.txt".
+So lets run: mcpt -sendCheck="practice.txt,capture.txt".
 <P>
 Let's look at what mcpt might be able to tell you about this sending session 
 from the output below (I've eliminated all the screen titles and notes).
