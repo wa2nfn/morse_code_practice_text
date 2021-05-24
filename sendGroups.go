@@ -47,7 +47,7 @@ func doSendCheck() {
 		validCharPS = sep
 		invalidCharPS = "<>"
 		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "e", "^HH", "f", "^SK", "g", "^SN", "0", "\u00D8")
-		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^SN", "g", "\u00D8", "0")
+		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "e", "^SK", "f", "^SN", "g", "\u00D8", "0","+","b","=","c")
 		gotCarat = true
 	}
 
@@ -233,7 +233,7 @@ func readLines(path []string) {
 	var extraForever bool
 	var captureFile = ""
 	var practiceFile = ""
-	badPS := regexp.MustCompile(`<[^>]*>`)  // find <..--..> errors and anything since supported PD already done
+	badPS := regexp.MustCompile(`<[^>]*>|\*`)  // find <..--..> errors and anything since supported PD already done
 	hhErr := regexp.MustCompile(`<.{8,8}>`) // find <HH> as code
 
 	gchalk.SetLevel(gchalk.LevelAnsi256)
@@ -243,7 +243,8 @@ func readLines(path []string) {
 
 		b, err := ioutil.ReadFile(path[fIndex])
 		if err != nil {
-			fmt.Printf("\n Error: reading file <%s>. %v\n", path[fIndex], err)
+			//fmt.Printf("\n Error: reading file <%s>. %v\n", path[fIndex], err)
+			fmt.Printf("\n %s reading file <%s>. %v\n", gchalk.Red("Error:"), path[fIndex], err)
 			os.Exit(1)
 		}
 
@@ -259,12 +260,11 @@ func readLines(path []string) {
 			bStr := ps2charReplacer.Replace(string(b))
 
 			if strings.ContainsAny(bStr, "<>^") {
-				fmt.Printf("\n Warning: Your practice file <%s> contains character(s) \"<>^\" in addition to those in supported ProSigns.", practiceFile)
-				fmt.Printf("\n          This will add to your error count.\n\n")
+				fmt.Printf("\n %s Your practice file <%s> contains character(s) \"<>^\" in addition to\n          those in supported ProSigns. This will add to your error count.\n\n", gchalk.Yellow("Warning:"), practiceFile)
 
 				// look for < anything>
 				if hhErr.MatchString(bStr) {
-					bStr = hhErr.ReplaceAllString(bStr, "*")
+					bStr = hhErr.ReplaceAllString(bStr, "e")
 				}
 			}
 
@@ -290,7 +290,7 @@ func readLines(path []string) {
 				// got carat so PS needs looklike ^BT NOT <BT>
 				if strings.ContainsAny(tmp, "<>") {
 					// used ^ sep should use ","
-					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <>).", captureFile)
+					fmt.Printf("\n %s Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <>).", gchalk.Yellow("Warning:"), captureFile)
 					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%cature.txt,practice.txt).\n", gchalk.Yellow("C:"))
 
 					os.Exit(88)
@@ -299,8 +299,8 @@ func readLines(path []string) {
 				// have , so need <>  ie <BT> NOT ^BT
 				if strings.ContainsAny(tmp, "^") {
 					// used , sep should use "^"
-					fmt.Printf("\n Warning: Your CW capture file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^ ).", captureFile)
-					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=%scapture.txt^practice.txt).\n", gchalk.Yellow("C:"))
+					fmt.Printf("\n %s Your CW capture file <%s> had unsupported ProSign format\n          character \"^\" (i.e. ^ ).", gchalk.Yellow("Warning:"), captureFile)
+					fmt.Printf("\n\n          If that is correct for your ProSigns, use a carat \"^\"\n          between the file names (i.e.-send=practice.txt^capture.txt).\n")
 					os.Exit(88)
 				}
 			}
@@ -433,7 +433,7 @@ Levenshtein             Practice Text                      CW Capture
 	}
 
 	if totalChars == 0 {
-		fmt.Printf("\n\n Error: The practice file <%s> is empty.\n", practiceFile)
+		fmt.Printf("\n\n %s The practice file <%s> is empty.\n", gchalk.Red("Error:"), practiceFile)
 		os.Exit(1)
 	}
 

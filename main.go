@@ -42,7 +42,7 @@ var (
 	runeMap        = make(map[rune]struct{})
 	ps2runeMap     = make(map[string]rune)
 	rune2psMap     = make(map[rune]string)
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0","+","b","=","c")
 	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8")
 )
 
