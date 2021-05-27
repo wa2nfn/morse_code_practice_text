@@ -155,7 +155,17 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		rand.Shuffle(len(wordArray), func(i, j int) { wordArray[i], wordArray[j] = wordArray[j], wordArray[i] })
 	}
 
-	if len(wordArray) > flagnum {
-		wordArray = wordArray[0:flagnum]
+	if len(wordArray) < flagnum {
+		ct := len(wordArray)
+		if ct < flagnum {
+			ct = flagnum - ct
+			// we need to append more words in order
+			for i := 0; i < ct; i++ {
+				wordArray = append(wordArray, wordArray[i])
+			}
+		}
 	}
+
+	// trim 
+	wordArray = wordArray[0:flagnum]
 }

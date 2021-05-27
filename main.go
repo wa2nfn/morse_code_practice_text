@@ -17,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.6.1" // 5/24/2021
+	version       = "1.6.2" // 5/24/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -42,8 +42,11 @@ var (
 	runeMap        = make(map[rune]struct{})
 	ps2runeMap     = make(map[string]rune)
 	rune2psMap     = make(map[rune]string)
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "e", "<SK>", "f", "<SN>", "g", "\u00D8", "0","+","b","=","c")
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "e", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8")
+	/*
+	// cannot use lc e or w, conflict with LCWO
+	*/
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "h", "<SK>", "f", "<SN>", "g", "\u00D8", "0","+","b","=","c")
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "h", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8")
 )
 
 var (
@@ -636,8 +639,9 @@ func main() {
 		os.Exit(0)
 	}
 
-	if flagLCWOstep*flagLCWOnum > 50 {
-		fmt.Printf("\nError: Speed change in session is excessive at <%d> wpm, adjust LCWO_numor LCWO_step.\n", flagLCWOstep*flagLCWOnum)
+	//if flagLCWOstep*flagLCWOnum > 50 {
+	if flagLCWOstep*flagLCWOrepeat > 50 {
+		fmt.Printf("\nError: Speed change in session is excessive at <%d> wpm, adjust LCWO_repeat or LCWO_step.\n", flagLCWOstep*flagLCWOrepeat)
 		os.Exit(0)
 	}
 
