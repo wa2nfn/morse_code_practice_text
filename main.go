@@ -117,6 +117,7 @@ var (
 	flaghead          bool
 	flagsend          string
 	flagsendcheck     string
+	flagFL		bool
 )
 
 var message string = `
@@ -194,36 +195,9 @@ func init() {
 	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
 	flag.StringVar(&flagsend, "send", "", "A string of group numbers (1-5) to make sending practice groups.")
 	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
+	flag.BoolVar(&flagFL, "favorLast", false, "favor last character learned in code Groups")
 
-	// fill the rune map which is used to validate option string like: cglist, prelist, delimiter
-	/*
-	runeMap['a'] = struct{}{}
-	runeMap['b'] = struct{}{}
-	runeMap['c'] = struct{}{}
-	runeMap['d'] = struct{}{}
-	runeMap['e'] = struct{}{}
-	runeMap['f'] = struct{}{}
-	runeMap['g'] = struct{}{}
-	runeMap['h'] = struct{}{}
-	runeMap['i'] = struct{}{}
-	runeMap['j'] = struct{}{}
-	runeMap['k'] = struct{}{}
-	runeMap['l'] = struct{}{}
-	runeMap['m'] = struct{}{}
-	runeMap['n'] = struct{}{}
-	runeMap['o'] = struct{}{}
-	runeMap['p'] = struct{}{}
-	runeMap['q'] = struct{}{}
-	runeMap['r'] = struct{}{}
-	runeMap['s'] = struct{}{}
-	runeMap['t'] = struct{}{}
-	runeMap['u'] = struct{}{}
-	runeMap['v'] = struct{}{}
-	runeMap['w'] = struct{}{}
-	runeMap['x'] = struct{}{}
-	runeMap['y'] = struct{}{}
-	runeMap['z'] = struct{}{}
-	*/
+	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
 	runeMap['B'] = struct{}{}
 	runeMap['C'] = struct{}{}
@@ -860,6 +834,17 @@ func main() {
 	//
 	// major flow decision - WORD_MODE , CODE_GROUPS, PERMUTE, CALLSIGN ?
 	//
+	if flagFL == true && len(flagcglist) > 1 {
+		var last byte = flagcglist[len(flagcglist)-1]
+		var nextToLast byte
+		if len(flagcglist) >= 2 {
+			nextToLast = flagcglist[len(flagcglist)-2]
+			flagcglist = flagcglist + strings.Repeat(string(nextToLast), 3)
+		}
+		// increase last char usage
+		flagcglist = flagcglist + strings.Repeat(string(last), 6)
+	}
+
 	if flagCG || (flagpermute != "" && flagprosign != "") {
 		// read ProSigns
 		if flagprosign != "" {
@@ -894,15 +879,15 @@ func main() {
 		os.Exit(0) // program done
 	}
 
-	if flagtext != "" {
-		readStringsFile(localSkipFlag, localSkipCount, fp)
-		doOutput(wordArray, fp)
+	// do -send or -sendCheck
+	if flagsend != "" || flagsendcheck != "" {
+		doSendOpts(fp)
 		os.Exit(0) // program done
 	}
 
-	// does -send or -sendCheck
-	if flagsend != "" || flagsendcheck != "" {
-		doSendOpts(fp)
+	if flagtext != "" {
+		readStringsFile(localSkipFlag, localSkipCount, fp)
+		doOutput(wordArray, fp)
 		os.Exit(0) // program done
 	}
 

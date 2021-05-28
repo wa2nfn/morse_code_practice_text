@@ -91,7 +91,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		*/
 
 		//for index := 0; index < len(textWords); index++ {
-			// every token is now a string of space separated characters
 			tmpWord := strings.TrimRight(line, trimChars)
 			tmpWord = strings.TrimLeft(tmpWord, "\"")
 			tmpWord = strings.ToUpper(tmpWord)
