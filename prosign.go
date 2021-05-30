@@ -14,9 +14,9 @@ import (
 func ckProsign(ps string) bool {
 	ps = strings.ToUpper(ps)
 	switch ps {
-	case "<AR>", "<AS>", "<BT>", "<KA>", "<HH>", "<SK>", "<VA>", "<SN>":
+	case "<AR>", "<AS>", "<BT>", "<KA>", "<HH>", "<SK>", "<VA>", "<SN>","<VE>","<DU>":
 		return true
-	case "^AR", "^AS", "^BT", "^KA", "^HH", "^SK", "^VA", "^SN": // for g4fon maybe others
+	case "^AR", "^AS", "^BT", "^KA", "^HH", "^SK", "^VA", "^SN","^VE","^DU": // for g4fon maybe others
 		return true
 	default:
 		return false
@@ -38,6 +38,10 @@ func doProSigns(file *os.File) {
 
 	for scanner.Scan() {
 		ps = strings.TrimSpace(scanner.Text())
+		if len(ps) == 0 || ps[0] == byte('#') {
+			// comment line
+			continue
+		}
 		if ps == "" {
 			continue
 		}
