@@ -12,7 +12,7 @@
 <H1>
 MCPT User Guide
 </H1>
-Generate customized practice content for listening to Morse Code with your favorite tutor/trainer software. Compatible with LCWO, G4FON, PCWTutor, Lockdown Morse, and more. Simply drop the resulting text file into your training software to hear Morse Code content the way you want it! Words, code groups, prosigns, or combinations of all of them. Random or selected. You choose the, word or group lengths, characters used, amount of practice material to generate. 
+Generate customized practice content for listening to Morse Code with your favorite tutor/trainer software. Compatible with LCWO, G4FON, PCWTutor, and more. Simply give the generated file to your training software to hear Morse Code the way you want it! Words, code groups, prosigns, or combinations of all of them. Random or selected. You choose the, word or group lengths, characters used, amount of practice material to generate. 
 MCPT is very flexible so provides variety, fun and challenges for your learning session.
 <P>
 Users of LCWO.net (here after LCWO), can enjoy the challenges and benefits of on-the-fly speed changes, with specialized features.
@@ -27,16 +27,17 @@ mcpt overcomes some of the common issues with practice text, or its generation:
 	<OL>
 	<LI> limits typing or editing to create text</LI>
 	<LI> flexible input sources</LI>
-	<LI> better distribution of random data </LI>
+	<LI> better distribution of random data</LI>
 	<LI> user control of input matching criteria</LI>
 	<LI> user control of duplication</LI>
 	<LI> random output to eliminate memorization</LI>
-	<LI> sending code features
+	<LI> sending code features</LI>
 	</OL> 
 <H1>
 Overview Of MCPT's Behaviors
 </H1>
-MCPT has several behaviors of operation. One or two key options will determine the behavior during the execution of the tool. All behaviors are demonstrated in the examples, as well as many supporting options (many are used with multiple behaviors).
+MCPT has several behaviors of operation. One or two key options will determine the behavior during execution. All behaviors are demonstrated in the examples,
+as well as many supporting options.
 The following is a simple list of a behavior and the key option that enables it.
 <P>
 <ol>
@@ -56,10 +57,10 @@ There are many options to customize your practice text, but in any execution you
 Options can be read from a file (see -opt) or the command line.
 These options, override defaults. The options in the file, will be overridden,
 if the same option appears on the command line. <I>So if you use both -opt and command line opts you will
-most likely want -opt to be the left most option.</I> When you run the tool, if you see a full screen list of options, check 
+most likely want -opt to be the left most option.</I> When you run MCPT, if you see a full screen list of options, check 
 the first line for the problem cause. Also, adding -help=options to a command line with you have used will show
-you the state of ALL options in mcpt, the ones you have set, plus those with defaults. The defaults may
-have impact on your output that you don't realize as a new user.
+you the state of ALL options in MCPT, the ones you have set, plus those with defaults. The defaults may
+have impact on your output that you don't realize.
 <P>
 Note: Zeros written to the screen have a slash for readability, they are stripped with the &lt;-out> option so tutor/trainer software does not
 have problems. For this reason do <B>not</B> use the commmon command line practice of file redirection using ">".
@@ -68,16 +69,15 @@ Notation
 <P>
 To minimze typing, some option name are a concatentation or abbreviated words, for example: prelen for prefix length; cglist for code group list.
 <P>
-The following options all have a minimum and maximum value, the values are given in one option instead of
-requiring one for each minimum and maximum. They are: prelen, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). The inlen=5, is a short hand for inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
+The following options all have a minimum and maximum value, the values are given in one option
+They are: prelen, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). E.g. -inlen=5, is a short hand for -inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
 <P>
 The help usage will remind you about these options because you will see the default value written with the colon notation.
 <P>
 <PRE>
 Options on the command line MUST be preceded by a "-".
 Options on the command line MUST be separated from each other with a space.
-Options with a value e.g. -opt=2 or -opt="abcd" use an "=" as a separater, a space may be used but it is <B>not</B> recommended,
-You cannot use -opt=file to CREATE an option file, if you use space as a separater.</B>
+Options with a value e.g. -opt=2 or -opt="abcd" use an "=" as a separater.
 </PRE>
 </H3>
 <P>
@@ -99,13 +99,13 @@ A few more notes on option format:
 	<LI> if inlist contains a "?", then a "?" following a word such as: cpy?, qrl? will be matched</LI>
 	<LI> option values in: prelist, suflist, cglist, delimiter are not case sensitive
 </ol>
-List options can use a shorthand range entry notation. For example, "A-DZ0-4" instead of the spelled out form  like "ABCDZ01234" (the order of the range is as shown, 4-0 would fail).
+List options can use a shorthand range entry notation. For example, "A-DZ0-4" instead of the spelled out form like "ABCDZ01234" (the order of the range is as shown, 4-0 would fail).
 <P>
 To increase the occurance of a character, you can increase its presence in the list option. For example, if 
 you want code groups to favor X and Z, you could make cglist="A-ZXXXZZZ", the odds of an A is 1/32, but X and Z
 is 4/32.
 <P>
-An alternative to the above, option &lt;favorLast> will increase the likelyhood of the LAST 2 characters, in option &lt;cglist>, this includes the use of cglsit when you use the lesson and tutor options.
+An alternative to the above, option &lt;favorLast> will increase the likelyhood of the LAST 2 characters, in option &lt;cglist>, this includes the use of cglist when you use the lesson/tutor options.
 </PRE>
 <P>
 An example options file, with comments, follows.
@@ -122,7 +122,6 @@ An example options file, with comments, follows.
       inlen 4   # no equals NOT recommended
       -inlen=4  # preceded with minus, unnecessary
       #
-      # the option can also be indented with white space
       # to temporarily eliminate an option just comment it out as below
       # len=80
       #
@@ -134,7 +133,6 @@ An example options file, with comments, follows.
             block comment rather than many uses of the "#" character.
 	    See below:
 
-	    inlen 4
 	    /*
 	    num=100 
 	    len 80
@@ -143,13 +141,13 @@ An example options file, with comments, follows.
 
 </PRE>
 <P>
-The command line option displayFormat (with values LF, TAB,LF_TAB, TAB_LF in upper or lowercase), which change the whitespace in output. 
+The command line option displayFormat (with values LF, TAB,LF_TAB, TAB_LF in upper or lowercase), will change the whitespace in output for readability. 
 <P>
 They are only for readability, if desired. They replace spaces in output with TABs, and LF adds a linefeed (or blank line) between output lines.
 <P>
 Additionally, there are several <I>list type</I> options: prelist, suflist, cglist, inlist, and must.
 <P>
-On the command line or in the options file, these options are treated as if they were just a collection
+On the command line or in the options file, these list options are treated as if they were just a collection
 of characters AFTER 2 parsing operations for the users convenience. So if you want code groups to contain any of a set of characters it would look like this: cglist="EIOTA27?". Each character is a standalone entity. Now for the two special
 situations. To save you typing, LETTERS (upper or lowercase) or DIGITS can be entered using <I>range</I> notation.
 In range notation, A-H, is the same as typing ABCDEFGH, the only two criteria is the first character must come in dictionary
@@ -160,17 +158,17 @@ Delimiter Option - what a delimiter is
 </H2>
 This option &lt;delimiter> is a special list option.
 <P>
-Although this option in some case looks like the others, its processing and use are different. This option contains one or more fields of strings, they are NOT individual characters. Delimiter="ABC" is one string of "ABC", NOT an "A" or "B" or "C". If the delimiter were used with a word input file: "this is a test", the output would possibly be "TEST ABC IS ABC THIS ABC A".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="ABC|34|Z|?|,.".
+This option contains one or more fields of strings, they are NOT individual characters. Delimiter="ABC" is one string of "ABC", NOT an "A" or "B" or "C". If the delimiter were used with a word input file: "this is a test", the output would possibly be "TEST ABC IS ABC THIS ABC A".  Most likely, you want variety for better learning, so consider a delimiter with multiple fields like: delimiter="ABC|34|Z|?|,.".
 Now with the example above, the output might be: "IS 34 TEST ,. A ABC THIS". More useful delimiter now might be: "CQ|DE|QTH|RST|&lt<SK>".
 <B>NOTE</B> lets look at those last two fields, this is the other way why a delimiter is different than the other lists.
 <P>
-If the field (data between the '|'s or a '|' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range, or foreign character) then the range is simply expanded as seen already. So that last field is used as if you had typed "abcdef123"; and that entire sequence is what would apprear between words.
+If the field (data between the '|'s or a '|' and the double quote contains a range <I>and</I> other characters (letters, numbers, another range) then the range is simply expanded as seen already. So that last field is used as if you had typed "ABCDEF123"; and that entire sequence is what would apprear between words.
 <B>HOWEVER</B> if the field contained, <B>ONLY</B> a simple range, as in the next to last field above "|a-f|" this is expanded as if you wanted <B>EACH</B> character to be treated as if it were its own field. Said another way the field "|A-F|" is treated as if you typed "A|B|C|D|E|F".
 <H2>
 Use of Delimiter - sample delimiter usage
 </H2>
-The delimiter option, works in conjuction with 2 other options. Delimiter-multiples (entered as DM=x), where x is the number of fields in the delimiter that should be used (as a maximum) at any one time. Thus, with DM=1 and delimiter="A-D^1-3^?"
-this expands and is the same as 9 single character fields A^B^C^D^1^2^3^?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "THIS 3A TEST DD? is C A".
+The delimiter option, works in conjuction with 2 other options. Delimiter-multiples (entered as DM=x), where x is the number of fields in the delimiter that should be used (as a maximum) at any one time. Thus, with DM=1 and delimiter="A-D|1-3|?"
+this expands and is the same as 9 single character fields A|B|C|D|1|2|3|?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "THIS 3A TEST DD? is C A".
 The option DR says even though we asked for delimiters between each word, that will be random (DR means delimiter-random).
 <P>
 While the fields of a delimiter can be a word or meaningful sequence like "QTH" or a ProSign like &lt;AR>. Later in the document you will see that many features can be used in one execution to generate practice text to suit your
@@ -201,7 +199,7 @@ have default values. Often they are not repeated in the command shown.
 As with any new tool or skill, you will learn best by trying and experimenting. Copy commands and try 
 them yourself. 
 <P>
-<B>NOTE: in many examples, the command line has "..." this means are are other options that can or made need to be added, but the discussion
+<B>NOTE: in many examples, the command line has "..." this means are are other options that can or may need to be added, but the discussion
 	is highlighing the other options.<B>
 <P>
 <H2>
