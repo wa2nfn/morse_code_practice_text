@@ -57,7 +57,7 @@ func doSendCheck() {
 	path = strings.Split(flagsendcheck, sep)
 
 	if len(path) == 0 || len(path) != 2 {
-		fmt.Printf("\n Error: Option <-sendCheck> requires 2 file names, in format like: file1,file2 (if Prosigns have <XX> format\n        or file1^file2, if ProSigns have ^XX format.\n")
+		fmt.Printf("\n Error: Option <-sendCheck> requires 2 file names, in format like: file1,file2 (if ProSigns have <XX> format\n        or file1^file2, if ProSigns have ^XX format.\n")
 		os.Exit(1)
 	}
 
@@ -246,7 +246,6 @@ func readLines(path []string) {
 
 		b, err := ioutil.ReadFile(path[fIndex])
 		if err != nil {
-			//fmt.Printf("\n Error: reading file <%s>. %v\n", path[fIndex], err)
 			fmt.Printf("\n %s reading file <%s>. %v\n", gchalk.Red("Error:"), path[fIndex], err)
 			os.Exit(1)
 		}
@@ -452,14 +451,14 @@ Levenshtein             Practice Text                      CW Capture
 	}
 
 	if miss {
-		fmt.Printf("\n Warning: You %s sending some characters, (column 2) in %s (ProSign counts as 1).\n", colorMiss("missed"), colorMiss("blue"))
-		fmt.Printf("\n          If your CW capture groups following the %s characters are all %s,\n          you MAY have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
-		fmt.Printf("\n          The space should be just before practice group turned %s and your CW capture groups turned %s.\n", colorMiss("blue"), colorError("red"))
+		fmt.Printf("\n %s You %s sending some characters, (column 2) in %s.\n          ProSigns count as 1 char.\n", gchalk.Yellow("Warning:"), colorMiss("missed"), colorMiss("blue"))
+		fmt.Printf("\n          If your CW capture groups following the %s characters are all \n          %s, you MAY have split a group with an extra space.", colorMiss("missed"), colorError("errors"))
+		fmt.Printf("\n          The space should be just before practice group turned %s and your CW\n          capture groups turned %s.\n", colorMiss("blue"), colorError("red"))
 		fmt.Printf("\n          Edit your CW capture file <%s>, fix the space error, and rerun.\n", captureFile)
 	}
 
 	if extraForever {
-		fmt.Printf("\n Warning: You sent some %s characters, (column 3) in %s.\n", colorExtra("extra"), colorExtra("green"))
+		fmt.Printf("\n %s You sent some %s characters, (column 3) in %s.\n", gchalk.Yellow("Warning:"),colorExtra("extra"), colorExtra("green"))
 		fmt.Printf("\n          Or you missed a space and combined two groups.")
 		fmt.Printf("\n          The space should be just before your CW capture groups all turned %s.\n", colorError("red"))
 		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.\n", captureFile)
