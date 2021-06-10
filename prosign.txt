@@ -24,7 +24,7 @@
 # 4-  Only the following prosigns are supported in this file. Any place the 
 #     prosigns are used they can be in either upper or lowercase.
 #
-#     <AS>, <AR>, <BT>, <KA>, <HH>, <SN> or <VE>, <SK> or <VA>
+#     <AS>, <AR>, <BT>, <KA>, <HH>, <SN> or <VE>, <SK> or <VA>, <SOS>
 #     Comment out any you have not learned or your tutor does not support.
 #
 #     An alternate format is: ^AS, ^sk, etc. The G4FON uses this format.
@@ -43,3 +43,4 @@
 #<VE> # Understood/Verified, same sound as <SN>, if used don't use <SN>
 <DU>  # Long dash dahdididididah
 
+<SOS>

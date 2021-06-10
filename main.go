@@ -17,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.6.2" // 5/24/2021
+	version       = "1.6.3" // 6/09/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -45,8 +45,8 @@ var (
 	/*
 	// cannot use lc e or w, conflict with LCWO
 	*/
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "h", "<SK>", "f", "<SN>", "g", "\u00D8", "0","+","b","=","c","<VE>","i","<DU>","j")
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "h", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8","i","<VE>","j","<DU>")
+	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "h", "<SK>", "f", "<SN>", "g", "\u00D8", "0","+","b","=","c","<VE>","i","<DU>","j","<SOS>","k")
+	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "h", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8","i","<VE>","j","<DU>","k","<SOS>")
 )
 
 var (
@@ -410,7 +410,7 @@ func main() {
 		runeMap['^'] = struct{}{}
 
 		// first make sure any prosign is valid format
-		m := regexp.MustCompile(`\s*\^[a-zA-Z]{2}\s*|\s*<[a-zA-Z]{2}>\s*`)
+		m := regexp.MustCompile(`\s*\^[a-zA-Z]{2}\s*|\s*<[a-zA-Z]{2}>\s*|\s*\^SOS\s*|\s*<SOS>\s*|\s*^sos\s*|\s*<sos>\s*`)
 		tStr := flagdelimit // in case we need original later
 
 		for _, field := range strings.Split(tStr, "|") {

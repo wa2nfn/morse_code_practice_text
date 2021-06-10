@@ -14,9 +14,9 @@ import (
 func ckProsign(ps string) bool {
 	ps = strings.ToUpper(ps)
 	switch ps {
-	case "<AR>", "<AS>", "<BT>", "<KA>", "<HH>", "<SK>", "<VA>", "<SN>","<VE>","<DU>":
+	case "<AR>", "<AS>", "<BT>", "<KA>", "<HH>", "<SK>", "<VA>", "<SN>","<VE>","<DU>", "<SOS>":
 		return true
-	case "^AR", "^AS", "^BT", "^KA", "^HH", "^SK", "^VA", "^SN","^VE","^DU": // for g4fon maybe others
+	case "^AR", "^AS", "^BT", "^KA", "^HH", "^SK", "^VA", "^SN","^VE","^DU", "^SOS": // for g4fon maybe others
 		return true
 	default:
 		return false
@@ -32,7 +32,7 @@ func doProSigns(file *os.File) {
 
 	scanner := bufio.NewScanner(file)
 
-	word := regexp.MustCompile("^<[A-Za-z][A-Za-z]>|^\\^[A-Za-z][A-Za-z]")
+	word := regexp.MustCompile("^<[A-Za-z][A-Za-z]>|^\\^[A-Za-z][A-Za-z]|^<SOS>")
 
 	var myRune rune = '\u00A1'
 
