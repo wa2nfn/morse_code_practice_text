@@ -253,7 +253,7 @@ func init() {
 }
 
 func init() {
-	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                     v. %s\n                                    by WA2NFN\n\n", version)
+	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                     v %s\n                                    by WA2NFN\n\n", version)
 }
 
 func main() {
