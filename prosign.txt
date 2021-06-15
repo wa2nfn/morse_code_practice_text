@@ -42,5 +42,4 @@
 <SN>  # Understood/Verified, same sound as <VE>, if used don't use <VE>
 #<VE> # Understood/Verified, same sound as <SN>, if used don't use <SN>
 <DU>  # Long dash dahdididididah
-
-<SOS>
+<SOS> # International maritime distress 
