@@ -63,7 +63,7 @@ func doProSigns(file *os.File) {
 				break
 			}
 
-			if flagCG || flagMixedMode > 1 {
+			if flagCG || flagMixedMode > 1 || flagpermute != "" {
 				// save in a pair of arrays
 				ps2runeMap[fs] = myRune
 				rune2psMap[myRune] = fs

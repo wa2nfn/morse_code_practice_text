@@ -835,6 +835,7 @@ func main() {
 	// major flow decision - WORD_MODE , CODE_GROUPS, PERMUTE, CALLSIGN ?
 	//
 	if flagFL == true && len(flagcglist) > 1 {
+		// favorLast
 		var last byte = flagcglist[len(flagcglist)-1]
 		var nextToLast byte
 		if len(flagcglist) >= 2 {
