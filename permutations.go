@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"math/rand"
+	"time"
 )
 
 //
@@ -32,11 +34,24 @@ func permute(mode string, fp *os.File) {
 		}
 	}
 
+	// randomize the cglist
+	var chars = []rune(flagcglist)
+	var chars2 = []rune(flagcglist)
+	for i,val :=  range flagcglist {
+		chars[i] = val
+		chars2[i] = val
+	}
+
+	rand.Seed(time.Now().UTC().UnixNano())
+	rand.Shuffle(len(flagcglist), func(i, j int) { chars[i], chars[j] = chars[j], chars[i] })
+	rand.Seed(time.Now().UTC().UnixNano())
+	rand.Shuffle(len(flagcglist), func(i, j int) { chars2[i], chars2[j] = chars2[j], chars2[i] })
+
 	// make pairs
 	if cMap != nil && mode != "t" {
 
-		for _, H := range flagcglist {
-			for _, L := range flagcglist {
+		for _, H := range chars {
+			for _, L := range chars2 {
 				pair := string(H) + string(L)
 				cMap[pair] = struct{}{}
 				cnt++
@@ -68,8 +83,8 @@ func permute(mode string, fp *os.File) {
 
 	// triples 
 	if tMap != nil {
-		for _, H := range flagcglist {
-			for _, M := range flagcglist {
+		for _, H := range chars {
+			for _, M := range chars2 {
 				for _, L := range flagcglist {
 					triple := string(H) + string(M) + string(L)
 					tMap[triple] = struct{}{}

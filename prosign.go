@@ -34,7 +34,7 @@ func doProSigns(file *os.File) {
 
 	word := regexp.MustCompile("^<[A-Za-z][A-Za-z]>|^\\^[A-Za-z][A-Za-z]|^<SOS>")
 
-	var myRune rune = '\u00A1'
+	var myRune rune = 'p'
 
 	for scanner.Scan() {
 		ps = strings.TrimSpace(scanner.Text())
@@ -66,7 +66,7 @@ func doProSigns(file *os.File) {
 			if flagCG || flagMixedMode > 1 || flagpermute != "" {
 				// save in a pair of arrays
 				ps2runeMap[fs] = myRune
-				rune2psMap[myRune] = fs
+				rune2psMap[myRune] = fs 
 				myRune++
 			} else {
 				// so in words
