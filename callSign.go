@@ -43,19 +43,19 @@ func doCallSigns(chars string, fp *os.File) {
 	// see if we can continue
 	if len(ltr) < 1 {
 		fmt.Printf("\nError: to use callSigns, the lesson # must be high enough to have letters.")
-		fmt.Printf("\n      tutor <%s> lesson <%d> characters <%s>\n", flagtutor, flaglesson, chars)
+		fmt.Printf("\n       tutor <%s> lesson <%s> characters <%s>\n", flagtutor, flaglesson, chars)
 		os.Exit(2)
 	}
 
 	if len(ltr) == 1 && ltr[0] == 'Q' {
 		fmt.Printf("\nError: to use callSigns, the lesson # must be high enough to have a letter other than Q.")
-		fmt.Printf("\n      tutor <%s> lesson <%d> characters <%s>\n", flagtutor, flaglesson, chars)
+		fmt.Printf("\n       tutor <%s> lesson <%s> characters <%s>\n", flagtutor, flaglesson, chars)
 		os.Exit(2)
 	}
 
 	if len(dgt) < 1 {
 		fmt.Printf("\nError: to use callSigns, the lesson # must be high enough to have numbers.")
-		fmt.Printf("\n      tutor <%s> lesson <%d> characters <%s>\n", flagtutor, flaglesson, chars)
+		fmt.Printf("\n       tutor <%s> lesson <%s> characters <%s>\n", flagtutor, flaglesson, chars)
 		os.Exit(2)
 	}
 
