@@ -34,7 +34,7 @@ but these two options only function with single characters.
 
 The option <inlist> will be populated with both uppercase and lowercase for each alpha character.
 
-The term "lesson" may not be used in every tutor below, but its just the order that the character was taught.
+The term "lesson" may not be used in every tutor, but its just the order that the character was taught.
 Lockdown Morse videos are numbered, that is NOT the lesson number below. Simply find the characters covered
 by the video (e.g. video 005 teaches B and P) that correlates to lesson 13 and 14 below.
 
