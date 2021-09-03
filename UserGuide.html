@@ -801,6 +801,21 @@ E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>.
 <P>
 F2CFF B3F D1DCF EB2BC AB1DE FB3EBC DC4DAB CB2BFA ED4AAA 
 <P>
+Limited call sign practice can be done without the "callSigns" option; in this case you control the prefix, number, and suffix
+portions using other options. Here is an example.
+<PRE>
+
+<B> mcpt -prelist="kw" -prelen=1    -codeGroups -cglist="0-49" -cglen=1     -suflist="kt" -suflen="2:3"</B>
+
+Possible output:
+
+K2KT K9TTK W0KK W4TKT ....
+ 
+Note: lengths with just a number means that number is the mix and max, thus a fixed length; a length like 2:3 means a minimum
+of two and a maximum or 3. Also note the dash notation means the left character through the right inclusive; so 0-49 means 012349
+just as a-d means abcd, they are just shorthand notations.
+
+</PRE>
 <H2>
 Example 24: 
 &lt;displayFormat> for better readability of displayed output (usually for sending practice)
