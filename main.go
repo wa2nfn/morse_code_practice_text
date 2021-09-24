@@ -903,9 +903,9 @@ func main() {
 func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
-	if strings.Contains(ck, ":/") {
-		fmt.Printf("\nWarning:\n\nIf you entered \":/ or / at the start of the string\" in option <%s> as seen here <%s>, or you used the \"/\" character,\nyour operating system is incorrectly changing that into a PATH variable. Try to move the position of the \"/\"", whoAmI, ck)
-		fmt.Printf("\nor put the option in an option file to prevent this.\n")
+	if strings.Contains(ck, ":") {
+		fmt.Printf("\nWarning:\n\nIf you entered a single \"\\\" after an = in option <%s> this will likely\nconfuse the operating system. Change it to \\/", whoAmI)
+		fmt.Printf(" or use an option file.\n")
 		os.Exit(99)
 	}
 
