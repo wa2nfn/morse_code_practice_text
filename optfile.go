@@ -60,11 +60,13 @@ func doOptFile(file *os.File) {
 		str = strings.TrimSpace(str)
 		str = strings.TrimLeft(str, "-")
 
+		/*
 		if str[len(str)-1] == '=' {
 			fmt.Printf("\nError: Invalid format for option <%v> on line <%d> of file <%s>. Appears to be missing a value after \"=\".\n", str, lineNum, flagopt)
 			os.Exit(7)
 
 		}
+		*/
 
 		// = sep?
 		arr := strings.SplitN(str, "=", 2)
@@ -90,7 +92,7 @@ func doOptFile(file *os.File) {
 		arr = strings.SplitN(str, " ", 2)
 		if len(arr) == 2 {
 			if flag.Lookup(arr[0]) == nil {
-				fmt.Printf("\n2Error: Invalid option <%s> on line <%d> of file <%s>.\n", arr[0], lineNum, flagopt)
+				fmt.Printf("\nError: Invalid option <%s> on line <%d> of file <%s>.\n", arr[0], lineNum, flagopt)
 				os.Exit(7)
 			}
 

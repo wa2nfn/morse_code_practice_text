@@ -903,6 +903,7 @@ func main() {
 func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
+	//wdl fmt.Printf("\nPRE %s\n",ck)
 	if strings.Contains(ck, ":") {
 		fmt.Printf("\nWarning:\n\nIf you entered a single \"\\\" after an = in option <%s> this will likely\nconfuse the operating system. Change it to \\/", whoAmI)
 		fmt.Printf(" or use an option file.\n")
