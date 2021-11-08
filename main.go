@@ -17,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.6.6" // 09/01/2021
+	version       = "1.6.7" // 11/08/2021
 	maxWordLen    = 40
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -1105,7 +1105,9 @@ func flipFlop() bool {
 // called for each field of a delimiter option
 func processDelimiter(inStr string) {
 	// eliminate special case of simple range
-	m := regexp.MustCompile("^([0-9]-[0-9])|([a-z]-[a-z])|([A-Z]-[A-Z])$")
+	m := regexp.MustCompile("^([0-9]-[0-9])|([A-Z]-[A-Z])$")
+	//m := regexp.MustCompile("^([0-9]-[0-9])|[a-z]-[a-z])|([A-Z]-[A-Z])$")
+	inStr = strings.ToUpper(inStr) //wdl added
 	if m.MatchString(inStr) {
 		expandIt(string(inStr[0]), string(inStr[2]), "delimiter_simple")
 		return
