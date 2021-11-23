@@ -81,63 +81,51 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", ":", "", ";", "", "'", "", "\"", "")
 		line = replacer.Replace(scanner.Text())
 
-		/*
-		textWords := strings.FieldsFunc(line, func(r rune) bool {
-			if r == ' ' {
-				return true
-			}
-			return false
-		})
-		*/
+		tmpWord := strings.TrimRight(line, trimChars)
+		tmpWord = strings.TrimLeft(tmpWord, "\"")
+		tmpWord = strings.ToUpper(tmpWord)
 
-		//for index := 0; index < len(textWords); index++ {
-			tmpWord := strings.TrimRight(line, trimChars)
-			tmpWord = strings.TrimLeft(tmpWord, "\"")
-			tmpWord = strings.ToUpper(tmpWord)
+		if word.MatchString(tmpWord) {
 
-			if word.MatchString(tmpWord) {
-
-				// skip only viable matching words
-				if localSkipFlag {
-					if localSkipCount > 0 {
-						localSkipCount--
-						continue
-					} else {
-						localSkipFlag = false
-					}
-				}
-
-				// if prosign check it or ignore it
-				if len(tmpWord) == 3 || len(tmpWord) == 4 {
-					if ps.MatchString(tmpWord) {
-						if !ckProsign(tmpWord) {
-							// its invalid so skip it
-							continue
-						}
-					}
-				}
-
-				// reverse the string
-				if flagreverse {
-					tmpWord = reverse(tmpWord)
-				}
-
-				/*
-				** if -NR words are ordered so we store and retrieve from an array
-				** else we use a map
-				 */
-				if flagNR {
-					wordArray = append(wordArray, tmpWord)
+			// skip only viable matching words
+			if localSkipFlag {
+				if localSkipCount > 0 {
+					localSkipCount--
+					continue
 				} else {
-					// add to map if not there
-					if _, ok := wordMap[tmpWord]; ok != true {
-						wordMap[tmpWord] = struct{}{}
+					localSkipFlag = false
+				}
+			}
+
+			// if prosign check it or ignore it
+			if len(tmpWord) == 3 || len(tmpWord) == 4 {
+				if ps.MatchString(tmpWord) {
+					if !ckProsign(tmpWord) {
+						// its invalid so skip it
+						continue
 					}
 				}
-			} else {
-				discarded = true
 			}
-		//}
+
+			// reverse the string
+			if flagreverse {
+				tmpWord = reverse(tmpWord)
+			}
+
+			/* if -NR words are ordered so we store and 
+			** retrieve from an array else we use a map
+			*/
+			if flagNR {
+				wordArray = append(wordArray, tmpWord)
+			} else {
+				// add to map if not there
+				if _, ok := wordMap[tmpWord]; ok != true {
+					wordMap[tmpWord] = struct{}{}
+				}
+			}
+		} else {
+			discarded = true
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
