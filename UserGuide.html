@@ -20,7 +20,7 @@ Users of LCWO.net (here after LCWO), can enjoy the challenges and benefits of on
 <H2>
 Overview
 </H2>
-Current version 1.6.8
+Current version 1.7.0
 <P>
 This file contains examples of the usage of all options.
 <P>
@@ -1137,6 +1137,80 @@ practice: 100O01WNMND34K6,.8/VU&lt;BT&gt;THEEND
 
 Hopefully these two outputs can help you see where your sending needs more practice.
 
+</PRE>
+<H2>Example 27-3: 
+&lt;review> structured review of learned characters
+</H2>
+<BR> mcpt -review -tutor=g4fon -lesson=5</B>
+<BR> mcpt -review -lesson=3:5</B>
+<BR> mcpt -review -cglist="KMUR"</B>
+<PRE>
+Use characters, by lesson order or the cglist, and create a review before learning a 
+new character.  Options, -delimiter and -out <I>MAY</I> be used as described below.
+
+The format is as follows for each character in sequence:
+
+<LI> 2 groups of 5 of the current character
+<LI> 8 groups of the current character
+<LI> 10 groups of the current character AND the last character
+<LI> 10 groups of <B>ALL</B> reviewed characters so far
+
+This repeats for each character, <B>HOWEVER</B> for every 5 new characters,
+there is a review of ALL characters with 30 groups of ALL the characters(the group size
+increases by 5 with 5 new characters).
+
+Note: The sample below is formatted, but your code tutor will simply use a SPACE
+      where ever there is a RETURN.  In the below you can see where the first 2
+      fields of delimiter were used; field 1 (VVV) alerts you to the start of a
+      new character AND for the summary block for every 5 characters. The second
+      field &lt;AR&gt; (if it exists) is used to mark the end of sub sections. 
+      <I> Do not use a delimiter which is also a character you are practicing 
+      or it will be confusing.
+
+<B> mcpt -review -lesson=2:4 -out=lesson2_4.txt</B> (output abbreviated)
+
+MMMMM MMMMM 
+MMMM MM MM MMMM MM MMMMM MMMMM MM 
+
+UUUUU UUUUU 
+UUU UUUUU UU UUUUU UUUUU
+UUU UUU UUU 
+UMUMMU MMUMMM MMMMMUM MMMUUM UUMMUU MUUMUU MUMUMUUU UUUMMUUUU MUMUUM
+MMMM 
+UMUU MMMU UMUM MUUM MUU UUU MUMU MUUU MMMMM MMMU MUMMU MMUMU MUMM MMUMM MUM
+UMUU UMUM MUU UUMUU UUMM 
+
+RRRRR RRRRR 
+
+<B> mcpt -review -lesson=2:4 -out=lesson2_4.txt -delimiter="VVV|&lt;AR&gt;" </B> (output abbreviated)
+Note: placement of delimiters vs. above
+
+VVV
+MMMMM MMMMM <AR>
+MMMM MMMMM MMM MMMMM MMMM MMM MMM MM <AR>
+
+VVV
+UUUUU UUUUU <AR>
+UUU UU UUU UUUUU UUUU UU UU UU <AR>
+UMMMMMM UUUUMU UUUMMM MMUMUM MMUMM UUUUUMUM MMMUUUM
+MUUUUM UUMMUM MUUMMUM <AR>
+MUMMUM UUMMM MUU MUMMM MMMMUM UMU MMUU UUM UUM UUU UUMUU
+MUUUM UUMU MMMM MUMU MUUUM MUM UUUMUU UMMUM MUMM <AR>
+
+VVV
+RRRRR RRRRR <AR>
+
+Note: Below is a sample of what is seen AFTER 5 characters (see the doubled first delimiter).
+
+VVVVVV
+SUU RSESRMS UESE MMESM USEMUMUM URUEM RUSUSU REEM MUERRRS
+SUEMMUM RSRRRU MSEUUM EMRS MMRES MSMMMR EERER EMRRUERU URS EUS SMUE UESSU MRUUR RSR
+SMMMUS SMRMSRSE EMESE SUURE EMMU EUSMRS ESSU <AR>
+
+<B> A large lesson count may generate more material than your browser/tutor can handle, manually break the output into
+several files; or you can run mcpt several times to cover the lesson range (i.e. lesson=1:10,lesson=11:20 etc.).
+Note that this second approach is NOT the same because the sections that review all past characters will not contain
+characters from earlier lessons!</B>
 </PRE>
 <H2>
 LCWO Option Overview: 

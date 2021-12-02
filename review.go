@@ -87,6 +87,8 @@ func doSingle(number int) {
 	if number == 0 {
 		strBuf += fmt.Sprintln()
 	}
+
+	LastRand = 999 // reset
 	return
 }
 
@@ -111,6 +113,7 @@ func doPair(number int) {
 	}
 
 	doDel(number)
+	LastRand = 999 // reset
 
 	return
 }
@@ -127,10 +130,10 @@ func doBlockAnnounce() {
 // for end of line delimiter
 func doDel(number int) {
 
-	if delimiter1 != ""{
+	if delimiter1 != "" {
 		strBuf += fmt.Sprintf("%s\n",delimiter1)
 	} else {
-		strBuf += fmt.Sprintf("\n")
+		strBuf += "\n"
 	}
 
 	return
@@ -187,5 +190,6 @@ func doEndBlock(number int) {
 		}
 	}
 
+	LastRand = 999 // reset
 	strBuf += "\n"
 }
