@@ -17,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.6.8" // 11/08/2021
+	version       = "1.7.0" // 12/01/2021
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -86,6 +86,7 @@ var (
 	flagheader        string
 	flagprelist       string
 	flagPrelistRune   []rune
+	flagReview	bool
 	flagsuflist       string
 	flagSuflistRune   []rune
 	flaginlist        string
@@ -138,6 +139,7 @@ var message string = `
   -codeGroups (code groups)
   -permute    (permutations of characters based on tutor/lesson)
   -help       (option listing)
+  -review     (concentrated practice with random groups)
   -send       (create sending practice by specific groups of characters)
   -sendCheck  (to verify your accuracy of sending)
   -callsigns  (simple generated call signs based on tutor/lesson)
@@ -196,6 +198,7 @@ func init() {
 	flag.StringVar(&flagsend, "send", "", "A string of group numbers (0-7) to make sending practice groups.")
 	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
 	flag.BoolVar(&flagFL, "favorLast", false, "favor last character learned in code Groups")
+	flag.BoolVar(&flagReview, "review", false, "concentrated random groups building on previous char")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -399,7 +402,7 @@ func main() {
 	if flagDMmax > maxDelimChars {
 		fmt.Printf("\nError: DM, delimiter multiple min >= 0, max <= %d.\n", maxDelimChars)
 		os.Exit(1)
-	} else if flagDMmin >= 1 {
+	} else if flagDMmin >= 1 || flagReview {
 		// ok DM is in range
 		// split into fields if any
 
@@ -797,7 +800,7 @@ func main() {
 	// no longer needed save space
 	runeMap = nil
 
-	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "") {
+	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "") && flagReview == false {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
@@ -892,18 +895,23 @@ func main() {
 		os.Exit(0) // program done
 	}
 
+	if flagReview {
+		review(fp)
+		os.Exit(0) // program done
+	}
+
 	// word mode default
 	readFileMode(localSkipFlag, localSkipCount, fp)
 	doOutput(wordArray, fp)
 }
 
 //
-// make sure the string can be expanded into visable ASCII since all Morse is limited to that
-// HERE
+// make sure the string can be expanded into visable ASCII since 
+// all Morse is limited to that
+//
 func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
-	//wdl fmt.Printf("\nPRE %s\n",ck)
 	if strings.Contains(ck, ":") {
 		fmt.Printf("\nWarning:\n\nIf you entered a single \"\\\" after an = in option <%s> this will likely\nconfuse the operating system. Change it to \\/", whoAmI)
 		fmt.Printf(" or use an option file.\n")
@@ -955,6 +963,10 @@ func strRangeExpand(inStr string, whoAmI string) string {
 	outStr := ""
 	last := ""
 	gotDash := false
+
+	if inStr == "" {
+		return outStr
+	}
 
 	// take care of special case of dash in beginning
 	if inStr[0] == '-' {
@@ -1106,8 +1118,8 @@ func flipFlop() bool {
 func processDelimiter(inStr string) {
 	// eliminate special case of simple range
 	m := regexp.MustCompile("^([0-9]-[0-9])|([A-Z]-[A-Z])$")
-	//m := regexp.MustCompile("^([0-9]-[0-9])|[a-z]-[a-z])|([A-Z]-[A-Z])$")
-	inStr = strings.ToUpper(inStr) //wdl added
+
+	inStr = strings.ToUpper(inStr) 
 	if m.MatchString(inStr) {
 		expandIt(string(inStr[0]), string(inStr[2]), "delimiter_simple")
 		return
