@@ -719,7 +719,7 @@ func main() {
 
 		if flagtutor == "LCWO" {
 			kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X"
-		} else if flagtutor == "JUSTLEARNMORSECODE" || flagtutor == "JLMC" {
+		} else if flagtutor == "JUSTLEARNMORSECODE" || flagtutor == "JLMC" || flagtutor == "JUSTLEARNMC" {
 			kochChars = "KMRSUAPTLOWI.NJEF0YV,G5/Q9ZH38B?427C1D6X@=+"
 		} else if flagtutor == "G4FON" {
 			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X"
@@ -727,6 +727,8 @@ func main() {
 			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
 		} else if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" {
 			kochChars = "TAENOIS14RHDL25CUMW36?FYPG79/BVKJ80=XQZ!."
+		} else if flagtutor == "CWOPTS" {
+			kochChars = "TAENOIS14RHDL25UCMW36?FYPG79/BVKJ80=XQZg" //cwopts
 		} else if flagtutor == "HAMMORSE" || flagtutor == "HM" {
 			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
 		} else if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" {
