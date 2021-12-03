@@ -1046,29 +1046,28 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	// done processing now output it
 	res := ""
+
 	for _, r := range strBuf {
 
 		if index <= flaglen {
 			res = res + string(r)
-			index++
-			continue
-		}
-
-		if index >= flaglen {
+			if r == '\n' {
+				index = 0
+			} else {
+				index++
+			}
+		} else {
 			if r != ' ' && r != '\n' {
 				res = res + string(r)
 				index++
-				continue
 			} else {
-				res = res + "\n"
+				res += "\n"
 				// extra space if no -out
 				if flagLF {
 					res += "\n"
 				}
 				index = 0
 			}
-		} else {
-			res = ""
 		}
 	}
 

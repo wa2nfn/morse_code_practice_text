@@ -19,7 +19,6 @@ var (
 // review each char in groups of random format adding then to previous char
 // for more intence practice
 func review(fp *os.File) {
-	flaglen = 500 // force long line
 
 	// do we have delimiters
 	if len(delimiterSlice) == 1 {
