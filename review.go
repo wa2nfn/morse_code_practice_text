@@ -69,7 +69,7 @@ func genRand(val int) int {
 func do5(number int) {
 	doBlockAnnounce()
 	str := strings.Repeat(string(newChar),5)
-	strBuf += (str + " " + str)
+	strBuf += (str + " " + str + " ")
 	doDel(number)
 	return
 }
