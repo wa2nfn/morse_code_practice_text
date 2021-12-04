@@ -728,7 +728,7 @@ func main() {
 		} else if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" {
 			kochChars = "TAENOIS14RHDL25CUMW36?FYPG79/BVKJ80=XQZ!."
 		} else if flagtutor == "CWOPTS" {
-			kochChars = "TAENOIS14RHDL25UCMW36?FYPG79/BVKJ80=XQZg" //cwopts
+			kochChars = "TEANOIS14RHDL25UCMW36?FYPG79/BVKJ80=XQZ-g" //cwopts
 		} else if flagtutor == "HAMMORSE" || flagtutor == "HM" {
 			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
 		} else if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" {

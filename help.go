@@ -44,7 +44,7 @@ If the value for <tutor>, the names are NOT case sensitive, and for ease of typi
 name given on the second line below.
 
 Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
-Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)
+Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)   (nore 2)
 ------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
 1       K M                            T          T               E           E           W       Q S     T
 2       U      K M          K M        M          A               M           O           B       E       E
@@ -88,22 +88,23 @@ Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse Lockdown
 31      B      B            B          B          V              B            2          9        X       /
 32      ?      ?            ?          ?          K              ?            7          ,        .       B
 33      4      4            4          4          J              4            3          1        ?       v
-34      7      2            2          2          8              2            8          6        3       J
-35      C      7            7          7          0              7            4          8        8       K
+34      7      2            2          2          8              2            8          6        3       K
+35      C      7            7          7          0              7            4          8        8       J
 36      1      C            C          C          = <BT>         C            9          ?        P       8
 37      D      1            1          1          X              1            .          2        V       0
 38      6      D            D          D          Q              6            ,          0        ,       <BT> =
 39      0      6            6          6          Z              X            /          4        /       X
-40      X      x            X          X          <BK>           = <BT>       ?          3        = <BT>  <SK>
+40      X      x            X          X          <BK>           = <BT>       ?          3        = <BT>  -
 
 Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
 ------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
-41             @            = <BT>     .  
+41             @            = <BT>     .                                                                  <SK>
 42             = <BT>       + <AR>(2)
 43             + <AR> 
 
 Notes: 
 1- <KA> and <AR> introduced. Used only at start/end of sequences.
+2- The learning order for CWOPTs is based on thier session guide, not their trainer.
 
 All the above prosigns, can be practiced with the prosign option, in delimiters, or as words
 in an input file.
