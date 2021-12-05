@@ -13,6 +13,8 @@ var (
 	delimiter0  string
 	delimiter1  string
 	LastRand int = 999
+	wantReviewAll string 
+	summaryList = flagcglist
 )
 
 // this is the code for -review flag
@@ -33,6 +35,16 @@ func review(fp *os.File) {
 	if flagcglist == "" {
 		fmt.Printf("\nError: the review option requires a non-empty cglist\n")
 		os.Exit(1)
+	}
+
+	if flaglessonstart != 0 {
+		fmt.Printf("\nInclude characters BEFORE lesson: %d in summary?\n",flaglessonstart+1)
+		fmt.Printf("They are: %s\n",char2psReplacer.Replace(kochChars[0:flaglessonstart]))
+		
+		fmt.Printf("\nEnter \"y\", for yes include them: ")
+
+		fmt.Scanf("%s", &wantReviewAll)
+		fmt.Println()
 	}
 
 	for number, char := range flagcglist {
@@ -146,12 +158,18 @@ func doEndBlock(number int) {
 		return
 	}
 
+	if wantReviewAll == "y" {
+		summaryList = char2psReplacer.Replace(kochChars[0:flaglessonstart] + flagcglist[0:number+1])
+	} else {
+		summaryList = char2psReplacer.Replace(flagcglist[0:number+1])
+	}
+
 	// 20 groups
 	for i := 1; i <= 20; i++ {
 
 		// length of group
 		for j := 0; j <= 2 + genRand(4); j++ {
-			strBuf += string(flagcglist[rng.Intn(1+number)])
+			strBuf += string(summaryList[rng.Intn(len(summaryList))])
 		}
 		strBuf += " "
 	}
@@ -169,7 +187,7 @@ func doEndBlock(number int) {
 		for ;; {
 			// length of group
 			for j := 0; j <= 2 + rng.Intn(7); j++ {
-				strBuf += string(flagcglist[genRand(number)])
+				strBuf += string(summaryList[genRand(len(summaryList))])
 			}
 			strBuf += " "
 
