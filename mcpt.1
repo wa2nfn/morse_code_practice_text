@@ -106,6 +106,24 @@ FILE
 .B mcpt -sendCheck=
 .I FILE,FILE 
 .P
+
+.B mcpt -review [-lesson=
+.I
+.INUM
+.B -tutor=
+.I TUTOR
+.B ] | [-cglist=
+.I LIST
+.B ] [-delimiter=
+.I DELIM
+.I NUM
+.B ] [ -0ut 
+.I FILE
+.B ]
+.B mcpt -send=digit,digit
+.B mcpt -sendCheck=
+.I FILE,FILE 
+.P
 .I TUTOR=lcwo|JustLearnMorseCode|G4FON|MorseElmer|LockdownMorse|HamMorse|MorseCodeNinja|HameMorse|MFJ418]
 
 .I LIST="0-9,./?="
@@ -171,6 +189,9 @@ If the value is a single number, the minimum will equal the maximum.
 .IP -text
 the input file name to parse for strings matching criteria set by options: lesson/tutor.
 Strings maybe letters, digits, proSigns, punctuation taught in lessons (i.e. ,./?@=+).
+.TP
+.IP -review
+a structured review of current and previous characters learned before moving on
 .TP
 .TP
 .IP -LCWO_slow=NUM 
