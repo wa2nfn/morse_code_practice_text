@@ -44,7 +44,7 @@ If the value for <tutor>, the names are NOT case sensitive, and for ease of typi
 name given on the second line below.
 
 Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
-Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)   (nore 2)
+Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)   (note 2)
 ------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
 1       K M                            T          T               E           E           W       Q S     T
 2       U      K M          K M        M          A               M           O           B       E       E

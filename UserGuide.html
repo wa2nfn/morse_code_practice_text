@@ -1146,7 +1146,7 @@ Hopefully these two outputs can help you see where your sending needs more pract
 <BR> mcpt -review -cglist="KMUR"</B>
 <PRE>
 Use characters, by lesson order or the cglist, and create a review before learning a 
-new character.  Options, -delimiter and -out <I>MAY</I> be used as described below.
+new character. Options, -delimiter and -out <I>MAY</I> be used as described below.
 
 The format is as follows for each character in sequence:
 
@@ -1182,14 +1182,14 @@ UMUU UMUM MUU UUMUU UUMM
 
 RRRRR RRRRR 
 
-<B> mcpt -review -lesson=2:4 -out=lesson2_4.txt -delimiter="VVV|&lt;AR&gt;" </B> (output abbreviated)
+<B> mcpt -review -lesson=2:4 -out=lesson2_4.txt -delimiter="&lt;SK&gt;|&lt;AR&gt;" </B> (output abbreviated)
 Note: placement of delimiters vs. above
 
-VVV
+&lt;SK&gt;
 MMMMM MMMMM <AR>
 MMMM MMMMM MMM MMMMM MMMM MMM MMM MM <AR>
 
-VVV
+&lt;SK&gt;
 UUUUU UUUUU <AR>
 UUU UU UUU UUUUU UUUU UU UU UU <AR>
 UMMMMMM UUUUMU UUUMMM MMUMUM MMUMM UUUUUMUM MMMUUUM
@@ -1197,20 +1197,18 @@ MUUUUM UUMMUM MUUMMUM <AR>
 MUMMUM UUMMM MUU MUMMM MMMMUM UMU MMUU UUM UUM UUU UUMUU
 MUUUM UUMU MMMM MUMU MUUUM MUM UUUMUU UMMUM MUMM <AR>
 
-VVV
+&lt;SK&gt;
 RRRRR RRRRR <AR>
 
 Note: Below is a sample of what is seen AFTER 5 characters (see the doubled first delimiter).
 
-VVVVVV
+&lt;SK&gt;&lt;SK&gt;
 SUU RSESRMS UESE MMESM USEMUMUM URUEM RUSUSU REEM MUERRRS
 SUEMMUM RSRRRU MSEUUM EMRS MMRES MSMMMR EERER EMRRUERU URS EUS SMUE UESSU MRUUR RSR
 SMMMUS SMRMSRSE EMESE SUURE EMMU EUSMRS ESSU <AR>
 
 <B> A large lesson count may generate more material than your browser/tutor can handle, manually break the output into
 several files; or you can run mcpt several times to cover the lesson range (i.e. lesson=1:10,lesson=11:20 etc.).
-Note that this second approach is NOT the same because the sections that review all past characters will not contain
-characters from earlier lessons!</B>
 </PRE>
 <H2>
 LCWO Option Overview: 
