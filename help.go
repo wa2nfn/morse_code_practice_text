@@ -62,10 +62,10 @@ Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  Lockdow
 11      W      W            W          W          H              W            K (1)       O       5       H
 12      I      I            I          I          D              I            V           D       N       D
 13      .      .            .          .          L              .            B           E       L       L
-14      J      N            N          N          2              N            P           L       G       U
-15      Z      J            J          J          5              J            G           K       0       C
-16      = <BT> E            E          E          C              G            W           Z       U       2
-17      F      F            F          F          U              F            F           G       B       5
+14      J      N            N          N          2              N            P           L       G       2
+15      Z      J            J          J          5              J            G           K       0       5
+16      = <BT> E            E          E          C              G            W           Z       U       U
+17      F      F            F          F          U              F            F           G       B       C
 18      O      0            0          0          M              0            C           C       4       M
 19      Y      Y            Y          Y          W              Y            L           U       1       W
 20      ,      V            ,          ,          3              ,            D           Q       H       3
@@ -94,11 +94,11 @@ Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse Lockdown
 37      D      1            1          1          X              1            .          2        V       0
 38      6      D            D          D          Q              6            ,          0        ,       <BT> =
 39      0      6            6          6          Z              X            /          4        /       X
-40      X      x            X          X          <BK>           = <BT>       ?          3        = <BT>  -
+40      X      x            X          X          <BK>           = <BT>       ?          3        = <BT>  Q
 
 Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
 ------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
-41             @            = <BT>     .                                                                  <SK>
+41             @            = <BT>     .                                                                  Z
 42             = <BT>       + <AR>(2)
 43             + <AR> 
 
