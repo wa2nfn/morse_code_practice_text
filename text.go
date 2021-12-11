@@ -24,9 +24,18 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		os.Exit(0)
 	}
 
+	// modify so -lesson can be used with -text
+	if len(flagcglist) < len(kochChars) {
+		// user wants lessons to be used in -in=file
+		flaginlist = flagcglist // swap meaning
+	}
+
 	if flaginlist == "" {
-		fmt.Printf("\nError: inlist can't be empty or nothing gets matched.\n")
-		os.Exit(0)
+
+		if flaginlist == "" {
+			fmt.Printf("\nError: inlist can't be empty or nothing gets matched.\n")
+			os.Exit(0)
+		}
 	}
 
 	file, err := os.Open(flagtext)
@@ -150,20 +159,19 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 		}
 	}
 
+
+	ct := len(wordArray)
+	if ct < flagnum {
+		ct = flagnum - ct
+		// we need to append more words in order
+		for i := 0; i < ct; i++ {
+			wordArray = append(wordArray, wordArray[i])
+		}
+	}
+
 	if flagNR == false {
 		rand.Seed(time.Now().UTC().UnixNano())
 		rand.Shuffle(len(wordArray), func(i, j int) { wordArray[i], wordArray[j] = wordArray[j], wordArray[i] })
-	}
-
-	if len(wordArray) < flagnum {
-		ct := len(wordArray)
-		if ct < flagnum {
-			ct = flagnum - ct
-			// we need to append more words in order
-			for i := 0; i < ct; i++ {
-				wordArray = append(wordArray, wordArray[i])
-			}
-		}
 	}
 
 	// trim 
