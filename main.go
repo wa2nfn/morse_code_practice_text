@@ -166,7 +166,7 @@ func init() {
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa| |bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
-	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor.\nUse -help=tutors for more info.")
+	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH.\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) The number of delimiter\nstrings to add together. DM=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "DR", false, "Delimiter random, (if DM > 0) DR=true makes a delimiter randomly be used. (default false)")
@@ -740,8 +740,11 @@ func main() {
 		} else if flagtutor == "PCWTUTOR" || flagtutor == "PCWT" {
 			flagtutor = "PCWT"
 			kochChars = "QSEMTADJIRC5NLG0UB41HOZY69KW27FX.?38PV,/="
+		} else if flagtutor == "FARNSWORTH" || flagtutor == "FW" {
+			flagtutor = "FW"
+			kochChars = "TAEHCSNOL.BIFRW?DYMGUP,\"VKXQJZ(;:12345/-67890=d+" //wdl
 		} else {
-			fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see the help.\n")
+			fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see -helpi=tutors.\n")
 			os.Exit(1)
 		}
 
@@ -914,17 +917,18 @@ func main() {
 func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
-	if strings.Contains(ck, ":") {
+	if strings.Contains(ck, ":\\") {
 		fmt.Printf("\nWarning:\n\nIf you entered a single \"\\\" after an = in option <%s> this will likely\nconfuse the operating system. Change it to \\/", whoAmI)
 		fmt.Printf(" or use an option file.\n")
 		os.Exit(99)
 	}
 
+	ck = strings.Replace(ck,"d","<KA>",-1) // needed for Farnsworth WDL
 	str := strings.ToUpper(ck)
 	str = ps2charReplacer.Replace(str)
 
 	if strings.Contains(str,"<>") {
-		fmt.Printf("\nError: Option <%s> contains an unsopported ProSign or the character \"<\" or\" >\".\n", whoAmI)
+		fmt.Printf("\nError: Option <%s> contains an unsupported ProSign or the character \"<\" or\" >\".\n", whoAmI)
 		os.Exit(99)
 	}
 

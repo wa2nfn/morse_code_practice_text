@@ -43,68 +43,75 @@ Lesson is cumulative, that is if you enter lesson=5, all the characters from les
 If the value for <tutor>, the names are NOT case sensitive, and for ease of typing you can use the abbreviated 
 name given on the second line below.
 
-Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
-Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)   (note 2)
-------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
-1       K M                            T          T               E           E           W       Q S     T
-2       U      K M          K M        M          A               M           O           B       E       E
-3       R      R            R          R          E               R           A           M       M       A
-4       E      S            S          S          N               S           I           H       T       N
-5       S      U            U          U          O               U           U           A       A       O
-6       N      A            A          A          I               A           Y           T       D       I
-7       A      P            P          P          S               P           Z           J       J       S
-8       P      T            T          T          1               T           Q           S       I       1
-9       T      L            L          L          4               L           J           N       R       4
-10      L      0            O          O          R               O           X           I       C       R
+Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs   Farnsworth
+Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)   (note 2)    (FW)
+------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------   ---------- 
+1       K M                            T          T               E           E           W       Q S     T        T
+2       U      K M          K M        M          A               M           O           B       E       E        A
+3       R      R            R          R          E               R           A           M       M       A        E
+4       E      S            S          S          N               S           I           H       T       N        H
+5       S      U            U          U          O               U           U           A       A       O        C
+6       N      A            A          A          I               A           Y           T       D       I        S
+7       A      P            P          P          S               P           Z           J       J       S        N
+8       P      T            T          T          1               T           Q           S       I       1        O
+9       T      L            L          L          4               L           J           N       R       4        L
+10      L      0            O          O          R               O           X           I       C       R        .
 
-Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
-------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
-11      W      W            W          W          H              W            K (1)       O       5       H
-12      I      I            I          I          D              I            V           D       N       D
-13      .      .            .          .          L              .            B           E       L       L
-14      J      N            N          N          2              N            P           L       G       2
-15      Z      J            J          J          5              J            G           K       0       5
-16      = <BT> E            E          E          C              G            W           Z       U       U
-17      F      F            F          F          U              F            F           G       B       C
-18      O      0            0          0          M              0            C           C       4       M
-19      Y      Y            Y          Y          W              Y            L           U       1       W
-20      ,      V            ,          ,          3              ,            D           Q       H       3
+Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs   Farnsworth
+------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------   ---------- 
+11      W      W            W          W          H              W            K (1)       O       5       H        B
+12      I      I            I          I          D              I            V           D       N       D        I
+13      .      .            .          .          L              .            B           E       L       L        F
+14      J      N            N          N          2              N            P           L       G       2        R
+15      Z      J            J          J          5              J            G           K       0       5        W
+16      = <BT> E            E          E          C              G            W           Z       U       U        ?
+17      F      F            F          F          U              F            F           G       B       C        D
+18      O      0            0          0          M              0            C           C       4       M        Y
+19      Y      Y            Y          Y          W              Y            L           U       1       W        M
+20      ,      V            ,          ,          3              ,            D           Q       H       3        G
 
-Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
-------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
-21      V      ,            v          V          6              V            M           R       O       6
-22      G      G            G          G          ?              G            H           V       Z       ?
-23      5      5            5          5          F              5            R           F       Y       F
-24      /      /            /          /          Y              /            S           P       6       Y
-25      Q      Q            Q          Q          P              Q            N           Y       9       3
-26      9      9            9          9          G              9            T           X       K       6
-27      2      Z            Z          Z          7              Z            0           5       W       P
-28      H      H            H          H          9              H            1           .       2       G
-29      3      3            3          3          /              3            5           7       7       7
-30      8      8            8          8          B              8            6           /       F       9
+Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs   Farnsworth
+------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------   ---------- 
+21      V      ,            v          V          6              V            M           R       O       6        U
+22      G      G            G          G          ?              G            H           V       Z       ?        P
+23      5      5            5          5          F              5            R           F       Y       F        ,
+24      /      /            /          /          Y              /            S           P       6       Y        "(quote)
+25      Q      Q            Q          Q          P              Q            N           Y       9       3        V
+26      9      9            9          9          G              9            T           X       K       6        K
+27      2      Z            Z          Z          7              Z            0           5       W       P        X
+28      H      H            H          H          9              H            1           .       2       G        Q
+29      3      3            3          3          /              3            5           7       7       7        J
+30      8      8            8          8          B              8            6           /       F       9        Z
 
-Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse LockdownMorse  MFJ418  PCWTutor  CWOPTs
-------  ----   -----------  -----  ----------  --------------  -------- -------------  ------  --------  ------
-31      B      B            B          B          V              B            2          9        X       /
-32      ?      ?            ?          ?          K              ?            7          ,        .       B
-33      4      4            4          4          J              4            3          1        ?       v
-34      7      2            2          2          8              2            8          6        3       K
-35      C      7            7          7          0              7            4          8        8       J
-36      1      C            C          C          = <BT>         C            9          ?        P       8
-37      D      1            1          1          X              1            .          2        V       0
-38      6      D            D          D          Q              6            ,          0        ,       <BT> =
-39      0      6            6          6          Z              X            /          4        /       X
-40      X      x            X          X          <BK>           = <BT>       ?          3        = <BT>  Q
+Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs   Farnsworth
+------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------   ---------- 
+31      B      B            B          B          V              B            2          9        X       /        ( 
+32      ?      ?            ?          ?          K              ?            7          ,        .       B        ;
+33      4      4            4          4          J              4            3          1        ?       v        :
+34      7      2            2          2          8              2            8          6        3       K        1
+35      C      7            7          7          0              7            4          8        8       J        2
+36      1      C            C          C          = <BT>         C            9          ?        P       8        3
+37      D      1            1          1          X              1            .          2        V       0        4
+38      6      D            D          D          Q              6            ,          0        ,       <BT> =   5
+39      0      6            6          6          Z              X            /          4        /       X        /
+40      X      x            X          X          <BK>           = <BT>       ?          3        = <BT>  Q        - (3)
 
-Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs
-------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------
-41             @            = <BT>     .                                                                  Z
-42             = <BT>       + <AR>(2)
-43             + <AR> 
+Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs   Farnsworth
+------  ----   -----------  -----  ----------  --------------  --------  -------------  ------  --------  ------   ---------- 
+41             @            = <BT>     .                                                                  Z        6
+42             = <BT>       + <AR>(2)                                                                              7
+43             + <AR>                                                                                              8
+44                                                                                                                 9
+45                                                                                                                 0
+46                                                                                                                 = <BT>
+47                                                                                                                 <KA>
+48                                                                                                                 + <AR>
 
 Notes: 
 1- <KA> and <AR> introduced. Used only at start/end of sequences.
-2- The learning order for CWOPTs is based on thier session guide, not their trainer.
+2- The learning order for CWOPTs is based on their session guide, not their trainer.
+3- In The Farnsworth Revoluntionary Code Course he uses didadidida for mixed numbers, but apps and the ITU will use
+   a hyphen (or long dash) dadidididida instead like: 2-1/3
 
 All the above prosigns, can be practiced with the prosign option, in delimiters, or as words
 in an input file.
