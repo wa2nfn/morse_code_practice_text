@@ -17,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.7.1" // 12/01/2021
+	version       = "1.7.2" // 1/02/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
