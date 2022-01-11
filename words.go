@@ -30,6 +30,7 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 	}
 
 	file, err := os.Open(flaginput)
+
 	if err != nil {
 		fmt.Printf("\n%s File name <%s>.\n", err, flaginput)
 		os.Exit(1)

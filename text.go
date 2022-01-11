@@ -40,7 +40,7 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 	file, err := os.Open(flagtext)
 	if err != nil {
-		fmt.Printf("\n%s File name <%s>.\n", err, flagtext)
+		fmt.Printf("\n%s For file name <%s>.\n", err, flagtext)
 		os.Exit(1)
 	}
 	defer file.Close()
