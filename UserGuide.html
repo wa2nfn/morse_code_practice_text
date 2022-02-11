@@ -326,13 +326,9 @@ NOTE: Regardless of the value of inlist or lesson, a prosign found in the input 
 Example 8:
 skipping over initial words from an input file
 </H2>
-<B>mcpt -in=words.txt -inlen=3:8 -num=30 -skip=20</B>
+<B>mcpt -in=words.txt -inlen=3:8 -num=30</B>
 <P>
 This command will find a lot of short words in a book for example. Like "I a to of in the an on etc."
-As a result if the short ones are encountered first, then you may not get to the longer ones, you could:
-pick a different input file, edit it to discard some early text or use the option "-skip <number>", as
-above. This will skip over the fist number of unique words that match your criteria (inlen, inlist).
-And then after skipping, proceed to record unique words to use.
 <H2>
 Example 9:
 have matching words repeat in sequence
@@ -396,7 +392,7 @@ the delimiter appears AFTER the word repeating is done. as shown below. This is 
 <PRE>
 THE THE THE &lt;BT&gt; MAN MAN MAN &lt;BT&gt; AND AND AND &lt;BT&gt;
 
-Note: the "-delimiter" option is NOT effected by any other option (random, skip, prelen, suflen)
+Note: the "-delimiter" option is NOT effected by any other option (random, prelen, suflen)
 `
 Note: it is literal, and what ever you want. e.g. '.?/', 'XYZ', '123', 'It can even have multiple parts'.
 

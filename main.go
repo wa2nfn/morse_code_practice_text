@@ -17,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.7.2" // 1/02/2022
+	version       = "1.7.3" // 02/11/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -25,7 +25,6 @@ const (
 	maxPrefix     = 20
 	maxDelimChars = 20
 	maxRepeat     = 20
-	maxSkips      = 5000
 	maxMixedMode  = 20
 	inListStr     = "A-Za-z"
 )
@@ -45,8 +44,34 @@ var (
 	/*
 	// cannot use lc e or w, conflict with LCWO
 	*/
-	ps2charReplacer = strings.NewReplacer("<AS>", "a", "<AR>", "b", "<BT>", "c", "<KA>", "d", "<HH>", "h", "<SK>", "f", "<SN>", "g", "\u00D8", "0","+","b","=","c","<VE>","i","<DU>","j","<SOS>","k")
-	char2psReplacer = strings.NewReplacer("a", "<AS>", "b", "<AR>", "c", "<BT>", "d", "<KA>", "h", "<HH>", "f", "<SK>", "g", "<SN>", "0", "\u00D8","i","<VE>","j","<DU>","k","<SOS>")
+	ps2charReplacer = strings.NewReplacer(
+		"<AS>", "(", 
+		"<AR>", ")", 
+		"<BT>", "{", 
+		"<KA>", "}", 
+		"<SK>", "[", 
+		"<SN>", "]", 
+		"<HH>", "#", 
+		"\u00D8", "0",
+		"+",">",
+		"=","{",
+		"<VE>","$",
+		"<DU>","%",
+		"<VA>","!",
+		"<SOS>","*")
+	char2psReplacer = strings.NewReplacer(
+		"(", "<AS>", 
+		")", "<AR>", 
+		"{", "<BT>", 
+		"}", "<KA>", 
+		"[", "<SK>", 
+		"]", "<SN>", 
+		"#", "<HH>", 
+		"0", "\u00D8",
+		"$","<VE>",
+		"!","<VE>",
+		"%","<DU>",
+		"*","<SOS>")
 )
 
 var (
@@ -60,7 +85,6 @@ var (
 	flagcgmin         int
 	flagrepeat        int
 	flagnum           int
-	flagskip          int
 	flagsufmin        int
 	flagsufmax        int
 	flagpremin        int
@@ -119,6 +143,7 @@ var (
 	flagsend          string
 	flagsendcheck     string
 	flagFL		bool
+	flaglc		bool
 )
 
 var message string = `
@@ -152,7 +177,6 @@ func init() {
 	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
 	flag.IntVar(&flagnum, "num", 100, fmt.Sprintf("Number of words (or code groups) to output. Min 1, max %d.\n", maxUserWords))
 	flag.IntVar(&flaglen, "len", 80, fmt.Sprintf("Length characters in an output line (max %d).", maxLineLen))
-	flag.IntVar(&flagskip, "skip", 0, fmt.Sprintf("Number of the first unique words in the input to skip. Max %d", maxSkips))
 	flag.StringVar(&flagsuflen, "suflen", "0:0", "The number of suffix characters to append. suflen=min:max")
 	flag.StringVar(&flagprelen, "prelen", "0:0", "The number of prefix characters to prefix. prelen=min:max")
 	flag.BoolVar(&flagrandom, "random", false, "If prelen|suflen is set, determines if it is used on a\nword-by-word basis. (default false)")
@@ -197,8 +221,9 @@ func init() {
 	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
 	flag.StringVar(&flagsend, "send", "", "A string of group numbers (0-7) to make sending practice groups.")
 	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
-	flag.BoolVar(&flagFL, "favorLast", false, "favor last character learned in code Groups")
-	flag.BoolVar(&flagReview, "review", false, "concentrated random groups building on previous char")
+	flag.BoolVar(&flagFL, "favorLast", false, "Favor last characters learned in code Groups")
+	flag.BoolVar(&flagReview, "review", false, "Concentrated random groups building on previous char")
+	flag.BoolVar(&flaglc, "lc", false, "Make output lowercase")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -270,8 +295,6 @@ func main() {
 
 	var fp *os.File
 	kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X" // default for LCWO
-	localSkipFlag := false
-	localSkipCount := 0
 
 	flag.Parse() // first parse to see if we had -opt
 
@@ -479,17 +502,6 @@ func main() {
 	if flagMixedMode < 0 || flagMixedMode == 1 || flagMixedMode > maxMixedMode {
 		fmt.Printf("\nError: mixedMode X Where X  min=2, max=%d, default 0=off.\n", maxMixedMode)
 		os.Exit(1)
-	}
-
-	if flagskip < 0 || flagskip > maxSkips {
-		fmt.Printf("\nError: skip x  minimum 0, maximum %d, default 0.\n", maxSkips)
-		os.Exit(1)
-	}
-
-	if flagskip >= 1 {
-		// we will be skipping some words
-		localSkipFlag = true
-		localSkipCount = flagskip
 	}
 
 	if flagnum < 1 || flagnum > maxUserWords {
@@ -839,8 +851,24 @@ func main() {
 		flagmust = string(ckValidListString(flagmust,"must"))
 	}
 
+
+	if flagheader != "" {
+		if flaglc && strings.ContainsAny(flagheader,"ABCDEFGHIJKLMNOPRSTUVWXYZ") {
+			fmt.Printf("\nWarning: <flagheader> contains uppercase letters, <lc> will change them.\n         You will need to edit them in the output if that will be a problem.\n\nEnter \"y\", for yes make all lowercase: ")
+			ans := ""
+
+			fmt.Scanf("%s", &ans)
+			if ans != "y" {
+
+				fmt.Println("\nNo output as requested.")
+				os.Exit(0)
+			}
+			fmt.Println()
+		}
+	}
+
 	//
-	// major flow decision - WORD_MODE , CODE_GROUPS, PERMUTE, CALLSIGN ?
+	// Major flow decision - WORD_MODE , CODE_GROUPS, PERMUTE, CALLSIGN ?
 	//
 	if flagFL == true && len(flagcglist) > 1 {
 		// favorLast
@@ -895,7 +923,7 @@ func main() {
 	}
 
 	if flagtext != "" {
-		readStringsFile(localSkipFlag, localSkipCount, fp)
+		readStringsFile(fp)
 		doOutput(wordArray, fp)
 		os.Exit(0) // program done
 	}
@@ -906,7 +934,7 @@ func main() {
 	}
 
 	// word mode default
-	readFileMode(localSkipFlag, localSkipCount, fp)
+	readFileMode(fp)
 	doOutput(wordArray, fp)
 }
 
@@ -1089,6 +1117,10 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	// revert lc to ProSigns
 	res = char2psReplacer.Replace(res)
+
+	if flaglc {
+		res = strings.ToLower(res)
+	}
 
 	if flagoutput == "" {
 		fmt.Printf("%s\n", res)

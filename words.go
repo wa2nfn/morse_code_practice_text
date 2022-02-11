@@ -15,7 +15,7 @@ import (
  */
 
 // read input file and create words. vs do code groups
-func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
+func readFileMode(fp *os.File) {
 
 	discarded := false
 
@@ -88,16 +88,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 		if word.MatchString(tmpWord) {
 
-			// skip only viable matching words
-			if localSkipFlag {
-				if localSkipCount > 0 {
-					localSkipCount--
-					continue
-				} else {
-					localSkipFlag = false
-				}
-			}
-
 			// if prosign check it or ignore it
 			if len(tmpWord) == 3 || len(tmpWord) == 4 {
 				if ps.MatchString(tmpWord) {
@@ -145,9 +135,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 			if discarded {
 				fmt.Printf("Your input file DID have some text.\n")
-				if localSkipFlag {
-					fmt.Printf("Your -skip X option maybe too aggressive.\n")
-				}
 			}
 			os.Exit(0)
 		}
@@ -204,9 +191,6 @@ func readFileMode(localSkipFlag bool, localSkipCount int, fp *os.File) {
 			fmt.Println(msg)
 			if discarded {
 				fmt.Printf("Your input file DID have some text.\n")
-				if localSkipFlag {
-					fmt.Printf("Your -skip X option maybe too aggresive.\n")
-				}
 			}
 			os.Exit(0)
 		}
@@ -640,14 +624,6 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 			}
 		}
 	}
-
-	/*
-		// why? WDL old logic, can we remove it
-			if flagLCWOramp && flagLCWOrepeat == 0 {
-				strOut = wordOut
-				wordOut = ""
-			}
-	*/
 
 	// mixedMode put out code Group
 	if flagMixedMode > 1 && (flagMMR == false || (flagMMR == true && flipFlop())) {

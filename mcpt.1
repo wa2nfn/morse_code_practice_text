@@ -242,6 +242,9 @@ a string of characters to output when the speed is transitioing from Fast to Slo
 (see -help=LCWO).
 The string can cause other LCWO behaviors (audio frequency tone changes, delays, see User Guide)
 .TP
+.IP -lc
+output  will be lowercase
+.TP
 .IP -len
 the character length of an output line. Length maybe exceeded to prevent a word break.
 .TP
@@ -300,10 +303,6 @@ create special code groups for learning to send
 .TP
 .IP -sendCheck=FILE,FILE
 verify sending practice to decoded morse from your trainer software
-.TP
-.IP -skip=NUM
-Skips over the first NUM words in the -in file which meet the selection criteria.
-User might want to skip a large table of contents, or lists of illustrations, etc.
 .TP
 .IP -suflen=min:max
 set the length of a suffix or characters (-suflist=.IPST) to append to a word or code group.

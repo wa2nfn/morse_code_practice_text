@@ -141,5 +141,5 @@ repeat=1
 # Reverses the spelling of words
 reverse=false
 
-# Number of the first unique words in <in> to skip over
-skip=0
+# make all output lowercase
+lc

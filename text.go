@@ -15,7 +15,7 @@ import (
   First we will strip characters out of the possible characters to listen to.
 */
 
-func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
+func readStringsFile(fp *os.File) {
 
 	discarded := false
 
@@ -72,16 +72,6 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 		if isInSet(textWord) {
 
-			// skip only viable matching words
-			if localSkipFlag {
-				if localSkipCount > 0 {
-					localSkipCount--
-					continue
-				} else {
-					localSkipFlag = false
-				}
-			}
-
 			// if prosign check it or ignore it
 			if len(textWord) == 3 || len(textWord) == 4 {
 				if ps.MatchString(textWord) {
@@ -117,9 +107,6 @@ func readStringsFile(localSkipFlag bool, localSkipCount int, fp *os.File) {
 
 		if discarded {
 			fmt.Printf("Your input file DID have some text, but nothing matched your criteria.\n")
-			if localSkipFlag {
-				fmt.Printf("Your -skip X option maybe too aggressive.\n")
-			}
 		}
 		os.Exit(0)
 	}

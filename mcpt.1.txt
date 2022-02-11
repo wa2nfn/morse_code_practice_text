@@ -202,6 +202,8 @@ OPTIONS
 	      User Guide)
 
 
+       -lc   the output will be lowercase
+
        -len   the character length of an output line. Length maybe exceeded to
 	      prevent a word break.
 
@@ -287,12 +289,6 @@ OPTIONS
 	      compare file of practice material to file of decoded morse sent
 	      in an appropraite tutor which can decode audio morse and create
 	      a text file
-
-       -skip=NUM
-	      Skips  over  the	first NUM words in the -in file which meet the
-	      selection criteria.  User might want to skip a  large  table  of
-	      contents, or lists of illustrations, etc.
-
 
        -suflen=min:max
 	      set  the	length	of  a suffix or characters (-suflist=.IPST) to
