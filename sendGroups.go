@@ -49,8 +49,32 @@ func doSendCheck() {
 		/*
 		// cannot use lc e or w, conflict with LCWO
 		*/
-		char2psReplacer = strings.NewReplacer("a", "^AS", "b", "^AR", "c", "^BT", "d", "^KA", "h", "^HH", "f", "^SK", "g", "^SN", "0", "\u00D8","i","<VE>","j","<DU>","k","<SOS>")
-		ps2charReplacer = strings.NewReplacer("^AS", "a", "^AR", "b", "^BT", "c", "^KA", "d", "^HH", "h", "^SK", "f", "^SN", "g", "\u00D8", "0","+","b","=","c","^VE","i","^DU","j","k","<SOS>")
+		char2psReplacer = strings.NewReplacer(
+			"(", "^AS", 
+			")", "^AR", 
+			"{", "^BT", 
+			"}", "^KA", 
+			"#", "^HH", 
+			"[", "^SK", 
+			"]", "^SN", 
+			"0", "\u00D8",
+			"$","^VE",
+			"%","^DU",
+			"*","^SOS")
+		ps2charReplacer = strings.NewReplacer(
+			"^AS", "(", 
+			"^AR", ")", 
+			"^BT", "{", 
+			"^KA", "}", 
+			"^HH", "#", 
+			"^SK", "[", 
+			"^SN", "]", 
+			"\u00D8", "0",
+			"+",")",
+			"=","{",
+			"^VE","$",
+			"^DU","%",
+			"^SOS","*")
 		gotCarat = true
 	}
 
@@ -177,12 +201,17 @@ func buildSendSlice() []rune {
 	}
 	// special: use lc letters which we will later map to prosigns
 	if strings.Contains(flagsend, "6") {
-		charSlice = append(charSlice, []rune("abcdefg")...)
+		charSlice = append(charSlice, []rune("abcdfgh")...)
 		gotDigit = true
 	}
 	if strings.Contains(flagsend, "7") {
 		// cut numbers
 		charSlice = append(charSlice, []rune("TAUV456BDN")...)
+		gotDigit = true
+	}
+	if strings.Contains(flagsend, "8") {
+		// cut numbers
+		charSlice = append(charSlice, []rune("(){}#[]$%*")...)
 		gotDigit = true
 	}
 
