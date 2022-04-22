@@ -652,7 +652,7 @@ ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?
 
 |w25 <I>TWO FOUR NINE </I>|w20 <U>FL,WE0</U> |w25 <I>FOUR TEN ONE </I>|w20 <U>YB251C</U> |w25 <I>ONE FIVE NINE</I> |w20 <U>AJRR7H</U>
 
-      You see the copy starts with the speed at 25 wpm (speed chages look like |wXX), that's 
+      You see the copy starts with the speed at 25 wpm (speed changes look like |wXX), that's 
       LCWO_low=20 + LCWO_step=5.
       You see prior to each code group (underlined above) the speed drops.
 
@@ -1264,7 +1264,6 @@ or grammatical meaning is implied. E.g. "today tree name rig sunshine"
    (Required: <B>LCWO_effective_ramp, LCWO_effective, LCWO_low, LCWO_step, LCWO_num</B>)
 
 <I>LCWO_repeat:</I> Functionally, this is similar to _ramp, in that it starts low and builds up, but its
-
    on a word-by-word basis, not sections of sentences. <B>LCWO_repeat</B> enables the behavior.
    It starts at <B>LCWO_low</B> speed, it sends one word, then the speed is incremented to <B>LCWO_low</B>
    + <B>LCWO_step</B> then the SAME word is sent again, this repeats until <B>LCWO_num</B>
@@ -1275,6 +1274,9 @@ or grammatical meaning is implied. E.g. "today tree name rig sunshine"
    <B>LCWO_low</B> minus <B>LCWO_effective</B>. Ex. LCWO_low=20, LCWO_step=5, LCWO_effective=14 giving you what users refer to as 20/14
    (a.k.a. Farnsworth), so the difference is 6 wpm. With LCWO_repeat=3 you could get copy like: 
    "|e14 |w20 some |e19 |w25 some |e24 |w30 some |e14 |w20 word |e19 |w25 word |e24 |w30 word ...."
+
+    NOTE: As of version 1.9, you can use a negative value for LCWO_step - the behavior change is that you will start at the highest
+    speed and then decrement in steps until LCWO_low has been reached. (This is the approach taken in Morse Code Ninja Speedracer files.)
 
    (Required: <B>LCWO_repeat, LCWO_low, LCWO_step</B>)
 
@@ -1421,6 +1423,9 @@ clue that the speed was going to drop back for the next set of words.
 |w10 HURST |w13 HURST |w16 HURST &lt;SK> |w10 DARCY |w13 DARCY |w16 DARCY &lt;BT> |w10 YOUNG |w13 YOUNG
 
 To get this I added to the command line (or options.mcpt.: -delimiter="&lt;SK>|&lt;BT>" -DM 1
+
+NOTE: As of version 1.9, you can use a negative value for LCWO_step - the behavior change is that you will start at the highest
+      speed and then decrement in steps until LCWO_low has been reached. (This is the approach taken in Morse Code Ninja Speedracer files.)
 </PRE>
 <H2>
 Example 33:
