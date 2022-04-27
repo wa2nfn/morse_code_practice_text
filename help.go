@@ -29,19 +29,18 @@ func doHelp() {
 The option <tutor> and <lesson> are for user convience. By choosing the pair, you are prepopluating the
 option <inlist> which reads words from the option <in> file, and <cglist> which is used to create code groups.
 
-The generated practice text therefore can be given to ANY tutor. In some cases, a tutor will teach a ProSign,
+The generated practice can be given to ANY tutor. In some cases, a tutor will teach a ProSign,
 but these two options only function with single characters.
 
 The option <inlist> will be populated with both uppercase and lowercase for each alpha character.
 
-The term "lesson" may not be used in every tutor, but its just the order that the character was taught.
-Lockdown Morse videos are numbered, that is NOT the lesson number below. Simply find the characters covered
+The term "lesson" may not be used in every tutor, its just the order that the character was taught.
+Lockdown Morse videos are numbered, that is NOT the lesson number below; find the characters covered
 by the video (e.g. video 005 teaches B and P) that correlates to lesson 13 and 14 below.
 
-Lesson is cumulative, that is if you enter lesson=5, all the characters from lesson 1 through 5 are used.
+Lesson is cumulative, if lesson=5, all the characters from lesson 1 through 5 are used.
 
-If the value for <tutor>, the names are NOT case sensitive, and for ease of typing you can use the abbreviated 
-name given on the second line below.
+The values for <tutor> are NOT case sensitive. For ease of typing use the abbreviated name in () below.
 
 Lesson  LCWO   JustLearnMC  G4FON  MorseElmer  MorseCodeNinja  HamMorse  LockdownMorse  MFJ418  PCWTutor  CWOPTs   Farnsworth
 Ch/Cnt           (JLMC)               (ME)          (MCN)        (HM)        (LDM)       (MFJ)   (PCWT)   (note 2)    (FW)
