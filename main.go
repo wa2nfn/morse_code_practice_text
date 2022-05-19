@@ -1,4 +1,3 @@
-// Copyright 2019, 2020, 2021 Bill Lanahan - WA2NFN
 //
 
 package main
@@ -17,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.7.3" // 02/11/2022
+	version       = "1.9.1" // 05/19/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -39,6 +38,7 @@ var (
 	effDelta       int
 	proSign        []string
 	runeMap        = make(map[rune]struct{})
+	ccMap        = make(map[rune]rune)
 	ps2runeMap     = make(map[string]rune)
 	rune2psMap     = make(map[rune]string)
 	/*
@@ -76,6 +76,7 @@ var (
 
 var (
 	flagLF            bool
+	flagcc            bool
 	flagTAB           bool
 	flagdisplayFormat string
 	flagmax           int
@@ -224,6 +225,7 @@ func init() {
 	flag.BoolVar(&flagFL, "favorLast", false, "Favor last characters learned in code Groups")
 	flag.BoolVar(&flagReview, "review", false, "Concentrated random groups building on previous char")
 	flag.BoolVar(&flaglc, "lc", false, "Make output lowercase")
+	flag.BoolVar(&flagcc, "cc", false, "Emphasize confused character pairs in code groups.")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -623,7 +625,7 @@ func main() {
 		effDelta = flagLCWOlow - flagLCWOeff
 	}
 
-	if flagLCWOstep < 0 || flagLCWOstep > 20 {
+	if flagLCWOstep < -20 || flagLCWOstep > 20 {
 		fmt.Printf("\nError: LCWO_step speed incremental step must be >= 0 and <= 30 wpm, 0(off).\n")
 		os.Exit(0)
 	}
@@ -754,7 +756,7 @@ func main() {
 			kochChars = "QSEMTADJIRC5NLG0UB41HOZY69KW27FX.?38PV,/="
 		} else if flagtutor == "FARNSWORTH" || flagtutor == "FW" {
 			flagtutor = "FW"
-			kochChars = "TAEHCSNOL.BIFRW?DYMGUP,\"VKXQJZ(;:12345/-67890=d+" //wdl
+			kochChars = "TAEHCSNOL.BIFRW?DYMGUP,\"VKXQJZ(;:12345/-67890=d+"
 		} else {
 			fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see -helpi=tutors.\n")
 			os.Exit(1)
@@ -797,6 +799,7 @@ func main() {
 
 		flaginlist = tmp_c
 	}
+	flagcglist = strings.ToUpper(flagcglist)
 
 	// must follow other cglist manipulation
 	// either case lets get cglist evaluated now
@@ -811,6 +814,45 @@ func main() {
 				// return expanded
 				flagCglistRune = ckValidListString(flagcglist, "cglist")
 			}
+		}
+	}
+
+	// ***** enhanced for char confusion
+	// need to see which potential confusing chars are in the flagcglist
+	if flagcc { //WDL
+		// populate the map for each confusing-char pair
+
+		if strings.ContainsRune(flagcglist,'Q') && strings.ContainsRune(flagcglist,'Y') {
+			ccMap['Q']='Y'
+			ccMap['Y']='Q'
+		}
+		if strings.ContainsRune(flagcglist,'F') && strings.ContainsRune(flagcglist,'L') {
+			ccMap['F']='L'
+			ccMap['L']='F'
+		}
+		if strings.ContainsRune(flagcglist,'W') && strings.ContainsRune(flagcglist,'G') {
+			ccMap['W']='G'
+			ccMap['G']='W'
+		}
+		if strings.ContainsRune(flagcglist,'R') && strings.ContainsRune(flagcglist,'K') {
+			ccMap['R']='K'
+			ccMap['K']='R'
+		}
+		if strings.ContainsRune(flagcglist,'U') && strings.ContainsRune(flagcglist,'D') {
+			ccMap['U']='D'
+			ccMap['D']='U'
+		}
+		if strings.ContainsRune(flagcglist,'P') && strings.ContainsRune(flagcglist,'X') {
+			ccMap['P']='X'
+			ccMap['X']='P'
+		}
+		if strings.ContainsRune(flagcglist,'A') && strings.ContainsRune(flagcglist,'N') {
+			ccMap['A']='N'
+			ccMap['N']='A'
+		}
+		if strings.ContainsRune(flagcglist,'V') && strings.ContainsRune(flagcglist,'B') {
+			ccMap['B']='V'
+			ccMap['V']='B'
 		}
 	}
 
@@ -951,7 +993,7 @@ func ckValidListString(ck string, whoAmI string) []rune {
 		os.Exit(99)
 	}
 
-	ck = strings.Replace(ck,"d","<KA>",-1) // needed for Farnsworth WDL
+	ck = strings.Replace(ck,"d","<KA>",-1) // needed for Farnsworth
 	str := strings.ToUpper(ck)
 	str = ps2charReplacer.Replace(str)
 

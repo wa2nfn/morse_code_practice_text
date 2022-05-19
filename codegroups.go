@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	_ "fmt"
+	"strings"
 )
 
 var groupLengthDelta int // only used if flaghead==t
@@ -27,6 +29,26 @@ func makeGroups(fp *os.File) {
 
 		// tmpOut is our code group
 		tmpOut, charSlice = makeSingleGroup(charSlice)
+
+		// ***** enhancement for char confusion
+		if flagcc && len(tmpOut) > 2 { // skip one char str with space
+			// just look for one pair to improve so we don't spin our wheels
+
+			done := false
+			for char, subChar := range ccMap {
+
+				if strings.ContainsRune(string(tmpOut), char) {
+					// find a random char to replace with putC, yes it could be gotc for now
+					f := rng.Intn(len(tmpOut) -1 )
+					tmpOut[f] = subChar
+					done = true
+				}
+				if done {
+					break
+				}
+			}
+
+		}
 
 		// for flagmust - replace 1 char with one from flagmust
 		if mustLen > 0 {
