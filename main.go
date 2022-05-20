@@ -854,6 +854,18 @@ func main() {
 			ccMap['B']='V'
 			ccMap['V']='B'
 		}
+		if strings.ContainsRune(flagcglist,',') && strings.ContainsRune(flagcglist,'?') {
+			ccMap[',']='?'
+			ccMap['?']=','
+		}
+		if strings.ContainsRune(flagcglist,'S') && strings.ContainsRune(flagcglist,'O') {
+			ccMap['S']='O'
+			ccMap['O']='S'
+		}
+		if strings.ContainsRune(flagcglist,'M') && strings.ContainsRune(flagcglist,'I') {
+			ccMap['M']='I'
+			ccMap['I']='M'
+		}
 	}
 
 	// no longer needed save space
