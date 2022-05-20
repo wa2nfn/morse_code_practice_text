@@ -31,20 +31,30 @@ func makeGroups(fp *os.File) {
 		tmpOut, charSlice = makeSingleGroup(charSlice)
 
 		// ***** enhancement for char confusion
-		if flagcc && len(tmpOut) > 2 { // skip one char str with space
+		if flagcc && len(tmpOut) > 3 { // skip 2 char str with space
 			// just look for one pair to improve so we don't spin our wheels
 
-			done := false
+			locFound := -1
 			for char, subChar := range ccMap {
 
 				if strings.ContainsRune(string(tmpOut), char) {
 					// find a random char to replace with putC, yes it could be gotc for now
-					f := rng.Intn(len(tmpOut) -1 )
-					tmpOut[f] = subChar
-					done = true
+					for {
+						index := rng.Intn(len(tmpOut) -1)
+						if index != locFound {
+							tmpOut[index] = subChar
+							locFound = index
+							break
+						}
+					}
 				}
-				if done {
-					break
+				if locFound >= 0 {
+					if len(tmpOut) >= 6 {
+						// char for the first match
+						locFound = -1
+						break
+					}
+
 				}
 			}
 
