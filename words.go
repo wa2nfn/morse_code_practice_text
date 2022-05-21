@@ -14,6 +14,7 @@ import (
 ** added for Ordered write of input "NR"
  */
 
+
 // read input file and create words. vs do code groups
 func readFileMode(fp *os.File) {
 
@@ -293,7 +294,6 @@ func doOutput(words []string, fp *os.File) {
 	counter := 1
 	sectionSize := 0
 	LCWOspeeds := []int{}
-	LCWOspeedsRepeat := []int{}
 	ebslowcnt := 0
 	ebfastcnt := 0
 	ebinslow := false
@@ -345,7 +345,7 @@ func doOutput(words []string, fp *os.File) {
 		anyLCWO = true
 	}
 
-	if flagLCWOlow > 0 && flagLCWOstep > 0 && flagLCWOnum > 0 && (flagRAMP == false && flagRANDOM == false && flagREPEAT == false) {
+	if flagLCWOlow > 0 && flagLCWOnum > 0 && (flagRAMP == false && flagRANDOM == false && flagREPEAT == false) {
 		fmt.Printf("\nError: You're missing an LCWO option to indicate a feature: i.e. LCWO_random, LCWO_repeat, ...\n")
 		os.Exit(5)
 	}
@@ -356,20 +356,34 @@ func doOutput(words []string, fp *os.File) {
 		strOut += " |e0 "
 	}
 
+
 	///////////////////////////////////
 	////// LCWO handling - intial setup
 	///////////////////////////////////
 	// seed array with LCWO_low, and fill as appropriate
-	if flagLCWOnum >= 1 && flagLCWOstep > 0 {
+	if flagLCWOnum >= 1 && flagLCWOstep > 0 && flagLCWOrepeat == 0 {
 		for i := 0; i < flagLCWOnum; i++ {
 			spd := flagLCWOlow + (i * flagLCWOstep)
 			LCWOspeeds = append(LCWOspeeds, spd)
 		}
 	}
 
-	if flagLCWOrepeat >= 1 && flagLCWOstep > 0 {
-		for i := 0; i < flagLCWOrepeat; i++ {
-			LCWOspeedsRepeat = append(LCWOspeedsRepeat, flagLCWOlow+(i*flagLCWOstep))
+	if flagLCWOrepeat >= 1 && flagLCWOstep != 0 {
+
+		// count UP original
+		if flagLCWOstep > 0 {
+
+			for i := 0; i < flagLCWOrepeat; i++ {
+				LCWOspeeds = append(LCWOspeeds, flagLCWOlow+(i*flagLCWOstep))
+			}
+		} else {
+			// count DOWN, high to low
+			flagLCWOstep *= -1
+
+			for i := (flagLCWOrepeat-1) * flagLCWOstep; i >= 0; i -= flagLCWOstep {
+
+				LCWOspeeds = append(LCWOspeeds, flagLCWOlow+i)
+			}
 		}
 	}
 
@@ -479,7 +493,7 @@ func doOutput(words []string, fp *os.File) {
 		}
 
 		// end raw word, and get back word to print
-		wordOut, charSlice = prepWord(wordOut, lastSpeed, index, charSlice)
+		wordOut, charSlice = prepWord(wordOut, lastSpeed, index, charSlice, LCWOspeeds) //wdl
 
 		///////////////////////////////////
 		// LCWO CHECK FOR SPEED MARKERS
@@ -558,7 +572,7 @@ func doOutput(words []string, fp *os.File) {
 ** take in a raw word from input file and tack on: prefix, suffix
 ** repeat if necessay,do mixedMode
  */
-func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (string, []rune) {
+func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOspeeds []int) (string, []rune) {
 	strOut := ""
 	rand := 3
 	mustLen := len(flagmust)
@@ -610,7 +624,8 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune) (strin
 
 		for i := 0; i < flagLCWOrepeat; i++ {
 			// if we ALSO have flagRAMP we must offset speed
-			spd := lastSpeed + (i * flagLCWOstep)
+		//wdl	spd := lastSpeed + (i * flagLCWOstep)
+			spd := LCWOspeeds[i]
 
 			if flagLCWOeff > 0 {
 				strOut += fmt.Sprintf("|w%d |e%d %s", spd, spd-effDelta, wordOut)
