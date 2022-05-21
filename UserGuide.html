@@ -1206,6 +1206,19 @@ SMMMUS SMRMSRSE EMESE SUURE EMMU EUSMRS ESSU &lt;AR&gt;
 several files; or you can run mcpt several times to cover the lesson range (i.e. lesson=1:10,lesson=11:20 etc.).
 </PRE>
 <H2>
+Example 27-4: 
+&lt;cc> added coverage of "confused characters" i.e. w/g, k/r, p/c
+</H2>
+<B>mcpt -codeGroups -lesson=20 -cc</B>
+<H2>
+<PRE>
+This option is only for code groups. It will increase the likelyhood of "confused characters". Some learners confuse characters that are mirror images of each other i.e. "F" and "L", some confused thaose that are compliments of each other, i.e. "R" and "K". This option will take the random code group generated, and if the lesson number (or cglist) includes BOTH of the confused pair, it will increase the liklihood of getting both characters.
+<P>
+For example, if the lesson using LCWO order, was greater than 10, then both F and L are potential practice letters. If MCPT had generated KFUMS then the &lt;cc> option would detect the F, and then randomly change another character to be an L, as in KFUML. This gives the learner practice of both characters in the same code group.
+<P>
+Note: Group lengths less than 3 are not modified; at most two pairs per group are modified and the selection of them is random as well. 
+/<PRE>
+<P>
 LCWO Option Overview: 
 </H2>
 (LCWO users also review Example 20)
