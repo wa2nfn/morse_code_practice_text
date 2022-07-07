@@ -16,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.9.1" // 05/19/2022
+	version       = "1.9.2" // 07/06/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -145,6 +145,7 @@ var (
 	flagsendcheck     string
 	flagFL		bool
 	flaglc		bool
+	flagll		bool
 )
 
 var message string = `
@@ -169,6 +170,7 @@ var message string = `
   -send       (create sending practice by specific groups of characters)
   -sendCheck  (to verify your accuracy of sending)
   -callsigns  (simple generated call signs based on tutor/lesson)
+  -lessonList (use lesson chars or cglist for ever increasing code group)
 
   	` // end message
 
@@ -226,6 +228,7 @@ func init() {
 	flag.BoolVar(&flagReview, "review", false, "Concentrated random groups building on previous char")
 	flag.BoolVar(&flaglc, "lc", false, "Make output lowercase")
 	flag.BoolVar(&flagcc, "cc", false, "Emphasize confused character pairs in code groups.")
+	flag.BoolVar(&flagll, "lessonList", false, "Use lesson chars or cglist for ever increasing group length.")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -554,8 +557,8 @@ func main() {
 		}
 	}
 
-	if flagrandom && (flagsufmin == 0 && flagpremin == 0) {
-		fmt.Printf("\nError: random requires either prelen > 0 or suflen > 0.\n")
+	if flagrandom && (flagsufmin == 0 && flagpremin == 0 && flagll == false) {
+		fmt.Printf("\nError: random requires: either prelen > 0 or suflen > 0, or lessonList.\n")
 		os.Exit(1)
 	}
 
@@ -790,6 +793,7 @@ func main() {
 			flagcglist = kochChars[flaglessonstart:flaglessonend]
 		}
 
+		/* WDL
 		tmp_c := ""
 		for _, c := range flagcglist {
 			if c >= 'A' && c <= 'Z' {
@@ -798,12 +802,13 @@ func main() {
 		}
 
 		flaginlist = tmp_c
+		*/
 	}
 	flagcglist = strings.ToUpper(flagcglist)
 
 	// must follow other cglist manipulation
 	// either case lets get cglist evaluated now
-	if flagCG || flagMixedMode > 0 {
+	if flagCG || flagMixedMode > 0 || flagll {
 
 		// make sure we have chars to work with
 		if len(flagcglist) < 1 {
@@ -819,7 +824,7 @@ func main() {
 
 	// ***** enhanced for char confusion
 	// need to see which potential confusing chars are in the flagcglist
-	if flagcc { //WDL
+	if flagcc { 
 		// populate the map for each confusing-char pair
 
 		if strings.ContainsRune(flagcglist,'Q') && strings.ContainsRune(flagcglist,'Y') {
@@ -871,7 +876,7 @@ func main() {
 	// no longer needed save space
 	runeMap = nil
 
-	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "") && flagReview == false {
+	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "") && flagReview == false && flagll == false {
 		nm := filepath.Base(os.Args[0])
 		if strings.HasSuffix(nm, ".exe") {
 			nm = strings.ReplaceAll(nm, ".exe", "")
@@ -984,6 +989,11 @@ func main() {
 
 	if flagReview {
 		review(fp)
+		os.Exit(0) // program done
+	}
+
+	if flagll {
+		lessonlist(fp)
 		os.Exit(0) // program done
 	}
 

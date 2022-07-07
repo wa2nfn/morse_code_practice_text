@@ -1218,6 +1218,26 @@ For example, if the lesson using LCWO order, was greater than 10, then both F an
 <P>
 Note: Group lengths less than 3 are not modified; at most two pairs per group are modified and the selection of them is random as well. 
 /<PRE>
+<H2>
+Example 27-5: 
+&lt;cc> using characters from -lesson, or cglist get repition practice
+</H2>
+<B>mcpt -lessonList -lesson=5 </B>
+<B>mcpt -lessonList -cglist="abc" </B>
+<H2>
+<PRE>
+In the default case, the -tutor=lcwo, so the characters of lesson 5 are: kmures.
+The output would be ever increasing strings (in order or string), like:
+
+k
+km
+kmu
+kmur
+kmure
+
+This coniues until the default -num, "words is reached.
+
+If you add the option -random, then the characters are randomized.
 <P>
 LCWO Option Overview: 
 </H2>
@@ -1613,7 +1633,7 @@ for typing) and allow LCWO.net to give us on-the-fly changes to speeds (characte
 26	The header |f650 tells sets the audio tone in HZ. (it will override the browser setting).
 27	Set the _ramp feature, character speed will increase throughout the session.
 28 	Repeat sets a second simultaneous feature which repeats EACH word at a higher speed, until the 
-        ramp speed increases.  Since its 3, each word is played at 3 speeds.
+        ramp speed increases. Since it's 3, each word is played at 3 speeds.
 29      Num specifies how many speed changes in the ramp from the start until the end of the session.
         The number of words at each ramp speed is the total num/LCWO_num (don't worry about the math errors 
 	in values are flagged).
