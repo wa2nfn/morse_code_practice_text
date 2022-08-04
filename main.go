@@ -16,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "1.9.2" // 07/06/2022
+	version       = "1.9.3" // 08/04/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -141,6 +141,7 @@ var (
 	flagcallsigns     bool
 	flagmust          string
 	flaghead          bool
+	flagheadcopy2     bool
 	flagsend          string
 	flagsendcheck     string
 	flagFL		bool
@@ -169,7 +170,7 @@ var message string = `
   -review     (concentrated practice with random groups)
   -send       (create sending practice by specific groups of characters)
   -sendCheck  (to verify your accuracy of sending)
-  -callsigns  (simple generated call signs based on tutor/lesson)
+  -callSigns  (simple generated call signs based on tutor/lesson)
   -lessonList (use lesson chars or cglist for ever increasing code group)
 
   	` // end message
@@ -204,7 +205,8 @@ func init() {
 	flag.BoolVar(&flagMMR, "MMR", false, "Mixed-Mode-Random, randomize code group occurance in mixed mode. (default false)")
 	flag.StringVar(&flagcglist, "cglist", "A-Z0-9/.,?=", "Set of characters to make code groups.")
 	flag.StringVar(&flagheader, "header", "", "string copied verbatim to head of output")
-	flag.BoolVar(&flaghead, "headCopy", false, "Used with codeGroups (or -in) to increment length by 1 for each group, until cglen is max")
+	flag.BoolVar(&flaghead, "headCopy", false, "Used with codeGroups (or -in) to increment length by 1 for each word/group.")
+	flag.BoolVar(&flagheadcopy2, "headCopy2", false, "Used with -in to increment  a word char-by-char length by 1 for each word.")
 	flag.IntVar(&flagLCWOlow, "LCWO_low", 15, "low character speed setting (wpm).")
 	flag.IntVar(&flagLCWOstep, "LCWO_step", 0, "speed change increment (wpm).")
 	flag.IntVar(&flagLCWOslow, "LCWO_slow", 0, "number of words to send at slower speed.")
@@ -481,6 +483,11 @@ func main() {
 
 	if flaghead && flagtext != "" {
 		fmt.Printf("\nError: option <headCopy> cannot be used with option <text>, use option <headCopy> with <in>.\n")
+		os.Exit(1)
+	}
+
+	if flagheadcopy2 && flaginput == "" && flagtext == "" {
+		fmt.Printf("\nError: option <headCopy2> requires <in> or <text>, cannot be used with option <CodeGroups>.\n")
 		os.Exit(1)
 	}
 

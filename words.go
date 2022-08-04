@@ -493,7 +493,13 @@ func doOutput(words []string, fp *os.File) {
 		}
 
 		// end raw word, and get back word to print
-		wordOut, charSlice = prepWord(wordOut, lastSpeed, index, charSlice, LCWOspeeds) //wdl
+		if flagheadcopy2 {
+			// much less capability that flaghead. just do a word like: w wo wor word
+			wordOut, charSlice = headcopy2(wordOut, index, charSlice) //wdl
+		} else {
+			// standard for all but flaghead2
+			wordOut, charSlice = prepWord(wordOut, lastSpeed, index, charSlice, LCWOspeeds)
+		}
 
 		///////////////////////////////////
 		// LCWO CHECK FOR SPEED MARKERS

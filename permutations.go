@@ -23,7 +23,7 @@ func permute(mode string, fp *os.File) {
 	}
 
 	if len(flagcglist) < 2 {
-		fmt.Println("\nError: input string to short, increase <lesson> for your <tutor>.\n")
+		fmt.Println("\nError: input string too short, increase <lesson> for your <tutor>.\n")
 		os.Exit(9)
 	}
 

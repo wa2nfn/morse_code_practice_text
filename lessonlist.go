@@ -30,6 +30,7 @@ func lessonlist(fp *os.File) {
 	out:
 	for j := 0; ; {
 		i := len(string(tmpArr))
+		notDone := false
 
 		for k := 0; k <= i; {
 			outBuf += string(tmpArr[0:k])
@@ -43,6 +44,12 @@ func lessonlist(fp *os.File) {
 			k++
 			j++
 			outBuf += "\n"
+			notDone = true
+		}
+
+		if flagrandom && notDone {
+			rand.Shuffle(len(tmpArr), func(i, j int) { tmpArr[i], tmpArr[j] = tmpArr[j], tmpArr[i] })
+			notDone = false
 		}
 	}
 
