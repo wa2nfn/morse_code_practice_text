@@ -225,7 +225,7 @@ func buildSendSlice() []rune {
 	}
 
 	if gotDigit == false {
-		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-7.\n        Digit \"0\" is required, if it's the only digit and you are specifying\n        your only group list.\n        E.g. -send=0 \"EOMT5\"\n")
+		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-7.\n        Digit \"0\" is required, if it's the only digit and you are specifying\n        your own group list.\n        E.g. -send=0 \"EOMT5\"\n")
 		os.Exit(1)
 	}
 
