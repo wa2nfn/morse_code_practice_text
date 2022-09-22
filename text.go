@@ -156,7 +156,7 @@ func readStringsFile(fp *os.File) {
 		}
 	}
 
-	if flagNR == false {
+	if flagordered == false {
 		rand.Seed(time.Now().UTC().UnixNano())
 		rand.Shuffle(len(wordArray), func(i, j int) { wordArray[i], wordArray[j] = wordArray[j], wordArray[i] })
 	}

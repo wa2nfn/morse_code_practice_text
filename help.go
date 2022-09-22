@@ -153,7 +153,7 @@ Approaches:
 
 New User? Where do you go from here? Copy-and-paste any of the commands listed in the QuickStart.html
 and follow the instructions to try them. Modify the option values per the -help or user guide.
-Provide the file created (remember to add -out=output.txt to commands without it) to your tutor and
+Provide the file created (remember to add -outFile=output.txt to commands without it) to your tutor and
 listen to the code. Find more details in the UserGuide.html to help you.
 
 Experiment. Enjoy. And hopefully see your comfort and speed with the Morse code increase.
@@ -167,7 +167,7 @@ Experiment. Enjoy. And hopefully see your comfort and speed with the Morse code 
 For certain features, or user convenience, you might specify a text file name in an option.
 (the name is your choice, these are just to be descriptive, note a ".txt" lets you edit with Notepad)
 
--out=output.txt Add to any command to capture output in a file, instead of writing to the screen.
+-outFile=output.txt Add to any command to capture output in a file, instead of writing to the screen.
     This is the easiest way to get the text to the software that will play the code for you or
     for some tutors, like LCWO, create an MP3 file.
 
@@ -179,14 +179,14 @@ For certain features, or user convenience, you might specify a text file name in
     the unique sound NOT the four characters, and NOT the two letters as if they were two letters of
     a word. The normal space that would be between the letters is eliminated.
 
--opt=option.txt An option.txt is provided. Any options that can be on the command line could 
+-optFile=option.txt An option.txt is provided. Any options that can be on the command line could 
     have been in an options file (with comments). Use of this can save time, and typos. Some users have 
     multiple option files, each for specific purposes.
 
     For example: instead of typing: 
-    mcpt -codeGroups -num=200 -cgmin=3 -cgmax=6 -out=out.txt -lesson=12
+    mcpt -codeGroups -num=200 -cgLen=2:6 -outFile=out.txt -lesson=12
 
-    You could type: mcpt -opt=option.txt if you had created an file named option.txt, as below:
+    You could type: mcpt -optFile=option.txt if you had created an file named option.txt, as below:
 
     **** everything below until the next starred line can be in the file
 
@@ -194,11 +194,10 @@ For certain features, or user convenience, you might specify a text file name in
     #  option.txt an option file short code groups
     #
     codeGroups
-    num=200      # creates 200 groups
-    cgmin=3      # the minimum group length is 3 characters
-    cgmax=6      # the minimum group length is 6 characters
-    out=out.txt  # write groups to this file
-    lesson=12    # use all the characters for the first 12 lessons (using the LCWO as the default)
+    num=200          # creates 200 groups
+    cgLen=2:6        # the minimum group length is 2 characters, maximum is 6
+    outFile=out.txt  # write groups to this file
+    lesson=12        # use all the characters for the first 12 lessons (using the LCWO as the default)
 
     ******
 
@@ -206,10 +205,10 @@ For certain features, or user convenience, you might specify a text file name in
     line value overrides the files value. So after the user does the above  practice, as an example, he 
     could run:
 
-    mcpt -opt=option.txt -lesson=15 
+    mcpt -optFile=option.txt -lesson=15 
     Instead of editing the file, to change the lesson number.
 
-    -in=word.txt This file is for those that want practice with "words". By "words", we mean a sequence of alpha 
+    -inFile=word.txt This file is for those that want practice with "words". By "words", we mean a sequence of alpha 
        characters (i.e. name morse xyz IBM), and/or a prosign (i.e. <AR>). The prosign option (-prosign) is not 
        needed if the prosign is in the input file, just like words are.
 

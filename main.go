@@ -109,6 +109,7 @@ var (
 	flagLCWOrandom    bool
 	flagLCWOefframp   bool
 	flagheader        string
+	flagfooter        string
 	flagprelist       string
 	flagPrelistRune   []rune
 	flagReview	bool
@@ -126,7 +127,7 @@ var (
 	flagtutor         string
 	flagrandom        bool
 	flagunique        bool
-	flagNR            bool
+	flagordered            bool
 	flagMMR           bool
 	flagCG            bool
 	flagreverse       bool
@@ -140,8 +141,7 @@ var (
 	flaglessonstart   int
 	flagcallsigns     bool
 	flagmust          string
-	flaghead          bool
-	flagheadcopy2     bool
+	flagheadcopy      int
 	flagsend          string
 	flagsendcheck     string
 	flagFL		bool
@@ -162,8 +162,8 @@ var message string = `
 
   One of these is required:
   =========================
-  -text       (for strings/words from a file)
-  -in         (for only words from a file)
+  -textFile   (for strings/words from a file)
+  -inFile     (for words from a file)
   -codeGroups (code groups)
   -permute    (permutations of characters based on tutor/lesson)
   -help       (option listing)
@@ -176,37 +176,37 @@ var message string = `
   	` // end message
 
 func init() {
-	flag.StringVar(&flaginlen, "inlen", "1:5", "# characters in a word. inlen=min:max")
-	flag.StringVar(&flagcglen, "cglen", "5:5", "# characters in a code group. cglen=min:max.")
+	flag.StringVar(&flaginlen, "inLen", "1:5", "# characters in a word. inLen=min:max")
+	flag.StringVar(&flagcglen, "cgLen", "5:5", "# characters in a code group. cgLen=min:max.")
 	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
 	flag.IntVar(&flagnum, "num", 100, fmt.Sprintf("Number of words (or code groups) to output. Min 1, max %d.\n", maxUserWords))
 	flag.IntVar(&flaglen, "len", 80, fmt.Sprintf("Length characters in an output line (max %d).", maxLineLen))
-	flag.StringVar(&flagsuflen, "suflen", "0:0", "The number of suffix characters to append. suflen=min:max")
-	flag.StringVar(&flagprelen, "prelen", "0:0", "The number of prefix characters to prefix. prelen=min:max")
+	flag.StringVar(&flagsuflen, "sufLen", "0:0", "The number of suffix characters to append. sufLen=min:max")
+	flag.StringVar(&flagprelen, "preLen", "0:0", "The number of prefix characters to prefix. preLen=min:max")
 	flag.BoolVar(&flagrandom, "random", false, "If prelen|suflen is set, determines if it is used on a\nword-by-word basis. (default false)")
-	flag.StringVar(&flagsuflist, "suflist", "0-9/,.?=", "Characters for a suffix.")
-	flag.StringVar(&flagprelist, "prelist", "0-9/,.?=", "Characters for a prefix.")
-	flag.StringVar(&flaginlist, "inlist", inListStr, "Characters to define an input word.")
-	flag.StringVar(&flaginput, "in", "", "Input text file name, for words (including extension).")
-	flag.StringVar(&flagtext, "text", "", "Input text file name, for any strings in file (including extension).")
-	flag.StringVar(&flagoutput, "out", "", "Output file name.")
-	flag.StringVar(&flagopt, "opt", "", "Specify an option file name to read or create.")
+	flag.StringVar(&flagsuflist, "sufList", "0-9/,.?=", "Characters for a suffix.")
+	flag.StringVar(&flagprelist, "preList", "0-9/,.?=", "Characters for a prefix.")
+	flag.StringVar(&flaginlist, "inList", inListStr, "Characters to define an input word.")
+	flag.StringVar(&flaginput, "inFile", "", "Input file, for words (including extension).")
+	flag.StringVar(&flagtext, "textFile", "", "Input text file, for any strings in file (including extension).")
+	flag.StringVar(&flagoutput, "outFile", "", "Output file for generated material.")
+	flag.StringVar(&flagopt, "optFile", "", "Specify an option file to read or create.")
 	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa| |bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
 	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH.\nUse -help=tutors for more info.")
-	flag.StringVar(&flagDM, "DM", "0:0", "Delimiter multiple, (if delimiter is used.) The number of delimiter\nstrings to add together. DM=min:max")
+	flag.StringVar(&flagDM, "delimiterNum", "0:0", "(If delimiter is used.) The number of delimiter\nstrings to add together. delimiterNum=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
-	flag.BoolVar(&flagDR, "DR", false, "Delimiter random, (if DM > 0) DR=true makes a delimiter randomly be used. (default false)")
+	flag.BoolVar(&flagDR, "delimiterRandom", false, "Delimiter random, if delimiterNum > 0. (default false)")
 	flag.IntVar(&flagMixedMode, "mixedMode", 0, fmt.Sprintf("mixedMode X, If X > 1 and  X < %d , a code group will print every X words.", maxMixedMode))
 	flag.BoolVar(&flagreverse, "reverse", false, "Reverses the spelling of words from inlist file. (default false)")
 	flag.BoolVar(&flagCG, "codeGroups", false, "Random code groups from cglist characters (default false).")
-	flag.BoolVar(&flagNR, "NR", false, "Non-Randomized output words read from input (default false).")
+	flag.BoolVar(&flagordered, "ordered", false, "Ordered (Non-Randomized) output words read from input (default false).")
 	flag.BoolVar(&flagMMR, "MMR", false, "Mixed-Mode-Random, randomize code group occurance in mixed mode. (default false)")
-	flag.StringVar(&flagcglist, "cglist", "A-Z0-9/.,?=", "Set of characters to make code groups.")
-	flag.StringVar(&flagheader, "header", "", "string copied verbatim to head of output")
-	flag.BoolVar(&flaghead, "headCopy", false, "Used with codeGroups (or -in) to increment length by 1 for each word/group.")
-	flag.BoolVar(&flagheadcopy2, "headCopy2", false, "Used with -in to increment  a word char-by-char length by 1 for each word.")
+	flag.StringVar(&flagcglist, "cgList", "A-Z0-9/.,?=", "Set of characters to make code groups.")
+	flag.StringVar(&flagheader, "header", "", "string copied verbatim to head of output.")
+	flag.StringVar(&flagfooter, "footer", "", "string copied verbatim to foot of output.")
+	flag.IntVar(&flagheadcopy, "headCopy", 0, "1: increment length by 1 for each word/group.\n2: each word spelled letter by letter, i.e. c co cod code")
 	flag.IntVar(&flagLCWOlow, "LCWO_low", 15, "low character speed setting (wpm).")
 	flag.IntVar(&flagLCWOstep, "LCWO_step", 0, "speed change increment (wpm).")
 	flag.IntVar(&flagLCWOslow, "LCWO_slow", 0, "number of words to send at slower speed.")
@@ -226,9 +226,9 @@ func init() {
 	flag.StringVar(&flagmust, "must", "", "A string of characters. Each output codeGroup/string/word, MUST get one character from this string.")
 	flag.StringVar(&flagsend, "send", "", "A string of group numbers (0-7) to make sending practice groups.")
 	flag.StringVar(&flagsendcheck, "sendCheck", "", "Two files: <mcptSend.txt,yourSent.txt>, one is output of -send, the other from you CW practice.")
-	flag.BoolVar(&flagFL, "favorLast", false, "Favor last characters learned in code Groups")
-	flag.BoolVar(&flagReview, "review", false, "Concentrated random groups building on previous char")
-	flag.BoolVar(&flaglc, "lc", false, "Make output lowercase")
+	flag.BoolVar(&flagFL, "favorLast", false, "Favor last characters learned in code Groups.")
+	flag.BoolVar(&flagReview, "review", false, "Concentrated random groups building on previous char.")
+	flag.BoolVar(&flaglc, "lowercase", false, "Make output lowercase.")
 	flag.BoolVar(&flagcc, "cc", false, "Emphasize confused character pairs in code groups.")
 	flag.BoolVar(&flagll, "lessonList", false, "Use lesson chars or cglist for ever increasing group length.")
 
@@ -276,7 +276,6 @@ func init() {
 	runeMap['='] = struct{}{}
 	runeMap['+'] = struct{}{}
 	runeMap['@'] = struct{}{}
-	runeMap['!'] = struct{}{}  // added at bottom of LCWO
 	runeMap['"'] = struct{}{}  // added at bottom of LCWO
 	runeMap['\''] = struct{}{} // added at bottom of LCWO
 	runeMap['('] = struct{}{}  // added at bottom of LCWO
@@ -405,7 +404,7 @@ func main() {
 		doHelp()
 	}
 
-	if flagNR == false {
+	if flagordered == false {
 		wordArray = nil // save space we're using the map not array
 	}
 
@@ -481,33 +480,33 @@ func main() {
 		delete(runeMap, '^')
 	}
 
-	if flaghead && flagtext != "" {
-		fmt.Printf("\nError: option <headCopy> cannot be used with option <text>, use option <headCopy> with <in>.\n")
+	if flagheadcopy == 1 && flagtext != "" {
+		fmt.Printf("\nError: option <headCopy=1> cannot be used with option <textFile>.\n")
 		os.Exit(1)
 	}
 
-	if flagheadcopy2 && flaginput == "" && flagtext == "" {
-		fmt.Printf("\nError: option <headCopy2> requires <in> or <text>, cannot be used with option <CodeGroups>.\n")
+	if flagheadcopy == 2 && flaginput == "" && flagtext == "" {
+		fmt.Printf("\nError: option <headCopy=2> requires <inFile> or <textFile>, cannot be used with option <CodeGroups>.\n")
 		os.Exit(1)
 	}
 
 	if flagmin > flagmax {
-		fmt.Printf("\nError: min must <= max <%d>, in -inlen.\n", flagmax)
+		fmt.Printf("\nError: min must <= max <%d>, in -inLen.\n", flagmax)
 		os.Exit(1)
 	}
 
 	if flagmax < flagmin {
-		fmt.Printf("\nError: max must >= min <%d>, in -inlen.\n", flagmin)
+		fmt.Printf("\nError: max must >= min <%d>, in -inLen.\n", flagmin)
 		os.Exit(1)
 	}
 
 	if flagmax > maxWordLen {
-		fmt.Printf("\nError: max in -inlen must <= <%d>, the system max.\n", maxWordLen)
+		fmt.Printf("\nError: max in -inLen must <= <%d>, the system max.\n", maxWordLen)
 		os.Exit(1)
 	}
 
 	if flagcgmax < flagcgmin {
-		fmt.Println("\nError: cgmax must >= cgmin, in -cglen.")
+		fmt.Println("\nError: max must >= min, in -cgLen.")
 		os.Exit(1)
 	}
 
@@ -527,7 +526,7 @@ func main() {
 	}
 
 	if flagsufmax > maxSuffix {
-		fmt.Printf("\nError: suflen, 0 = no suffix, max number of characters is %d.\n", maxSuffix)
+		fmt.Printf("\nError: sufLen, 0 = no suffix, max number of characters is %d.\n", maxSuffix)
 		os.Exit(1)
 	}
 
@@ -550,7 +549,7 @@ func main() {
 	}
 
 	if flagpremax > maxPrefix {
-		fmt.Printf("\nError: prelen, 0=no prefix, max number of characters is %d.\n", maxPrefix)
+		fmt.Printf("\nError: preLen, 0=no prefix, max number of characters is %d.\n", maxPrefix)
 		os.Exit(1)
 	}
 
@@ -565,7 +564,7 @@ func main() {
 	}
 
 	if flagrandom && (flagsufmin == 0 && flagpremin == 0 && flagll == false) {
-		fmt.Printf("\nError: random requires: either prelen > 0 or suflen > 0, or lessonList.\n")
+		fmt.Printf("\nError: random requires: either preLen > 0 or sufLen > 0, or lessonList.\n")
 		os.Exit(1)
 	}
 
@@ -574,8 +573,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if flagNR == true && (flagunique || flagCG) {
-		fmt.Printf("\nError: NR is mutually exclusive with unique and codeGroups options.\n")
+	if flagordered == true && (flagunique || flagCG) {
+		fmt.Printf("\nError: Ordered is mutually exclusive with unique and codeGroups options.\n")
 		os.Exit(1)
 	}
 
@@ -588,11 +587,11 @@ func main() {
 		// check for existance first
 		_, err := os.Stat(flagoutput)
 		if err == nil {
-			fmt.Printf("\nWarning: out file: <%s> exists!\n\nEnter \"y\" to overwrite it: ", flagoutput)
+			fmt.Printf("\nWarning: file: <%s> exists!\n\nEnter \"y\" to overwrite it: ", flagoutput)
 			ans := ""
 			fmt.Scanf("%s", &ans)
 			if ans != "y" {
-				fmt.Printf("\nNo output as requested.\n")
+				fmt.Printf("\nNo change.\n")
 				os.Exit(0)
 			}
 		}
@@ -602,7 +601,7 @@ func main() {
 			fmt.Println(err)
 			os.Exit(9)
 		}
-		fmt.Printf("\nWriting to file: %s\n", flagoutput)
+		fmt.Printf("\nWriting file: %s\n", flagoutput)
 	}
 
 	// LCWO options
@@ -920,7 +919,22 @@ func main() {
 
 	if flagheader != "" {
 		if flaglc && strings.ContainsAny(flagheader,"ABCDEFGHIJKLMNOPRSTUVWXYZ") {
-			fmt.Printf("\nWarning: <flagheader> contains uppercase letters, <lc> will change them.\n         You will need to edit them in the output if that will be a problem.\n\nEnter \"y\", for yes make all lowercase: ")
+			fmt.Printf("\nWarning: <flagheader> contains uppercase letters, <lowercase> will change them.\n         You will need to edit them in the output if that will be a problem.\n\nEnter \"y\", for yes make all lowercase: ")
+			ans := ""
+
+			fmt.Scanf("%s", &ans)
+			if ans != "y" {
+
+				fmt.Println("\nNo output as requested.")
+				os.Exit(0)
+			}
+			fmt.Println()
+		}
+	}
+
+	if flagfooter != "" {
+		if flaglc && strings.ContainsAny(flagfooter,"ABCDEFGHIJKLMNOPRSTUVWXYZ") {
+			fmt.Printf("\nWarning: <flagfooter> contains uppercase letters, <owercase> will change them.\n         You will need to edit them in the output if that will be a problem.\n\nEnter \"y\", for yes make all lowercase: ")
 			ans := ""
 
 			fmt.Scanf("%s", &ans)
@@ -1004,7 +1018,7 @@ func main() {
 		os.Exit(0) // program done
 	}
 
-	// word mode default
+	// word mode default or codeGroupes WDL
 	readFileMode(fp)
 	doOutput(wordArray, fp)
 }
@@ -1139,6 +1153,7 @@ func expandIt(lower string, upper string, whoAmI string) string {
 
 //
 // prints the bufStr adjusting the length per flaglen
+// PRINTIT
 //
 func printStrBuf(strBuf string, fp *os.File) {
 
@@ -1189,6 +1204,10 @@ func printStrBuf(strBuf string, fp *os.File) {
 	// revert lc to ProSigns
 	res = char2psReplacer.Replace(res)
 
+	if flagfooter != "" {
+		res += "\n" + flagfooter
+	}
+
 	if flaglc {
 		res = strings.ToLower(res)
 	}
@@ -1214,6 +1233,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 		}
 		os.Exit(0)
 	}
+
 } // end
 
 // simple random true or false

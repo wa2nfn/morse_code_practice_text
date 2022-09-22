@@ -2,11 +2,10 @@ package main
 
 import (
 	"os"
-	_ "fmt"
 	"strings"
 )
 
-var groupLengthDelta int // only used if flaghead==t
+var groupLengthDelta int 
 
 // make random code groups
 // uses the presaved chars in charSlice based on uniform distribution
@@ -63,7 +62,7 @@ func makeGroups(fp *os.File) {
 			tmpOut[ll] = rune(flagmust[rng.Intn(mustLen)])
 		}
 
-		if flaghead == false {
+		if flagheadcopy == 0 {
 			// do we need prefix or suffix
 
 			if flagrandom {
@@ -107,7 +106,7 @@ func makeGroups(fp *os.File) {
 			strBuf += string(tmpOut)
 		}
 
-		if (flagDMmin >= 1 || flaghead == true) && (flagDR == false || (flagDR == true && flipFlop())) {
+		if (flagDMmin >= 1 || flagheadcopy == 2) && (flagDR == false || (flagDR == true && flipFlop())) {
 			if flagDMmin == flagDMmax {
 				for count := 0; count < flagDMmax; count++ {
 					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
@@ -135,12 +134,12 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 	var tmp rune
 	gl := flagcgmin
 
-	if flaghead {
+	if flagheadcopy >= 0 {
 		gl += groupLengthDelta
 	}
 
 	// choose random group len from min to max
-	if flagcgmax != flagcgmin && flaghead == false {
+	if flagcgmax != flagcgmin && flagheadcopy == 0 { //FINN
 		gl = rng.Intn(flagcgmax-flagcgmin+1) + flagcgmin
 	}
 
@@ -164,14 +163,14 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 		}
 	}
 
-	if flaghead {
+	if flagheadcopy == 1 {
 		if flagcgmin+groupLengthDelta < flagcgmax {
 			groupLengthDelta++
 		} else {
 			groupLengthDelta = 0 // reset
 
 			// delimiter after each run
-			if flagDMmin >= 1 && flaghead == true && (flagDR == false || (flagDR == true && flipFlop())) {
+			if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
 				cg = append(cg, ' ')
 
 				if flagDMmin == flagDMmax {

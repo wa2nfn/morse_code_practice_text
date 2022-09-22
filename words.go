@@ -11,7 +11,7 @@ import (
 )
 
 /*
-** added for Ordered write of input "NR"
+** added for Ordered write of input
  */
 
 
@@ -57,7 +57,7 @@ func readFileMode(fp *os.File) {
 	word := regexp.MustCompile(s)
 	ps := regexp.MustCompile(`^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`)
 
-	if !flagNR {
+	if !flagordered {
 		wordMap = make(map[string]struct{})
 	}
 
@@ -104,10 +104,10 @@ func readFileMode(fp *os.File) {
 				tmpWord = reverse(tmpWord)
 			}
 
-			/* if -NR words are ordered so we store and 
+			/* if -ordered words are ordered so we store and 
 			** retrieve from an array else we use a map
 			*/
-			if flagNR {
+			if flagordered {
 				wordArray = append(wordArray, tmpWord)
 			} else {
 				// add to map if not there
@@ -127,7 +127,7 @@ func readFileMode(fp *os.File) {
 
 	msg := "\nSorry there is nothing to output.\nMake sure the options (or defaults) are not to restrictive (inlen, inlist).\nVerify your input file is sufficiently populated with matchable text.\n"
 
-	if flagNR {
+	if flagordered {
 		// ORDERED so use array
 		// ok so either the MAP or ARRAY is populated from input
 
@@ -149,7 +149,7 @@ func readFileMode(fp *os.File) {
 			}
 		}
 
-		// proSigns for NR = false done differently
+		// proSigns for ordered = false done differently
 		if flagprosign != "" && len(proSign) >= 1 {
 			replaceIndex := make(map[int]struct{})
 
@@ -217,7 +217,7 @@ func readFileMode(fp *os.File) {
 
 		// wordsMap has already gotten appropriate words
 		// we just need to divide into length buckets
-		if flaghead {
+		if flagheadcopy == 1 {
 
 			mlw := map[int][]string{}
 
@@ -493,7 +493,7 @@ func doOutput(words []string, fp *os.File) {
 		}
 
 		// end raw word, and get back word to print
-		if flagheadcopy2 {
+		if flagheadcopy == 2 {
 			// much less capability that flaghead. just do a word like: w wo wor word
 			wordOut, charSlice = headcopy2(wordOut, index, charSlice) //wdl
 		} else {
@@ -678,7 +678,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOsp
 	}
 
 	// use delimiter if NOT headcopy
-	if flagDMmin >= 1 && flaghead == false && (flagDR == false || (flagDR == true && flipFlop())) {
+	if flagDMmin >= 1 && flagheadcopy == 0 && (flagDR == false || (flagDR == true && flipFlop())) {
 		if flagDMmin == flagDMmax {
 			for count := 0; count < flagDMmax; count++ {
 				strOut += delimiterSlice[rng.Intn(len(delimiterSlice))]

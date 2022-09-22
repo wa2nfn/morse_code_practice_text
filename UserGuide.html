@@ -45,7 +45,7 @@ The following is a simple list of a behavior and the key option that enables it.
 	<LI> words: -text (words from a file: NAME RIG QSO WX)
 	<LI> call signs: -callSigns (generated from known characters: W1KMU K2MM WA4QWE/QRP)
 	<LI> mixed words and code groups: -mixedMode (HELLO RIG KMU?3R BYE NAME 4RED=)
-	<LI> general strings: -in (read from file: HELLO RIG 98.6 80KHZ KA2ABC &lt;SK> QRS?)
+	<LI> general strings: -in (read from file: HELLO RIG 98.6 80KHZ KA2ABC &lt;SK/ QRS?)
 	<LI> sending: -send and -sendCheck
 </ol>
 <H2> First read of document? You may want to skip aheaad to General Option Examples.
@@ -538,7 +538,7 @@ codeGroups, as well, the codeGroups could have prosigns.
 Example 17:
 reverse the spelling of input words
 </H2>
-<B>mcpt ... -in=myInput -NR <mark>-reverse</mark> ...</B>
+<B>mcpt ... -in=myInput -ordered <mark>-reverse</mark> ...</B>
 <P>
 Note: This example will demonstrate a few more things than the <B>reverse</B> option.
 <P>
@@ -548,11 +548,11 @@ The following line is the contents of words.txt.
 <P>
 The following command, sets </B>inlen=1</B> and <B>inlen=15</B> so that no words will be discarded, Also, </B>
 num</B> was set to 11 so that no words are discarded and none are used more than once.
-<B>NR</B> means non-randomized, in other words the output stays in the same order as the input.
+<B>ordered</B> output stays in the same order as the input.
 <B>len</B> was set short, so that you can see that <I>if</I> a line is longer, but a word is
 straddling the length boundary, that that word is finished rather than having a word split.
 <P>
-mcpt -inlen=1:15 -num=11 -in=words.txt -NR -len=20 -out=myOut
+mcpt -inlen=1:15 -num=11 -in=words.txt -ordered -len=20 -out=myOut
 <P>
 The text below is the output now in file=<I>words.txt</I>.
 Note, that the first word was captured even though it started with an uppercase, that's because the 
@@ -568,7 +568,7 @@ Now we'll reuse the command, adding the <B>reverse</B> option, <I>and</I> changi
 to be that of the output above. The text following the command has each word reversed. (Suggested 
 William Pierpont's document. You retain letter frequency of the input, and eliminate anticipation.)
 <P>
-mcpt -inlen=1:15 -num=11 -in=words.txt -NR -len=20 -reverse -out=myReversed
+mcpt -inlen=1:15 -num=11 -in=words.txt -ordered -len=20 -reverse -out=myReversed
 <P>
 <I>
 SIHT SI EHT TNETNOC FO
@@ -585,7 +585,7 @@ options file (if used), and that in turn overrides the built-in default. This ma
 but with so many options it does make for easy and limited typing to change the tools behavior for 
 different practice text generation.
 <P>
-mcpt -inlen=1:15 -num=11 -in=words.txt -NR -len=20 -out=myOut -reverse -in=myReversed -out=myFinal
+mcpt -inlen=1:15 -num=11 -in=words.txt -ordered -len=20 -out=myOut -reverse -in=myReversed -out=myFinal
 <P>
 <I>
 THIS IS THE CONTENT OF
@@ -1545,7 +1545,7 @@ the quick brown fox jumped over the lazy dogs back
        
      7	num=11
      8	len=60
-     9	NR
+     9	ordered
     10	
        
     11	cglen=5:5
@@ -1586,7 +1586,7 @@ the quick brown fox jumped over the lazy dogs back
 5       The minimum, and maximum length of an input word, or its discarded. Note "jumped" is longer than 6, 
         so its discarded.
 7-10    Some global options. Num limits the words in output (note a sequential repeat of a word is not counted).
-        The output line len, is approximately this long unless it would split a word.  NR means the input 
+        The output line len, is approximately this long unless it would split a word.  Ordered means the input 
 	words are Not-Randomized, so they are in the order they were found unless there were discards.
 11-13   Are for code groups. In this example, the code group is created because of the mixedMode option. 
         The lengths for min and max are the same so the code groups are fixed size. The characters in a code 
@@ -1713,27 +1713,27 @@ Other non-LCWO options can be used as well.
 LCWO_slow: (alternating slow/fast word groups)
 		requires: LCWO_slow, LCWO_low, LCWO_fast, LCWO_step
 		optional: LCWO_sf, LCWO_fs
-		non-compatible: LCWO_ramp, LCWO_effective_ramp, LCWO_num, LCWO_repeat
+		incompatible: LCWO_ramp, LCWO_effective_ramp, LCWO_num, LCWO_repeat
 
 LCWO_ramp: (steady increase of character speed sections of words)
 		requires: LCWO_ramp, LCWO_low, LCWO_step, LCWO_num
 		optional: LCWO_sf, LCWO_repeat, LCWO_effective
-		non-compatible: LCWO_effective_ramp
+		incompatible: LCWO_effective_ramp
 
 LCWO_effective_ramp: (steady increase of effective speed sections, with fixed character speed)
 		requires: LCWO_effective_ramp, LCWO_low, LCWO_step, LCWO_num, LCWO_effective
 		optional: LCWO_sf
-		non-compatible: LCWO_ramp, LCWO_repeat
+		incompatible: LCWO_ramp, LCWO_repeat
 
 LCWO_repeat: (each word repeated at increasing character speeds)
 		requires: LCWO_repeat, LCWO_low, LCWO_step
 		optional: LCWO_effective, LCWO_ramp (LCWO_num if LCWO_ramp)
-		non-compatible: LCWO_effective_ramp
+		incompatible: LCWO_effective_ramp
 
 LCWO_random: LCWO_low, LCWO_num, LCWO_step (no other LCWO options): (each word has random character speed)
 		requires: LCWO_low, LCWO_step, LCWO_num
 		optional:
-		non-compatible: LCWO_effective_ramp, LCWO_ramp, LCWO_repeat, LCWO_slow, LCWO_fast, 
+		incompatible: LCWO_effective_ramp, LCWO_ramp, LCWO_repeat, LCWO_slow, LCWO_fast, 
 		LCWO_sf, LCWO_fs
 
 Note: LCWO_sf and LCWO_fs MAY be used outside of LCWO. If used with option mixedMode,
