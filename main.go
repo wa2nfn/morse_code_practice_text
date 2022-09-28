@@ -191,7 +191,7 @@ func init() {
 	flag.StringVar(&flagtext, "textFile", "", "Input text file, for any strings in file (including extension).")
 	flag.StringVar(&flagoutput, "outFile", "", "Output file for generated material.")
 	flag.StringVar(&flagopt, "optFile", "", "Specify an option file to read or create.")
-	flag.StringVar(&flagprosign, "prosign", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
+	flag.StringVar(&flagprosign, "prosignFile", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa| |bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
 	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH.\nUse -help=tutors for more info.")

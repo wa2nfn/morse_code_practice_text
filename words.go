@@ -125,7 +125,7 @@ func readFileMode(fp *os.File) {
 		os.Exit(1)
 	}
 
-	msg := "\nSorry there is nothing to output.\nMake sure the options (or defaults) are not to restrictive (inlen, inlist).\nVerify your input file is sufficiently populated with matchable text.\n"
+	msg := "\nSorry there is nothing to output.\nMake sure the options (or defaults) are not to restrictive (inLen, inList).\nVerify your input file is sufficiently populated with matchable text.\n"
 
 	if flagordered {
 		// ORDERED so use array

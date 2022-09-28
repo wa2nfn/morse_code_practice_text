@@ -34,8 +34,8 @@ Let's Go!
 </H1>
 <PRE>
 Each command shown writes to your <B>SCREEN</B>, just so you can verify its the content you want, to get that to
-your Morse Code tutor/training program, add the option: <I>-out=someOutputFile.txt</I>. This is placed in the current 
-directory, unless you specify a path to another location (i.e. -out="c:\documents\myOut.txt").
+your Morse Code tutor/training program, add the option: <I>-outFile=someOutputFile.txt</I>. This is placed in the current 
+directory, unless you specify a path to another location (i.e. -outFile="c:\documents\myOut.txt").
 <P>
 Getting the file to your tutor is dependent on your situation (email files to a phone; drag-and-drop 
 in windows; mv|cp in linux; LCWO.net users go to "Convert text to CW" screen, which has a Windows like browse feature).
@@ -51,64 +51,64 @@ the user guide are more thorough and provide detail information.  For now, this 
 <P>
 EVERYTHING about the material generated is configurable, don't get hung up about the words, lenghts, the quantity, etc.
 <P>
-Where you see "-in=word.txt", you can use any TEXT file (not MS Word, word processor), email, book, etc.
+Where you see "-inFile=word.txt", you can use any TEXT file (not MS Word, word processor), email, book, etc.
 <P>
-For any of the following, you can add -out=output.txt, and capture text in a file instead of to your screen.
+For any of the following, you can add -outFile=output.txt, and capture text in a file instead of to your screen.
 </B>
 <H2>
 Commands for simple code groups
 </H2>
 <H3>
-mcpt -codeGroups -cglen=3:6
+mcpt -codeGroups -cgLen=3:6
 </H3>
 code groups with lenght of 3-6 characters; letters, nimbers, punctuation
 <H3>
-mcpt -codeGroups -cglen=5:5 -num=200 -len=30
+mcpt -codeGroups -cgLen=5:5 -num=200 -len=30
 </H3>
 this overrides some of the defaults that were used above
 <H3>
-mcpt -codeGroups -cglen=3:6 -lesson=12
+mcpt -codeGroups -cgLen=3:6 -lesson=12
 </H3>
 repeat the first case, but limit code groups to lesson 12 of LCWO (its the default tutor)
 <H3>
-mcpt -codeGroups -cglen=3:6 -lesson=12 -tutor=lcwo
+mcpt -codeGroups -cgLen=3:6 -lesson=12 -tutor=lcwo
 </H3>
 repeat the first case, but limit code groups to lesson 12, specify the tutor to use (half dozen to choose)
 <H2>
 Commands for WORD related practice
 </H2>
 <H3>
-mcpt -in=words.txt -inlen=3:10
+mcpt -inFile=words.txt -inLen=3:10
 </H3>
 word length 3-10 characters from words.txt file (random order)
 <H3>
-mcpt -in=words.txt -mixedMode=3
+mcpt -inFile=words.txt -mixedMode=3
 </H3>
 words with a code group eavey third entry
 <H3>
-mcpt -in=words.txt -mixedMode=3 -lesson=10 -tutor=g4fon
+mcpt -inFile=words.txt -mixedMode=3 -lesson=10 -tutor=g4fon
 </H3>
 repeat the above, adding -lesson=10, of the order taught in g4fon tutor
 <H3>
-mcpt -in=words.txt -mixedMode=3 -suflen=2
+mcpt -inFile=words.txt -mixedMode=3 -sufLen=2
 </H3>
-words with a one or 2 character suffix (you can change to/add -prelen=1, and/or -random.)
+words with a one or 2 character suffix (you can change to/add -preLen=1, and/or -random.)
 <H2>
 Commands using ProSigns from a prosign file
 </H2>
 The next few commands use prosigns from the file prosign.txt. That file and the User Guide
 provide additional information.
 <H3>
-mcpt -in=words.txt -prosign=prosign.txt -num=40
+mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40
 </H3>
 Each prosign appears, and is used as it it were a word. It therefore can interact with other word
-options: suflen, prelen, repeat, etc.
+options: sufLen, preLen, repeat, etc.
 <H3>
-mcpt -in=words.txt -prosign=prosign.txt -num=40 -mixedMode=3 
+mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40 -mixedMode=3 
 </H3>
 Each prosign appears, and is used as it it were a word AND in the interspersed code groups. Uppercase.
 <H3>
-mcpt -codeGroups -prosign=prosign.txt -num=40
+mcpt -codeGroups -prosignFile=prosign.txt -num=40
 </H3>
 ProSigns used just like a SINGLE character.
 <H3>
@@ -123,7 +123,7 @@ mcpt -permute=b -lesson=15 -lesson=12 -tutor=g4fon
 <H2>
 A sending practice data generation (a special form of codeGroup)
 </H2>
-mcpt -send=1,6 -cglen=2:5
+mcpt -send=1,6 -cgLen=2:5
 <H2>
 Help Commands
 </H2>

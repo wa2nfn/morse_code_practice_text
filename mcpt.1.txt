@@ -9,25 +9,25 @@ NAME
 SYNOPSIS
        mcpt -help | -help=options|files|tutors|lcwo
 
-       mcpt -permute=p|t|b [-prosign=FILE] [-lesson= NUM -tutor= TUTOR]
+       mcpt -permute=p|t|b [-prosignFile=FILE] [-lesson= NUM -tutor= TUTOR]
 
-       mcpt -codeGroups [-cglen= NUM ] [-cglist= LIST | [-lesson= NUM  -tutor=
-       TUTOR ] [-prosign= FILE ] [-codeGroups] [ MISC ]
+       mcpt -codeGroups [-cgLen= NUM ] [-cgList= LIST | [-lesson= NUM  -tutor=
+       TUTOR ] [-prosignFile= FILE ] [-codeGroups] [ MISC ]
 
-       mcpt  -in=  FILE  [-inlen= NUM ] [-nlist= LIST [[-suflen= NUM -suflist=
-       LIST ]][[-prelen= NUM -prelist= LIST] [-random]] [ MISC ]
+       mcpt  -inFile=  FILE  [-inLen= NUM ] [-inList= LIST [[-sufLen= NUM -sufList=
+       LIST ]][[-preLen= NUM -prelist= LIST] [-random]] [ MISC ]
 
-       mcpt -in= FILE [-inlen= NUM ] [-nlist= LIST  |  [-lesson=  NUM  -tutor=
-       TUTOR ] [-prosign= FILE ] [ MISC ]
+       mcpt -inFile= FILE [-inLen= NUM ] [-inList= LIST  |  [-lesson=  NUM  -tutor=
+       TUTOR ] [-prosignFile= FILE ] [ MISC ]
 
-       mcpt -in=FILE [-inlen= NUM ] [-nlist= LIST
-	| [-lesson=NUM -tutor= TUTOR ] [-mixedMode= NUM ] [-prosign= FILE ] [
+       mcpt -inFile=FILE [-inLen= NUM ] [-inList= LIST
+	| [-lesson=NUM -tutor= TUTOR ] [-mixedMode= NUM ] [-prosignFile= FILE ] [
        MISC ]
 
-       mcpt -text=FILE -lesson=  NUM  -tutor= TUTOR [ MISC ]
+       mcpt -textFile=FILE -lesson=  NUM  -tutor= TUTOR [ MISC ]
 
-       mcpt -callSigns [-lesson= -tutor= TUTOR ] | [-cglist= LIST  ]  [-delim-
-       iter= DELIM -DM= NUM ] [-repeat= NUM ] [ MISC ]
+       mcpt -callSigns [-lesson= -tutor= TUTOR ] | [-cgList= LIST  ]  [-delim-
+       iter= DELIM -delimiterNum= NUM ] [-repeat= NUM ] [ MISC ]
 
        mcpt -send=NUM [,NUM....]
 
@@ -40,8 +40,8 @@ SYNOPSIS
 
        INLIST="A-Za-z0-9,./?=" 
 
-       MISC=[-num=NUM -len=NUM  -prelen=NUM  -prelist=LIST  -suflen=NUM
-       -suflist=NUM -random -DM=NUM -delimiter=DELIM -displayFormat=LF|TAB|LF_TAB|TAB_LF]
+       MISC=[-num=NUM -len=NUM  -preLen=NUM  -prelist=LIST  -sufLen=NUM
+       -sufList=NUM -random -delimiterNum=NUM -delimiter=DELIM -displayFormat=LF|TAB|LF_TAB|TAB_LF]
 
        DELIM="STRING^PROSIGN^STRING"
 
@@ -64,12 +64,12 @@ OPTIONS
 	      (default all)
 
 
-       -cglen=min:max
+       -cgLen=min:max
 	      set the length of a code group to be between a minimum and maxi-
 	      mum value.  If the value is a single number,  the  minimum  will
 	      equal the maximum.
 
-       -cglist=LIST
+       -cgList=LIST
 	      set the list of a characters to use in a code group. Range nota-
 	      tion (A-D), for upper, lower case letters  or  numbers  is  sup-
 	      ported. If  an  "="  is in the LIST, the LIST must be in double
@@ -88,7 +88,7 @@ OPTIONS
 	     formatting for user readability (Output to be fed to a tutor for
 	     playing audio don't have use for this option).
 
-       -DM=min:max
+       -delimiterNum=min:max
 	      Min  must  be  > 1, to get deminiters. The DelimiterMultiples is
 	      the number or delimiter fields that will be concatenated to cre-
 	      ate the inter-word delimiter.
@@ -105,7 +105,7 @@ OPTIONS
 
        -headerCopy
 	      Used with codeGroups or word files, so each successive group/word 
-	      is one character more than the last; up to the cglen/inlen maximum
+	      is one character more than the last; up to the cgLen/inLen maximum
 	      value. Helps the user develop a mental buffer capability.
 
 
@@ -117,14 +117,14 @@ OPTIONS
 
 
        -in    the input file name to parse for words matching criteria set  by
-	      options:	inlist, inlen, lesson/tutor.  To keep a group of words
+	      options:	iinList, inLen, lesson/tutor.  To keep a group of words
 	      in original order, and treated  as  a  single  entity  by  other
 	      options, replace the space between words with a tilde (~)..IP.e.
 	      CQ~CQ~CD~DE. Hypheated words are	ignored,  as  are  words  with
 	      apostrophe.
 
 
-       -inlist
+       -iinList
 	      the  LIST  of characters that determine what qualifies as a word
 	      from -in file.  Users might want to add a question mark  "?"  to
 	      this  .IPST if -in contains c.w. abbreviationas and/or Q-signal-
@@ -133,7 +133,7 @@ OPTIONS
 	      in -in file.
 
 
-       -inlen=min:max
+       -inLen=min:max
 	      set the length of a word for the -in file to be between a  mini-
 	      mum  and	maximum  value.   If the value is a single number, the
 	      minimum will equal the maximum.
@@ -212,7 +212,7 @@ OPTIONS
 	      a number greater than zero which indicates the "lesson" or char-
 	      acter  index  as	taught by the specified code tutor. All lesson
 	      and tutors are shown by  -help=tutors.  The  lesson/tutor  basi-
-	      cally, replacecs both the -inlist and -cglist default values.
+	      cally, replacecs both the -iinList and -cgList default values.
 
 
 		     -mixedMode-NUM
@@ -231,9 +231,9 @@ OPTIONS
        -num   the number or words or codeGroups the user wants.
 
 
-       -NR    NonRandom if set to true	(-NR|-NR=true)	reatins  the  original
+       -ordered    NonRandom if set to true	(-ordered|-ordered=true)	reatins  the  original
 	      order  of  words	found  in  an -in file.  Words still must meet
-	      other criteria (inlen, inlist).
+	      other criteria (inLen, iinList).
 
 
 		     -opt=file where the file is a list of options instead  of
@@ -244,14 +244,14 @@ OPTIONS
 	      to avoid retyping them.
 
 
-       -out=outfile
+       -outFile=outfile
 	      create a file of text based on the evaluation  of  all  options.
 	      Without this value STDOUT is used.  Most code tutors accept text
 	      from a file, some have an input box which would allow  copy-and-
 	      paste from STDOUT.
 
 
-       -prelen=min:max
+       -preLen=min:max
 	      set  the length of a prefix or characters (-prelist=LIST) to put
 	      before a word or code group.  If the value is a  single  number,
 	      the minimum will equal the maximum.
@@ -262,7 +262,7 @@ OPTIONS
 	      fix.
 
 
-       -prosign=FILE
+       -prosignFile=FILE
 	      a file of ProSigns, one per line, to use intermittantly in input
 	      words and/or code groups.  (see -help=files)
 
@@ -290,13 +290,13 @@ OPTIONS
 	      in an appropraite tutor which can decode audio morse and create
 	      a text file
 
-       -suflen=min:max
-	      set  the	length	of  a suffix or characters (-suflist=.IPST) to
+       -sufLen=min:max
+	      set  the	length	of  a suffix or characters (-sufList=.IPST) to
 	      append to a word or code group.  If the value is a  single  num-
 	      ber, the minimum will equal the maximum.
 
 
-       -suflist=STRING
+       -sufList=STRING
 	      a  list  of characters to be reandomly selected to create a suf-
 	      fix.
 
@@ -304,8 +304,8 @@ OPTIONS
        -tutor=LIST
 	      the name of supported code tutors (case insensitive, and in some
 	      cases  an  abbreviated equalivalent) (see -help=tutors). If your
-	      favorite tutor is not listed, simply specify  both  -inlist  and
-	      -cglist in your option file).
+	      favorite tutor is not listed, simply specify  both  -iinList  and
+	      -cgList in your option file).
 
 
        -unique

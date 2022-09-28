@@ -33,7 +33,7 @@ func readStringsFile(fp *os.File) {
 	if flaginlist == "" {
 
 		if flaginlist == "" {
-			fmt.Printf("\nError: inlist can't be empty or nothing gets matched.\n")
+			fmt.Printf("\nError: inList can't be empty or nothing gets matched.\n")
 			os.Exit(0)
 		}
 	}
@@ -103,7 +103,7 @@ func readStringsFile(fp *os.File) {
 	}
 
 	if len(wordArray) == 0 {
-		fmt.Println("\nThere is nothing to output.\nVerify options (or defaults) are not overly restrictive (inlen, inlist, lesson).\nVerify your input file is sufficiently populated with matchable text.\n")
+		fmt.Println("\nThere is nothing to output.\nVerify options (or defaults) are not overly restrictive (inLen, inList, lesson).\nVerify your input file is sufficiently populated with matchable text.\n")
 
 		if discarded {
 			fmt.Printf("Your input file DID have some text, but nothing matched your criteria.\n")

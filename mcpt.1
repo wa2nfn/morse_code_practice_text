@@ -5,60 +5,60 @@ Note: Ignore any space BEFORE an "=" in this file (linux issue).
 .SH SYNOPSIS
 .B mcpt -help | -help=options|files|tutors|lcwo
 
-.B mcpt -permute=p|t|b [-prosign=FILE] [-lesson=
+.B mcpt -permute=p|t|b [-prosignFile=FILE] [-lesson=
 .I NUM
 .B -tutor=
 .I TUTOR
 .B ]
 
-.B mcpt -codeGroups [-cglen=
+.B mcpt -codeGroups [-cgLen=
 .I NUM
-.B ] [-cglist=
+.B ] [-cgList=
 .I LIST
 .B | [-lesson=
 .I NUM
 .B -tutor=
 .I TUTOR
-.B ] [-prosign=
+.B ] [-prosignFile=
 .I FILE
 .B ] [ -headCopy] [ MISC ]
 
-.B mcpt -in=
+.B mcpt -inFile=
 .I FILE 
-.B [-inlen=
+.B [-inLen=
 .I NUM
-.B ] [-nlist=
+.B ] [-inList=
 .I LIST
-.B [[-suflen=
+.B [[-sufLen=
 .I NUM
-.B -suflist=
+.B -sufList=
 .I LIST
-.B ]][[-prelen=
+.B ]][[-preLen=
 .I NUM
 .B -prelist=
 .I LIST] [-random]]
 [ MISC ] [-headCopy]
 
-.B mcpt -in=
+.B mcpt -inFile=
 .I FILE 
-.B [-inlen=
+.B [-inLen=
 .I NUM
-.B ] [-nlist=
+.B ] [-inList=
 .I LIST
 .B | [-lesson=
 .I NUM
 .B -tutor=
 .I TUTOR
-.B ] [-prosign=
+.B ] [-prosignFile=
 .I FILE
 .B ] [ MISC ]
 
-.B mcpt -in=
+.B mcpt -inFile=
 .I
-FILE [-inlen=
+FILE [-inLen=
 .I
 NUM
-.B ] [-nlist=
+.B ] [-inList=
 .I
 LIST
  | [-lesson=
@@ -68,14 +68,14 @@ LIST
 .I TUTOR
 .B ] [-mixedMode=
 .I NUM
-.B ] [-prosign=
+.B ] [-prosignFile=
 .I
 FILE
 .B
 ] [ MISC ]
 .P
 
-.B mcpt -text=
+.B mcpt -textFile=
 .I
 FILE 
 .I
@@ -93,11 +93,11 @@ FILE
 .INUM
 .B -tutor=
 .I TUTOR
-.B ] | [-cglist=
+.B ] | [-cgList=
 .I LIST
 .B ] [-delimiter=
 .I DELIM
-.B -DM=
+.B -delimiterNum=
 .I NUM
 .B ] [-repeat=
 .I NUM
@@ -112,7 +112,7 @@ FILE
 .INUM
 .B -tutor=
 .I TUTOR
-.B ] | [-cglist=
+.B ] | [-cgList=
 .I LIST
 .B ] [-delimiter=
 .I DELIM
@@ -130,7 +130,7 @@ FILE
 
 .I INLIST="A-Za-z0-9,./?=" 
 
-.I MISC=[-num=NUM -len=NUM -prelen=NUM -prelist=LIST -suflen=NUM -suflist=NUM -random -DM=NUM -delimiter=DELIM -must=STRING] 
+.I MISC=[-num=NUM -len=NUM -preLen=NUM -prelist=LIST -sufLen=NUM -sufList=NUM -random -delimiterNum=NUM -delimiter=DELIM -must=STRING] 
 
 .I DELIM="STRING^PROSIGN^STRING"
 
@@ -147,16 +147,16 @@ set random code group generation vs. words from a file
 .IP -callSigns
 makes call signs using the current characters from lesson/tutor (default all)
 .TP
-.IP -cglen=min:max
+.IP -cgLen=min:max
 set the length of a code group to be between a minimum and maximum value. 
 If the value is a single number, the minimum will equal the maximum.
-.IP -cglist=LIST
+.IP -cgList=LIST
 set the list of a characters to use in a code group. Range notation (A-D), for upper, lower case letters or numbers is supported.
 If an "=" is in the LIST, the LIST must be in double quotes.
 .TP
 .IP -delimiter=DELIM
 DELIM is a set of "^" separated fields to use an inter-word delimiter string. Fields may be, literal (letters, numbers, punctuation) or range notation (0-4A-Z), a ProSign (<SK>) character.
-.IP -DM=min:max
+.IP -delimiterNum=min:max
 Min must be > 1, to get deminiters. The DelimiterMultiples is the number or delimiter fields that will be concatenated to create the inter-word delimiter.
 .TP
 .IP -DR
@@ -171,18 +171,18 @@ displays a usage for every option. With an parameter, as in the synopsis, the he
 after the impact of any values set by the command line or an option file.
 .TP 
 .IP -headCopy
-Used with codeGroups or word files, so each successive group or word is one character more than the last; up to the cglen/inlen maximum value. Helps the user develop a menatl buffer capability.
+Used with codeGroups or word files, so each successive group or word is one character more than the last; up to the cgLen/inLen maximum value. Helps the user develop a menatl buffer capability.
 .TP
 .IP -in
-the input file name to parse for words matching criteria set by options: inlist, inlen, lesson/tutor.
+the input file name to parse for words matching criteria set by options: iinList, inLen, lesson/tutor.
 To keep a group of words in original order, and treated as a single entity by other options, replace the space between words with a tilde (~)..IP.e. CQ~CQ~CD~DE. Hypheated words are ignored, as are words with apostrophe.
 .TP
-.IP -inlist 
+.IP -iinList 
 the LIST of characters that determine what qualifies as a word from -in file.
 Users might want to add a question mark "?" to this .IPST if -in contains c.w. abbreviationas and/or Q-signalsto get text like: qrs? or hw~cpy?
 Note ProSigns do not need to be added to this option, thye will be treated as words if found in -in file.
 .TP
-.IP -inlen=min:max
+.IP -inLen=min:max
 set the length of a word for the -in file to be between a minimum and maximum value. 
 If the value is a single number, the minimum will equal the maximum.
 .TP
@@ -249,7 +249,7 @@ output  will be lowercase
 the character length of an output line. Length maybe exceeded to prevent a word break.
 .TP
 .IP -lesson=NUM
-a number greater than zero which indicates the "lesson" or character index as taught by the specified code tutor. All lesson and tutors are shown by -help=tutors. The lesson/tutor basically, replacecs both the -inlist and -cglist default values.
+a number greater than zero which indicates the "lesson" or character index as taught by the specified code tutor. All lesson and tutors are shown by -help=tutors. The lesson/tutor basically, replacecs both the -iinList and -cgList default values.
 .TP
 .IP
 -mixedMode-NUM
@@ -264,27 +264,27 @@ A string of 1 or more characters. One will be used as a substitue for character 
 .IP -num
 the number or words or codeGroups the user wants.
 .TP
-.IP -NR
-NonRandom if set to true (-NR|-NR=true) reatins the original order of words found in an -in file.
-Words still must meet other criteria (inlen, inlist). 
+.IP -ordered
+NonRandom if set to true (-ordered|-ordered=true) reatins the original order of words found in an -in file.
+Words still must meet other criteria (inLen, iinList). 
 .TP
 .IP
 -opt=file where the file is a list of options instead of or in addition to command line options.
 (see -help=files)..IPf -opt=file is included on a command line AND the file does not exist, mcpt interprets this
 to mean the user wnts to create a file with the current command line values to avoid retyping them.
 .TP
-.IP -out=outfile
+.IP -outFile=outfile
 create a file of text based on the evaluation of all options. Without this value STDOUT is used.
 Most code tutors accept text from a file, some have an input box which would allow copy-and-paste from STDOUT.
 .TP
-.IP -prelen=min:max
+.IP -preLen=min:max
 set the length of a prefix or characters (-prelist=LIST) to put before a word or code group.
 If the value is a single number, the minimum will equal the maximum.
 .TP
 .IP -prelist=STRING
 a list of characters to be reandomly selected to create a prefix. 
 .TP
-.IP -prosign=FILE
+.IP -prosignFile=FILE
 a file of ProSigns, one per line, to use intermittantly in input words and/or code groups.
 (see -help=files)
 .TP
@@ -304,16 +304,16 @@ create special code groups for learning to send
 .IP -sendCheck=FILE,FILE
 verify sending practice to decoded morse from your trainer software
 .TP
-.IP -suflen=min:max
-set the length of a suffix or characters (-suflist=.IPST) to append to a word or code group.
+.IP -sufLen=min:max
+set the length of a suffix or characters (-sufList=.IPST) to append to a word or code group.
 If the value is a single number, the minimum will equal the maximum.
 .TP
-.IP -suflist=STRING
+.IP -sufList=STRING
 a list of characters to be reandomly selected to create a suffix. 
 .TP
 .IP -tutor=LIST
 the name of supported code tutors (case insensitive, and in some cases an abbreviated equalivalent)
-(see -help=tutors). If your favorite tutor is not listed, simply specify both -inlist and -cglist in your option file).
+(see -help=tutors). If your favorite tutor is not listed, simply specify both -iinList and -cgList in your option file).
 .TP
 .IP -unique
 will not duplicate any words in output..IPts possible this will reduce the number requested by

@@ -67,10 +67,10 @@ have problems. For this reason do <B>not</B> use the commmon command line practi
 <H3>
 Notation
 <P>
-To minimze typing, some option name are a concatentation or abbreviated words, for example: prelen for prefix length; cglist for code group list.
+To minimze typing, some option name are a concatentation or abbreviated words, for example: en for prefix length; cglist for code group list.
 <P>
 The following options all have a minimum and maximum value, the values are given in one option.
-They are: prelen, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). E.g. -inlen=5, is a short hand for -inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
+They are: en, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). E.g. -inlen=5, is a short hand for -inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
 <P>
 The help usage will remind you about these options because you will see the default value written with the colon notation.
 <P>
@@ -97,7 +97,7 @@ A few more notes on option format:
 	<LI> string options should have values within double quotes, must be quoted if it has a space or "="</LI>
 	<LI> inlist values are case sensitive since its used to match input text</LI>
 	<LI> if inlist contains a "?", then a "?" following a word such as: cpy?, qrl? will be matched</LI>
-	<LI> option values in: prelist, suflist, cglist, delimiter are not case sensitive
+	<LI> option values in: ist, suflist, cglist, delimiter are not case sensitive
 </ol>
 List options can use a shorthand range entry notation. For example, "A-DZ0-4" instead of the spelled out form like "ABCDZ01234" (the order of the range is as shown, 4-0 would fail).
 <P>
@@ -145,7 +145,7 @@ The command line option displayFormat (with values LF, TAB,LF_TAB, TAB_LF in upp
 <P>
 They are only for readability, if desired. They replace spaces in output with TABs, and LF adds a linefeed (or blank line) between output lines.
 <P>
-Additionally, there are several <I>list type</I> options: prelist, suflist, cglist, inlist, and must.
+Additionally, there are several <I>list type</I> options: ist, suflist, cglist, inlist, and must.
 <P>
 On the command line or in the options file, these list options are treated as if they were just a collection
 of characters AFTER 2 parsing operations for the users convenience. So if you want code groups to contain any of a set of characters it would look like this: cglist="EIOTA27?". Each character is a standalone entity. Now for the two special
@@ -169,7 +169,7 @@ Use of Delimiter - sample delimiter usage
 </H2>
 The delimiter option, works in conjuction with 2 other options. Delimiter-multiples (entered as DM=x), where x is the number of fields in the delimiter that should be used (as a maximum) at any one time. Thus, with DM=1 and delimiter="A-D|1-3|?"
 this expands and is the same as 9 single character fields A|B|C|D|1|2|3|?, so in between each "word" you would get ONE of those characters. If DM=3, then you would get 1,2, or 3 of them concatenated together like: "THIS 3A TEST DD? is C A".
-The option DR says even though we asked for delimiters between each word, that will be random (DR means delimiter-random).
+The option delimiterRandom says even though we asked for delimiters between each word, that will be random (delimiterRandom means delimiter-random).
 <P>
 While the fields of a delimiter can be a word or meaningful sequence like "QTH" or a ProSign like &lt;AR>. Later in the document you will see that many features can be used in one execution to generate practice text to suit your
 current training needs. Using input words, code groups, delimiters, ProSigns and some random flags you could get very varied
@@ -206,7 +206,7 @@ them yourself.
 Example 1: 
 some options for "word" practice
 </H2>
-<B>mcpt -inlen=3:6 -num=30 -in=words.txt</B>
+<B>mcpt -inlen=3:6 -num=30 -inFile=words.txt</B>
 USE LINE TEXT LINE WHICH TUTOR THAT TUTOR YOUR TRY YOU TRY TEXT MORSE YOU 
 YOUR FOR WHICH MAY ARE NOT NOT MAY THAT USE CAN OFFER OFFER 
 <PRE>
@@ -222,7 +222,7 @@ See example 32 for contrast of -in vs. -text.
 Example 2: 
 controlling output line length
 </H2>
-<B>mcpt -inlen=3:6 -num=30 -in=words.txt <mark>-len=30</mark></B>
+<B>mcpt -inlen=3:6 -num=30 -inFile=words.txt <mark>-len=30</mark></B>
 <PRE>
 MCPT MORSE MAY ARE YOUR TUTOR 
 THAT THAT TUTOR NOT FOR CAN 
@@ -249,7 +249,7 @@ Note: opt myOptions, will override default options.
 Example 4:
 save practice material to a file, for your software tutor; and  suffix/prefix options
 </H2>
-<B>mcpt -in=words.txt -inlen=5 -num=10 -suflen=1:2 <MARK>-out=out.txt</MARK></B>
+<B>mcpt -inFile=words.txt -inlen=5 -num=10 -sufLen=1:2 <MARK>-outFile=out.txt</MARK></B>
 <PRE>
 Writing to file: <MARK>out.txt</MARK>
 
@@ -259,24 +259,24 @@ YOU<M<SK/
 /
 1GARK> WHICH7 FOR= LINE1 TEXT/ MAY8 USE9 THAT5 CAN= 
 
-NOTE: <MARK>-suflen=1:2</MARK>, appends one or two random character from default suflist as a suffix. suflist defaults (see help).
+NOTE: <MARK>-sufLen=1:2</MARK>, appends one or two random character from default suflist as a suffix. suflist defaults (see help).
 
 THAT/7 YOU04 LINE8 TEXT78 MCPT. WHICH95 FOR20 CAN7? MAY= USE18 
 
-NOTE: -prelen works just like -suflen and by default uses the same characters (see help)
-NOTE: below is example of -suflen=3 and -prelen=1
+NOTE: -en works just like -sufLen and by default uses the same characters (see help)
+NOTE: below is example of -sufLen=3 and -en=1
 
 8WHICH.. 3TEXT58 5YOU3 8USE2 ?MAY97 1CAN1, ,FOR/. 9LINE=8. 6THAT/7 
 
-*** Default suffixes and prefixes can be changed with -suflist and -prelist as appropriate. 
-*** Duplicating a character in suflist or prelist e.g. ".,???????" increases 
+*** Default suffixes and prefixes can be changed with -sufList and -ist as appropriate. 
+*** Duplicating a character in suflist or ist e.g. ".,???????" increases 
     the probability of that character in output.
 </PRE>
 <H2>
 Example 5:
-finer control of prefixes with &lt;prlen>, &lt;prelist>
+finer control of prefixes with &lt;prlen>, &lt;ist>
 </H2>
-<B>mcpt -in=words.txt <MARK>-prelist="123"</MARK> -prelen=1 <MARK>-suflist="QZX" -suflen=1</MARK> -num=10</B>
+<B>mcpt -inFile=words.txt <MARK>-ist="123"</MARK> -preLen=1 <MARK>-sufList="QZX" -sufLen=1</MARK> -num=10</B>
 <PRE>
 1MORSEz 1OFFERZ <mark>2</mark>OFFERZ 1WHICHZ 3MORSEQ 2TUTOR<MARK>Q</MARK> 1TUTORZ 2WHICHQ 2WHICHX 3OFFERQ 
 
@@ -286,11 +286,11 @@ NOTE: prefixes limited to values of: 1, 2, 3; suffixes to Q, Z, X.
 Example 6:
 finer control of suffixes with &lt;suflen>
 </H2>
-<B>mcpt -in=words.txt -num=10 -suflen=1:3</B> 
+<B>mcpt -inFile=words.txt -num=10 -sufLen=1:3</B> 
 <PRE>
 MORSE/, TUTOR245 MORSE1=7 WHICH?9 <U>OFFER</U> <U>WHICH= 36/</U> OFFER9 OFFER=5/ TUTOR7 WHICH57 
 
-NOTE: a space character added into the suflist or prelist set of characters.
+NOTE: a space character added into the suflist or ist set of characters.
       The result of the space is seen above in the underlines output.
       In the case of, "offer", the tool was going to put just 1 suffix character, since it was a space
       its unseen. In the case of, "WHICH= 36/" the suffix length was 4, but the second random character 
@@ -300,7 +300,7 @@ NOTE: a space character added into the suflist or prelist set of characters.
 Example 7:
 matching specific words in an input file
 </H2>
-<B>mcpt -in=words.txt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
+<B>mcpt -inFile=words.txt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
 <PRE>
 OFFER ARE OFFER FOR USE USE ARE MORSE ARE ARE USE FOR OFFER OFFER MORSE MORSE 
 USE FOR MORSE FOR 
@@ -317,22 +317,22 @@ NOTE: Regardless of the value of inlist or lesson, a prosign found in the input 
       prosign for matching purposes, its up to your tutor software to treat it appropriately.
 
       If any <I>list</I> type option contains a "=" or " ", the value part MUST be quoted. 
-      E.g. prelist=".,="
+      E.g. ist=".,="
 
-*** suflist and prelist can also use the character range notation.
+*** suflist and ist can also use the character range notation.
 </PRE>
 <H2>
 Example 8:
 skipping over initial words from an input file
 </H2>
-<B>mcpt -in=words.txt -inlen=3:8 -num=30</B>
+<B>mcpt -inFile=words.txt -inlen=3:8 -num=30</B>
 <P>
 This command will find a lot of short words in a book for example. Like "I a to of in the an on etc."
 <H2>
 Example 9:
 have matching words repeat in sequence
 </H2>
-<B>mcpt -in=words.txt <MARK>-repeat=3</MARK></B>
+<B>mcpt -inFile=words.txt <MARK>-repeat=3</MARK></B>
 <P>
 Repeat whatever the output "word" is (including prefix and suffix), a number of times. Default is 1, 
 the max is 5. Maybe helpful for head copy. 
@@ -343,17 +343,17 @@ Note: linking words in the input file with "~", treat the sequence as ONE word. 
 Example 10:
 inserting specified ProSigns in place of words
 </H2>
-<B>mcpt -in=words.txt -inlen=3:5 -num=10 -suflen=1 <MARK>-prosign=prosignFile.txt<MARK></B>
+<B>mcpt -inFile=words.txt -inlen=3:5 -num=10 -sufLen=1 <MARK>-prosignFile=prosignFile.txt<MARK></B>
 <PRE>
 YOU9 WHICH7 <MARK>&lt;BT&gt;</MARK>? FOR= MCPT. &lt;AR>&lt;AS>7 LINE1 &lt;SOS>, TEXT/ MAY8 USE9 THAT5 CAN= 
 
-NOTE: Each ProSign seen above is in the -prosign=prosignFile.txt.
+NOTE: Each ProSign seen above is in the -prosignFile=prosignFile.txt.
       Prosigns are treated SIMILARLY to matched words, as follows:
       - they appear in upper case regarless of case in file
       - ProSigns are stored BEFORE the input file is read, therefore they contribute toward 
         the "-num XX" quantity.  <I> That is, if the number of ProSigns is greater than <B>num</B> 
 	you won't get any words in output.</I>
-      - -prelen and -suflen add to the ProSigns, just as if it were a word. The same is true for -random
+      - -en and -sufLen add to the ProSigns, just as if it were a word. The same is true for -random
         option. e.g. "8&lt;HH>?"
       - A file entry can have one ProSigns per line (see file sample below).
       - File lines that do NOT match the ProSign format (&lt;LetterLetter>) or (^LetterLetter - this is for G4PON)
@@ -375,7 +375,7 @@ NOTE: Each ProSign seen above is in the -prosign=prosignFile.txt.
 Example 11:
 practical use of delimiters with word practice
 </H2>
-<B>mcpt -in=words.txt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
+<B>mcpt -inFile=words.txt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
 The option, "-delimiter", is a string of 1 or more characters (of any type) which will
 be displayed in between each output word (1 exception). For example, if the output WITHOUT this option were:
 <P>
@@ -386,12 +386,12 @@ With the delimiter of '&lt;BT&gt;', the output is:
 THE <MARK>&lt;BT></MARK> MAN &lt;BT&gt; AND &lt;BT&gt; IS &lt;BT&gt; SO
 <P>
 You might use this option to get extra practice for characters that might not appear in significant amount using
-the randomness of "-prelen" or "-suflen". The exception, noted above, is when used with the "-repeat" option. In this case,
+the randomness of "-en" or "-sufLen". The exception, noted above, is when used with the "-repeat" option. In this case,
 the delimiter appears AFTER the word repeating is done. as shown below. This is might be useful for doing head-copy, to separate the repeated words from the next group of repeated words. As below:
 <PRE>
 THE THE THE &lt;BT&gt; MAN MAN MAN &lt;BT&gt; AND AND AND &lt;BT&gt;
 
-Note: the "-delimiter" option is NOT effected by any other option (random, prelen, suflen)
+Note: the "-delimiter" option is NOT effected by any other option (random, en, suflen)
 `
 Note: it is literal, and what ever you want. e.g. '.?/', 'XYZ', '123', 'It can even have multiple parts'.
 
@@ -399,9 +399,9 @@ Note: You can have multiple delimiters, which are selected randomly, by
       separating them with a pipe "|" e.g. -delimiter="&lt;BT&gt;|&lt;AR&gt;SK&lt;".
       for output like: "THE ? AND 4 MEN &lt;SK&gt; SAT . END"
 
-      Also: If delimiter is used, then -DM=X, where X is the number of delimiters, format X:Y gives a min and max.
+      Also: If delimiter is used, then -delimiterNum=X, where X is the number of delimiters, format X:Y gives a min and max.
       DM=0 therefore means no delimiter, even though -delimiter might have a value.
-      As in: delimiter="1|?|=" -DM=1:3 then the inter-word delimiters might be: 1,?,=,11,=1=,??. 
+      As in: delimiter="1|?|=" -delimiterNum=1:3 then the inter-word delimiters might be: 1,?,=,11,=1=,??. 
 
 Note: If a field in the delimiter is only space(s) e.g. ".|?| |=", and DM=1, 
       this will result in NO delimiter if the that field is selected. 
@@ -426,7 +426,7 @@ Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that w
 Example 12:
 use of &lt;unique> when reading words from a file
 </H2>
-<B>mcpt -in=words.txt -inlen=1:3 -num=6 -unique</B>
+<B>mcpt -inFile=words.txt -inlen=1:3 -num=6 -unique</B>
 The -unique option, terminates the adding to output as soon as
 a duplicate would be required to meet the quantity in the -num option.
 <P>
@@ -437,27 +437,27 @@ stops creating output making each word unique. Output is reduced to: "HE SAW THE
 Example 13:
 controlling length and content of created code groups
 </H2>
-<B>mcpt -codeGroups -cglist="aeiokmr0-4?" -cglen=6</B>
+<B>mcpt -codeGroups -cgList="aeiokmr0-4?" -cgLen=6</B>
 <PRE>
 ie3?k 40kee ia?2?
 
 Note: case in cglist does not matter, output will be upper case
-Note: group length determined by and -cglen
+Note: group length determined by and -cgLen
 Note: groups can be separated by delimiters as previously described
 Note: limited options apply when using code groups, others are silently ignored
-      -len, -num, -delimiter, -DM, -out, -inlen apply.
+      -len, -num, -delimiter, -delimiterNum, -out, -inlen apply.
 </PRE>
 <H2>
 Example 14:
 intermixing of code groups and words in the same practice session
 </H2>
-<B>mcpt -inlen=5:8 -in="in.txt" <mark>-mixedMode=2</mark></B>
+<B>mcpt -inlen=5:8 -inFile="in.txt" <mark>-mixedMode=2</mark></B>
 <PRE>
 VISIT OTHER <mark>=,0-A0</mark> ABOUT SHARE <mark>-=?A=-?</mark> MYSELF THOSE 
 
 Note: Every "2" words printed from matching in the input file is followed by 
       a random code group (from characters in cglist).
-Note: all options from word match word still apply if used (prelen, suflen, delimiter, etc.)
+Note: all options from word match word still apply if used (en, suflen, delimiter, etc.)
 Note: In mixedMode, the code group word is NOT counted into the -num word count.
 </PRE>`
 <H2>
@@ -501,7 +501,7 @@ qunantity of output.
 Most word practice and code groups will of course hit many of these permutations, if you want to work on a set of 
 your choosing you can drop the lesson= option, and instead use the code groups list option. For example:
 
-mcpt -cglist="qrx5" -permute=b num=1 
+mcpt -cgList="qrx5" -permute=b num=1 
 
 Generates:
 
@@ -515,7 +515,7 @@ You can use the &lt;prosign> option as well.
 Example 16: 
 ProSigns used with code groups
 </H2>
-<B>mcpt <mark>-prosign=myPs.txt</mark> -codeGroups ....</B>
+<B>mcpt <mark>-prosignFile=myPs.txt</mark> -codeGroups ....</B>
 <PRE>
 Prosigns were previous supported with an input file &lt;in=my.txt>, but if used with options
 &lt;codeGroups> or &lt;mixedMode>, the Prosigns in the prosign file &lt;prosign=myps.txt>
@@ -538,7 +538,7 @@ codeGroups, as well, the codeGroups could have prosigns.
 Example 17:
 reverse the spelling of input words
 </H2>
-<B>mcpt ... -in=myInput -ordered <mark>-reverse</mark> ...</B>
+<B>mcpt ... -inFile=myInput -ordered <mark>-reverse</mark> ...</B>
 <P>
 Note: This example will demonstrate a few more things than the <B>reverse</B> option.
 <P>
@@ -552,7 +552,7 @@ num</B> was set to 11 so that no words are discarded and none are used more than
 <B>len</B> was set short, so that you can see that <I>if</I> a line is longer, but a word is
 straddling the length boundary, that that word is finished rather than having a word split.
 <P>
-mcpt -inlen=1:15 -num=11 -in=words.txt -ordered -len=20 -out=myOut
+mcpt -inlen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -outFile=myOut
 <P>
 The text below is the output now in file=<I>words.txt</I>.
 Note, that the first word was captured even though it started with an uppercase, that's because the 
@@ -568,7 +568,7 @@ Now we'll reuse the command, adding the <B>reverse</B> option, <I>and</I> changi
 to be that of the output above. The text following the command has each word reversed. (Suggested 
 William Pierpont's document. You retain letter frequency of the input, and eliminate anticipation.)
 <P>
-mcpt -inlen=1:15 -num=11 -in=words.txt -ordered -len=20 -reverse -out=myReversed
+mcpt -inlen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -reverse -outFile=myReversed
 <P>
 <I>
 SIHT SI EHT TNETNOC FO
@@ -585,7 +585,7 @@ options file (if used), and that in turn overrides the built-in default. This ma
 but with so many options it does make for easy and limited typing to change the tools behavior for 
 different practice text generation.
 <P>
-mcpt -inlen=1:15 -num=11 -in=words.txt -ordered -len=20 -out=myOut -reverse -in=myReversed -out=myFinal
+mcpt -inlen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -outFile=myOut -reverse -inFile=myReversed -outFile=myFinal
 <P>
 <I>
 THIS IS THE CONTENT OF
@@ -601,27 +601,27 @@ use your input directly with a tutor (no mcpt) if you simply want text-to-cw wit
 Example 18:
 delimiters on a random basis
 </H2>
-<B>mcpt -in=words.txt -DM=1:2 -delimiter="1^A^?^&lt;BT>" -DR</B>
+<B>mcpt -inFile=words.txt -delimiterNum=1:2 -delimiter="1^A^?^&lt;BT>" -delimiterRandom</B>
 <P>
 As previously discussed, DM=1:2, would give 1 or 2 delimiter strings concatenated between each word.
 <P>
 WORD 1 WORD A? WORD &Lt;BT> WORD AA WORD &lt;BT> WORD ?
 <P>
-with -DR (a.k.a. DR=true) you indicate that delimiter printing is random
+with -delimiterRandom (a.k.a. delimiterRandom=true) you indicate that delimiter printing is random
 <P>
 WORD WORD WORD &lt;BT> WORD AA WORD WORD 1
 <H2>
 Example 19:
 controlling the length of code groups when intermixed with words
 </H2>
-<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
+<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt</B>
 <P>
 ON AT OF 3,A??4 NO HE IS A4263?/ AND HAT FOUR ......
 <H2>
 Example 20:
 randomness of the intermixed code groups with words
 </H2>
-<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt</B>
+<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt</B>
 <PRE>
 This input file for this example is a simple list of short words. The first line of output follows:
 
@@ -631,7 +631,7 @@ NOTE: In the above, after every 3 words (mixedMode=3) we get a code group.
       We can add an option -MMR (mixed mode random) which gives a 50/50 chance that a code group will be 
       suppressed to lessen predictability.
 
-<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt<mark>-MMR</mark></B>
+<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt<mark>-MMR</mark></B>
 
 NOTE: The stretch below with no code group due to -MMR.
 
@@ -648,7 +648,7 @@ ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?
       we've seen before; LCWO_low sets the low(slow) speed of the code group, and LCWO_step the incremental 
       speed to add to LCWO_low to get the higher speed to use for the plain text.
 
-<B>mcpt -inlen=2:4 -cglen=6:8 -mixedMode=3 -in=words.txt <mark>-LCWO_low=20 -LCWO_step=5</mark></B>
+<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt <mark>-LCWO_low=20 -LCWO_step=5</mark></B>
 
 |w25 <I>TWO FOUR NINE </I>|w20 <U>FL,WE0</U> |w25 <I>FOUR TEN ONE </I>|w20 <U>YB251C</U> |w25 <I>ONE FIVE NINE</I> |w20 <U>AJRR7H</U>
 
@@ -713,7 +713,7 @@ If you use Morse Elmer, Just Learn Morse Code, MorseCodeNinja, or G4FON you will
 Example 22: 
 an example of linking words in a word file to be treated as one word
 </H2>
-<B>mcpt -in=infile </B>
+<B>mcpt -inFile=infile </B>
 <PRE>
 If you use word input mode via option <in>, you can have a "word" as defined by the <inlist> characters
 grouped with one or more other words by use of the character "~", for example: MY~QTH~IS. This group will be treated as
@@ -781,7 +781,7 @@ IM0G/2 IM0G/2 ET3WPQ ET3WPQ P9GW/QRP P9GW/QRP IH5GZX IH5GZX IT8MC/M IT8MC/M
 *** sign delimiters. This enables you to get NON call sign practice in the
 *** practice session. The example below is using a few prosigns and punctuation.
 <P>
-<B>mcpt -callSigns -delimiter="&lt;SK>^&lt;BT>^.^,^?" -DM=1:2 </B>
+<B>mcpt -callSigns -delimiter="&lt;SK>^&lt;BT>^.^,^?" -delimiterNum=1:2 </B>
 <P>
 E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>. JU5RFP/QRP
 <P>
@@ -792,7 +792,7 @@ E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>.
 *** Note 2: You can customise your character use independent of a specific
             tutor as with the cglist option.  I.e.: 
 <P>
-	    <B>mcpt -callSigns -cglist="123abcdef"</B>
+	    <B>mcpt -callSigns -cgList="123abcdef"</B>
 <P>
 F2CFF B3F D1DCF EB2BC AB1DE FB3EBC DC4DAB CB2BFA ED4AAA 
 <P>
@@ -800,7 +800,7 @@ Limited call sign practice can be done without the "callSigns" option; in this c
 portions using other options. Here is an example.
 <PRE>
 
-<B> mcpt -prelist="kw" -prelen=1    -codeGroups -cglist="0-49" -cglen=1     -suflist="kt" -suflen="2:3"</B>
+<B> mcpt -ist="kw" -prelen=1    -codeGroups -cgList="0-49" -cgLen=1     -sufList="kt" -sufLen="2:3"</B>
 
 Possible output:
 
@@ -841,7 +841,7 @@ Example 25:
 &lt;must> to ENSURE a given character is used in every output word/code group
 </H2>
 <B>mcpt -codeGroups -lesson=4 -must="ABCD"</B>
-<B>mcpt -codeGroups -cglist="MUKER" -must="ABCD"</B>
+<B>mcpt -codeGroups -cgList="MUKER" -must="ABCD"</B>
 <P>
 Either of the above generate code groups (assuming tutor=LCWO the default) with 
 fixed length of 5 (default cglen=5 or 5:5); but the new option &lt;-must> means
@@ -869,8 +869,8 @@ operating systems may have issue with that.
 Example 26: 
 &lt;headCopy> make words progressively longer 
 </H2>
-<B>mcpt -codeGroups -cglen=2:6 -headCopy</B>
-<B>mcpt -in=file.txt -inlen=2:6 -headCopy</B>
+<B>mcpt -codeGroups -cgLen=2:6 -headCopy=1</B>
+<B>mcpt -inFile=file.txt -inlen=2:6 -headCopy=1</B>
 <P>
 Note: headCopy may not be used with -text option.
 <P>
@@ -885,16 +885,16 @@ each word or code group.  A delimiter is therefore an alert that the longest
 element is done, and the shortest one will follow; its also a handy way to 
 get some practice of a prosign or puctuation. The difference is shown below.
 <P>
-NOTE: *** change the option name from <B>headCopy</B> to <B>headCopy2</B>  with either 
+NOTE: *** change the option from <B>headCopy=1</B> to <B>headCopy=2</B>  with either 
 option &lt;in&gt; or &lt;text&gt; and the output will take a word like "MORSE", and 
-output "M MO MOR MORS MORSE". Use of the delimiter feature like "-DM=1 
+output "M MO MOR MORS MORSE". Use of the delimiter feature like "-delimiterNum=1 
 -delimiter=&lt;BT&get;" will put a delimiter following the copy of the completed word.
 <P>
 Note: If <repeat=digit> is added, then the final word when spelling is completed, will be repeated. i.e. "c co cod code code code".
 <PRE>
 Without -headCopy:   kmmu k ummkr km mm
 
-With -headCopy:      km kur rruk kmmur rummkm mm umu kumu uuurr urumkm 
+With -headCopy=1:      km kur rruk kmmur rummkm mm umu kumu uuurr urumkm 
 
 With a delimiter:    mm mkm rmkm mmrkm &lt;SK&gt; um urk rmmk rumkk &lt;AR&gt;
 <P>
@@ -907,9 +907,9 @@ Example 27:
 <BR>
 <B>mcpt -send=12</B>
 <BR>
-<B>mcpt -send=1,2 -cglen=2:6</B>  <I>comma is ignored, just to show its 1 & 2 not 12</I>
+<B>mcpt -send=1,2 -cgLen=2:6</B>  <I>comma is ignored, just to show its 1 & 2 not 12</I>
 <BR>
-<B>mcpt -send=4 -cglen=2:4</B>
+<B>mcpt -send=4 -cgLen=2:4</B>
 <P>
 After learning to receive all the characters, this option can generate some groups for sending practice, particularly for 
 keyers/bugs with dit/dah alternations.
@@ -925,7 +925,7 @@ is from simplist to difficult.
 3: 12346789                       # as above (2 and 3 same difficulty)
 4: FKLRPQXY                       # two dit/dah or dah/dit alternations
 5: C.,?/                          # three alternations or longer character
-6: &lt;AR&gt;&lt;AS&gt;&lt;HH&gt;&lt;KA&gt;&lt;BT&gt;&lt;SK&gt;       # ProSigns
+6: &lt;AR&gt;&l/;AS&gt;&lt;HH&gt;&lt;KA&gt;&lt;BT&gt;&lt;SK&gt;       # ProSigns
 7: TAUV456BDN                     # "cut numbers" in order 0-9
 
 The third command above, might generate:
@@ -996,7 +996,7 @@ Note: If you use your own character string as described above, it MUST be the
        So use "," or "carat" as appropriate, as the file separator.
 
  If you had run any of the commands at the beginning of this example, and added
- the -out=text.txt, your practice text would be in that file. To practice 
+ the -outFile=text.txt, your practice text would be in that file. To practice 
  sending you would display that file on your screen, and do your sending with 
  your CW sending software (e.g. PCWFistcheck). (Note: Zeros shown on screen 
  have a slash for readability, when saved to a file they do not.)
@@ -1145,7 +1145,7 @@ Hopefully these two outputs can help you see where your sending needs more pract
 </H2>
 <BR> mcpt -review -tutor=g4fon -lesson=5</B>
 <BR> mcpt -review -lesson=3:5</B>
-<BR> mcpt -review -cglist="KMUR"</B>
+<BR> mcpt -review -cgList="KMUR"</B>
 <PRE>
 Use characters, by lesson order or the cglist, and create a review before learning a 
 new character. Options, -delimiter and -out <I>MAY</I> be used as described below.
@@ -1169,7 +1169,7 @@ Note: The sample below is formatted, but your code tutor will simply use a SPACE
       <I> Do not use a delimiter which is also a character you are practicing 
       or it will be confusing.
 
-<B> mcpt -review -lesson=2:4 -out=lesson2_4.txt</B> (output abbreviated)
+<B> mcpt -review -lesson=2:4 -outFile=lesson2_4.txt</B> (output abbreviated)
 
 MMMMM MMMMM 
 MMMM MM MM MMMM MM MMMMM MMMMM MM 
@@ -1184,7 +1184,7 @@ UMUU UMUM MUU UUMUU UUMM
 
 RRRRR RRRRR 
 
-<B> mcpt -review -lesson=2:4 -out=lesson2_4.txt -delimiter="&lt;SK&gt;|&lt;AR&gt;" </B> (output abbreviated)
+<B> mcpt -review -lesson=2:4 -outFile=lesson2_4.txt -delimiter="&lt;SK&gt;|&lt;AR&gt;" </B> (output abbreviated)
 Note: placement of delimiters vs. above
 
 &lt;SK&gt;
@@ -1230,7 +1230,7 @@ Example 27-5:
 &lt;cc> using characters from -lesson, or cglist get repetition practice
 </H2>
 <B>mcpt -lessonList -lesson=5 </B>
-<B>mcpt -lessonList -cglist="abc" </B>
+<B>mcpt -lessonList -cgList="abc" </B>
 <H2>
 <PRE>
 In the default case, the -tutor=lcwo, so the characters of lesson 5 are: kmures.
@@ -1468,7 +1468,7 @@ clue that the speed was going to drop back for the next set of words.
 
 |w10 HURST |w13 HURST |w16 HURST &lt;SK> |w10 DARCY |w13 DARCY |w16 DARCY &lt;BT> |w10 YOUNG |w13 YOUNG
 
-To get this I added to the command line (or options.mcpt.: -delimiter="&lt;SK>|&lt;BT>" -DM 1
+To get this I added to the command line (or options.mcpt.: -delimiter="&lt;SK>|&lt;BT>" -delimiterNum 1
 
 NOTE: As of version 1.9, you can use a negative value for LCWO_step - the behavior change is that you will start at the highest
       speed and then decrement in steps until LCWO_low has been reached. (This is the approach taken in Morse Code Ninja Speedracer files.)
@@ -1476,6 +1476,7 @@ NOTE: As of version 1.9, you can use a negative value for LCWO_step - the behavi
 <H2>
 Example 33:
 start LCWO session with a header for options to apply to entire session
+(option footer puts verbatium data at the end of output)
 </H2>
 <B>mcpt ... usual options choices ... <mark>-header="|W3 |f600"</mark></B>
 <PRE>
@@ -1498,7 +1499,7 @@ Note: No checks are performed on the content of header, its passed to your
 Example 34: 
 mixed mode words and code groups in LCWO context
 </H2>
-<B>mcpt -in=words.txt -mixedMode=3 -LCWO_low=10 -LCWO_step=5</B>
+<B>mcpt -inFile=words.txt -mixedMode=3 -LCWO_low=10 -LCWO_step=5</B>
 <PRE>
 |W15 |W10 DK6HF |W15 KILLJOYS OUTSPOKEN |W10 AT.,3 |W15 RESALE WASPISHLY |W10 L98G4
 |W15 TWIG BALLYHOO |W10 XUNCR |W15 UNDERBODY SAPPED |W10 BQMS? |W15 ROSIER SEMAPHORES
@@ -1556,15 +1557,15 @@ the quick brown fox jumped over the lazy dogs back
     15	mixedMode=3
     16	MMR
        
-    17	prelen=1
-    18	prelist="012"
+    17	en=1
+    18	ist="012"
     19	suflen=2
     20	suflist=".,"
     21	random
        
     22	DM=3
     23	delimiter="?^/^&lt;SK> ^QTH "
-    24	DR
+    24	delimiterRandom
        
     25	#END
        
@@ -1597,13 +1598,13 @@ the quick brown fox jumped over the lazy dogs back
 	randomized, so you could see multiples of 3 words without a code group.
 17-21   Prefixes and/or suffixes may be added to words (note prosigns randomly replace a word, therefore 
         they can get a prefix or suffix. The number as in suflen=1:2, means the word gets from 1-2 characters 
-	added. The suflist and prelist are the possible characters (they are limited and different in the 
+	added. The suflist and ist are the possible characters (they are limited and different in the 
 	example to easily see the effect.  The final option random, means either could be suppressed on any 
 	given word. Note that a space is a viable character, so it could make random character(s) just before 
 	or after a word.
 22-24   Delimiters are strings that delimit or separate words. The list of values are separated 
         by "^". If DM is greater than 1 (DM - delimiter multiples), between 1 and the DM value of fields 
-	from the delimiter list may be concatenated together (spaces are supported). DR means the appearance 
+	from the delimiter list may be concatenated together (spaces are supported). delimiterRandom means the appearance 
 	is random.
 25      The #END stops the reading of the options file.
 
@@ -1624,17 +1625,17 @@ into into the word flow.
 `
 Note "lazy" and "jumped" were discarded for length or character make up respectively.
 
-THE, BROWN, &lt;AS>, and OVER got a prefix characters added (prefix=1) and its one of the characters in 
-prelist (012).
+THE, BROWN, &lt;AS>, and OVER got a prefix character added (prefix length=1) and its one of the characters in 
+list (012).
 
 QUICK and FOX got neither a prefix or suffix because the <B>random</B> option was set.
 
-DOGS and BACK got a suffix, 1 or 2 characters (suffix=2) from suflist (,.).
+DOGS and BACK got a suffix, 1 or 2 characters (suffix length=2) from suflist (,.).
 
 BACK got both a prefix and suffix.
 
 Every other word is separated by a delimiter string, you see <SK>, /, QTH. Since the delimiter random 
-option <B>DR</B> is set, sometimes it was suppressed.
+option <B>delimiterRandom</B> is set, sometimes it was suppressed.
 
 All the "words" are duplicated due to the <B>repeat=2</B> option.
 
@@ -1746,7 +1747,7 @@ If LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, 
 Example 36: 
 an alternative to the &lt;in> option for word match only
 </H2>
-<B>mcpt -text=input.txt -tutor=lcwo -lesson=12</B>
+<B>mcpt -textFile=input.txt -tutor=lcwo -lesson=12</B>
 </H2>
 While the -in option searches the input file for words (strings of ONLY letters), the -text options can find any contiguous string of characters which meet the selection criteria of the -tutor and -lesson options (plus ^ and &lt;> which can be used for proSigns). In other words, if you are at lesson=15 for a given tutor, and that means you know "kmuranes,/5" (just an example), then ANY space separated string in the input file which includes only those characters (and possibly proSigns) will me matched.
 <P>

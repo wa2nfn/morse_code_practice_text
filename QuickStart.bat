@@ -17,24 +17,24 @@ CMD /c cls
 ECHO Some Code Group Command Practice
 ECHO.
 
-ECHO mcpt -codeGroups -cglen=3:6
+ECHO mcpt -codeGroups -cgLen=3:6
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -codeGroups -cglen=3:6&&echo.&&echo."
+CMD /c "echo. &&mcpt -codeGroups -cgLen=3:6&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -codeGroups -cglen=5 -num=50 -len=80
+ECHO mcpt -codeGroups -cgLen=5 -num=50 -len=80
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -codeGroups -cglen=5 -num=50 -len=80&&echo.&&echo."
+CMD /c "echo. &&mcpt -codeGroups -cgLen=5 -num=50 -len=80&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -codeGroups -cglen=3:6 -lesson=12 -tutor=lcwo
+ECHO mcpt -codeGroups -cgLen=3:6 -lesson=12 -tutor=lcwo
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -codeGroups -cglen=3:6 -lesson=12 -tutor=lcwo&&echo.&&echo."
+CMD /c "echo. &&mcpt -codeGroups -cgLen=3:6 -lesson=12 -tutor=lcwo&&echo.&&echo."
 PAUSE
 CMD /c cls
 
@@ -56,95 +56,95 @@ ECHO.
 ECHO Some Word Command Practice (some with code groups too)
 ECHO.
 
-ECHO mcpt -in=words.txt -inlen=3:10
+ECHO mcpt -inFile=words.txt -inlen=3:10
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -inlen=3:10&&echo.&&echo."
+CMD /c "echo. &&mcpt -inFile=words.txt -inlen=3:10&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -mixedMode=3 -cglen=3:5
+ECHO mcpt -inFile=words.txt -mixedMode=3 -cgLen=3:5
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -mixedMode=3 -cglen=3:5 &&echo.&&echo."
+CMD /c "echo. &&mcpt -inFile=words.txt -mixedMode=3 -cgLen=3:5 &&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -mixedMode=3 -suflen=2
+ECHO mcpt -inFile=words.txt -mixedMode=3 -sufLen=2
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -mixedMode=3 -suflen=2&&echo.&&echo."
+CMD /c "echo. &&mcpt -inFile=words.txt -mixedMode=3 -sufLen=2&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -prelen=1 -suflen=2:2
+ECHO mcpt -inFile=words.txt -preLen=1 -sufLen=2:2
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -prelen=1 -suflen=2:2&&echo.&&echo."
+CMD /c "echo. &&mcpt -inFile=words.txt -preLen=1 -sufLen=2:2&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -suflen=1 -suflist="123=?"
+ECHO mcpt -inFile=words.txt -sufLen=1 -sufList="123=?"
 ECHO.
 PAUSE
-CMD /c "echo. &&mcpt -in=words.txt -suflen=1 -suflist=123&&echo.&&echo."
+CMD /c "echo. &&mcpt -inFile=words.txt -sufLen=1 -sufList=123&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -delimiter=1-5 -DM=2:2 -num=20
+ECHO mcpt -inFile=words.txt -delimiter=1-5 -delimiterNum=2:2 -num=20
 ECHO Note: delimiters are very flexible, they can do prosigns, and more - but not from a demo batch file.
 ECHO.
 PAUSE
-CMD /c "echo.&&mcpt -in=words.txt -delimiter=1-5 -DM=2:2 -num=20&&echo.&&echo."
+CMD /c "echo.&&mcpt -inFile=words.txt -delimiter=1-5 -delimiterNum=2:2 -num=20&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -repeat=2 -num=20
+ECHO mcpt -inFile=words.txt -repeat=2 -num=20
 ECHO.
 PAUSE
-CMD /c "echo.&&mcpt -in=words.txt -repeat=2 -num=20&&echo.&&echo."
+CMD /c "echo.&&mcpt -inFile=words.txt -repeat=2 -num=20&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -reverse -lesson=15 -tutor=lcwo -num=10 -inlen=3:10
+ECHO mcpt -inFile=words.txt -reverse -lesson=15 -tutor=lcwo -num=10 -inlen=3:10
 ECHO.
 PAUSE
-CMD /c "echo.&&mcpt -in=words.txt -reverse -lesson=10 -tutor=lcwo -inlen=5&&echo.&&echo."
+CMD /c "echo.&&mcpt -inFile=words.txt -reverse -lesson=10 -tutor=lcwo -inlen=5&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -prosign=prosign.txt -num=40
+ECHO mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40
 ECHO.
 PAUSE
-CMD /c "echo.&&mcpt -in=words.txt -prosign=prosign.txt -num=40&&echo.&&echo."
+CMD /c "echo.&&mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -prosign=prosign.txt -num=40 -mixedMode=3 
+ECHO mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40 -mixedMode=3 
 ECHO.
 PAUSE
-CMD  /c "echo.&&mcpt -in=words.txt -prosign=prosign.txt -num=40 -mixedMode=3 &&echo.&&echo."
+CMD  /c "echo.&&mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40 -mixedMode=3 &&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -in=words.txt -prosign=prosign.txt -num=40 -mixedMode=3
+ECHO mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40 -mixedMode=3
 ECHO.
 PAUSE
-CMD  /c "echo.&&mcpt -in=words.txt -prosign=prosign.txt -num=40 -mixedMode=3&&echo.&&echo."
+CMD  /c "echo.&&mcpt -inFile=words.txt -prosignFile=prosign.txt -num=40 -mixedMode=3&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -codeGroups -prosign=prosign.txt -num=40
+ECHO mcpt -codeGroups -prosignFile=prosign.txt -num=40
 ECHO.
 PAUSE
-CMD /c "echo.&&mcpt -codeGroups -prosign=prosign.txt -num=40&&echo.&&echo."
+CMD /c "echo.&&mcpt -codeGroups -prosignFile=prosign.txt -num=40&&echo.&&echo."
 PAUSE
 CMD /c cls
 
-ECHO mcpt -codeGroups -prelen=1 -prelist=WK -cglen=1 -cglist=0-9 -suflen=2:3 -suflist=A-Z
+ECHO mcpt -codeGroups -preLen=1 -preList=WK -cgLen=1 -cglist=0-9 -sufLen=2:3 -sufList=A-Z
 ECHO.
 PAUSE
-CMD /c  "echo.&&mcpt -codeGroups -prelen=1 -prelist=WK -cglen=1 -cglist=0-9 -suflen=2:3 -suflist=A-Z&&echo.&&echo."
+CMD /c  "echo.&&mcpt -codeGroups -preLen=1 -preList=WK -cgLen=1 -cglist=0-9 -sufLen=2:3 -sufList=A-Z&&echo.&&echo."
 PAUSE
 CMD /c cls
 

@@ -12,14 +12,14 @@
 #     Code groups practice: 
 #         add to your command line:  -codeGroups -prosign=prosign.txt
 #     Word practice: 
-#         add to your command line:  -in=words.txt -prosign=prosign.txt
-#         add to your command line:  -text=words.txt -prosign=prosign.txt
+#         add to your command line:  -inFile=words.txt -prosign=prosign.txt
+#         add to your command line:  -textFile=words.txt -prosign=prosign.txt
 #
 #     Also get prosign practice with the delimiter option, or having prosigns
 #     in your input file, just like a word. Neither of these methods require 
 #     this file or option.
 #    
-#     Please refer to the User Guide.
+#     Please refer to the UserGuide.
 #
 # 4-  Only the following prosigns are supported in this file. Any place the 
 #     prosigns are used they can be in either upper or lowercase.

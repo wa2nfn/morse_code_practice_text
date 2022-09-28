@@ -127,7 +127,7 @@ func makeSingleSendGroup(charSlice []rune) ([]rune, []rune) {
 	gl := flagcgmin
 
 	// choose random group len from min to max
-	if flagcgmax != flagcgmin && flaghead == false {
+	if flagcgmax != flagcgmin && flagheadcopy == 0 {
 		gl = rng.Intn(flagcgmax-flagcgmin+1) + flagcgmin
 	}
 
