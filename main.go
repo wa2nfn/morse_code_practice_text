@@ -147,6 +147,7 @@ var (
 	flagFL		bool
 	flaglc		bool
 	flagll		bool
+	flagPhraseLen int
 )
 
 var message string = `
@@ -231,6 +232,7 @@ func init() {
 	flag.BoolVar(&flaglc, "lowercase", false, "Make output lowercase.")
 	flag.BoolVar(&flagcc, "cc", false, "Emphasize confused character pairs in code groups.")
 	flag.BoolVar(&flagll, "lessonList", false, "Use lesson chars or cglist for ever increasing group length.")
+	flag.IntVar(&flagPhraseLen, "phraseLen", 0, "Number of words/groups per line as a phrase.")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -1159,6 +1161,8 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0
+	spaceCount:= 0
+
 	if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" && flaglessonend > 14 {
 		strBuf = "<KA>\n" + strBuf + "\n<AR>"
 		index = -5
@@ -1168,6 +1172,17 @@ func printStrBuf(strBuf string, fp *os.File) {
 	res := ""
 
 	for _, r := range strBuf {
+		// added for use with Precision PC Tutor
+		if flagPhraseLen != 0 && r == ' '  {
+			spaceCount++
+
+			if spaceCount >= flagPhraseLen {
+				res += string('\n')
+				spaceCount = 0
+				index = 0
+				continue
+			}
+		}
 
 		if index <= flaglen {
 			res = res + string(r)
