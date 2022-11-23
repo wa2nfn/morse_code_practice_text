@@ -5,7 +5,6 @@ import (
 	"os"
 )
 
-// seed array with LCWO_low, and fill as appropriate
 func doCallSigns(chars string, fp *os.File) {
 	// first decompose the kochChars to see what we have
 
@@ -14,26 +13,39 @@ func doCallSigns(chars string, fp *os.File) {
 	var haveM bool
 	var haveQ bool
 	var haveR bool
+	var haveS bool
+	var haveO bool
+	var haveT bool
+	var haveA bool
+
 	var ltr []rune
 	var dgt []rune
 	var trailer []string
 
 	for _, i := range chars {
 		// could be either case based on flagcaps so do both
-		if i >= rune('A') && i <= rune('Z') {
+		if i >= 'A' && i <= 'Z' {
 			ltr = append(ltr, i)
 
-			if i == rune('M') {
+			if i == 'M' {
 				haveM = true
-			} else if i == rune('P') {
+			} else if i == 'P' {
 				haveP = true
-			} else if i == rune('R') {
+			} else if i == 'R' {
 				haveR = true
-			} else if i == rune('Q') {
+			} else if i == 'Q' {
 				haveQ = true
+			} else if i == 'O' {
+				haveO = true
+			} else if i == 'T' {
+				haveT = true
+			} else if i == 'A' {
+				haveA = true
+			} else if i == 'S' {
+				haveS = true
 			}
 
-		} else if i >= rune('0') && i <= rune('9') {
+		} else if i >= '0' && i <= '9' {
 			dgt = append(dgt, i)
 		} else if i == '/' {
 			haveSlash = true
@@ -60,6 +72,13 @@ func doCallSigns(chars string, fp *os.File) {
 	}
 
 	if haveSlash {
+
+		if haveP && haveO && haveT && haveA {
+			trailer = append(trailer, "POTA")
+		}
+		if haveS && haveO && haveT && haveA {
+			trailer = append(trailer, "SOTA")
+		}
 		if haveQ && haveR && haveP {
 			trailer = append(trailer, "QRP")
 		}
