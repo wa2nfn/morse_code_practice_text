@@ -1,13 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"math/rand"
 	"os"
 	"regexp"
-	"runtime"
 	"strings"
+	"io/ioutil"
 )
 
 /*
@@ -30,16 +29,13 @@ func readFileMode(fp *os.File) {
 		os.Exit(0)
 	}
 
-	file, err := os.Open(flaginput)
+	content, err := ioutil.ReadFile(flaginput)
 
 	if err != nil {
 		fmt.Printf("\n%s File name <%s>.\n", err, flaginput)
 		os.Exit(1)
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	// to match what user wants
 	var trimChars string
 	var s string
 
@@ -74,30 +70,37 @@ func readFileMode(fp *os.File) {
 		psfile.Close()
 	}
 
-	scanner.Split(bufio.ScanWords)
-	for scanner.Scan() {
-		// first way to split the string on spaces
+	line := string(content)
 
-		// lets preprocess for '_-
-		var line string
-		replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", ":", "", ";", "", "'", "", "\"", "")
-		line = scanner.Text()
+	replacer := strings.NewReplacer(
+		"x-ray", "xray",
+		"u-turn", "uturn",
+		"n't'", " not",
+		"i'll", "i will",
+		"i'd", "i would",
+		"i'm", "i am",
+		"y've", "y have",
+		"u've", "u have",
+		"i've", "i have",
+		"'s", " is",
+		"'d", " would",
+		"'re", " are",
+		"!", "",
+		"#", "",
+	"!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
 
-		if line[0] == '#' {
-			continue
-		}
-		line = replacer.Replace(line)
+	line = strings.ToLower(line)
+	line = replacer.Replace(line)
+	line = strings.ToUpper(line)
 
-		tmpWord := strings.TrimRight(line, trimChars)
-		//WDL ALREADY TRIMMED tmpWord = strings.TrimLeft(tmpWord, "\"")
-		tmpWord = strings.ToUpper(tmpWord)
+	for _,wd := range strings.Fields(line) {
 
-		if word.MatchString(tmpWord) {
+		if word.MatchString(wd) {
 
 			// if prosign check it or ignore it
-			if len(tmpWord) == 3 || len(tmpWord) == 4 {
-				if ps.MatchString(tmpWord) {
-					if !ckProsign(tmpWord) {
+			if len(wd) == 3 || len(wd) == 4 {
+				if ps.MatchString(wd) {
+					if !ckProsign(wd) {
 						// its invalid so skip it
 						continue
 					}
@@ -106,28 +109,23 @@ func readFileMode(fp *os.File) {
 
 			// reverse the string
 			if flagreverse {
-				tmpWord = reverse(tmpWord)
+				wd = reverse(wd)
 			}
 
 			/* if -ordered words are ordered so we store and 
 			** retrieve from an array else we use a map
 			*/
 			if flagordered {
-				wordArray = append(wordArray, tmpWord)
+				wordArray = append(wordArray, wd)
 			} else {
 				// add to map if not there
-				if _, ok := wordMap[tmpWord]; ok != true {
-					wordMap[tmpWord] = struct{}{}
+				if _, ok := wordMap[wd]; ok != true {
+					wordMap[wd] = struct{}{}
 				}
 			}
 		} else {
 			discarded = true
 		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("\n%s\n", err)
-		os.Exit(1)
 	}
 
 	msg := "\nSorry there is nothing to output.\nMake sure the options (or defaults) are not to restrictive (inLen, inList).\nVerify your input file is sufficiently populated with matchable text.\n"
@@ -218,7 +216,7 @@ func readFileMode(fp *os.File) {
 			wordMap = m
 
 		}
-		runtime.GC()
+		//runtime.GC()
 
 		// wordsMap has already gotten appropriate words
 		// we just need to divide into length buckets

@@ -1,13 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"math/rand"
 	"os"
 	"regexp"
 	"time"
 	"strings"
+	"io/ioutil"
 )
 
 /*
@@ -38,17 +38,10 @@ func readStringsFile(fp *os.File) {
 		}
 	}
 
-	file, err := os.Open(flagtext)
+	content, err := ioutil.ReadFile(flagtext)
 	if err != nil {
 		fmt.Printf("\n%s For file name <%s>.\n", err, flagtext)
 		os.Exit(1)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("\nError: your input lines are too long to be read.\n\n")
-		os.Exit(9)
 	}
 
 	// to match what user wants
@@ -59,23 +52,39 @@ func readStringsFile(fp *os.File) {
 	isInSet := regexp.MustCompile(re).MatchString
 
 	ps := regexp.MustCompile(`^<[A-Za-z]{2}>$|^\^[A-Za-z]{2}$`)
-	replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
 
-	scanner.Split(bufio.ScanWords)
-	for scanner.Scan() {
+	replacer := strings.NewReplacer(
+		"x-ray", "xray",
+		"u-turn", "uturn",
+		"n't'", " not",
+		"i'll", "i will",
+		"i'd", "i would",
+		"i'm", "i am",
+		"y've", "y have",
+		"u've", "u have",
+		"i've", "i have",
+		"'s", " is",
+		"'d", " would",
+		"'re", " are",
+		"!", "",
+		"#", "",
+	"!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
 
-		// first prune chars we don't want
-		textWord := replacer.Replace(scanner.Text())
+	line := string(content)
+	line = strings.ToLower(line)
+	line = replacer.Replace(line)
+	line = strings.ToUpper(line)
+
+	for _,wd := range strings.Fields(line) {
+
 		// input line pruned
-		// first way to split the string on spaces
-		textWord = strings.ToUpper(textWord)
 
-		if isInSet(textWord) {
+		if isInSet(wd) {
 
 			// if prosign check it or ignore it
-			if len(textWord) == 3 || len(textWord) == 4 {
-				if ps.MatchString(textWord) {
-					if !ckProsign(textWord) {
+			if len(wd) == 3 || len(wd) == 4 {
+				if ps.MatchString(wd) {
+					if !ckProsign(wd) {
 						// its invalid so skip it
 						continue
 					}
@@ -84,22 +93,17 @@ func readStringsFile(fp *os.File) {
 
 			// reverse the string
 			if flagreverse {
-				textWord = reverse(textWord)
+				wd = reverse(wd)
 			}
 
 			/*
 			** always ordered
 			 */
-			wordArray = append(wordArray, textWord)
+			wordArray = append(wordArray, wd)
 		} else {
 			discarded = true
 		}
 
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("\n%s\n", err)
-		os.Exit(1)
 	}
 
 	if len(wordArray) == 0 {
