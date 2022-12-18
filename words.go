@@ -81,10 +81,15 @@ func readFileMode(fp *os.File) {
 		// lets preprocess for '_-
 		var line string
 		replacer := strings.NewReplacer("!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", ":", "", ";", "", "'", "", "\"", "")
-		line = replacer.Replace(scanner.Text())
+		line = scanner.Text()
+
+		if line[0] == '#' {
+			continue
+		}
+		line = replacer.Replace(line)
 
 		tmpWord := strings.TrimRight(line, trimChars)
-		tmpWord = strings.TrimLeft(tmpWord, "\"")
+		//WDL ALREADY TRIMMED tmpWord = strings.TrimLeft(tmpWord, "\"")
 		tmpWord = strings.ToUpper(tmpWord)
 
 		if word.MatchString(tmpWord) {
