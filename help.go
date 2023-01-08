@@ -27,16 +27,16 @@ func doHelp() {
 		fmt.Println("\n\t\tTUTORS Help Information")
 		fmt.Printf(`
 The option <tutor> and <lesson> are for user convience. By choosing the pair, you are prepopluating the
-option <inlist> which reads words from the option <in> file, and <cglist> which is used to create code groups.
+option <inList> which reads words from the option <inFile> file, and <cgList> which is used to create code groups.
 
 The generated practice can be given to ANY tutor. In some cases, a tutor will teach a ProSign,
 but these two options only function with single characters.
 
-The option <inlist> will be populated with both uppercase and lowercase for each alpha character.
+The option <inList> will be populated with both uppercase and lowercase for each alpha character.
 
 The term "lesson" may not be used in every tutor, its just the order that the character was taught.
-Lockdown Morse videos are numbered, that is NOT the lesson number below; find the characters covered
-by the video (e.g. video 005 teaches B and P) that correlates to lesson 13 and 14 below.
+
+NOTE: If you are a user of LICW's carousel system, please run: mcpt -help=licw the lesson option is different than described here.
 
 Lesson is cumulative, if lesson=5, all the characters from lesson 1 through 5 are used.
 
@@ -145,6 +145,7 @@ Approaches:
     mcpt -help=tutors
     mcpt -help=files
     mcpt -help=LCWO
+    mcpt -help=LICW
     mcpt -help=options
 
 *** LCWO Users: The advanced, on-the-fly speed change features, controlled by the "LCWO"
@@ -171,7 +172,7 @@ For certain features, or user convenience, you might specify a text file name in
     This is the easiest way to get the text to the software that will play the code for you or
     for some tutors, like LCWO, create an MP3 file.
 
--prosign=prosign.txt A sample is in the download. Use it with word practice (i.e. -in=words.txt)
+-prosign=prosign.txt A sample is in the download. Use it with word practice (i.e. -inFile=words.txt)
     or a command that is for code groups (i.e. -codeGroups). 
     A prosign (formally procedure signal) is a way communicate an instruction or short
     message, with a unique sound. In text, a prosign is indicated by two letters contained within
@@ -240,11 +241,77 @@ For certain features, or user convenience, you might specify a text file name in
 		`)
 	} else if flaghelp == "OPTIONS" {
 		fmt.Println("\n\t\tYour command line plus default values are shown below.\n")
-		flag.VisitAll(func(f *flag.Flag) {
-			if f.Name != "help" {
+		flag.VisitAll(func(f *flag.Flag) { if f.Name != "help" {
 				fmt.Printf("%s=%v\n", f.Name, f.Value)
 			}
 		})
+	} else if flaghelp == "LICW" {
+		fmt.Println("\n\t\tLICW use of the <lesson> option\n")
+		fmt.Printf(`
+ See the UserGuide (search for LICW) for full details.
+
+
+ Use these columns for              Use these columns for
+ CHARACTER level access             SESSION level access 
+ i.e. 3="A"                         i.e. 1="REA"
+     -tutor=B1C or B2C                 -tutor=B1S or B2S
+ ===============================    ===============================
+
+ ID    B1         ID   B2           ID    B1       ID    B2
+ ==    ==         ==   ==           ==    ===      ==    ===
+ 1     R          1    K            1     REA      1     KMY
+ 2     E          2    M            2     TIN      2     59,
+ 3     A          3    Y            3     PGS      3     QXV
+ 4     T          4    5            4     LCD      4     <AR><SK><BT>
+ 5     I          5    9            5     HOF      5     16.
+ 6     N          6    ,            6     UWB      6     ZJ/
+ 7     P          7    Q                           7     28 BK
+ 8     G          8    X                           8     40 (zero)
+ 9     S          9    V
+ 10    L          10   7
+ 11    C          11   3
+ 12    D          12   ?
+ 13    H          13   <AR> or +
+ 14    O          14   <SK>
+ 15    F          15   <BT> or =
+ 16    U          16   1
+ 17    W          17   6
+ 18    B          18   .
+ 19    R  *       19   Z
+ 20    E          20   J     
+ 21    A          21   /
+ 22    T          22   2
+ 23    I          23   8
+ 24    N          24   BK
+ 25    P          25   4
+ 26    G       *  26   0 (zero)
+ 27    S          27   K
+ 28    L          28   M
+ 29    C          29   Y
+ 30    D          30   5
+ 31    H          31   9
+ 32    O          32   ,
+ 33    F          33   Q
+ 34    U          34   X
+ 35    W          35   V
+ 36    B          36   7
+                  37   3
+	          38   ?
+                  39   <AR> or +
+                  40   <SK>
+		  41   <BT> or =
+		  42   1
+		  43   6
+		  44   .
+		  45   Z
+		  46   J
+		  47   /
+		  48   2
+		  49   8
+		  50   BK
+		  51   4
+		  52   0 (zero)
+	`)
 	} else {
 		fmt.Printf("\nError: Invalid value for the option <help>, \n\tchoices are (case insensitive): TOUR, FILES, TUTORS, LCWO, or OPTIONS.\n")
 	}

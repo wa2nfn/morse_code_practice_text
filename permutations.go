@@ -5,6 +5,7 @@ import (
 	"os"
 	"math/rand"
 	"time"
+	"strings"
 )
 
 //
@@ -18,9 +19,11 @@ func permute(mode string, fp *os.File) {
 	cnt := 0
 	MAX := 10000
 
+	/*
 	if len(flagcglist) == 0 {
 		flagcglist = kochChars
 	}
+	*/
 
 	if len(flagcglist) < 2 {
 		fmt.Println("\nError: input string too short, increase <lesson> for your <tutor>.\n")
@@ -74,6 +77,11 @@ func permute(mode string, fp *os.File) {
 				}
 
 				strBuf += string(out) + " "
+			}
+
+			if flagtutor == "LICWB2" || flagtutor == "B2" {
+				strBuf = strings.ReplaceAll(strBuf, "$", " BK ")
+				strBuf = strings.ReplaceAll(strBuf, "  ", " ")
 			}
 
 			printStrBuf(convertRunes(strBuf), fp)

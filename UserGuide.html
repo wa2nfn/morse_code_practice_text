@@ -50,10 +50,9 @@ The following is a simple list of a behavior and the key option that enables it.
 	<LI> general strings: -in (read from file: HELLO RIG 98.6 80KHZ KA2ABC &lt;SK/ QRS?)
 	<LI> sending: -send and -sendCheck
 </ol>
-<H2> First read of document? You may want to skip aheaad to General Option Examples.
+<P> First read of document? You may want to skip ahead to General Option Examples.
 <H2>
-Options
- - format, evaluation, use of &lt;opt> for file vs cmd line
+Options: format, evaluation, use of &lt;opt> for file vs cmd line
 </H2>
 There are many options to customize your practice text, but in any execution you may only use a few. 
 Options can be read from a file (see -opt) or the command line.
@@ -64,7 +63,7 @@ the first line for the problem cause. Also, adding -help=options to a command li
 you the state of ALL options in MCPT, the ones you have set, plus those with defaults. The defaults may
 have impact on your output that you don't realize.
 <P>
-Note: Zeros written to the screen have a slash for readability, they are stripped with the &lt;-out> option so tutor/trainer software does not
+Note: Zeros written to the screen have a slash for readability, they are printed unstriped with &lt;-outFile> option so tutor/trainer software does not
 have problems. For this reason do <B>not</B> use the commmon command line practice of file redirection using ">".
 <H3>
 Notation
@@ -74,7 +73,7 @@ To minimze typing, some option name are a concatentation or abbreviated words, f
 The following options all have a minimum and maximum value, the values are given in one option.
 They are: en, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). E.g. -inlen=5, is a short hand for -inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
 <P>
-The help usage will remind you about these options because you will see the default value written with the colon notation.
+The help usage will remind you about these options, you will see the default value written with the colon notation.
 <P>
 <PRE>
 Options on the command line MUST be preceded by a "-".
@@ -215,6 +214,7 @@ YOUR FOR WHICH MAY ARE NOT NOT MAY THAT USE CAN OFFER OFFER
 NOTE: 30 words between 3 and 6 characters from text.txt
 NOTE: words in random order
 NOTE: less than 30 unique words found, so we reuse some 
+NOTE: string in <inFile> or <textFile> preceded by a "#" are skipped, so you can skip words from being used
       
 <I>
 See example 32 for contrast of -in vs. -text.
@@ -790,6 +790,7 @@ E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>.
 *** Note 1: To check the tutor-to-lesson correlation use: 
 <P>
 	    <B>mcpt -help=tutors</B>
+	    Users of LICW, use -help=LICW for details on <lesson> which are different than other tutors.
 <P>
 *** Note 2: You can customise your character use independent of a specific
             tutor as with the cglist option.  I.e.: 
@@ -1508,6 +1509,189 @@ Note: No checks are performed on the content of header, its passed to your
       contains a space.)
 
 <B>***** The following, examples combined general and LCWO options. *****</B>
+</PRE>
+<H2>
+Example 33-A: 
+LICW special usage of the tutor and lesson options
+</H2>
+<I>In this section greater than and less than symbols are used to show an item is an option i.e. &lt;tutor&gt; or a value, they are NOT typed.
+</I>
+<P>
+The Long Island CW Club, has a revolutionary approach to teaching their chosen
+characters for CW. Their online documentation describes this "carousel" (circular) approach. This is very diffent from a usage and programming stand point that
+I have provided much more detail on the use of these two option.
+.P
+During run time, users will not likey need to refer to this level of detail,
+but can get what thye need by running: mcpt -help=LICW.
+.P
+To give the user, the most flexibility, there will be 4 values of the &lt;tutor&gt; option, where as other tutors have only one.
+.P
+<PRE>
+*** This sounds complex, but its not, look at the lines with "mcpt" and the output ***
+*** then the details will be easy, maybe unnecessary.                              ***
+</PRE>
+If you are NOT an LICW user, you will likely use -help=tutors to get the lesson
+concept for other tutors, or see the &lt;cgList&gt; option for the non-structured approach.
+<P>
+If you are here, you know the carousel has a B1 and B2, to divide the characters into two sets. For the &lt;tutor&lt; however, you will use B1S, B2S, or B1C, B2C.
+Whether "S" or "C", the order of the characters is the same; the difference
+is the granularity of accessing the characters.
+<P>
+Using the "S" suffix, the characters are by the entire SESSION, that is
+for example you can get practice mather such as code groups, or words, based on
+"REA" or "REATIN", but you CANNNOT suppress a character, like "RE".
+This maybe fine, doesn't let a user get practice like "RR RRRR R RRRRR".
+<P>
+If you want acccess at the CHARACTER level, you would use a "C" suffix, i.e.
+B2C.
+Both are just should hand notation for a more general option &lt;cgList&gt; (for code group) where you can do ANYTHING independent, of the clubs teaching order.
+An example would be "-cglist=RB16M" having characters from both B1 and B2.
+<P>
+Now let's look at how to get to the characters you want, within the concept of 
+SESION or individual CHARACTERS. This is done with the &lt;lesson&gt; option values.
+MCPT will use an ID as an identifier or index to the values you want, note
+these are for this tool's purpose, an LICW instructor is not going to know what you mean if you saying "I'm doing ID 4".
+<P>
+</PRE>
+First, the simple cases.
+
+&lt;tutor&gt; will be "B1S" or "B2S" (for lessons at a SESSION level, like "REA").
+&lt;tutor&gt; will be "B1C" or "B2C" (for lessons at a CHARACTHER level, like "RE" or "R").
+
+The &lt;lesson&gt; does not use the suffixes above.
+
+If you want code groups from all the characters in the B1 carousel:
+
+run: mcpt -codeGroups -tutor=B1S -lesson=B1 (** see note)
+	output is like: RTEEI BEAAU GPFW .....  
+	           add: -cgLen=2:4, for example to have group lengths from 2 to 4, 
+	output is like: EEI AU GPFW TE UB OHHN .....
+
+	To get all the characters of B2, use: tutor=B2S -lesson=B2 (** see note)
+
+For ALL the LICW taught characters, use -tutor=B1S -lesson=B1:B2 (** see note)
+
+	NOTES: - the &lt;lesson&lt; option has NO spaces, 
+	       - the separator is a colon (when needed),
+	       - the letters are not case sensitive.
+	        - ** Since the &gt;lesson&lt; value was for ALL characters, the <tutor> could
+		  use either the "S" or "C" suffix.
+
+The more common case is to limit the training to only those taught by a
+carousel session, for example "LCD" or "KMY", (You can get ANY set 
+without using the tutor/lesson pair of options, by instead using the 
+&lt;cgList&gt; option, like: mcpt -codeGroups -cgList="ABC123?&lt;SK&gt;". 
+The tutor/lesson simply prepopulates this option behind the scenes.
+
+How does a user who get practice for a particular session? 
+A sequence ID or a pair of them based on the listings at the end of 
+this help determines the character. (Note: the ID is for MCPT, it has
+no meaning to LICW instructors).
+
+If session was for B1 characters "HOF". Look at the B1C table to find IDs
+for H,O and F, they are 13, 14, and 15. Use them in the &lt;lesson&gt; option 
+as follows (also sample output is shown):
+
+	mcpt -codeGroups -tutor=B1C -lesson=13:15 -cgLen=3    (## see note)
+	     OUTPUT: OOF HHO FOF OHF FFF
+	mcpt -codeGroups -tutor=B1C -lesson=13:14 -cgLen=5    (** see note)
+	     OUTPUT: HHHHO OHOHH OOHOH OOOOH
+	mcpt -codeGroups -tutor=B1C -lesson=14 -cgLen=2:5     (** see note)
+	     OUTPUT: OOO OO OOO OOOO OO OOOOO OOO
+
+	(Note: tutor names are not case sensitive.)
+	(Note: Option NAMES must be as shown).
+
+
+	Note:
+	      - ## Since the lesson 13:15 was the entire 3 character session the 
+	        alternate command that follows does the same thing:
+		mcpt -codeGroups -tutor=B1S -lesson=5 -cgLen=3
+              - ** this command is selecting LESS than the 3 characters of the
+	        session. Its the key difernece between "C" and "S".
+
+The ID is the start and (if given) the end of the range. In the table 
+character sequence repeats (denoted by an *), this allows the no-reset
+concept of the carousel. A user that jumped on the carousel at "HOF" 
+(ID 13-15) would progress to ID 30 in order to cover all of B1. (IDs for B1C case)
+
+
+	mcpt -codeGroups -tutor=B2C -lesson=B2
+	     OUTPUT: groups with ALL B2 characters
+	mcpt -codeGroups -tutor=B2C -lesson=&lt;start ID&gt;:&lt;end ID&gt;
+	     OUTPUT: character from start ID to end ID of B2
+
+	mcpt -codeGroups -tutor=B2C -lesson=B1:&lt;ID&gt;
+	     OUTPUT: ALL B1, plus only one CHARACTER from B2
+	mcpt -codeGroups -tutor=B2S -lesson=B1:&lt;ID&gt;
+	     OUTPUT: ALL B1, plus only one SESSION from B2
+
+	mcpt -codeGroups -tutor=B2C -lesson=B1:&lt;ID&gt;gt;ID&gt;
+	     OUTPUT: All B1, plus a set of B2 CHARACTERS
+	mcpt -codeGroups -tutor=B2S -lesson=B1:&lt;ID&gt;&lt;ID&gt;
+	     OUTPUT: All B1, plus a set of B2 SESSIONS
+
+ Use these columns for              Use these columns for
+ CHARACTER level access             SESSION level access 
+ i.e. 3="A"                         i.e. 1="REA"
+ <B>-tutor=B1C or B2C                 -tutor=B1S or B2S<\B>
+ ===============================    ===============================
+
+ ID    B1         ID   B2           ID    B1       ID    B2
+ ==    ==         ==   ==           ==    ===      ==    ===
+ 1     R          1    K            1     REA      1     KMY
+ 2     E          2    M            2     TIN      2     59,
+ 3     A          3    Y            3     PGS      3     QXV
+ 4     T          4    5            4     LCD      4     &lt;AR&gt;&lt;SK&gt;&lt;BT&gt;
+ 5     I          5    9            5     HOF      5     16.
+ 6     N          6    ,            6     UWB      6     ZJ/
+ 7     P          7    Q                           7     28 BK
+ 8     G          8    X                           8     40 (zero)
+ 9     S          9    V
+ 10    L          10   7
+ 11    C          11   3
+ 12    D          12   ?
+ 13    H          13   &lt;AR&gt; or +
+ 14    O          14   &lt;SK&gt;
+ 15    F          15   &lt;BT&gt; or =
+ 16    U          16   1
+ 17    W          17   6
+ 18    B          18   .
+ 19    R  *       19   Z
+ 20    E          20   J     
+ 21    A          21   /
+ 22    T          22   2
+ 23    I          23   8
+ 24    N          24   BK
+ 25    P          25   4
+ 26    G       *  26   0 (zero)
+ 27    S          27   K
+ 28    L          28   M
+ 29    C          29   Y
+ 30    D          30   5
+ 31    H          31   9
+ 32    O          32   ,
+ 33    F          33   Q
+ 34    U          34   X
+ 35    W          35   V
+ 36    B          36   7
+                  37   3
+	          38   ?
+                  39   &lt;AR&gt; or +
+                  40   &lt;SK&gt;
+		  41   &lt;BT&gt; or =
+		  42   1
+		  43   6
+		  44   .
+		  45   Z
+		  46   J
+		  47   /
+		  48   2
+		  49   8
+		  50   BK
+		  51   4
+		  52   0 (zero)
+
 </PRE>
 <H2>
 Example 34: 

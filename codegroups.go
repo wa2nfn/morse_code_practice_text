@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"strings"
+	"fmt"
 )
 
 var groupLengthDelta int 
@@ -139,7 +140,7 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 	}
 
 	// choose random group len from min to max
-	if flagcgmax != flagcgmin && flagheadcopy == 0 { //FINN
+	if flagcgmax != flagcgmin && flagheadcopy == 0 { 
 		gl = rng.Intn(flagcgmax-flagcgmin+1) + flagcgmin
 	}
 
@@ -238,6 +239,10 @@ func buildCharSlice() []rune {
 
 	// charSlice now has the user given list of chars
 	// then just copy cgSlice into charSlice as needed
+	if len(cgSlice) == 0 {
+		fmt.Println("code error codeGroups")
+		os.Exit(666)
+	}
 	if len(cgSlice) < numChars {
 		// flush out the charSlice to max we may need
 		factor := numChars / len(cgSlice)
