@@ -148,9 +148,9 @@ var (
 	flaglc		bool
 	flagll		bool
 	flagPhraseLen int
-)
+	isLicw	bool
 
-var message string = `
+        message string = `
 
   Error: 
 
@@ -174,9 +174,12 @@ var message string = `
   -callSigns  (simple generated call signs based on tutor/lesson)
   -lessonList (use lesson chars or cglist for ever increasing code group)
 
-  	` // end message
+` // end message
+)
 
 func init() {
+	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                     v %s\n                                    by WA2NFN\n\n", version)
+
 	flag.StringVar(&flaginlen, "inLen", "1:5", "# characters in a word. inLen=min:max")
 	flag.StringVar(&flagcglen, "cgLen", "5:5", "# characters in a code group. cgLen=min:max.")
 	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
@@ -195,7 +198,7 @@ func init() {
 	flag.StringVar(&flagprosign, "prosignFile", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa| |bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
-	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH.\nUse -help=tutors for more info.")
+	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH, B1(S|C), B2(S|C).\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "delimiterNum", "0:0", "(If delimiter is used.) The number of delimiter\nstrings to add together. delimiterNum=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "delimiterRandom", false, "Delimiter random, if delimiterNum > 0. (default false)")
@@ -288,16 +291,12 @@ func init() {
 	runeMap['*'] = struct{}{}  // DUMMY value for delimiter and LCWO users
 }
 
-func init() {
-	fmt.Fprintf(os.Stderr, "\n                         MCPT - Morse Code Practice Text\n                                     v %s\n                                    by WA2NFN\n\n", version)
-}
-
 func main() {
 
 	flag.Usage = func() {
 		fmt.Printf("Usage of %s:\n", os.Args[0])
 		flag.PrintDefaults()
-		fmt.Printf("\nIf the output above was NOT from entry of -help, scroll to the first line which gives a hint.\nusually: a misspelling, missing \"-\", missing space before \"-\", illegal space after \"-\", unmatched \".")
+		fmt.Printf("\nIf above was NOT from -help, scroll to the top for more details.\nUsually: a misspelling, missing \"-\", missing space before \"-\", illegal space after \"-\", unmatched \".")
 
 	}
 
@@ -378,13 +377,22 @@ func main() {
 		inListChanged = true
 	}
 
+	flagtutor = strings.ToUpper(flagtutor)
+	flaglesson = strings.ToUpper(flaglesson)
+
 	// handle split length options
-	flagmin, flagmax = minmaxSplit("inlen", flaginlen)
-	flagcgmin, flagcgmax = minmaxSplit("cglen", flagcglen)
-	flagpremin, flagpremax = minmaxSplit("prelen", flagprelen)
-	flagsufmin, flagsufmax = minmaxSplit("suflen", flagsuflen)
-	flaglessonstart, flaglessonend = minmaxSplit("lesson", flaglesson)
+	flagmin, flagmax = minmaxSplit("inLen", flaginlen)
+	flagcgmin, flagcgmax = minmaxSplit("cgLen", flagcglen)
+	flagpremin, flagpremax = minmaxSplit("preLen", flagprelen)
+	flagsufmin, flagsufmax = minmaxSplit("sufLen", flagsuflen)
 	flagDMmin, flagDMmax = minmaxSplit("DM", flagDM)
+
+	if flagtutor == "B1C" || flagtutor == "B2C" || flagtutor == "B1S" || flagtutor == "B2S" {
+		flagcglist = licw()
+		isLicw = true
+	} else {
+		flaglessonstart, flaglessonend = minmaxSplit("lesson", flaglesson)
+	}
 
 	//
 	// verify valid options
@@ -540,6 +548,7 @@ func main() {
 
 		flaginlist = "" // incompatible
 	}
+
 
 	if flagsufmin > 0 {
 		if flagsuflist != "" {
@@ -728,91 +737,81 @@ func main() {
 		}
 	}
 
-	flagtutor = strings.ToUpper(flagtutor)
-
 	// expand now before we reuse (its UC)
-	flagcglist = strRangeExpand(flagcglist, "cglist")
+	flagcglist = strRangeExpand(flagcglist, "cgList")
 
 	// may need to concatenate
 	origInlist := ""
 	if flagtext != "" || flaginput != "" {
 		origInlist = strings.ToUpper(flaginlist)
-		origInlist = strRangeExpand(origInlist, "inlist")
+		origInlist = strRangeExpand(origInlist, "inList")
 	}
 
-	if flaglessonend >= 1 {
+	// new special handling of LICW carousel
+	if isLicw == false {
+		if flaglessonend >= 1 {
 
-		if flagtutor == "LCWO" {
-			kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X"
-		} else if flagtutor == "JUSTLEARNMORSECODE" || flagtutor == "JLMC" || flagtutor == "JUSTLEARNMC" {
-			kochChars = "KMRSUAPTLOWI.NJEF0YV,G5/Q9ZH38B?427C1D6X@=+"
-		} else if flagtutor == "G4FON" {
-			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X"
-		} else if flagtutor == "MORSEELMER" || flagtutor == "ME" {
-			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
-		} else if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" {
-			kochChars = "TAENOIS14RHDL25CUMW36?FYPG79/BVKJ80=XQZ!."
-		} else if flagtutor == "CWOPTS" {
-			kochChars = "TEANOIS14RHDL25UCMW36?FYPG79/BVKJ80=XQZ" //cwopts
-		} else if flagtutor == "HAMMORSE" || flagtutor == "HM" {
-			kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
-		} else if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" {
-			flagtutor = "LOCKDOWNMORSE"
-			kochChars = "EOAIUYZQJXKVBPGWFCLDMHRSNT0156273849.,/?"
-		} else if flagtutor == "MFJ418" || flagtutor == "MFJ" {
-			flagtutor = "MFJ418"
-			kochChars = "WBMHATJSNIODELKZGCUQRVFPYX5.7/9,168?2043"
-		} else if flagtutor == "PCWTUTOR" || flagtutor == "PCWT" {
-			flagtutor = "PCWT"
-			kochChars = "QSEMTADJIRC5NLG0UB41HOZY69KW27FX.?38PV,/="
-		} else if flagtutor == "FARNSWORTH" || flagtutor == "FW" {
-			flagtutor = "FW"
-			kochChars = "TAEHCSNOL.BIFRW?DYMGUP,\"VKXQJZ(;:12345/-67890=d+"
-		} else {
-			fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see -helpi=tutors.\n")
-			os.Exit(1)
-		}
-
-		if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT") {
-			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, 40, flagtutor)
-			os.Exit(1)
-		}
-
-		if flaglessonend > len(kochChars) {
-			fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, len(kochChars), flagtutor)
-			os.Exit(1)
-		}
-
-		if flaglessonstart <= 0 {
-			fmt.Printf("\nError: Lesson values start at 1. (see -help=tutors)\n")
-			os.Exit(1)
-		}
-
-		if flaglessonstart == flaglessonend {
-			flaglessonstart = 1
-		}
-		flaglessonstart-- // because strings start at 0
-
-		if flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT" {
-			flaglessonend++
-		}
-
-		if flaglessonend <= len(kochChars) {
-			flagcglist = kochChars[flaglessonstart:flaglessonend]
-		}
-
-		/* WDL
-		tmp_c := ""
-		for _, c := range flagcglist {
-			if c >= 'A' && c <= 'Z' {
-				tmp_c += string(c)
+			if flagtutor == "LCWO" {
+				kochChars = "KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X"
+			} else if flagtutor == "JUSTLEARNMORSECODE" || flagtutor == "JLMC" || flagtutor == "JUSTLEARNMC" {
+				kochChars = "KMRSUAPTLOWI.NJEF0YV,G5/Q9ZH38B?427C1D6X@=+"
+			} else if flagtutor == "G4FON" {
+				kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X"
+			} else if flagtutor == "MORSEELMER" || flagtutor == "ME" {
+				kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
+			} else if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" {
+				kochChars = "TAENOIS14RHDL25CUMW36?FYPG79/BVKJ80=XQZ!."
+			} else if flagtutor == "CWOPTS" {
+				kochChars = "TEANOIS14RHDL25UCMW36?FYPG79/BVKJ80=XQZ" //cwopts
+			} else if flagtutor == "HAMMORSE" || flagtutor == "HM" {
+				kochChars = "KMRSUAPTLOWI.NJEF0Y,VG5/Q9ZH38B?427C1D6X=+"
+			} else if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" {
+				flagtutor = "LOCKDOWNMORSE"
+				kochChars = "EOAIUYZQJXKVBPGWFCLDMHRSNT0156273849.,/?"
+			} else if flagtutor == "MFJ418" || flagtutor == "MFJ" {
+				flagtutor = "MFJ418"
+				kochChars = "WBMHATJSNIODELKZGCUQRVFPYX5.7/9,168?2043"
+			} else if flagtutor == "PCWTUTOR" || flagtutor == "PCWT" {
+				flagtutor = "PCWT"
+				kochChars = "QSEMTADJIRC5NLG0UB41HOZY69KW27FX.?38PV,/="
+			} else if flagtutor == "FARNSWORTH" || flagtutor == "FW" {
+				flagtutor = "FW"
+				kochChars = "TAEHCSNOL.BIFRW?DYMGUP,\"VKXQJZ(;:12345/-67890=d+"
+			} else {
+				fmt.Printf("\nError: Your tutor name is invalid. Names are NOT case sensitive, and without any spaces, see -helpi=tutors.\n")
+				os.Exit(1)
 			}
-		}
 
-		flaginlist = tmp_c
-		*/
+			if (flaglessonend+1 > len(kochChars)) && (flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT") {
+				fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, 40, flagtutor)
+				os.Exit(1)
+			}
+
+			if flaglessonend > len(kochChars) {
+				fmt.Printf("\nError: Lesson value <%d> exceeds the max <%d>, for tutor <%s>.\n", flaglessonend, len(kochChars), flagtutor)
+				os.Exit(1)
+			}
+
+			if flaglessonstart <= 0 {
+				fmt.Printf("\nError: Lesson values start at 1. (see -help=tutors)\n")
+				os.Exit(1)
+			}
+
+			if flaglessonstart == flaglessonend {
+				flaglessonstart = 1
+			}
+			flaglessonstart-- // because strings start at 0
+
+			if flagtutor == "LCWO" || flagtutor == "G4FON" || flagtutor == "JLMC" || flagtutor == "PCWT" {
+				flaglessonend++
+			}
+
+			if flaglessonend <= len(kochChars) {
+				flagcglist = kochChars[flaglessonstart:flaglessonend]
+			}
+
+		}
 	}
-	flagcglist = strings.ToUpper(flagcglist)
 
 	// must follow other cglist manipulation
 	// either case lets get cglist evaluated now
@@ -820,12 +819,12 @@ func main() {
 
 		// make sure we have chars to work with
 		if len(flagcglist) < 1 {
-			fmt.Printf("\nError: you requested codeGroups or mixedMode, so cglist must have at least 1 characters.\n")
+			fmt.Printf("\nError: codeGroups, mixedMode, and lesson list\n        require cgList have at least 1 character.\n")
 			os.Exit(1)
 		} else {
 			if flagcglist != "" {
 				// return expanded
-				flagCglistRune = ckValidListString(flagcglist, "cglist")
+				flagCglistRune = ckValidListString(flagcglist, "cgList")
 			}
 		}
 	}
@@ -880,9 +879,6 @@ func main() {
 			ccMap['I']='M'
 		}
 	}
-
-	// no longer needed save space
-	runeMap = nil
 
 	if flaginput == "" && flagtext == "" && flagCG == false && flagpermute == "" && flagcallsigns == false && (flagsend == "" && flagsendcheck == "") && flagReview == false && flagll == false {
 		nm := filepath.Base(os.Args[0])
@@ -1020,7 +1016,7 @@ func main() {
 		os.Exit(0) // program done
 	}
 
-	// word mode default or codeGroupes WDL
+	// word mode default or codeGroups
 	readFileMode(fp)
 	doOutput(wordArray, fp)
 }
@@ -1168,6 +1164,12 @@ func printStrBuf(strBuf string, fp *os.File) {
 		index = -5
 	}
 
+	if isLicw {
+		strBuf = strings.ReplaceAll(strBuf, "@", " BK ")
+	}
+
+	strBuf = strings.ReplaceAll(strBuf, "  ", " ")
+
 	// done processing now output it
 	res := ""
 
@@ -1277,6 +1279,7 @@ func minmaxSplit(name string, value string) (int, int) {
 	var max int
 
 	value = strings.TrimSpace(value)
+
 	op = strings.Split(value, ":")
 
 	if len(op) > 2 || len(op) == 0 {
@@ -1323,3 +1326,4 @@ func sliceContains(s []string, e string) bool {
 	}
 	return false
 }
+

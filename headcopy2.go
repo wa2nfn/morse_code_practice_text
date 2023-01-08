@@ -30,7 +30,7 @@ func headcopy2(wordOut string, index int, charSlice []rune) (string, []rune) {
 	}
 
 
-	// use delimiter if NOT headcopy
+	// use delimiter 
 	if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
 
 		if flagDMmin == flagDMmax {
