@@ -29,6 +29,10 @@ func readFileMode(fp *os.File) {
 		os.Exit(0)
 	}
 
+	if flaglesson != "0:0" {
+		flaginlist = flagcglist  // swap to sync with lesson list
+	}
+
 	content, err := ioutil.ReadFile(flaginput)
 
 	if err != nil {

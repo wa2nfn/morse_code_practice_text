@@ -335,10 +335,12 @@ func main() {
 					}
 				}()
 
-				skip := regexp.MustCompile(`^help|^opt`)
 				for _, arg := range os.Args[1:] {
 					arg = strings.TrimLeft(arg, "-")
-					if skip.MatchString(arg) {
+					if strings.HasPrefix(arg,"opt") {
+						continue
+					}
+					if strings.HasPrefix(arg,"help") {
 						continue
 					}
 
@@ -371,10 +373,18 @@ func main() {
 		flag.Parse() // second parse since options read
 	}
 
-	inListChanged := false
-	flaginlist = strings.ToUpper(flaginlist)
+	// save time
+	hadLCWO := false
+	markIt := func(f *flag.Flag) {
+
+		if hadLCWO == false && strings.HasPrefix(f.Name, "LCWO_") {
+			hadLCWO = true
+		}
+	}
+	flag.Visit(markIt) //WDL
+
 	if flaginlist != inListStr {
-		inListChanged = true
+		flaginlist = strings.ToUpper(flaginlist)
 	}
 
 	flagtutor = strings.ToUpper(flagtutor)
@@ -617,135 +627,129 @@ func main() {
 
 	// LCWO options
 	// hard code some values since they are arbitrary
+	if hadLCWO {
 
-	if flagLCWOnum < 0 || flagLCWOnum > 30 {
-		fmt.Printf("\nError: LCWO_num number of speed values must be >= 0 and <= 30.\n")
-		os.Exit(0)
-	}
-
-	if flagLCWOnum > 0 {
-		if flagLCWOslow > 0 || flagLCWOfast > 0 {
-			fmt.Printf("\nError: LCWO_num must = 0(off) if LCWO_slow > 0.\n")
-			os.Exit(0)
-		}
-	}
-
-	if flagLCWOlow < 5 {
-		fmt.Printf("\nError: LCWO_low lowest speed must be at least 5 wpm.\n")
-		os.Exit(0)
-	}
-
-	if flagLCWOeff > 0 {
-		if flagLCWOeff >= flagLCWOlow {
-			fmt.Printf("\nError: LCWO_effective speed must be < LCWO_low wpm.\n")
+		if flagLCWOnum < 0 || flagLCWOnum > 30 {
+			fmt.Printf("\nError: LCWO_num number of speed values must be >= 0 and <= 30.\n")
 			os.Exit(0)
 		}
 
-		// set delta since eblow and eff are set
-		effDelta = flagLCWOlow - flagLCWOeff
-	}
-
-	if flagLCWOstep < -20 || flagLCWOstep > 20 {
-		fmt.Printf("\nError: LCWO_step speed incremental step must be >= 0 and <= 30 wpm, 0(off).\n")
-		os.Exit(0)
-	}
-
-	//if flagLCWOstep*flagLCWOnum > 50 {
-	if flagLCWOstep*flagLCWOrepeat > 50 {
-		fmt.Printf("\nError: Speed change in session is excessive at <%d> wpm, adjust LCWO_repeat or LCWO_step.\n", flagLCWOstep*flagLCWOrepeat)
-		os.Exit(0)
-	}
-
-	if flagLCWOslow < 0 || flagLCWOfast < 0 {
-		fmt.Printf("\nError: LCWO_fast and LCWO_slow must be >= 0, 0(off).\n")
-		os.Exit(0)
-	}
-
-	if flagLCWOrepeat > 1 && flagLCWOfast > 0 {
-		fmt.Printf("\nError: LCWO_repeat is mutually exclusive with LCWO_slow.\n")
-		os.Exit(0)
-	}
-
-	if flagLCWOfast > 0 && flagLCWOslow == 0 {
-		fmt.Printf("\nError: LCWO_fast > 0 requires LCWO_slow to be specified.\n")
-		os.Exit(0)
-	}
-
-	// we want LCWO, lots of exclusions to try
-	if flagLCWOslow > 0 {
-		if flagLCWOfast == 0 {
-			flagLCWOfast = flagLCWOslow
+		if flagLCWOnum > 0 {
+			if flagLCWOslow > 0 || flagLCWOfast > 0 {
+				fmt.Printf("\nError: LCWO_num must = 0(off) if LCWO_slow > 0.\n")
+				os.Exit(0)
+			}
 		}
 
-		if flagLCWOstep < 1 {
-			fmt.Printf("\nError: LCWO_step must be >=1 with LCWO_slow/LCWO_fast.\n")
+		if flagLCWOlow < 5 {
+			fmt.Printf("\nError: LCWO_low lowest speed must be at least 5 wpm.\n")
 			os.Exit(0)
 		}
 
-		if flagLCWOrepeat >= 1 {
-			fmt.Printf("\nError: LCWO_repeat is mutually exclusive with LCWO_slow and LCWO_fast options.\n")
-			os.Exit(1)
-		}
-	}
+		if flagLCWOeff > 0 {
+			if flagLCWOeff >= flagLCWOlow {
+				fmt.Printf("\nError: LCWO_effective speed must be < LCWO_low wpm.\n")
+				os.Exit(0)
+			}
 
-	if flagLCWOrepeat < 0 || flagLCWOrepeat > 30 {
-		fmt.Printf("\nError: LCWO_repeat must be >=2 and <= 30 for word speed repeat, 0(off).\n")
-		os.Exit(0)
-	}
-
-	if flagLCWOramp {
-		if flagLCWOfast > 0 {
-			fmt.Printf("\nError: LCWO_ramp is mutually exclusive with LCWO_slow and LCWO_fast options.\n")
-			os.Exit(1)
+			// set delta since eblow and eff are set
+			effDelta = flagLCWOlow - flagLCWOeff
 		}
 
-		if flagLCWOnum == 0 {
-			fmt.Printf("\nError: LCWO_ramp requires LCWO_num > 0.\n")
-			os.Exit(1)
+		if flagLCWOstep < -20 || flagLCWOstep > 20 {
+			fmt.Printf("\nError: LCWO_step speed incremental step must be >= 0 and <= 30 wpm, 0(off).\n")
+			os.Exit(0)
 		}
 
-		if flagLCWOstep == 0 {
-			fmt.Printf("\nError: LCWO_ramp requires LCWO_step > 0.\n")
-			os.Exit(1)
-		}
-	}
-
-	if flagLCWOefframp {
-		if flagLCWOrepeat > 0 {
-			fmt.Printf("\nError: LCWO_effective_ramp is mutually exclusive with LCWO_repeat.\n")
-			os.Exit(1)
+		if flagLCWOstep*flagLCWOrepeat > 50 {
+			fmt.Printf("\nError: Speed change in session is excessive at <%d> wpm, adjust LCWO_repeat or LCWO_step.\n", flagLCWOstep*flagLCWOrepeat)
+			os.Exit(0)
 		}
 
-		if flagLCWOnum == 0 {
-			fmt.Printf("\nError: LCWO_effective_ramp requires LCWO_num > 0.\n")
-			os.Exit(1)
+		if flagLCWOslow < 0 || flagLCWOfast < 0 {
+			fmt.Printf("\nError: LCWO_fast and LCWO_slow must be >= 0, 0(off).\n")
+			os.Exit(0)
 		}
 
-		if flagLCWOstep < 1 {
-			fmt.Printf("\nError: LCWO_effective_ramp requires LCWO_step >= 1 and its less than LCWO_low.\n")
-			os.Exit(1)
+		if flagLCWOrepeat > 1 && flagLCWOfast > 0 {
+			fmt.Printf("\nError: LCWO_repeat is mutually exclusive with LCWO_slow.\n")
+			os.Exit(0)
+		}
+
+		if flagLCWOfast > 0 && flagLCWOslow == 0 {
+			fmt.Printf("\nError: LCWO_fast > 0 requires LCWO_slow to be specified.\n")
+			os.Exit(0)
+		}
+
+		// we want LCWO, lots of exclusions to try
+		if flagLCWOslow > 0 {
+			if flagLCWOfast == 0 {
+				flagLCWOfast = flagLCWOslow
+			}
+
+			if flagLCWOstep < 1 {
+				fmt.Printf("\nError: LCWO_step must be >=1 with LCWO_slow/LCWO_fast.\n")
+				os.Exit(0)
+			}
+
+			if flagLCWOrepeat >= 1 {
+				fmt.Printf("\nError: LCWO_repeat is mutually exclusive with LCWO_slow and LCWO_fast options.\n")
+				os.Exit(1)
+			}
+		}
+
+		if flagLCWOrepeat < 0 || flagLCWOrepeat > 30 {
+			fmt.Printf("\nError: LCWO_repeat must be >=2 and <= 30 for word speed repeat, 0(off).\n")
+			os.Exit(0)
 		}
 
 		if flagLCWOramp {
-			fmt.Printf("\nError: LCWO_effective_ramp is mutually exclusive with LCWO_ramp.\n")
-			os.Exit(1)
+			if flagLCWOfast > 0 {
+				fmt.Printf("\nError: LCWO_ramp is mutually exclusive with LCWO_slow and LCWO_fast options.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOnum == 0 {
+				fmt.Printf("\nError: LCWO_ramp requires LCWO_num > 0.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOstep == 0 {
+				fmt.Printf("\nError: LCWO_ramp requires LCWO_step > 0.\n")
+				os.Exit(1)
+			}
 		}
 
-		if flagLCWOlow < 1 {
-			fmt.Printf("\nError: LCWO_effective_ramp requires LCWO_low >= 5.\n")
-			os.Exit(1)
+		if flagLCWOefframp {
+			if flagLCWOrepeat > 0 {
+				fmt.Printf("\nError: LCWO_effective_ramp is mutually exclusive with LCWO_repeat.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOnum == 0 {
+				fmt.Printf("\nError: LCWO_effective_ramp requires LCWO_num > 0.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOstep < 1 {
+				fmt.Printf("\nError: LCWO_effective_ramp requires LCWO_step >= 1 and its less than LCWO_low.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOramp {
+				fmt.Printf("\nError: LCWO_effective_ramp is mutually exclusive with LCWO_ramp.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOlow < 1 {
+				fmt.Printf("\nError: LCWO_effective_ramp requires LCWO_low >= 5.\n")
+				os.Exit(1)
+			}
 		}
 	}
-
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cgList")
-
-	// may need to concatenate
-	origInlist := ""
-	if flagtext != "" || flaginput != "" {
-		origInlist = strings.ToUpper(flaginlist)
-		origInlist = strRangeExpand(origInlist, "inList")
-	}
+	flaginlist = strRangeExpand(flaginlist, "inList")
 
 	// new special handling of LICW carousel
 	if isLicw == false {
@@ -808,6 +812,9 @@ func main() {
 
 			if flaglessonend <= len(kochChars) {
 				flagcglist = kochChars[flaglessonstart:flaglessonend]
+				if flaginput != "" {
+					flaginlist = flagcglist
+				}
 			}
 
 		}
@@ -900,13 +907,6 @@ func main() {
 		if flagcglist == "" {
 			fmt.Printf("\nError: <codeGroups> requires option <lesson> greater than zero OR cglist must be used.\n")
 			os.Exit(98)
-		}
-	}
-
-	// if text or words we can have inlist added to lesson
-	if flagtext != "" || flaginput != "" {
-		if inListChanged {
-			flaginlist += origInlist
 		}
 	}
 
@@ -1155,11 +1155,11 @@ func expandIt(lower string, upper string, whoAmI string) string {
 //
 func printStrBuf(strBuf string, fp *os.File) {
 
-	re := regexp.MustCompile(`!`) // for MorseNinja
+	//WDL re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0
 	spaceCount:= 0
 
-	if flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM" && flaglessonend > 14 {
+	if flaglessonend > 14 && (flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM") {
 		strBuf = "<KA>\n" + strBuf + "\n<AR>"
 		index = -5
 	}
@@ -1210,7 +1210,8 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	// for MorseNinja
 	if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" && flaglessonend >= 40 {
-		res = re.ReplaceAllString(res, "<BK>")
+		//res = re.ReplaceAllString(res, "<BK>")
+		res = strings.ReplaceAll(res,"!","<BK>")
 	}
 
 	if flagTAB {
@@ -1326,4 +1327,3 @@ func sliceContains(s []string, e string) bool {
 	}
 	return false
 }
-

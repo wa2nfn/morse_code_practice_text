@@ -25,7 +25,7 @@ func readStringsFile(fp *os.File) {
 	}
 
 	// modify so -lesson can be used with -text
-	if flaglesson  != "" {
+	if flaglesson  != "0:0" {
 		// user wants lessons to be used in -in=file
 		flaginlist = flagcglist // swap meaning
 	}

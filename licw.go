@@ -110,7 +110,7 @@ func licw() string {
 	// different process for session vs char access tutor
 	if flagtutor == "B1C" || flagtutor == "B2C" {
 		if max > len(str) {
-			fmt.Printf("\nError: the value max (<min>:<max>) in the lesson pair is too large.\n")
+			fmt.Printf("\nError: the value max (<min>:<max>) in the lesson pair is too large, max is: %d.\n",len(str))
 			os.Exit(99)
 		}
 		min--
