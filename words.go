@@ -20,7 +20,7 @@ func readFileMode(fp *os.File) {
 	discarded := false
 
 	if flaginput == "" {
-		fmt.Printf("\nError: an input file must be given to -in, unless -codeGroups is used.\n")
+		fmt.Printf("\nError: an input file must be given to -inFile, unless -codeGroups is used.\n")
 		os.Exit(0)
 	}
 

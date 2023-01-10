@@ -20,12 +20,12 @@ func readStringsFile(fp *os.File) {
 	discarded := false
 
 	if flagtext == "" {
-		fmt.Printf("\nError: an input file must be given to -text.\n")
+		fmt.Printf("\nError: an text input file must be given to -textFile.\n")
 		os.Exit(0)
 	}
 
 	// modify so -lesson can be used with -text
-	if len(flagcglist) < len(kochChars) {
+	if flaglesson  != "" {
 		// user wants lessons to be used in -in=file
 		flaginlist = flagcglist // swap meaning
 	}
