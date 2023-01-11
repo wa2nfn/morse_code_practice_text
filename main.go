@@ -335,12 +335,11 @@ func main() {
 					}
 				}()
 
+				re := regexp.MustCompile("^opt|^help")
 				for _, arg := range os.Args[1:] {
 					arg = strings.TrimLeft(arg, "-")
-					if strings.HasPrefix(arg,"opt") {
-						continue
-					}
-					if strings.HasPrefix(arg,"help") {
+
+					if re.MatchString(arg) {
 						continue
 					}
 
