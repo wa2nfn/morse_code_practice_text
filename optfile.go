@@ -57,8 +57,8 @@ func doOptFile(file *os.File) {
 
 		// we assume its an option
 		// trim down to get the string at the end
-		str = strings.TrimSpace(str)
-		str = strings.TrimLeft(str, "-")
+//		str = strings.TrimSpace(str)
+		str = strings.TrimLeft(str, " -")
 
 		/*
 		if str[len(str)-1] == '=' {
@@ -80,10 +80,14 @@ func doOptFile(file *os.File) {
 			arr[1] = strings.TrimRight(arr[1], "'\"")
 
 			if arr[0] == "opt" {
-				fmt.Printf("\nWarning: option \"opt\" can't be reset in the options file <%s> on line <%d>. Ignoring it and continuing.\n\n", flagopt, lineNum)
+				fmt.Printf("\nWarning: option <opt> can't be set in the options file <%s> on line <%d>. Ignoring it and continuing.\n\n", flagopt, lineNum)
 				continue
 			}
 
+			if arr[0] == "help" {
+				fmt.Printf("\nWarning: option <help> can't be set in the options file <%s> on line <%d>. Ignoring it and continuing.\n\n", flagopt, lineNum)
+				continue
+			}
 			flag.Set(arr[0], arr[1])
 			continue
 		}
