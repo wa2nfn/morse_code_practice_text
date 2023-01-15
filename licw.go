@@ -39,7 +39,7 @@ func licw() string {
 	if strings.HasPrefix(flaglesson, "BC1:") {
 
 		if flagtutor == "BC2C" || flagtutor == "BC2S" {
-			flaglesson = strings.TrimPrefix(flaglesson,"B1:")
+			flaglesson = strings.TrimPrefix(flaglesson,"BC1:")
 			tmpSet = b1seed
 			str = b2seedDbl
 		} else {
@@ -49,7 +49,7 @@ func licw() string {
 
 	} else if strings.HasPrefix(flaglesson, "BC2:") {
 			fmt.Printf("\nError: lesson value never contains BC2\n")
-			fmt.Printf("\nlesson value for this tutor can ONLY have these formats: BC2, BC1:<ID>, BC1:<ID>:<ID>, <ID>, <ID>:<ID>\n")
+			fmt.Printf("lesson value for this tutor can ONLY have these formats: BC1:<ID>, BC1:<ID>:<ID>, <ID>, <ID>:<ID>\n")
 			os.Exit(99)
 	}
 
@@ -108,7 +108,7 @@ func licw() string {
 	}
 
 	// different process for session vs char access tutor
-	if flagtutor == "B1C" || flagtutor == "B2C" {
+	if flagtutor == "BC1C" || flagtutor == "BC2C" {
 		if max > len(str) {
 			fmt.Printf("\nError: the value max (<min>:<max>) in the lesson pair is too large, max is: %d.\n",len(str))
 			os.Exit(99)
@@ -123,7 +123,7 @@ func licw() string {
 			}
 		}
 	} else {
-		// its B1S or B2S
+		// its BC1S or BC2S
 		num := 0
 		arrBC1S := []string{"REA","TIN","PGS","LCD","HOF","UWB","REA","TIN","PGS","LCD","HOF","UWB"}
 		arrBC2S := []string{"KMY","59,","QXV","73?","+sb","16.","ZJ/","28@","40","KMY","59,","QXV","73?","+sb","16.","ZJ/","28$","40"}
