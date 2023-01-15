@@ -246,7 +246,7 @@ For certain features, or user convenience, you might specify a text file name in
 			}
 		})
 	} else if flaghelp == "LICW" {
-		fmt.Println("\n\t\tLICW use of the <lesson> option\n")
+		fmt.Println("\n\t\tLICW use of the <tutor> <lesson> options\n")
 		fmt.Printf(`
  See the UserGuide (search for LICW) for full details.
 
@@ -254,11 +254,11 @@ For certain features, or user convenience, you might specify a text file name in
  Use these columns for              Use these columns for
  CHARACTER level access             SESSION level access 
  i.e. 3="A"                         i.e. 1="REA"
-     -tutor=B1C or B2C                 -tutor=B1S or B2S
+     -tutor=BC1C or BC2C               -tutor=BC1S or BC2S
  ===============================    ===============================
 
- ID    B1         ID   B2           ID    B1       ID    B2
- ==    ==         ==   ==           ==    ===      ==    ===
+ ID    BC1        ID   BC2          ID    BC1      ID    BC2
+ ==    ===        ==   ===          ==    ===      ==    ===
  1     R          1    K            1     REA      1     KMY
  2     E          2    M            2     TIN      2     59,
  3     A          3    Y            3     PGS      3     QXV

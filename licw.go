@@ -16,19 +16,19 @@ func licw() string {
 	var min int
 
 	switch flaglesson {
-	case "B1":
-		if flagtutor == "B2C" || flagtutor == "B2S" {
+	case "BC1":
+		if flagtutor == "BC2C" || flagtutor == "BC2S" {
 			fmt.Printf("\nError: lesson value incomplete with the tutor=<%s>, require lesson ID(s)\n", flagtutor)
 			os.Exit(99)
 		}
 		return b1seed
-	case "B2":
-		if flagtutor == "B1C" || flagtutor == "B1S" {
-			fmt.Printf("\nError: lesson value <B2> is invalid with the tutor=<%s>\n", flagtutor)
+	case "BC2":
+		if flagtutor == "BC1C" || flagtutor == "BC1S" {
+			fmt.Printf("\nError: lesson value <BC2> is invalid with the tutor=<%s>\n", flagtutor)
 			os.Exit(99)
 		}
 		return b2seed
-	case "B1:B2", "B2:B1":
+	case "BC1:BC2", "BC2:BC1":
 		return b1seed + b2seed
 	}
 
@@ -36,27 +36,27 @@ func licw() string {
 	b2seedDbl := "KMY59,QXV73?+sb16.ZJ/28@40KMY59,QXV73?+sb16.ZJ/28@40"
 
 	// analyse min and max
-	if strings.HasPrefix(flaglesson, "B1:") {
+	if strings.HasPrefix(flaglesson, "BC1:") {
 
-		if flagtutor == "B2C" || flagtutor == "B2S" {
+		if flagtutor == "BC2C" || flagtutor == "BC2S" {
 			flaglesson = strings.TrimPrefix(flaglesson,"B1:")
 			tmpSet = b1seed
 			str = b2seedDbl
 		} else {
-			fmt.Printf("\nError: lesson value for this tutor can ONLY have\n       these formats: B1, <ID>, <ID>:<ID>\n")
+			fmt.Printf("\nError: lesson value for this tutor can ONLY have\n       these formats: BC1, <ID>, <ID>:<ID>\n")
 			os.Exit(99)
 		}
 
-	} else if strings.HasPrefix(flaglesson, "B2:") {
-			fmt.Printf("\nError: lesson value never contains B2\n")
-			fmt.Printf("\nlesson value for this tutor can ONLY have these formats: B2, B1:<ID>, B1:<ID>:<ID>, <ID>, <ID>:<ID>\n")
+	} else if strings.HasPrefix(flaglesson, "BC2:") {
+			fmt.Printf("\nError: lesson value never contains BC2\n")
+			fmt.Printf("\nlesson value for this tutor can ONLY have these formats: BC2, BC1:<ID>, BC1:<ID>:<ID>, <ID>, <ID>:<ID>\n")
 			os.Exit(99)
 	}
 
 	// char mode, session done later
-	if flagtutor == "B1C" {
+	if flagtutor == "BC1C" {
 		str = b1seedDbl
-	} else if flagtutor == "B2C" {
+	} else if flagtutor == "BC2C" {
 		str = b2seedDbl
 	}
 
@@ -125,13 +125,13 @@ func licw() string {
 	} else {
 		// its B1S or B2S
 		num := 0
-		arrB1S := []string{"REA","TIN","PGS","LCD","HOF","UWB","REA","TIN","PGS","LCD","HOF","UWB"}
-		arrB2S := []string{"KMY","59,","QXV","73?","+sb","16.","ZJ/","28@","40","KMY","59,","QXV","73?","+sb","16.","ZJ/","28$","40"}
+		arrBC1S := []string{"REA","TIN","PGS","LCD","HOF","UWB","REA","TIN","PGS","LCD","HOF","UWB"}
+		arrBC2S := []string{"KMY","59,","QXV","73?","+sb","16.","ZJ/","28@","40","KMY","59,","QXV","73?","+sb","16.","ZJ/","28$","40"}
 
-		if flagtutor == "B1S" {
-			num = len(arrB1S)
+		if flagtutor == "BC1S" {
+			num = len(arrBC1S)
 		} else {
-			num = len(arrB2S)
+			num = len(arrBC2S)
 		}
 
 		if max > num {
@@ -144,10 +144,10 @@ func licw() string {
 		 // session approach
 		 for i := 0 ; i < num; i++ { 
 			if i >= min && i <= max { 
-				if flagtutor == "B1S" {
-					tmpSet += arrB1S[i]
+				if flagtutor == "BC1S" {
+					tmpSet += arrBC1S[i]
 				} else {
-					tmpSet += arrB2S[i]
+					tmpSet += arrBC2S[i]
 				}
 			}
 		}

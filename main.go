@@ -198,7 +198,7 @@ func init() {
 	flag.StringVar(&flagprosign, "prosignFile", "", "ProSign file name. One ProSigns per line. i.e. <BT>")
 	flag.StringVar(&flagdelimit, "delimiter", "", "Output an inter-word delimiter string. A \"|\" separates delimiters e.g. <SK>|abc|123.\nA blank field e.g. aa| |bb, is valid to get a space. ")
 	flag.BoolVar(&flagunique, "unique", false, "Each output word is sent only once (num option quantity may be reduced).\n (default false)")
-	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH, B1(S|C), B2(S|C).\nUse -help=tutors for more info.")
+	flag.StringVar(&flagtutor, "tutor", "LCWO", "Only with -lessons. Sets order and # of characters by tutor type.\nLCWO, JustLearnMorseCode, G4FON, MorseElmer, MorseCodeNinja, HamMorse, LockdownMorse, MFJ418, PCWTutor, CWOPTS, FARNSWORTH, BC1(S|C), BC2(S|C).\nUse -help=tutors for more info.")
 	flag.StringVar(&flagDM, "delimiterNum", "0:0", "(If delimiter is used.) The number of delimiter\nstrings to add together. delimiterNum=min:max")
 	flag.StringVar(&flaglesson, "lesson", "0:0", "Given the lesson number by <tutor>, populates options inlist and cglist with appropriate characters.")
 	flag.BoolVar(&flagDR, "delimiterRandom", false, "Delimiter random, if delimiterNum > 0. (default false)")
@@ -396,7 +396,7 @@ func main() {
 	flagsufmin, flagsufmax = minmaxSplit("sufLen", flagsuflen)
 	flagDMmin, flagDMmax = minmaxSplit("DM", flagDM)
 
-	if flagtutor == "B1C" || flagtutor == "B2C" || flagtutor == "B1S" || flagtutor == "B2S" {
+	if flagtutor == "BC1C" || flagtutor == "BC2C" || flagtutor == "BC1S" || flagtutor == "BC2S" {
 		flagcglist = licw()
 		isLicw = true
 	} else {

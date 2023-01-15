@@ -1513,14 +1513,15 @@ Note: No checks are performed on the content of header, its passed to your
 </PRE>
 <H2>
 Example 33-A: 
-LICW special usage of the tutor and lesson options
+LICW special usage of the &lt;tutor&gt; and &lt;lesson&gt; options
 </H2>
-<I>In this section greater than and less than symbols are used to show an item is an option i.e. &lt;tutor&gt; or a value, they are NOT typed.
+<I>In this section greater than and less than symbols are used to show an item is an option i.e. 
+&lt;tutor&gt; or a value, they are NOT typed.
 </I>
 <P>
-The Long Island CW Club, has a revolutionary approach to teaching their chosen
-characters for CW. Their online documentation describes this "carousel" (circular) approach. This is very diffent from a usage and programming stand point that
-I have provided much more detail on the use of these two option.
+The Long Island CW Club, has a revolutionary approach to teaching their chosen characters for CW. 
+Their online documentation describes this "carousel" (circular) approach. This is very different 
+from a usage and programming stand point, so I have provided much more detail on the use of these two options.
 .P
 During run time, users will not likey need to refer to this level of detail,
 but can get what thye need by running: mcpt -help=LICW.
@@ -1534,19 +1535,20 @@ To give the user, the most flexibility, there will be 4 values of the &lt;tutor&
 If you are NOT an LICW user, you will likely use -help=tutors to get the lesson
 concept for other tutors, or see the &lt;cgList&gt; option for the non-structured approach.
 <P>
-If you are here, you know the carousel has a B1 and B2, to divide the characters into two sets. For the &lt;tutor&lt; however, you will use B1S, B2S, or B1C, B2C.
-Whether "S" or "C", the order of the characters is the same; the difference
-is the granularity of accessing the characters.
+If you are here, you know the carousel has a BC1 and BC2 (begineers corousel 1 or 2), to divide the characters 
+into two sets. For the &lt;tutor&lt; however, you will use BC1S, BC2S, or BC1C, BC2C.
+<P>
+The suffix "S" or "C" is for "mcpt" to give the user "session" or "character" granularity of accessing the characters (details follow).
 <P>
 Using the "S" suffix, the characters are by the entire SESSION, that is
-for example you can get practice mather such as code groups, or words, based on
-"REA" or "REATIN", but you CANNNOT suppress a character, like "RE".
+for example you can get practice material such as code groups, or words, based on
+"REA" or "REATIN", but you CANNNOT suppress a character to get "RE" (its the entire session).
 This maybe fine, doesn't let a user get practice like "RR RRRR R RRRRR".
 <P>
 If you want acccess at the CHARACTER level, you would use a "C" suffix, i.e.
-B2C.
-Both are just should hand notation for a more general option &lt;cgList&gt; (for code group) where you can do ANYTHING independent, of the clubs teaching order.
-An example would be "-cglist=RB16M" having characters from both B1 and B2.
+BC1C
+Both are just should hand notation for a more general option &lt;cgList&gt; (for code group list) where you can do ANYTHING regardless of the clubs teaching order.
+An example would be "-cgList=RB16M" having rome characters from both BC1 and BC2.
 <P>
 Now let's look at how to get to the characters you want, within the concept of 
 SESION or individual CHARACTERS. This is done with the &lt;lesson&gt; option values.
@@ -1556,21 +1558,21 @@ these are for this tool's purpose, an LICW instructor is not going to know what 
 </PRE>
 First, the simple cases.
 
-&lt;tutor&gt; will be "B1S" or "B2S" (for lessons at a SESSION level, like "REA").
-&lt;tutor&gt; will be "B1C" or "B2C" (for lessons at a CHARACTHER level, like "RE" or "R").
+&lt;tutor&gt; will be "BC1S" or "BC2S" (for lessons at a SESSION level, like "REA").
+&lt;tutor&gt; will be "BC1C" or "BC2C" (for lessons at a CHARACTHER level, like "RE" or "R").
 
 The &lt;lesson&gt; does not use the suffixes above.
 
 If you want code groups from all the characters in the B1 carousel:
 
-run: mcpt -codeGroups -tutor=B1S -lesson=B1 (** see note)
+run: mcpt -codeGroups -tutor=BC1S -lesson=BC1 (** see note)
 	output is like: RTEEI BEAAU GPFW .....  
 	           add: -cgLen=2:4, for example to have group lengths from 2 to 4, 
 	output is like: EEI AU GPFW TE UB OHHN .....
 
-	To get all the characters of B2, use: tutor=B2S -lesson=B2 (** see note)
+	To get all the characters of BC2, use: tutor=BC2S -lesson=BC2 (** see note)
 
-For ALL the LICW taught characters, use -tutor=B1S -lesson=B1:B2 (** see note)
+For ALL the LICW taught characters, use -tutor=BC1S -lesson=BC1:BC2 (** see note)
 
 	NOTES: - the &lt;lesson&lt; option has NO spaces, 
 	       - the separator is a colon (when needed),
@@ -1578,26 +1580,28 @@ For ALL the LICW taught characters, use -tutor=B1S -lesson=B1:B2 (** see note)
 	        - ** Since the &gt;lesson&lt; value was for ALL characters, the <tutor> could
 		  use either the "S" or "C" suffix.
 
-The more common case is to limit the training to only those taught by a
-carousel session, for example "LCD" or "KMY", (You can get ANY set 
-without using the tutor/lesson pair of options, by instead using the 
-&lt;cgList&gt; option, like: mcpt -codeGroups -cgList="ABC123?&lt;SK&gt;". 
-The tutor/lesson simply prepopulates this option behind the scenes.
+<B> NOTE: The suffix is NOT used in the lesson, becasue whether BC1 or BC2 in the lesson, you are already indicating the ENTIRE set,</B>
+
+The more common case is to limit the training to only those taught by a carousel session,
+for example "LCD" or "KMY", (As preiously stated, you can get ANY set without using the 
+tutor/lesson pair of options, by instead using the &lt;cgList&gt; option, 
+like: mcpt -codeGroups -cgList="ABC123?&lt;SK&gt;". 
+
+The tutor and lesson simply prepopulates the &lt;cgList&gt; option behind the scenes.
 
 How does a user who get practice for a particular session? 
 A sequence ID or a pair of them based on the listings at the end of 
-this help determines the character. (Note: the ID is for MCPT, it has
-no meaning to LICW instructors).
+this help determines the character. 
 
-If session was for B1 characters "HOF". Look at the B1C table to find IDs
-for H,O and F, they are 13, 14, and 15. Use them in the &lt;lesson&gt; option 
+If the teaching session was for BC1 characters "HOF", for example, look at the BC1C table to find IDs
+for H, O and F, they are 13, 14, and 15. Use them in the &lt;lesson&gt; option 
 as follows (also sample output is shown):
 
-	mcpt -codeGroups -tutor=B1C -lesson=13:15 -cgLen=3    (## see note)
+	mcpt -codeGroups -tutor=BC1C -lesson=13:15 -cgLen=3    (## see note)
 	     OUTPUT: OOF HHO FOF OHF FFF
-	mcpt -codeGroups -tutor=B1C -lesson=13:14 -cgLen=5    (** see note)
+	mcpt -codeGroups -tutor=BC1C -lesson=13:14 -cgLen=5    (** see note)
 	     OUTPUT: HHHHO OHOHH OOHOH OOOOH
-	mcpt -codeGroups -tutor=B1C -lesson=14 -cgLen=2:5     (** see note)
+	mcpt -codeGroups -tutor=BC1C -lesson=14 -cgLen=2:5     (** see note)
 	     OUTPUT: OOO OO OOO OOOO OO OOOOO OOO
 
 	(Note: tutor names are not case sensitive.)
@@ -1605,41 +1609,40 @@ as follows (also sample output is shown):
 
 
 	Note:
-	      - ## Since the lesson 13:15 was the entire 3 character session the 
-	        alternate command that follows does the same thing:
-		mcpt -codeGroups -tutor=B1S -lesson=5 -cgLen=3
+	      - ## Since the lesson 13:15 was the entire 3 character session the alternate command 
+	        that follows does the same thing:
+		mcpt -codeGroups -tutor=BC1S -lesson=5 -cgLen=3
               - ** this command is selecting LESS than the 3 characters of the
-	        session. Its the key difernece between "C" and "S".
+	        session. Its the key differnece between "C" and "S".
 
-The ID is the start and (if given) the end of the range. In the table 
-character sequence repeats (denoted by an *), this allows the no-reset
-concept of the carousel. A user that jumped on the carousel at "HOF" 
-(ID 13-15) would progress to ID 30 in order to cover all of B1. (IDs for B1C case)
+The ID is the start and (if given) the end of the range. In the table character sequence 
+repeats (denoted by an *), this allows the no-reset concept of the carousel. A user that jumped 
+on the carousel at "HOF" (ID 13-15) would progress to ID 30 in order to cover all of BC1.
 
 
-	mcpt -codeGroups -tutor=B2C -lesson=B2
-	     OUTPUT: groups with ALL B2 characters
-	mcpt -codeGroups -tutor=B2C -lesson=&lt;start ID&gt;:&lt;end ID&gt;
-	     OUTPUT: character from start ID to end ID of B2
+	mcpt -codeGroups -tutor=BC2C -lesson=BC2
+	     OUTPUT: groups with ALL BC2 characters
+	mcpt -codeGroups -tutor=BC2C -lesson=&lt;start ID&gt;:&lt;end ID&gt;
+	     OUTPUT: character from start ID to end ID of BC2
 
-	mcpt -codeGroups -tutor=B2C -lesson=B1:&lt;ID&gt;
-	     OUTPUT: ALL B1, plus only one CHARACTER from B2
-	mcpt -codeGroups -tutor=B2S -lesson=B1:&lt;ID&gt;
-	     OUTPUT: ALL B1, plus only one SESSION from B2
+	mcpt -codeGroups -tutor=BC2C -lesson=BC1:&lt;ID&gt;
+	     OUTPUT: ALL BC1, plus only one CHARACTER from BC2
+	mcpt -codeGroups -tutor=BC2S -lesson=B1:&lt;ID&gt;
+	     OUTPUT: ALL BC1, plus only one SESSION from BC2
 
-	mcpt -codeGroups -tutor=B2C -lesson=B1:&lt;ID&gt;gt;ID&gt;
-	     OUTPUT: All B1, plus a set of B2 CHARACTERS
-	mcpt -codeGroups -tutor=B2S -lesson=B1:&lt;ID&gt;&lt;ID&gt;
-	     OUTPUT: All B1, plus a set of B2 SESSIONS
+	mcpt -codeGroups -tutor=BC2C -lesson=B1:&lt;ID&gt;gt;ID&gt;
+	     OUTPUT: All BC1, plus a set of BC2 CHARACTERS
+	mcpt -codeGroups -tutor=BC2S -lesson=B1:&lt;ID&gt;&lt;ID&gt;
+	     OUTPUT: All BC1, plus a set of BC2 SESSIONS
 
  Use these columns for              Use these columns for
  CHARACTER level access             SESSION level access 
  i.e. 3="A"                         i.e. 1="REA"
- <B>-tutor=B1C or B2C                 -tutor=B1S or B2S<\B>
+ <B>-tutor=BC1C or BC2C                 -tutor=BC1S or BC2S<\B>
  ===============================    ===============================
 
- ID    B1         ID   B2           ID    B1       ID    B2
- ==    ==         ==   ==           ==    ===      ==    ===
+ ID    BC1        ID   BC2          ID    BC1      ID    BC2
+ ==    ===        ==   ===          ==    ===      ==    ===
  1     R          1    K            1     REA      1     KMY
  2     E          2    M            2     TIN      2     59,
  3     A          3    Y            3     PGS      3     QXV
