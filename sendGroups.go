@@ -13,6 +13,7 @@ import (
 	"regexp"
 	"strings"
 	"flag"
+	"math"
 )
 
 var (
@@ -556,58 +557,39 @@ func minimum(a, b, c int) int {
  */
 
 func timingCheck(practice string, capture string) {
-	var strLen int = 60 // how many chars will we display
+	var strLen int = 72 // how many chars will we display
 	var out string
-	var captureSection string
-	var practiceSection string
+	var pLen = len(practice)
+	var cLen = len(capture)
+	var min = math.Min(float64(pLen),float64(cLen))
 
-	// need to compare to the length of shortest
-	var minLen int = len(practice)
-	if len(capture) < minLen {
-		minLen = len(capture)
-	}
+	strLen = int( math.Min(float64(strLen), float64(min)) )
+	practice = practice[:strLen]
+	capture = capture[:strLen]
+	// now we can compare because we have the smallest length
 
-	for len(capture) > 0 {
-		if len(practice) == 0 {
-			break
+	for i, pChar := range practice {
+
+		if byte(pChar) != capture[i] {
+			tmpChar := char2psReplacer.Replace(string(capture[i]))
+
+			if tmpChar == "*" {
+				out += gchalk.BrightMagenta(tmpChar)
+			} else {
+				out += gchalk.BrightRed(tmpChar)
+			}
 		} else {
-			if len(practice) >= strLen {
-				practiceSection = practice[0:strLen]
-				captureSection = capture[0:strLen]
-				practice = practice[strLen:]
-				capture = capture[strLen:]
-			} else {
-				practiceSection = practice[0:]
-				captureSection = capture[0:]
-				practice = ""
-				capture = ""
-			}
+			// both matched good!
+			out += char2psReplacer.Replace(string(pChar))
 		}
-
-		for i, pChar := range practiceSection {
-			if i >= len(captureSection) {
-				break
-			}
-
-			if byte(pChar) != captureSection[i] {
-				tmpChar := char2psReplacer.Replace(string(captureSection[i]))
-
-				if tmpChar == "*" {
-					out += gchalk.BrightMagenta(tmpChar)
-				} else {
-					out += gchalk.BrightRed(tmpChar)
-				}
-			} else {
-				// both matched good!
-				out += char2psReplacer.Replace(string(pChar))
-			}
-		}
-
-		fmt.Printf("\npractice: %s", char2psReplacer.Replace(practiceSection))
-		fmt.Printf("\n capture: %s\n", out)
-
-		out = ""
 	}
+
+
+	fmt.Printf("\n\nBoth practice and capture have been limited to 72 characters.\n")
+	fmt.Printf("\npractice (below):\n\n%s", char2psReplacer.Replace(practice))
+	fmt.Printf("\n%s\n\ncapture (above):", out)
+
+	out = ""
 
 	return
 }
