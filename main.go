@@ -500,7 +500,7 @@ func main() {
 	}
 
 	if flagheadcopy == 1 && flagtext != "" {
-		fmt.Printf("\nError: option <headCopy=1> cannot be used with option <textFile>.\n")
+		fmt.Printf("\nError: option <headCopy=1> cannot be used with option <textFile> use <inFile>.\n")
 		os.Exit(1)
 	}
 
