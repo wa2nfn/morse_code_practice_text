@@ -200,19 +200,21 @@ func buildSendSlice() []rune {
 		charSlice = append(charSlice, []rune("C.,/?")...)
 		gotDigit = true
 	}
+	/*
 	// special: use lc letters which we will later map to prosigns
 	if strings.Contains(flagsend, "6") {
 		charSlice = append(charSlice, []rune("abcdfgh")...)
 		gotDigit = true
 	}
-	if strings.Contains(flagsend, "7") {
+	*/
+	if strings.Contains(flagsend, "6") {
 		// cut numbers
-		charSlice = append(charSlice, []rune("TAUV456BDN")...)
+		charSlice = append(charSlice, []rune("TAUV4E6BDN")...)
 		gotDigit = true
 	}
-	if strings.Contains(flagsend, "8") {
+	if strings.Contains(flagsend, "7") {
 		// cut numbers
-		charSlice = append(charSlice, []rune("(){}#[]$%*")...)
+		charSlice = append(charSlice, []rune("(){}#[]$%&")...)
 		gotDigit = true
 	}
 
@@ -226,7 +228,7 @@ func buildSendSlice() []rune {
 	}
 
 	if gotDigit == false {
-		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-7.\n        Digit \"0\" is required, if it's the only digit and you are specifying\n        your own group list.\n        E.g. -send=0 \"EOMT5\"\n")
+		fmt.Printf("\n Error: option <-send> must include at least one digit from 0-7.\n        Digit \"0\" is required, if it's the only digit and you are specifying\n        your own group list.\n        i.e. -send=0 \"QYX\" \n\n6 is for cut-numbers, 7 for ProSigns\n        groups can be combined: i.e. -send=2,5\n")
 		os.Exit(1)
 	}
 
