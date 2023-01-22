@@ -107,18 +107,31 @@ func makeGroups(fp *os.File) {
 			strBuf += string(tmpOut)
 		}
 
-		if (flagDMmin >= 1 || flagheadcopy == 2) && (flagDR == false || (flagDR == true && flipFlop())) {
-			if flagDMmin == flagDMmax {
-				for count := 0; count < flagDMmax; count++ {
-					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+		if flagdelimit != "" {
+			if (flagDMmin >= 1 || flagheadcopy == 2) && (flagDR == false || (flagDR == true && flipFlop())) {
+				endNum := flagDMmin
+				if flagDMmin != flagDMmax {
+					endNum = flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)
 				}
-			} else {
-				for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
-					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
-				}
-			}
 
-			strBuf += " "
+				for count := 0; count < endNum; count++ {
+					strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+				}
+
+				/* WDL cleanup 2.2.1
+				if flagDMmin == flagDMmax {
+					for count := 0; count < flagDMmax; count++ {
+						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+					}
+				} else {
+					for count := 0; count < (flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)); count++ {
+						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+					}
+				}
+				*/
+
+				strBuf += " "
+			}
 		}
 	}
 

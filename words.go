@@ -268,6 +268,16 @@ func readFileMode(fp *os.File) {
 				if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
 					buf := ""
 
+					endNum := flagDMmin
+					if flagDMmin != flagDMmax {
+						endNum = flagDMmin + rng.Intn(flagDMmax-flagDMmin+1)
+					}
+
+					for count := 0; count < endNum; count++ {
+						strBuf += delimiterSlice[rng.Intn(len(delimiterSlice))]
+					}
+
+					/* WDL cleanup 2.2.2
 					if flagDMmin == flagDMmax {
 						for count := 0; count < flagDMmax; count++ {
 							buf += delimiterSlice[rng.Intn(len(delimiterSlice))]
@@ -277,6 +287,7 @@ func readFileMode(fp *os.File) {
 							buf += delimiterSlice[rng.Intn(len(delimiterSlice))]
 						}
 					}
+					*/
 
 					wordArray = append(wordArray, buf)
 					buf = ""
