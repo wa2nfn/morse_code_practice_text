@@ -58,7 +58,7 @@ var (
 		"<VE>","$",
 		"<DU>","%",
 		"<VA>","!",
-		"<SOS>","*")
+		"<SOS>","&")
 	char2psReplacer = strings.NewReplacer(
 		"(", "<AS>", 
 		")", "<AR>", 
@@ -71,7 +71,7 @@ var (
 		"$","<VE>",
 		"!","<VE>",
 		"%","<DU>",
-		"*","<SOS>")
+		"&","<SOS>")
 )
 
 var (

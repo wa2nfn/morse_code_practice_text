@@ -61,7 +61,7 @@ func doSendCheck() {
 			"0", "\u00D8",
 			"$","^VE",
 			"%","^DU",
-			"*","^SOS")
+			"&","^SOS")
 		ps2charReplacer = strings.NewReplacer(
 			"^AS", "(", 
 			"^AR", ")", 
@@ -75,7 +75,7 @@ func doSendCheck() {
 			"=","{",
 			"^VE","$",
 			"^DU","%",
-			"^SOS","*")
+			"^SOS","&")
 		gotCarat = true
 	}
 

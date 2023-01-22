@@ -220,7 +220,6 @@ func readFileMode(fp *os.File) {
 			wordMap = m
 
 		}
-		//runtime.GC()
 
 		// wordsMap has already gotten appropriate words
 		// we just need to divide into length buckets

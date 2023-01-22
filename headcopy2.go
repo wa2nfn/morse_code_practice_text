@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// headcopy is a stripped down version of prepWord elimationg the use of many options that
+// headcopy is a stripped down version of prepWord elimatiing the use of many options that
 // are not required and disassembling the word to its parts as needed
 func headcopy2(wordOut string, index int, charSlice []rune) (string, []rune) {
 	inWord := strings.Split(wordOut,"")
