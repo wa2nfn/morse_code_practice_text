@@ -52,26 +52,29 @@ The following is a simple list of a behavior and the key option that enables it.
 </ol>
 <P> First read of document? You may want to skip ahead to General Option Examples.
 <H2>
-Options: format, evaluation, use of &lt;opt> for file vs cmd line
+Options: format, evaluation, use of &lt;optFile> for file vs cmd line
 </H2>
 There are many options to customize your practice text, but in any execution you may only use a few. 
-Options can be read from a file (see -opt) or the command line.
+Options can be read from a file (see -optFile) or the command line.
 These options, override defaults. The options in the file, will be overridden,
 if the same option appears on the command line. <I>So if you use both -opt and command line opts you will
-most likely want -opt to be the left most option.</I> When you run MCPT, if you see a full screen list of options, check 
+most likely want -optFile to be the left most option.</I> When you run MCPT, if you see a full screen list of options, check 
 the first line for the problem cause. Also, adding -help=options to a command line with you have used will show
 you the state of ALL options in MCPT, the ones you have set, plus those with defaults. The defaults may
 have impact on your output that you don't realize.
 <P>
 Note: Zeros written to the screen have a slash for readability, they are printed unstriped with &lt;-outFile> option so tutor/trainer software does not
 have problems. For this reason do <B>not</B> use the commmon command line practice of file redirection using ">".
+<P>
+<I>An simplified method of using a file of options, just as -optFile, is to ONLY give the file name following mcpt, i.e. : mcpt file.txt. No other enties on the command line. This is quicker for instructors during live training, however it does not let option values be overridden, or a file be created as the -optFile allows.
+</I>
 <H3>
 Notation
 <P>
-To minimze typing, some option name are a concatentation or abbreviated words, for example: en for prefix length; cglist for code group list.
+To minimze typing, some option name are a concatentation or abbreviated words, for example: preLen for prefix length; cgList for code group list.
 <P>
 The following options all have a minimum and maximum value, the values are given in one option.
-They are: en, suflen, cglen, inlen, lesson, and DM. (DM is a quantity not a length). E.g. -inlen=5, is a short hand for -inlen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
+They are: sufLen, cgLen, inLen, lesson, and DM. (DM is a quantity not a length). E.g. -inLen=5, is a short hand for -inLen=5:5, which means the minimum and maximum value for this option is 5. A value such as 3:6, is a random value between 3 and 6, inclusive.
 <P>
 The help usage will remind you about these options, you will see the default value written with the colon notation.
 <P>
@@ -83,7 +86,7 @@ Options with a value e.g. -opt=2 or -opt="abcd" use an "=" as a separater.
 </H3>
 <P>
 <I>
-If you specify the option </I><B>opt</B><I>on the command line with other options, and that option file does <B>not</B> exist, MCPT will offer to CREATE it for you. This is a simple way for a user to build up a command line, test it, and then preserve that behavior for future use.
+If you specify the option </I><B>optFile</B><I>on the command line with other options, and that option file does <B>not</B> exist, MCPT will offer to CREATE it for you. This is a simple way for a user to build up a command line, test it, and then preserve that behavior for future use.
 </I>
 <P>
 A few more notes on option format:
@@ -93,20 +96,20 @@ A few more notes on option format:
 <LI> option names MUST be in the case shown</LI>
 <LI> after the name, if there is a value put an "=" immediately follow by the value</LI>
 <LI> values have 3 possible types as listed in the options table below</LI
-	<LI> int (integer) are digits, and always &gt;= 0, like: -inlen=8</LI>
+	<LI> int (integer) are digits, and always &gt;= 0, like: -inLen=8</LI>
 	<LI> bool (boolean) turn an option on/off, values are: true for on, false for off</LI>
 	<LI> string options should have values within double quotes, must be quoted if it has a space or "="</LI>
 	<LI> inlist values are case sensitive since its used to match input text</LI>
 	<LI> if inlist contains a "?", then a "?" following a word such as: cpy?, qrl? will be matched</LI>
-	<LI> option values in: ist, suflist, cglist, delimiter are not case sensitive
+	<LI> option values in: ist, sufList, cgList, delimiter are not case sensitive
 </ol>
 List options can use a shorthand range entry notation. For example, "A-DZ0-4" instead of the spelled out form like "ABCDZ01234" (the order of the range is as shown, 4-0 would fail).
 <P>
 To increase the occurance of a character, you can increase its presence in the list option. For example, if 
-you want code groups to favor X and Z, you could make cglist="A-ZXXXZZZ", the odds of an A is 1/32, but X and Z
+you want code groups to favor X and Z, you could make cgList="A-ZXXXZZZ", the odds of an A is 1/32, but X and Z
 is 4/32.
 <P>
-An alternative to the above, option &lt;favorLast> will increase the likelyhood of the LAST 2 characters, in option &lt;cglist>, this includes the use of cglist when you use the lesson/tutor options.
+An alternative to the above, option &lt;favorLast> will increase the likelyhood of the LAST 2 characters, in option &lt;cgList>, this includes the use of cgList when you use the lesson/tutor options.
 </PRE>
 <P>
 An example options file, with comments, follows.
@@ -119,9 +122,9 @@ An example options file, with comments, follows.
             # this comment line is indented with whitespace
       # below are two formats for the "min" option 
       # you can use either of these formats
-      inlen=4   # comments can be at the end of lines
-      inlen 4   # no equals NOT recommended
-      -inlen=4  # preceded with minus, unnecessary
+      inLen=4   # comments can be at the end of lines
+      inLen 4   # no equals NOT recommended
+      -inLen=4  # preceded with minus, unnecessary
       #
       # to temporarily eliminate an option just comment it out as below
       # len=80
@@ -146,10 +149,10 @@ The command line option displayFormat (with values LF, TAB,LF_TAB, TAB_LF in upp
 <P>
 They are only for readability, if desired. They replace spaces in output with TABs, and LF adds a linefeed (or blank line) between output lines.
 <P>
-Additionally, there are several <I>list type</I> options: ist, suflist, cglist, inlist, and must.
+Additionally, there are several <I>list type</I> options: ist, sufList, cgList, inlist, and must.
 <P>
 On the command line or in the options file, these list options are treated as if they were just a collection
-of characters AFTER 2 parsing operations for the users convenience. So if you want code groups to contain any of a set of characters it would look like this: cglist="EIOTA27?". Each character is a standalone entity. Now for the two special
+of characters AFTER 2 parsing operations for the users convenience. So if you want code groups to contain any of a set of characters it would look like this: cgList="EIOTA27?". Each character is a standalone entity. Now for the two special
 situations. To save you typing, LETTERS (upper or lowercase) or DIGITS can be entered using <I>range</I> notation.
 In range notation, A-H, is the same as typing ABCDEFGH, the only two criteria is the first character must come in dictionary
 order (A-D is good, D-A is invalid), and each range is independent (A-z invalid, A-Z good). Digits similarly go from 0-9.
@@ -207,7 +210,7 @@ them yourself.
 Example 1: 
 some options for "word" practice
 </H2>
-<B>mcpt -inlen=3:6 -num=30 -inFile=words.txt</B>
+<B>mcpt -inLen=3:6 -num=30 -inFile=words.txt</B>
 USE LINE TEXT LINE WHICH TUTOR THAT TUTOR YOUR TRY YOU TRY TEXT MORSE YOU 
 YOUR FOR WHICH MAY ARE NOT NOT MAY THAT USE CAN OFFER OFFER 
 <PRE>
@@ -224,7 +227,7 @@ See example 32 for contrast of -in vs. -text.
 Example 2: 
 controlling output line length
 </H2>
-<B>mcpt -inlen=3:6 -num=30 -inFile=words.txt <mark>-len=30</mark></B>
+<B>mcpt -inLen=3:6 -num=30 -inFile=words.txt <mark>-len=30</mark></B>
 <PRE>
 MCPT MORSE MAY ARE YOUR TUTOR 
 THAT THAT TUTOR NOT FOR CAN 
@@ -233,7 +236,7 @@ MCPT YOUR TEXT ARE LINE MORSE
 LINE CAN WHICH YOU FOR NOT 
 
 NOTE: -len=30 shortened output to 30 charaters (words not truncated or split)
-NOTE: option value can use a space or equals separator e.g. -inlen 4, or -inlen=4
+NOTE: option value can use a space or equals separator e.g. -inLen 4, or -inLen=4
 
 *** In the following examples, we used more defaults options for brevity.
 </PRE>
@@ -242,7 +245,7 @@ Example 3:
 options in a file instead of command line with &lt;opt>
 </H2>
 <PRE>
-<B>mcpt -opt=myOptions</B>
+<B>mcpt -optFile=myOptions</B>
 
 Note: opt myOptions, will override default options.
       Command line options have the final say.
@@ -251,7 +254,7 @@ Note: opt myOptions, will override default options.
 Example 4:
 save practice material to a file, for your software tutor; and  suffix/prefix options
 </H2>
-<B>mcpt -inFile=words.txt -inlen=5 -num=10 -sufLen=1:2 <MARK>-outFile=out.txt</MARK></B>
+<B>mcpt -inFile=words.txt -inLen=5 -num=10 -sufLen=1:2 <MARK>-outFile=out.txt</MARK></B>
 <PRE>
 Writing to file: <MARK>out.txt</MARK>
 
@@ -261,7 +264,7 @@ YOU<M<SK/
 /
 1GARK> WHICH7 FOR= LINE1 TEXT/ MAY8 USE9 THAT5 CAN= 
 
-NOTE: <MARK>-sufLen=1:2</MARK>, appends one or two random character from default suflist as a suffix. suflist defaults (see help).
+NOTE: <MARK>-sufLen=1:2</MARK>, appends one or two random character from default sufList as a suffix. sufList defaults (see help).
 
 THAT/7 YOU04 LINE8 TEXT78 MCPT. WHICH95 FOR20 CAN7? MAY= USE18 
 
@@ -271,14 +274,14 @@ NOTE: below is example of -sufLen=3 and -en=1
 8WHICH.. 3TEXT58 5YOU3 8USE2 ?MAY97 1CAN1, ,FOR/. 9LINE=8. 6THAT/7 
 
 *** Default suffixes and prefixes can be changed with -sufList and -ist as appropriate. 
-*** Duplicating a character in suflist or ist e.g. ".,???????" increases 
+*** Duplicating a character in sufList or ist e.g. ".,???????" increases 
     the probability of that character in output.
 </PRE>
 <H2>
 Example 5:
-finer control of prefixes with &lt;prlen>, &lt;ist>
+finer control of prefixes with &lt;prLen>, &lt;ist>
 </H2>
-<B>mcpt -inFile=words.txt <MARK>-ist="123"</MARK> -preLen=1 <MARK>-sufList="QZX" -sufLen=1</MARK> -num=10</B>
+<B>mcpt -inFile=words.txt <MARK>-preList="123"</MARK> -preLen=1 <MARK>-sufList="QZX" -sufLen=1</MARK> -num=10</B>
 <PRE>
 1MORSEz 1OFFERZ <mark>2</mark>OFFERZ 1WHICHZ 3MORSEQ 2TUTOR<MARK>Q</MARK> 1TUTORZ 2WHICHQ 2WHICHX 3OFFERQ 
 
@@ -286,13 +289,13 @@ NOTE: prefixes limited to values of: 1, 2, 3; suffixes to Q, Z, X.
 </PRE>
 <H2>
 Example 6:
-finer control of suffixes with &lt;suflen>
+finer control of suffixes with &lt;sufLen>
 </H2>
 <B>mcpt -inFile=words.txt -num=10 -sufLen=1:3</B> 
 <PRE>
 MORSE/, TUTOR245 MORSE1=7 WHICH?9 <U>OFFER</U> <U>WHICH= 36/</U> OFFER9 OFFER=5/ TUTOR7 WHICH57 
 
-NOTE: a space character added into the suflist or ist set of characters.
+NOTE: a space character added into the sufList or ist set of characters.
       The result of the space is seen above in the underlines output.
       In the case of, "offer", the tool was going to put just 1 suffix character, since it was a space
       its unseen. In the case of, "WHICH= 36/" the suffix length was 4, but the second random character 
@@ -302,7 +305,7 @@ NOTE: a space character added into the suflist or ist set of characters.
 Example 7:
 matching specific words in an input file
 </H2>
-<B>mcpt -inFile=words.txt -inlist="aeioufrm" -num=10 -inlen=8</B> (quoting of strings in lists, double or single is a good idea)
+<B>mcpt -inFile=words.txt -inlist="aeioufrm" -num=10 -inLen=8</B> (quoting of strings in lists, double or single is a good idea)
 <PRE>
 OFFER ARE OFFER FOR USE USE ARE MORSE ARE ARE USE FOR OFFER OFFER MORSE MORSE 
 USE FOR MORSE FOR 
@@ -321,13 +324,13 @@ NOTE: Regardless of the value of inlist or lesson, a prosign found in the input 
       If any <I>list</I> type option contains a "=" or " ", the value part MUST be quoted. 
       E.g. ist=".,="
 
-*** suflist and ist can also use the character range notation.
+*** sufList and ist can also use the character range notation.
 </PRE>
 <H2>
 Example 8:
 skipping over initial words from an input file
 </H2>
-<B>mcpt -inFile=words.txt -inlen=3:8 -num=30</B>
+<B>mcpt -inFile=words.txt -inLen=3:8 -num=30</B>
 <P>
 This command will find a lot of short words in a book for example. Like "I a to of in the an on etc."
 <H2>
@@ -345,7 +348,7 @@ Note: linking words in the input file with "~", treat the sequence as ONE word. 
 Example 10:
 inserting specified ProSigns in place of words
 </H2>
-<B>mcpt -inFile=words.txt -inlen=3:5 -num=10 -sufLen=1 <MARK>-prosignFile=prosignFile.txt<MARK></B>
+<B>mcpt -inFile=words.txt -inLen=3:5 -num=10 -sufLen=1 <MARK>-prosignFile=prosignFile.txt<MARK></B>
 <PRE>
 YOU9 WHICH7 <MARK>&lt;BT&gt;</MARK>? FOR= MCPT. &lt;AR>&lt;AS>7 LINE1 &lt;SOS>, TEXT/ MAY8 USE9 THAT5 CAN= 
 
@@ -377,7 +380,7 @@ NOTE: Each ProSign seen above is in the -prosignFile=prosignFile.txt.
 Example 11:
 practical use of delimiters with word practice
 </H2>
-<B>mcpt -inFile=words.txt -inlen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
+<B>mcpt -inFile=words.txt -inLen=3:5 -num=10 <MARK>-delimiter='&lt;BT>'</MARK></B>
 The option, "-delimiter", is a string of 1 or more characters (of any type) which will
 be displayed in between each output word (1 exception). For example, if the output WITHOUT this option were:
 <P>
@@ -393,7 +396,7 @@ the delimiter appears AFTER the word repeating is done. as shown below. This is 
 <PRE>
 THE THE THE &lt;BT&gt; MAN MAN MAN &lt;BT&gt; AND AND AND &lt;BT&gt;
 
-Note: the "-delimiter" option is NOT effected by any other option (random, en, suflen)
+Note: the "-delimiter" option is NOT effected by any other option (random, en, sufLen)
 `
 Note: it is literal, and what ever you want. e.g. '.?/', 'XYZ', '123', 'It can even have multiple parts'.
 
@@ -428,7 +431,7 @@ Note: ONLY FOR LCWO USERS: if a delimiter field contains an asterisk (*), that w
 Example 12:
 use of &lt;unique> when reading words from a file
 </H2>
-<B>mcpt -inFile=words.txt -inlen=1:3 -num=6 -unique</B>
+<B>mcpt -inFile=words.txt -inLen=1:3 -num=6 -unique</B>
 The -unique option, terminates the adding to output as soon as
 a duplicate would be required to meet the quantity in the -num option.
 <P>
@@ -443,23 +446,23 @@ controlling length and content of created code groups
 <PRE>
 ie3?k 40kee ia?2?
 
-Note: case in cglist does not matter, output will be upper case
+Note: case in cgList does not matter, output will be upper case
 Note: group length determined by and -cgLen
 Note: groups can be separated by delimiters as previously described
 Note: limited options apply when using code groups, others are silently ignored
-      -len, -num, -delimiter, -delimiterNum, -out, -inlen apply.
+      -len, -num, -delimiter, -delimiterNum, -outFile, -inLen apply.
 </PRE>
 <H2>
 Example 14:
 intermixing of code groups and words in the same practice session
 </H2>
-<B>mcpt -inlen=5:8 -inFile="in.txt" <mark>-mixedMode=2</mark></B>
+<B>mcpt -inLen=5:8 -inFile="in.txt" <mark>-mixedMode=2</mark></B>
 <PRE>
 VISIT OTHER <mark>=,0-A0</mark> ABOUT SHARE <mark>-=?A=-?</mark> MYSELF THOSE 
 
 Note: Every "2" words printed from matching in the input file is followed by 
-      a random code group (from characters in cglist).
-Note: all options from word match word still apply if used (en, suflen, delimiter, etc.)
+      a random code group (from characters in cgList).
+Note: all options from word match word still apply if used (en, sufLen, delimiter, etc.)
 Note: In mixedMode, the code group word is NOT counted into the -num word count.
 </PRE>`
 <H2>
@@ -522,14 +525,14 @@ ProSigns used with code groups
 Prosigns were previous supported with an input file &lt;in=my.txt>, but if used with options
 &lt;codeGroups> or &lt;mixedMode>, the Prosigns in the prosign file &lt;prosign=myps.txt>
 with ONE prosign per line (see below), will use these 4 character sequences (e.g. <&lt;SK>) as
-if the were a single character in the &lt;cglist> option for code groups.
+if the were a single character in the &lt;cgList> option for code groups.
 
 <U>File myPs.txt</U>
 &lt;SK>
 &lt;HH>
 &lt;AR>
 
-A code group of fixed size of 4 (cglen=2:2)could look like:
+A code group of fixed size of 4 (cgLen=2:2)could look like:
 
 X3FQ JDUG J<SK>2S NEFS &lt;HH>&lt;SK>z&ltAR>
 
@@ -548,13 +551,13 @@ The following line is the contents of words.txt.
 <P>
 <I>This is the content of myInput file to demonstrating reverse option.</I>
 <P>
-The following command, sets </B>inlen=1</B> and <B>inlen=15</B> so that no words will be discarded, Also, </B>
+The following command, sets </B>inLen=1</B> and <B>inLen=15</B> so that no words will be discarded, Also, </B>
 num</B> was set to 11 so that no words are discarded and none are used more than once.
 <B>ordered</B> output stays in the same order as the input.
 <B>len</B> was set short, so that you can see that <I>if</I> a line is longer, but a word is
 straddling the length boundary, that that word is finished rather than having a word split.
 <P>
-mcpt -inlen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -outFile=myOut
+mcpt -inLen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -outFile=myOut
 <P>
 The text below is the output now in file=<I>words.txt</I>.
 Note, that the first word was captured even though it started with an uppercase, that's because the 
@@ -570,7 +573,7 @@ Now we'll reuse the command, adding the <B>reverse</B> option, <I>and</I> changi
 to be that of the output above. The text following the command has each word reversed. (Suggested 
 William Pierpont's document. You retain letter frequency of the input, and eliminate anticipation.)
 <P>
-mcpt -inlen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -reverse -outFile=myReversed
+mcpt -inLen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -reverse -outFile=myReversed
 <P>
 <I>
 SIHT SI EHT TNETNOC FO
@@ -587,7 +590,7 @@ options file (if used), and that in turn overrides the built-in default. This ma
 but with so many options it does make for easy and limited typing to change the tools behavior for 
 different practice text generation.
 <P>
-mcpt -inlen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -outFile=myOut -reverse -inFile=myReversed -outFile=myFinal
+mcpt -inLen=1:15 -num=11 -inFile=words.txt -ordered -len=20 -outFile=myOut -reverse -inFile=myReversed -outFile=myFinal
 <P>
 <I>
 THIS IS THE CONTENT OF
@@ -616,14 +619,14 @@ WORD WORD WORD &lt;BT> WORD AA WORD WORD 1
 Example 19:
 controlling the length of code groups when intermixed with words
 </H2>
-<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt</B>
+<B>mcpt -inLen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt</B>
 <P>
 ON AT OF 3,A??4 NO HE IS A4263?/ AND HAT FOUR ......
 <H2>
 Example 20:
 randomness of the intermixed code groups with words
 </H2>
-<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt</B>
+<B>mcpt -inLen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt</B>
 <PRE>
 This input file for this example is a simple list of short words. The first line of output follows:
 
@@ -633,7 +636,7 @@ NOTE: In the above, after every 3 words (mixedMode=3) we get a code group.
       We can add an option -MMR (mixed mode random) which gives a 50/50 chance that a code group will be 
       suppressed to lessen predictability.
 
-<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt<mark>-MMR</mark></B>
+<B>mcpt -inLen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt<mark>-MMR</mark></B>
 
 NOTE: The stretch below with no code group due to -MMR.
 
@@ -650,7 +653,7 @@ ON AT OF <U>3,A??4</U> NO HE IS <U>4263?/</U> AND HAT FOUR IN AND ON HAT HE OF ?
       we've seen before; LCWO_low sets the low(slow) speed of the code group, and LCWO_step the incremental 
       speed to add to LCWO_low to get the higher speed to use for the plain text.
 
-<B>mcpt -inlen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt <mark>-LCWO_low=20 -LCWO_step=5</mark></B>
+<B>mcpt -inLen=2:4 -cgLen=6:8 -mixedMode=3 -inFile=words.txt <mark>-LCWO_low=20 -LCWO_step=5</mark></B>
 
 |w25 <I>TWO FOUR NINE </I>|w20 <U>FL,WE0</U> |w25 <I>FOUR TEN ONE </I>|w20 <U>YB251C</U> |w25 <I>ONE FIVE NINE</I> |w20 <U>AJRR7H</U>
 
@@ -703,14 +706,14 @@ using the options &lt;tutor> and &lt;lesson> to limit generated material to char
 </H2>
 <B>mcpt ... <mark>-lesson=5 -tutor=lcwo</mark></B>
 <P>
-Setting a lesson number and tutor, will populate  cglist (for code groups) as well as inlist (for parsing and matching words in input file)
-In the command line given, cglist would now be "kmure", and inlist would be "kmureKMURE". This is the last option set, so it overrides any earlier setting
-of cglist and inlist, both option file and command line.
+Setting a lesson number and tutor, will populate  cgList (for code groups) as well as inlist (for parsing and matching words in input file)
+In the command line given, cgList would now be "kmure", and inlist would be "kmureKMURE". This is the last option set, so it overrides any earlier setting
+of cgList and inlist, both option file and command line.
 <P>
-Range values are 1-40, setting 0 leaves inlist and cglist per their defaults, option file or command line which ever last last.
+Range values are 1-40, setting 0 leaves inlist and cgList per their defaults, option file or command line which ever last last.
 <P>
 If you use Morse Elmer, Just Learn Morse Code, MorseCodeNinja, or G4FON you will specify the tutor with <B>tutor</B> option, this will populate the options 
-<B>inlist</B> and <B>cglist</B> with the characters and in the order that they are taught with those products.
+<B>inlist</B> and <B>cgList</B> with the characters and in the order that they are taught with those products.
 <H2>
 Example 22: 
 an example of linking words in a word file to be treated as one word
@@ -719,7 +722,7 @@ an example of linking words in a word file to be treated as one word
 <PRE>
 If you use word input mode via option <in>, you can have a "word" as defined by the <inlist> characters
 grouped with one or more other words by use of the character "~", for example: MY~QTH~IS. This group will be treated as
-a new word (if each piece conforms to <inlist><inlen>, this enable you to get an ordered sequence where words are
+a new word (if each piece conforms to <inlist><inLen>, this enable you to get an ordered sequence where words are
 normally random. Note: a " ~"  or "~ "  word (e.g. ~MY, MY~, ~M~) will be ignored.
 
 Since this new group is treated as ONE word, other options will apply to the group, NOT the words that make it up. That is
@@ -793,7 +796,7 @@ E6WJ &lt;BT>, JZ8O &lt;SK> D5KTI/3 &lt;BT>&lt;SK> UR3J/1 &lt;SK> E1O/M ,&lt;SK>.
 	    Users of LICW, use -help=LICW for details on <lesson> which are different than other tutors.
 <P>
 *** Note 2: You can customise your character use independent of a specific
-            tutor as with the cglist option.  I.e.: 
+            tutor as with the cgList option.  I.e.: 
 <P>
 	    <B>mcpt -callSigns -cgList="123abcdef"</B>
 <P>
@@ -803,7 +806,7 @@ Limited call sign practice can be done without the "callSigns" option; in this c
 portions using other options. Here is an example.
 <PRE>
 
-<B> mcpt -ist="kw" -prelen=1    -codeGroups -cgList="0-49" -cgLen=1     -sufList="kt" -sufLen="2:3"</B>
+<B> mcpt -preList="kw" -preLen=1    -codeGroups -cgList="0-49" -cgLen=1     -sufList="kt" -sufLen="2:3"</B>
 
 Possible output:
 
@@ -847,7 +850,7 @@ Example 25:
 <B>mcpt -codeGroups -cgList="MUKER" -must="ABCD"</B>
 <P>
 Either of the above generate code groups (assuming tutor=LCWO the default) with 
-fixed length of 5 (default cglen=5 or 5:5); but the new option &lt;-must> means
+fixed length of 5 (default cgLen=5 or 5:5); but the new option &lt;-must> means
 that <B>every</B> group is guaranteed to have <B>one</B> character from the
 <must> option.  This gives a means of concentrated practice on one or a small 
 set of characters rather than just being random.
@@ -858,7 +861,7 @@ Note that must can also be used with &lt;<in> or &lt;text>, in a similar way to
 <P>
 MKURD KKBUR EUUAM
 <P>
-<B>mcpt -codeGroups -lesson=4 cglen=1:4 -must="E"</B>
+<B>mcpt -codeGroups -lesson=4 cgLen=1:4 -must="E"</B>
 In this example the user gets random length groups from 1 to 4, of the letters 
 KMURE; but the the <must> forces every group to have an "E" since its the new
 character for the user, or the one causing problems.
@@ -873,12 +876,12 @@ Example 26:
 &lt;headCopy> make words progressively longer 
 </H2>
 <B>mcpt -codeGroups -cgLen=2:6 -headCopy=1</B>
-<B>mcpt -inFile=file.txt -inlen=2:6 -headCopy=1</B>
+<B>mcpt -inFile=file.txt -inLen=2:6 -headCopy=1</B>
 <P>
 Note: headCopy may not be used with -text option.
 <P>
 The <B>headCopy</B> option will make each successive codeGroup have a length of
-one more than the previous, until the cglen hits its maximum value. In the 
+one more than the previous, until the cgLen hits its maximum value. In the 
 example above, <B>without</B> the new option, the group length would be between
 2 and 6 characters. Now, the first group has a length of 2, then 3, then 
 4 ... until 6. This may help the user to build their ability to mentally buffer 
@@ -1150,8 +1153,8 @@ Hopefully these two outputs can help you see where your sending needs more pract
 <BR> mcpt -review -lesson=3:5</B>
 <BR> mcpt -review -cgList="KMUR"</B>
 <PRE>
-Use characters, by lesson order or the cglist, and create a review before learning a 
-new character. Options, -delimiter and -out <I>MAY</I> be used as described below.
+Use characters, by lesson order or the cgList, and create a review before learning a 
+new character. Options, -delimiter and -outFile <I>MAY</I> be used as described below.
 
 The format is as follows for each character in sequence:
 
@@ -1222,7 +1225,7 @@ Example 27-4:
 </H2>
 <B>mcpt -codeGroups -lesson=20 -cc</B>
 <PRE>
-This option is only for code groups. It will increase the likelihood of "confused characters". Some learners confuse characters that are mirror images of each other i.e. "F" and "L", some confuse compliments of each other, i.e. "R" and "K". This option will take the random code group generated, and if the lesson number (or cglist) includes BOTH of the confused pair, it will increase the liklihood of getting both characters.
+This option is only for code groups. It will increase the likelihood of "confused characters". Some learners confuse characters that are mirror images of each other i.e. "F" and "L", some confuse compliments of each other, i.e. "R" and "K". This option will take the random code group generated, and if the lesson number (or cgList) includes BOTH of the confused pair, it will increase the liklihood of getting both characters.
 <P>
 For example, if the lesson using LCWO order, was greater than 10, then both F and L are potential practice letters. If MCPT had generated KFUMS then the &lt;cc> option would detect the F, and then randomly change another character to be an L, as in KFUML. This gives the learner practice of both characters in the same code group.
 <P>
@@ -1230,7 +1233,7 @@ Note: Group lengths less than 3 are not modified; at most two pairs per group ar
 /<PRE>
 <H2>
 Example 27-5: 
-&lt;cc> using characters from -lesson, or cglist get repetition practice
+&lt;cc> using characters from -lesson, or cgList get repetition practice
 </H2>
 <B>mcpt -lessonList -lesson=5 </B>
 <B>mcpt -lessonList -cgList="abc" </B>
@@ -1478,7 +1481,7 @@ Note: LCWO_low=10, creates the low speed 10 wpm command "|w10" for LCWO.
 Note: LCWO_step=3, causes each successive word to be sent +3 wpm from the prior value.
 Note: LCWO_repeat=3, each word found repeats 3 times, each a step up in speed by +3 wpm.
 
-Of course other options were gotten from the options file (see -opt), or the command line (-inlen, -num, etc.)
+Of course other options were gotten from the options file (see -optFile), or the command line (-inLen, -num, etc.)
 
 In the following example, We added the delimiter option (previously described) to get a prosign as an audible 
 clue that the speed was going to drop back for the next set of words.
@@ -1715,7 +1718,7 @@ Note: ignore the double speed option at the start, LCWO will work correctly.
 Example 35: 
 a large example combining the use of many previous options
 </H2>
-<B>mcpt -opt demo.opt <mark>Combined Features Example</mark> ...</B>
+<B>mcpt -optFile demo.opt <mark>Combined Features Example</mark> ...</B>
 <PRE>
 
 This example combines about 80% of the available options, including many of the LCWO options.
@@ -1745,25 +1748,25 @@ the quick brown fox jumped over the lazy dogs back
      3	out=fileToGiveLCWOToPlay
        
      4	inlist="A-Ya-y"
-     5	inlen=3:5
+     5	inLen=3:5
        
      7	num=11
      8	len=60
      9	ordered
     10	
        
-    11	cglen=5:5
-    13	cglist="a-z0-9,.?/=@"
+    11	cgLen=5:5
+    13	cgList="a-z0-9,.?/=@"
        
     14	repeat=2
        
     15	mixedMode=3
     16	MMR
        
-    17	en=1
-    18	ist="012"
-    19	suflen=2
-    20	suflist=".,"
+    17	preLen=1
+    18	preList="012"
+    19	sufLen=2
+    20	sufList=".,"
     21	random
        
     22	DM=3
@@ -1800,8 +1803,8 @@ the quick brown fox jumped over the lazy dogs back
         code group will appear after every 3 words - normally. But MMR, indicates that the behavior is 
 	randomized, so you could see multiples of 3 words without a code group.
 17-21   Prefixes and/or suffixes may be added to words (note prosigns randomly replace a word, therefore 
-        they can get a prefix or suffix. The number as in suflen=1:2, means the word gets from 1-2 characters 
-	added. The suflist and ist are the possible characters (they are limited and different in the 
+        they can get a prefix or suffix. The number as in sufLen=1:2, means the word gets from 1-2 characters 
+	added. The sufList and ist are the possible characters (they are limited and different in the 
 	example to easily see the effect.  The final option random, means either could be suppressed on any 
 	given word. Note that a space is a viable character, so it could make random character(s) just before 
 	or after a word.
@@ -1833,7 +1836,7 @@ list (012).
 
 QUICK and FOX got neither a prefix or suffix because the <B>random</B> option was set.
 
-DOGS and BACK got a suffix, 1 or 2 characters (suffix length=2) from suflist (,.).
+DOGS and BACK got a suffix, 1 or 2 characters (suffix length=2) from sufList (,.).
 
 BACK got both a prefix and suffix.
 

@@ -57,16 +57,7 @@ func doOptFile(file *os.File) {
 
 		// we assume its an option
 		// trim down to get the string at the end
-//		str = strings.TrimSpace(str)
 		str = strings.TrimLeft(str, " -")
-
-		/*
-		if str[len(str)-1] == '=' {
-			fmt.Printf("\nError: Invalid format for option <%v> on line <%d> of file <%s>. Appears to be missing a value after \"=\".\n", str, lineNum, flagopt)
-			os.Exit(7)
-
-		}
-		*/
 
 		// = sep?
 		arr := strings.SplitN(str, "=", 2)

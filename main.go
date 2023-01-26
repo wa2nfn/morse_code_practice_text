@@ -16,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "2.2.1" // 11/23/2022
+	version       = "2.2.2" // 01/25/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -305,7 +305,10 @@ func main() {
 
 	flag.Parse() // first parse to see if we had -opt
 
-	if flagopt != "" {
+	if flagopt != "" || (flag.NFlag() == 0 && flag.NArg() == 1) {
+		if flagopt == "" {
+			flagopt = os.Args[1]
+		}
 		_, err := os.Stat(flagopt)
 
 		if err != nil {
@@ -407,7 +410,7 @@ func main() {
 	// verify valid options
 	//
 
-	if flag.NArg() > 0 && flagsend == "" {
+	if flag.NArg() > 0 && flagsend == "" && flagopt == "" {
 		fmt.Printf("\nError processing the command line.\n\nYou may have:\n   forgotten a \"-\" before an option\n   or followed a \"-\" with a space\n   or added extra input\n   or put spaces around the \"=\"\n")
 		os.Exit(1)
 	}

@@ -332,6 +332,7 @@ func doOutput(words []string, fp *os.File) {
 		strOut += fmt.Sprintf("%s\n", flagheader)
 	}
 
+	// WDL_WHY
 	// in case we have mixedMode and speed change need to override speed in header
 	if flagMixedMode > 1 && flagLCWOstep > 0 {
 		strOut = fmt.Sprintf(" |e0 |w%d ", flagLCWOlow+flagLCWOstep)
