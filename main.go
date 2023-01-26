@@ -187,7 +187,7 @@ func init() {
 	flag.IntVar(&flaglen, "len", 80, fmt.Sprintf("Length characters in an output line (max %d).", maxLineLen))
 	flag.StringVar(&flagsuflen, "sufLen", "0:0", "The number of suffix characters to append. sufLen=min:max")
 	flag.StringVar(&flagprelen, "preLen", "0:0", "The number of prefix characters to prefix. preLen=min:max")
-	flag.BoolVar(&flagrandom, "random", false, "If prelen|suflen is set, determines if it is used on a\nword-by-word basis. (default false)")
+	flag.BoolVar(&flagrandom, "random", false, "If preLen|sufLen is set, determines if it is used on a\nword-by-word basis. (default false)")
 	flag.StringVar(&flagsuflist, "sufList", "0-9/,.?=", "Characters for a suffix.")
 	flag.StringVar(&flagprelist, "preList", "0-9/,.?=", "Characters for a prefix.")
 	flag.StringVar(&flaginlist, "inList", inListStr, "Characters to define an input word.")
@@ -581,7 +581,7 @@ func main() {
 			// return expanded
 			flagPrelistRune = ckValidListString(flagprelist, "prelist")
 		} else {
-			fmt.Printf("\nError: if prelen > 0, the prelist must contain characters, its empty.\n")
+			fmt.Printf("\nError: if preLen > 0, the preList must contain characters, its empty.\n")
 			os.Exit(1)
 		}
 	}
@@ -603,7 +603,7 @@ func main() {
 
 	if flagoutput != "" {
 		if flagoutput == flaginput {
-			fmt.Printf("\nError: -out can't equal -in, or the input file would be over written.\n")
+			fmt.Printf("\nError: -outFile can't equal -inFile, or the input file would be over written.\n")
 			os.Exit(1)
 		}
 
