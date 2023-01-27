@@ -85,6 +85,7 @@ var (
 	flagmin           int
 	flagcgmin         int
 	flagrepeat        int
+	flagrepeatStr     string
 	flagnum           int
 	flagsufmin        int
 	flagsufmax        int
@@ -149,6 +150,7 @@ var (
 	flagll		bool
 	flagPhraseLen int
 	isLicw	bool
+	scrambleWord bool
 
         message string = `
 
@@ -182,7 +184,7 @@ func init() {
 
 	flag.StringVar(&flaginlen, "inLen", "1:5", "# characters in a word. inLen=min:max")
 	flag.StringVar(&flagcglen, "cgLen", "5:5", "# characters in a code group. cgLen=min:max.")
-	flag.IntVar(&flagrepeat, "repeat", 1, "Number of times to repeat word sequentially.")
+	flag.StringVar(&flagrepeatStr, "repeat", "1", "Number of times to repeat word sequentially.")
 	flag.IntVar(&flagnum, "num", 100, fmt.Sprintf("Number of words (or code groups) to output. Min 1, max %d.\n", maxUserWords))
 	flag.IntVar(&flaglen, "len", 80, fmt.Sprintf("Length characters in an output line (max %d).", maxLineLen))
 	flag.StringVar(&flagsuflen, "sufLen", "0:0", "The number of suffix characters to append. sufLen=min:max")
@@ -590,6 +592,18 @@ func main() {
 		fmt.Printf("\nError: random requires: either preLen > 0 or sufLen > 0, or lessonList.\n")
 		os.Exit(1)
 	}
+
+	flagrepeatStr = strings.ToUpper(flagrepeatStr)
+	if strings.HasPrefix(flagrepeatStr,"R") {
+		if flagtext != "" {
+			// words file supports
+			scrambleWord=true
+		}
+	}
+	// always in case its done when we didn't want it
+	flagrepeatStr = strings.TrimLeft(flagrepeatStr,"R")
+	// make in int for everywhere else
+	flagrepeat,_ = strconv.Atoi(flagrepeatStr)
 
 	if flagrepeat < 1 || flagrepeat > maxRepeat {
 		fmt.Printf("\nError: repeat (default 1) must be between 1 and %d.\n", maxRepeat)

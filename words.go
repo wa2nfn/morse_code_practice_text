@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 	"io/ioutil"
+	"time"
 )
 
 /*
@@ -633,7 +634,22 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOsp
 
 	// text repeat!
 	if flagrepeat > 0 {
-		// we need to repeat
+		var scrambleOut string
+
+		if scrambleWord {
+			// we will scable the word into a codeGroup and
+			// display it ONCE before the repititions
+			// it will NOT change the num count
+			// it must NOT be a linked word with ~
+			// it must be > 2 char
+			if len(wordOut) > 2 && ! strings.Contains(wordOut, "~") {
+				ok, wd := scrambleIt(wordOut)
+				if ok {
+					scrambleOut += wd + " " 
+				}
+			}
+		}
+
 		wordOut += " "
 		temp := wordOut
 
@@ -641,6 +657,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOsp
 			// wordOut is the word plus trailing space already
 			wordOut += temp
 		}
+		wordOut = scrambleOut + wordOut
 	}
 
 	// LCWO_repeat
@@ -813,4 +830,27 @@ func fillArray(fp *os.File) {
 
 	wordArray = nil
 	doOutput(NwordArray, fp)
+}
+
+func scrambleIt(in string) (bool,string) {
+	 
+	inChar := []rune(in)
+	outChar := []rune(in)
+
+	// some will never scramble like: aaa
+	var tries = 0
+	for ; tries < 4; tries++ {
+
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(outChar), func(i, j int){ outChar[i], outChar[j] = outChar[j], outChar[i] })
+
+		for i, v := range inChar {
+			if v != outChar[i] {
+				// they differ
+				return true, string(outChar)
+			}
+		}
+	}
+
+	return false, ""
 }
