@@ -6,7 +6,6 @@ import (
 	"os"
 	"regexp"
 	"strings"
-	"io/ioutil"
 	"time"
 )
 
@@ -34,7 +33,7 @@ func readFileMode(fp *os.File) {
 		flaginlist = flagcglist  // swap to sync with lesson list
 	}
 
-	content, err := ioutil.ReadFile(flaginput)
+	content, err := os.ReadFile(flaginput)
 
 	if err != nil {
 		fmt.Printf("\n%s File name <%s>.\n", err, flaginput)
@@ -193,7 +192,10 @@ func readFileMode(fp *os.File) {
 			}
 		}
 
-		wordArray = wordArray[0:flagnum]
+		if flagnum > 0 {
+			// if zero we keep what we found
+			wordArray = wordArray[0:flagnum]
+		}
 	} else {
 		// RANDOM so use MAP to fill array
 		if len(wordMap) == 0 {

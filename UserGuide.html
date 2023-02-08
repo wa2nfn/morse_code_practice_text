@@ -1966,6 +1966,87 @@ While the -in option searches the input file for words (strings of ONLY letters)
 This feature allows a learner, to get a practice text that could include: words, numbers, puctuation, call signs, or code groups <I>if</I> they are in the file.
 Some learners do not want to just to code groups until they have learned all the characters, this gives them more practice alternatives. Of course, many other options can still be applied.
 <P>
+<H2>
+Example 37: 
+IWR (Instant Word Recognition) training
+</H2>
+<B>See options in sample optFile below.</B>
+<P>
+<PRE>
+The concept of this combination of options, is to give you a means of
+listening to practice session of words to build up your ICR (Instant Character Recognition) and simultaneously begin to develop IWR (Instant Word Recognition).
+
+Initially, your IWR word list would be only a word or two that are very short
+like "the" or "and". The speed to hear these words at should be higher than
+what you are practicing the other characters at, so that you will begin
+to hear the IWR word as have a unique sound rahter than it being a series of
+letters to make a word.
+The sample option file below, explains the few required and optional options
+to use this feature. You can of course type the options on the command line
+or use an optFile as you like.
+
+#
+# this is a sample optFile to use instead of entering the options
+# on the command line
+# in this case this file has been named "opt.txt"
+# to run, enter: mcpt -opt=opt.txt
+
+
+# this opt names a text file that contains the "words" you want
+# to learn as IWR (Instant Word Recognition). The format of the file is:
+#
+# 1 word per line! (spaces can be before or after the word)
+# the word can be upper or lower case
+LCWO_iwrFile=wd.txt
+
+# inFile or textFile is the file of words to play
+# for example some pages from a fiction book
+inFile=in
+
+# this is the WPM to play any words from LCW_iwrFile, which were found in
+# the input file (inFile or textFile)
+LCWO_iwr_wpm=25
+
+# num is how many "words" to put in the output.
+# ZERO is a special case, it means ALL the words that match!
+# If you input had 10 words that meet the criteria (explained below)
+# and you have num=50, then the output would repeat the same 10 words
+# to get to 50.
+num=0
+
+# this means keep output in the same order as input (not random)
+# This is REQUIRED for the IWR feature!
+ordered
+
+# this is the lowor normal speed of the characters that were NOT matched
+# by the IWR file
+LCWO_low=15
+
+# this is the Farnsworth spacing speed, it MUST be lower than LCWO_low (if 
+# its used. 
+# Farnsworth is NOT required, and is NOT used for the faster IWR words.
+LCWO_effective=10
+
+# The "words" in the iput file MUST meet 2 criteria to not be filtered out.
+# The word length must be met. Given by inLen=1:12 (for example, meaning
+# words with 1-12 characters).
+inLen=1:12
+
+# inList, is the characters that a "words" can have without being 
+# filtered out. The default is all 26 letters, use the option for less; or
+# use lesson=X where X is the lesson number you are at in LCWO.
+# See the LCWO GUI or run: mcpt -help=tutors, and look at the LCWO column.
+# FYI inList if used with inFile (not textFile) can have digits, prosigns,
+# or .,?/
+inList=A-Z
+
+# outFile is a file name for the output. This is the file you use
+# in LCWO's "Convert Text to CW" screen, to play code or make an MP3 file.
+outFile=out.txt
+
+# Lastly - Only the Tone setting on the LCWo screen will has effect, the 
+# speed is set in the file based on options above.
+<P>
 <P>
 Contact me at: <B>WA2NFN@gmail.com</B>.
 </BODY>

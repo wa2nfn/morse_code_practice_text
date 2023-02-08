@@ -16,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "2.2.2" // 01/25/2022
+	version       = "2.2.3" // 02/05/2022
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -33,6 +33,7 @@ var (
 	seed           = time.Now().UTC().UnixNano()
 	rng            = rand.New(rand.NewSource(seed))
 	wordMap        = make(map[string]struct{})
+	iwrWordMap     = make(map[string]struct{})
 	wordArray      = make([]string, 0, 0)
 	delimiterSlice []string
 	effDelta       int
@@ -109,6 +110,8 @@ var (
 	flagLCWOramp      bool
 	flagLCWOrandom    bool
 	flagLCWOefframp   bool
+	flagLCWOiwrfile		string
+	flagLCWOiwrwpm		int
 	flagheader        string
 	flagfooter        string
 	flagprelist       string
@@ -207,11 +210,11 @@ func init() {
 	flag.IntVar(&flagMixedMode, "mixedMode", 0, fmt.Sprintf("mixedMode X, If X > 1 and  X < %d , a code group will print every X words.", maxMixedMode))
 	flag.BoolVar(&flagreverse, "reverse", false, "Reverses the spelling of words from inlist file. (default false)")
 	flag.BoolVar(&flagCG, "codeGroups", false, "Random code groups from cglist characters (default false).")
-	flag.BoolVar(&flagordered, "ordered", false, "Ordered (Non-Randomized) output words read from input (default false).")
+	flag.BoolVar(&flagordered, "ordered", false, "Ordered (Non-Randomized) output words read from input (num=0 limits output to qualified matching words) (default false).")
 	flag.BoolVar(&flagMMR, "MMR", false, "Mixed-Mode-Random, randomize code group occurance in mixed mode. (default false)")
 	flag.StringVar(&flagcglist, "cgList", "A-Z0-9/.,?=", "Set of characters to make code groups.")
-	flag.StringVar(&flagheader, "header", "", "string copied verbatim to head of output.")
-	flag.StringVar(&flagfooter, "footer", "", "string copied verbatim to foot of output.")
+	flag.StringVar(&flagheader, "header", "", "A string copied verbatim to head of output.")
+	flag.StringVar(&flagfooter, "footer", "", "A string copied verbatim to foot of output.")
 	flag.IntVar(&flagheadcopy, "headCopy", 0, "1: increment length by 1 for each word/group.\n2: each word spelled letter by letter, i.e. c co cod code")
 	flag.IntVar(&flagLCWOlow, "LCWO_low", 15, "low character speed setting (wpm).")
 	flag.IntVar(&flagLCWOstep, "LCWO_step", 0, "speed change increment (wpm).")
@@ -225,6 +228,8 @@ func init() {
 	flag.BoolVar(&flagLCWOefframp, "LCWO_effective_ramp", false, "ramp effective speed (char speed constant) must be < LCWO_low. (default false)")
 	flag.StringVar(&flagLCWOsf, "LCWO_sf", "", "to alert transition from LCWO_low to LCWO_low+LCWO_step for plain text in mixedMode\nor LCWO_slow text to LCWO_fast text,")
 	flag.StringVar(&flagLCWOfs, "LCWO_fs", "", "to alert transition from LCWO_low+LCWO_step speed for plain text to LCWO_low for codeGroup mixedMode\nor LCWO_fast text to LCWO_slow text.")
+	flag.StringVar(&flagLCWOiwrfile, "LCWO_iwrFile", "", "file of \"words\" to play at higher speed for IWR.")
+	flag.IntVar(&flagLCWOiwrwpm, "LCWO_iwr_wpm", 0, "wpm speed to play IWR \"words\" from <LCWO_iwrFile>.")
 	flag.StringVar(&flaghelp, "help", "", "[TOUR|FILES|LCWO|OPTIONS|TUTORS] more help of given topics.")
 	flag.StringVar(&flagpermute, "permute", "", "Selected permutations of current \"lesson\" characters [p,t,b([pairs,triples,both)].")
 	flag.BoolVar(&flagcallsigns, "callSigns", false, "Call signs with current lesson's characters.")
@@ -539,9 +544,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	if flagnum < 1 || flagnum > maxUserWords {
-		fmt.Printf("\nError: num, number of output words desired. minimum 1, maximum %d, default 100.\n", maxUserWords)
-		os.Exit(1)
+	if flagordered {
+		if flagnum < 0 || flagnum > maxUserWords {
+			fmt.Printf("\nError: number of output words desired. minimum 0, maximum %d, default 100.\n", maxUserWords)
+			fmt.Printf("\n       num = 0 means, match the number of qualified matching words\n")
+			os.Exit(1)
+
+		}
+	} else {
+		if flagnum < 1 || flagnum > maxUserWords {
+			fmt.Printf("\nError: number of output words desired. minimum 0, maximum %d, default 100.\n", maxUserWords)
+			os.Exit(1)
+		}
 	}
 
 	if flaglen < 1 || flaglen > maxUserWords {
@@ -762,7 +776,33 @@ func main() {
 				os.Exit(1)
 			}
 		}
+
+
+		if flagLCWOiwrwpm != 0 {
+			if flagLCWOiwrfile == "" {
+				fmt.Printf("\nError: <LCWO_iwr_wpm> requires <LCWO_iwrFile>.\n")
+				os.Exit(1)
+			} else if flagLCWOrepeat > 0 || flagLCWOefframp || flagLCWOramp || flagLCWOrandom || flagLCWOslow > 0 || flagLCWOfast > 0 {
+				fmt.Printf("\nError: IWR requires <LCWO_iwr_wpm>, <LCWO_iwrFile>, <LCWO_low>; optionally <LCWO_effective>.\n")
+				fmt.Printf("\n       Any other LCWO options is an error.\n")
+				os.Exit(1)
+			}
+
+			if flagLCWOiwrwpm <= flagLCWOlow {
+				fmt.Println("\nError: <LCWO_iwr_wpm> must be greater than <LCWO_low>.\n")
+				os.Exit(123)
+			}
+
+			if flagtext == "" && flaginput == "" {
+				fmt.Println("\nError: The IWR feature requiers <LCWO_iwrFile> and <inFile> or <textFile>\n")
+				os.Exit(123)
+			}
+
+			// read IWR file and store words in map
+			readIwrFile(flagLCWOiwrfile)
+		}
 	}
+
 	// expand now before we reuse (its UC)
 	flagcglist = strRangeExpand(flagcglist, "cgList")
 	flaginlist = strRangeExpand(flaginlist, "inList")
@@ -1171,9 +1211,49 @@ func expandIt(lower string, upper string, whoAmI string) string {
 //
 func printStrBuf(strBuf string, fp *os.File) {
 
-	//WDL re := regexp.MustCompile(`!`) // for MorseNinja
 	index := 0
-	spaceCount:= 0
+	spaceCount := 0
+
+	// if doing IWR its LCWO so frame words with speed change
+	if flagLCWOiwrwpm > 0 {
+
+		// need start speed only once
+
+		origSpd := ""
+		iwrSpd := ""
+		if flagLCWOeff > 0 {
+			// deal with effective
+			// this is just at the start
+			strBuf = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOeff) + " " + strBuf
+			// these two used many times
+			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOeff) + " "
+			iwrSpd = "|e0 |w" + strconv.Itoa(flagLCWOiwrwpm) + " "
+		} else{
+			strBuf = "|w" + strconv.Itoa(flagLCWOlow) + " " + strBuf
+			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " "
+			iwrSpd = " |w" + strconv.Itoa(flagLCWOiwrwpm) + " |e" + strconv.Itoa(flagLCWOiwrwpm) + " "
+		}
+
+		// since LCWO has a browser limit lets trim the buffer
+		// probably 5000
+		if len(strBuf) > 6000 {
+			strBuf = strBuf[:5000]
+		}
+
+		for wd, _ := range iwrWordMap {
+			pat := fmt.Sprintf("\\s%s\\s",regexp.QuoteMeta(wd))
+			re := regexp.MustCompile(pat)
+
+			strBuf = re.ReplaceAllString(strBuf,iwrSpd + wd + "%" + origSpd)
+			strBuf = re.ReplaceAllString(strBuf,iwrSpd + wd + "%" + origSpd)
+		}
+
+		strBuf = strings.ReplaceAll(strBuf, "%", " ")
+		// we'll let LCWO do final trimming
+		if len(strBuf) > 6000 {
+			strBuf = strBuf[:5000]
+		}
+	}
 
 	if flaglessonend > 14 && (flagtutor == "LOCKDOWNMORSE" || flagtutor == "LDM") {
 		strBuf = "<KA>\n" + strBuf + "\n<AR>"
@@ -1226,7 +1306,6 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	// for MorseNinja
 	if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" && flaglessonend >= 40 {
-		//res = re.ReplaceAllString(res, "<BK>")
 		res = strings.ReplaceAll(res,"!","<BK>")
 	}
 
@@ -1342,4 +1421,41 @@ func sliceContains(s []string, e string) bool {
 		}
 	}
 	return false
+}
+
+// read iwr file and store words in file
+func readIwrFile(file string) {
+	var wordLimit int = 1000
+
+	content, err := os.ReadFile(file)
+	if err != nil {
+		fmt.Printf("\n%s reading IWR file name <%s>.\n", err, file)
+		os.Exit(1)
+	}
+
+	// parse it for words
+
+	line := string(content)
+	line = strings.ToUpper(line)
+
+	for _, wd := range strings.Fields(line) {
+		cnt := 0
+		wd = strings.TrimSpace(wd)
+		if strings.HasPrefix(wd, "#") {
+			continue
+		}
+
+		iwrWordMap[wd] = struct{}{}
+
+		cnt++
+		if cnt >= wordLimit {
+			break
+		}
+	}
+
+	lenMap := len(iwrWordMap)
+	if lenMap == 0 {
+		fmt.Printf("\nError: IWR file <%s> has no entries.\n", file)
+		os.Exit(1)
+	}
 }

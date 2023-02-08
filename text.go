@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"time"
 	"strings"
-	"io/ioutil"
 )
 
 /*
@@ -38,7 +37,7 @@ func readStringsFile(fp *os.File) {
 		}
 	}
 
-	content, err := ioutil.ReadFile(flagtext)
+	content, err := os.ReadFile(flagtext)
 	if err != nil {
 		fmt.Printf("\n%s For file name <%s>.\n", err, flagtext)
 		os.Exit(1)
@@ -166,5 +165,8 @@ func readStringsFile(fp *os.File) {
 	}
 
 	// trim 
-	wordArray = wordArray[0:flagnum]
+	if flagnum > 0 {
+		// if zero we limit to what we found
+		wordArray = wordArray[0:flagnum]
+	}
 }

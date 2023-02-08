@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/jwalton/gchalk"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -276,7 +275,7 @@ func readLines(path []string) {
 	// do both files
 	for fIndex := 0; fIndex <= 1; fIndex++ {
 
-		b, err := ioutil.ReadFile(path[fIndex])
+		b, err := os.ReadFile(path[fIndex])
 		if err != nil {
 			fmt.Printf("\n %s reading file <%s>. %v\n", gchalk.Red("Error:"), path[fIndex], err)
 			os.Exit(1)
