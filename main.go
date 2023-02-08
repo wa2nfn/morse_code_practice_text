@@ -1235,9 +1235,10 @@ func printStrBuf(strBuf string, fp *os.File) {
 		}
 
 		// since LCWO has a browser limit lets trim the buffer
-		// probably 5000
-		if len(strBuf) > 6000 {
-			strBuf = strBuf[:5000]
+		// probably 8000
+		maxChars := 8000
+		if len(strBuf) > maxChars {
+			strBuf = strBuf[:maxChars]
 		}
 
 		for wd, _ := range iwrWordMap {
@@ -1250,8 +1251,8 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 		strBuf = strings.ReplaceAll(strBuf, "%", " ")
 		// we'll let LCWO do final trimming
-		if len(strBuf) > 6000 {
-			strBuf = strBuf[:5000]
+		if len(strBuf) > maxChars {
+			strBuf = strBuf[:maxChars]
 		}
 	}
 
