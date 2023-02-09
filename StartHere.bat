@@ -9,7 +9,7 @@ ECHO.
 ECHO  New users: 
 ECHO.
 ECHO     Note: If this directory is not in the PATH, then prefix mcpt like: 
-ECHO           .\mcpt etc. etc. To use mcpt without a bat file.
+ECHO           .\mcpt etc. To use mcpt without a bat file.
 ECHO.
 ECHO     run: .\mcpt -help=tour and/or
 ECHO.
