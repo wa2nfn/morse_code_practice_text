@@ -1227,17 +1227,12 @@ func printStrBuf(strBuf string, fp *os.File) {
 			strBuf = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOeff) + " " + strBuf
 			// these two used many times
 			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOeff) + " "
-			iwrSpd = "|w" + strconv.Itoa(flagLCWOiwrwpm) + " |e" + strconv.Itoa(flagLCWOiwrwpm) + " "
+			iwrSpd = "|e0 |w" + strconv.Itoa(flagLCWOiwrwpm) + " "
 		} else{
 			// no eff so make same as wpm
-			strBuf = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOlow) + " " + strBuf
-			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOlow) + " "
-			iwrSpd = "|w" + strconv.Itoa(flagLCWOiwrwpm) + " |e" + strconv.Itoa(flagLCWOiwrwpm) + " "
-			/*
-			strBuf = "|w" + strconv.Itoa(flagLCWOlow) + " " + strBuf
+			strBuf = "|e0 |w" + strconv.Itoa(flagLCWOlow) + " " + strBuf
 			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " "
-			iwrSpd = " |w" + strconv.Itoa(flagLCWOiwrwpm) + " "
-			*/
+			iwrSpd = "|w" + strconv.Itoa(flagLCWOiwrwpm) + " "
 		}
 
 		// since LCWO has a browser limit lets trim the buffer
