@@ -178,7 +178,7 @@ var (
   -send       (create sending practice by specific groups of characters)
   -sendCheck  (to verify your accuracy of sending)
   -callSigns  (simple generated call signs based on tutor/lesson)
-  -lessonList (use lesson chars or cglist for ever increasing code group)
+  -lessonList (use lesson chars or cgList for ever increasing code group)
 
 ` // end message
 )
