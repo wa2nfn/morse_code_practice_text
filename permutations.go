@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"math/rand"
-	"time"
+	"os"
 	"strings"
+	"time"
 )
 
 //
@@ -20,9 +20,9 @@ func permute(mode string, fp *os.File) {
 	MAX := 10000
 
 	/*
-	if len(flagcglist) == 0 {
-		flagcglist = kochChars
-	}
+		if len(flagcglist) == 0 {
+			flagcglist = kochChars
+		}
 	*/
 
 	if len(flagcglist) < 2 {
@@ -40,7 +40,7 @@ func permute(mode string, fp *os.File) {
 	// randomize the cglist
 	var chars = []rune(flagcglist)
 	var chars2 = []rune(flagcglist)
-	for i,val :=  range flagcglist {
+	for i, val := range flagcglist {
 		chars[i] = val
 		chars2[i] = val
 	}
@@ -63,7 +63,7 @@ func permute(mode string, fp *os.File) {
 			if len(cMap) >= flagnum {
 				numToPrt = flagnum
 				break
-			} else if (cnt >= MAX) {
+			} else if cnt >= MAX {
 				numToPrt = MAX
 				break
 			}
@@ -72,7 +72,7 @@ func permute(mode string, fp *os.File) {
 		if mode == "p" {
 			cnt = 0
 			for out := range cMap {
-				if cnt  >= numToPrt {
+				if cnt >= numToPrt {
 					break
 				}
 
@@ -89,7 +89,7 @@ func permute(mode string, fp *os.File) {
 		}
 	}
 
-	// triples 
+	// triples
 	if tMap != nil {
 		for _, H := range chars {
 			for _, M := range chars2 {
@@ -104,14 +104,14 @@ func permute(mode string, fp *os.File) {
 
 		if len(tMap) >= flagnum {
 			numToPrt = flagnum
-		} else if (cnt >= MAX) {
+		} else if cnt >= MAX {
 			numToPrt = MAX
 		}
 
 		cnt = 0
 		if mode == "t" {
 			for out := range tMap {
-				if cnt  >= numToPrt {
+				if cnt >= numToPrt {
 					break
 				}
 
@@ -129,7 +129,7 @@ func permute(mode string, fp *os.File) {
 
 			// now print b
 			for out := range tMap {
-				if cnt  >= numToPrt {
+				if cnt >= numToPrt {
 					break
 				}
 
@@ -143,13 +143,12 @@ func permute(mode string, fp *os.File) {
 	}
 }
 
-
-func convertRunes(strBuf string ) string {
+func convertRunes(strBuf string) string {
 	var out string
 
 	if rune2psMap != nil {
 
-		for _,s := range strBuf {
+		for _, s := range strBuf {
 			if rune2psMap[s] != "" {
 				out += string(rune2psMap[s])
 			} else {

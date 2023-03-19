@@ -7,16 +7,15 @@ import (
 // headcopy is a stripped down version of prepWord elimatiing the use of many options that
 // are not required and disassembling the word to its parts as needed
 func headcopy2(wordOut string, index int, charSlice []rune) (string, []rune) {
-	inWord := strings.Split(wordOut,"")
+	inWord := strings.Split(wordOut, "")
 	outStr := ""
 	lastStr := ""
 
 	// break up "word" and send out strings until all chars have been used
-	for _,char := range inWord {
+	for _, char := range inWord {
 		lastStr = lastStr + char
 		outStr += lastStr + " "
 	}
-
 
 	// text repeat!
 	if flagrepeat > 0 {
@@ -29,8 +28,7 @@ func headcopy2(wordOut string, index int, charSlice []rune) (string, []rune) {
 		}
 	}
 
-
-	// use delimiter 
+	// use delimiter
 	if flagDMmin >= 1 && (flagDR == false || (flagDR == true && flipFlop())) {
 
 		if flagDMmin == flagDMmax {
@@ -48,4 +46,3 @@ func headcopy2(wordOut string, index int, charSlice []rune) (string, []rune) {
 
 	return outStr, charSlice
 }
-

@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"os"
+	"strings"
 )
 
 var (
-	newChar byte
-	oldChar byte
-	strBuf  string
-	delimiter0  string
-	delimiter1  string
-	LastRand int = 999
-	wantReviewAll string 
-	summaryList = flagcglist
+	newChar       byte
+	oldChar       byte
+	strBuf        string
+	delimiter0    string
+	delimiter1    string
+	LastRand      int = 999
+	wantReviewAll string
+	summaryList   = flagcglist
 )
 
 // this is the code for -review flag
@@ -38,9 +38,9 @@ func review(fp *os.File) {
 	}
 
 	if flaglessonstart != 0 {
-		fmt.Printf("\nInclude characters BEFORE lesson: %d in summary?\n",flaglessonstart+1)
-		fmt.Printf("They are: %s\n",char2psReplacer.Replace(kochChars[0:flaglessonstart]))
-		
+		fmt.Printf("\nInclude characters BEFORE lesson: %d in summary?\n", flaglessonstart+1)
+		fmt.Printf("They are: %s\n", char2psReplacer.Replace(kochChars[0:flaglessonstart]))
+
 		fmt.Printf("\nEnter \"y\", for yes include them: ")
 
 		fmt.Scanf("%s", &wantReviewAll)
@@ -67,7 +67,7 @@ func review(fp *os.File) {
 //prevent same rand vals in a row
 func genRand(val int) int {
 
-	for ;; {
+	for {
 		rn := rng.Intn(val)
 		if rn != LastRand {
 			LastRand = rn
@@ -79,7 +79,7 @@ func genRand(val int) int {
 //does 5x5 ie AAAAA AAAAA
 func do5(number int) {
 	doBlockAnnounce()
-	str := strings.Repeat(string(newChar),5)
+	str := strings.Repeat(string(newChar), 5)
 	strBuf += (str + " " + str + " ")
 	doDel(number)
 	return
@@ -90,11 +90,11 @@ func doSingle(number int) {
 	// 8 groups 2-5 chars
 
 	for i := 1; i <= 8; i++ {
-		strBuf += fmt.Sprintf("%s ",strings.Repeat(string(newChar),2+genRand(3)))
+		strBuf += fmt.Sprintf("%s ", strings.Repeat(string(newChar), 2+genRand(3)))
 	}
 
 	doDel(number)
-	// special for a blank 
+	// special for a blank
 	if number == 0 {
 		strBuf += fmt.Sprintln()
 	}
@@ -117,7 +117,7 @@ func doPair(number int) {
 	// 10 groups len 2-6
 	for i := 1; i <= 10; i++ {
 
-		for j := 0; j <= 2 + genRand(5); j++ {
+		for j := 0; j <= 2+genRand(5); j++ {
 			strBuf += string(pairList[genRand(2)])
 		}
 		strBuf += " "
@@ -132,7 +132,7 @@ func doPair(number int) {
 // to block announce delimiter
 func doBlockAnnounce() {
 	if delimiter0 != "" {
-		strBuf += fmt.Sprintf("%s\n",delimiter0)
+		strBuf += fmt.Sprintf("%s\n", delimiter0)
 	}
 
 	return
@@ -142,7 +142,7 @@ func doBlockAnnounce() {
 func doDel(number int) {
 
 	if delimiter1 != "" {
-		strBuf += fmt.Sprintf("%s\n",delimiter1)
+		strBuf += fmt.Sprintf("%s\n", delimiter1)
 	} else {
 		strBuf += "\n"
 	}
@@ -161,14 +161,14 @@ func doEndBlock(number int) {
 	if wantReviewAll == "y" {
 		summaryList = char2psReplacer.Replace(kochChars[0:flaglessonstart] + flagcglist[0:number+1])
 	} else {
-		summaryList = char2psReplacer.Replace(flagcglist[0:number+1])
+		summaryList = char2psReplacer.Replace(flagcglist[0 : number+1])
 	}
 
 	// 20 groups
 	for i := 1; i <= 20; i++ {
 
 		// length of group
-		for j := 0; j <= 2 + genRand(4); j++ {
+		for j := 0; j <= 2+genRand(4); j++ {
 			strBuf += string(summaryList[rng.Intn(len(summaryList))])
 		}
 		strBuf += " "
@@ -176,7 +176,7 @@ func doEndBlock(number int) {
 
 	doDel(number)
 
-	if number % 5 == 0 {
+	if number%5 == 0 {
 		if delimiter0 != "" {
 			strBuf += "\n" + delimiter0 + delimiter0 + "\n"
 		} else {
@@ -184,9 +184,9 @@ func doEndBlock(number int) {
 		}
 
 		cnt := 0
-		for ;; {
+		for {
 			// length of group
-			for j := 0; j <= 2 + rng.Intn(7); j++ {
+			for j := 0; j <= 2+rng.Intn(7); j++ {
 				strBuf += string(summaryList[genRand(len(summaryList))])
 			}
 			strBuf += " "
@@ -201,7 +201,7 @@ func doEndBlock(number int) {
 		cnt += 5
 
 		if delimiter1 != "" {
-			strBuf += fmt.Sprintf("%s\n",delimiter1)
+			strBuf += fmt.Sprintf("%s\n", delimiter1)
 		} else {
 			strBuf += "\n"
 		}

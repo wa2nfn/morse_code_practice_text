@@ -13,7 +13,6 @@ import (
 ** added for Ordered write of input
  */
 
-
 // read input file and create words. vs do code groups
 func readFileMode(fp *os.File) {
 
@@ -30,7 +29,7 @@ func readFileMode(fp *os.File) {
 	}
 
 	if flaglesson != "0:0" {
-		flaginlist = flagcglist  // swap to sync with lesson list
+		flaginlist = flagcglist // swap to sync with lesson list
 	}
 
 	content, err := os.ReadFile(flaginput)
@@ -89,13 +88,13 @@ func readFileMode(fp *os.File) {
 		"'s", " is",
 		"'d", " would",
 		"'re", " are",
-	"!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
+		"!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
 
 	line = strings.ToLower(line)
 	line = replacer.Replace(line)
 	line = strings.ToUpper(line)
 
-	for _,wd := range strings.Fields(line) {
+	for _, wd := range strings.Fields(line) {
 
 		if word.MatchString(wd) {
 
@@ -114,9 +113,9 @@ func readFileMode(fp *os.File) {
 				wd = reverse(wd)
 			}
 
-			/* if -ordered words are ordered so we store and 
+			/* if -ordered words are ordered so we store and
 			** retrieve from an array else we use a map
-			*/
+			 */
 			if flagordered {
 				wordArray = append(wordArray, wd)
 			} else {
@@ -375,7 +374,6 @@ func doOutput(words []string, fp *os.File) {
 		strOut += " |e0 "
 	}
 
-
 	///////////////////////////////////
 	////// LCWO handling - intial setup
 	///////////////////////////////////
@@ -399,7 +397,7 @@ func doOutput(words []string, fp *os.File) {
 			// count DOWN, high to low
 			flagLCWOstep *= -1
 
-			for i := (flagLCWOrepeat-1) * flagLCWOstep; i >= 0; i -= flagLCWOstep {
+			for i := (flagLCWOrepeat - 1) * flagLCWOstep; i >= 0; i -= flagLCWOstep {
 
 				LCWOspeeds = append(LCWOspeeds, flagLCWOlow+i)
 			}
@@ -642,10 +640,10 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOsp
 			// it will NOT change the num count
 			// it must NOT be a linked word with ~
 			// it must be > 2 char
-			if len(wordOut) > 2 && ! strings.Contains(wordOut, "~") {
+			if len(wordOut) > 2 && !strings.Contains(wordOut, "~") {
 				ok, wd := scrambleIt(wordOut)
 				if ok {
-					scrambleOut += wd + " " 
+					scrambleOut += wd + " "
 				}
 			}
 		}
@@ -665,7 +663,7 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOsp
 
 		for i := 0; i < flagLCWOrepeat; i++ {
 			// if we ALSO have flagRAMP we must offset speed
-		//wdl	spd := lastSpeed + (i * flagLCWOstep)
+			//wdl	spd := lastSpeed + (i * flagLCWOstep)
 			spd := LCWOspeeds[i]
 
 			if flagLCWOeff > 0 {
@@ -832,8 +830,8 @@ func fillArray(fp *os.File) {
 	doOutput(NwordArray, fp)
 }
 
-func scrambleIt(in string) (bool,string) {
-	 
+func scrambleIt(in string) (bool, string) {
+
 	inChar := []rune(in)
 	outChar := []rune(in)
 
@@ -842,7 +840,7 @@ func scrambleIt(in string) (bool,string) {
 	for ; tries < 4; tries++ {
 
 		rand.Seed(time.Now().UnixNano())
-		rand.Shuffle(len(outChar), func(i, j int){ outChar[i], outChar[j] = outChar[j], outChar[i] })
+		rand.Shuffle(len(outChar), func(i, j int) { outChar[i], outChar[j] = outChar[j], outChar[i] })
 
 		for i, v := range inChar {
 			if v != outChar[i] {

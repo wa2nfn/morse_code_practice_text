@@ -16,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "2.2.3" // 02/05/2022
+	version       = "2.2.4" // 03/18/2023
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -39,40 +39,40 @@ var (
 	effDelta       int
 	proSign        []string
 	runeMap        = make(map[rune]struct{})
-	ccMap        = make(map[rune]rune)
+	ccMap          = make(map[rune]rune)
 	ps2runeMap     = make(map[string]rune)
 	rune2psMap     = make(map[rune]string)
 	/*
-	// cannot use lc e or w, conflict with LCWO
+		// cannot use lc e or w, conflict with LCWO
 	*/
 	ps2charReplacer = strings.NewReplacer(
-		"<AS>", "(", 
-		"<AR>", ")", 
-		"<BT>", "{", 
-		"<KA>", "}", 
-		"<SK>", "[", 
-		"<SN>", "]", 
-		"<HH>", "#", 
+		"<AS>", "(",
+		"<AR>", ")",
+		"<BT>", "{",
+		"<KA>", "}",
+		"<SK>", "[",
+		"<SN>", "]",
+		"<HH>", "#",
 		"\u00D8", "0",
-		"+",")",
-		"=","{",
-		"<VE>","$",
-		"<DU>","%",
-		"<VA>","!",
-		"<SOS>","&")
+		"+", ")",
+		"=", "{",
+		"<VE>", "$",
+		"<DU>", "%",
+		"<VA>", "!",
+		"<SOS>", "&")
 	char2psReplacer = strings.NewReplacer(
-		"(", "<AS>", 
-		")", "<AR>", 
-		"{", "<BT>", 
-		"}", "<KA>", 
-		"[", "<SK>", 
-		"]", "<SN>", 
-		"#", "<HH>", 
+		"(", "<AS>",
+		")", "<AR>",
+		"{", "<BT>",
+		"}", "<KA>",
+		"[", "<SK>",
+		"]", "<SN>",
+		"#", "<HH>",
 		"0", "\u00D8",
-		"$","<VE>",
-		"!","<VE>",
-		"%","<DU>",
-		"&","<SOS>")
+		"$", "<VE>",
+		"!", "<VE>",
+		"%", "<DU>",
+		"&", "<SOS>")
 )
 
 var (
@@ -110,13 +110,13 @@ var (
 	flagLCWOramp      bool
 	flagLCWOrandom    bool
 	flagLCWOefframp   bool
-	flagLCWOiwrfile		string
-	flagLCWOiwrwpm		int
+	flagLCWOiwrfile   string
+	flagLCWOiwrwpm    int
 	flagheader        string
 	flagfooter        string
 	flagprelist       string
 	flagPrelistRune   []rune
-	flagReview	bool
+	flagReview        bool
 	flagsuflist       string
 	flagSuflistRune   []rune
 	flaginlist        string
@@ -131,7 +131,7 @@ var (
 	flagtutor         string
 	flagrandom        bool
 	flagunique        bool
-	flagordered            bool
+	flagordered       bool
 	flagMMR           bool
 	flagCG            bool
 	flagreverse       bool
@@ -148,14 +148,15 @@ var (
 	flagheadcopy      int
 	flagsend          string
 	flagsendcheck     string
-	flagFL		bool
-	flaglc		bool
-	flagll		bool
-	flagPhraseLen int
-	isLicw	bool
-	scrambleWord bool
+	flagFL            bool
+	flaglc            bool
+	flagll            bool
+	flagzero          bool
+	flagPhraseLen     int
+	isLicw            bool
+	scrambleWord      bool
 
-        message string = `
+	message string = `
 
   Error: 
 
@@ -243,6 +244,7 @@ func init() {
 	flag.BoolVar(&flagcc, "cc", false, "Emphasize confused character pairs in code groups.")
 	flag.BoolVar(&flagll, "lessonList", false, "Use lesson chars or cglist for ever increasing group length.")
 	flag.IntVar(&flagPhraseLen, "phraseLen", 0, "Number of words/groups per line as a phrase.")
+	flag.BoolVar(&flagzero, "zero", false, "If set, ZERO is displayed as '0', not slashed.")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -577,7 +579,6 @@ func main() {
 		flaginlist = "" // incompatible
 	}
 
-
 	if flagsufmin > 0 {
 		if flagsuflist != "" {
 			flagSuflistRune = ckValidListString(flagsuflist, "suflist")
@@ -608,16 +609,16 @@ func main() {
 	}
 
 	flagrepeatStr = strings.ToUpper(flagrepeatStr)
-	if strings.HasPrefix(flagrepeatStr,"R") {
+	if strings.HasPrefix(flagrepeatStr, "R") {
 		if flagtext != "" {
 			// words file supports
-			scrambleWord=true
+			scrambleWord = true
 		}
 	}
 	// always in case its done when we didn't want it
-	flagrepeatStr = strings.TrimLeft(flagrepeatStr,"R")
+	flagrepeatStr = strings.TrimLeft(flagrepeatStr, "R")
 	// make in int for everywhere else
-	flagrepeat,_ = strconv.Atoi(flagrepeatStr)
+	flagrepeat, _ = strconv.Atoi(flagrepeatStr)
 
 	if flagrepeat < 1 || flagrepeat > maxRepeat {
 		fmt.Printf("\nError: repeat (default 1) must be between 1 and %d.\n", maxRepeat)
@@ -777,7 +778,6 @@ func main() {
 			}
 		}
 
-
 		if flagLCWOiwrwpm != 0 {
 			if flagLCWOiwrfile == "" {
 				fmt.Printf("\nError: <LCWO_iwr_wpm> requires <LCWO_iwrFile>.\n")
@@ -894,52 +894,52 @@ func main() {
 
 	// ***** enhanced for char confusion
 	// need to see which potential confusing chars are in the flagcglist
-	if flagcc { 
+	if flagcc {
 		// populate the map for each confusing-char pair
 
-		if strings.ContainsRune(flagcglist,'Q') && strings.ContainsRune(flagcglist,'Y') {
-			ccMap['Q']='Y'
-			ccMap['Y']='Q'
+		if strings.ContainsRune(flagcglist, 'Q') && strings.ContainsRune(flagcglist, 'Y') {
+			ccMap['Q'] = 'Y'
+			ccMap['Y'] = 'Q'
 		}
-		if strings.ContainsRune(flagcglist,'F') && strings.ContainsRune(flagcglist,'L') {
-			ccMap['F']='L'
-			ccMap['L']='F'
+		if strings.ContainsRune(flagcglist, 'F') && strings.ContainsRune(flagcglist, 'L') {
+			ccMap['F'] = 'L'
+			ccMap['L'] = 'F'
 		}
-		if strings.ContainsRune(flagcglist,'W') && strings.ContainsRune(flagcglist,'G') {
-			ccMap['W']='G'
-			ccMap['G']='W'
+		if strings.ContainsRune(flagcglist, 'W') && strings.ContainsRune(flagcglist, 'G') {
+			ccMap['W'] = 'G'
+			ccMap['G'] = 'W'
 		}
-		if strings.ContainsRune(flagcglist,'R') && strings.ContainsRune(flagcglist,'K') {
-			ccMap['R']='K'
-			ccMap['K']='R'
+		if strings.ContainsRune(flagcglist, 'R') && strings.ContainsRune(flagcglist, 'K') {
+			ccMap['R'] = 'K'
+			ccMap['K'] = 'R'
 		}
-		if strings.ContainsRune(flagcglist,'U') && strings.ContainsRune(flagcglist,'D') {
-			ccMap['U']='D'
-			ccMap['D']='U'
+		if strings.ContainsRune(flagcglist, 'U') && strings.ContainsRune(flagcglist, 'D') {
+			ccMap['U'] = 'D'
+			ccMap['D'] = 'U'
 		}
-		if strings.ContainsRune(flagcglist,'P') && strings.ContainsRune(flagcglist,'X') {
-			ccMap['P']='X'
-			ccMap['X']='P'
+		if strings.ContainsRune(flagcglist, 'P') && strings.ContainsRune(flagcglist, 'X') {
+			ccMap['P'] = 'X'
+			ccMap['X'] = 'P'
 		}
-		if strings.ContainsRune(flagcglist,'A') && strings.ContainsRune(flagcglist,'N') {
-			ccMap['A']='N'
-			ccMap['N']='A'
+		if strings.ContainsRune(flagcglist, 'A') && strings.ContainsRune(flagcglist, 'N') {
+			ccMap['A'] = 'N'
+			ccMap['N'] = 'A'
 		}
-		if strings.ContainsRune(flagcglist,'V') && strings.ContainsRune(flagcglist,'B') {
-			ccMap['B']='V'
-			ccMap['V']='B'
+		if strings.ContainsRune(flagcglist, 'V') && strings.ContainsRune(flagcglist, 'B') {
+			ccMap['B'] = 'V'
+			ccMap['V'] = 'B'
 		}
-		if strings.ContainsRune(flagcglist,',') && strings.ContainsRune(flagcglist,'?') {
-			ccMap[',']='?'
-			ccMap['?']=','
+		if strings.ContainsRune(flagcglist, ',') && strings.ContainsRune(flagcglist, '?') {
+			ccMap[','] = '?'
+			ccMap['?'] = ','
 		}
-		if strings.ContainsRune(flagcglist,'S') && strings.ContainsRune(flagcglist,'O') {
-			ccMap['S']='O'
-			ccMap['O']='S'
+		if strings.ContainsRune(flagcglist, 'S') && strings.ContainsRune(flagcglist, 'O') {
+			ccMap['S'] = 'O'
+			ccMap['O'] = 'S'
 		}
-		if strings.ContainsRune(flagcglist,'M') && strings.ContainsRune(flagcglist,'I') {
-			ccMap['M']='I'
-			ccMap['I']='M'
+		if strings.ContainsRune(flagcglist, 'M') && strings.ContainsRune(flagcglist, 'I') {
+			ccMap['M'] = 'I'
+			ccMap['I'] = 'M'
 		}
 	}
 
@@ -967,12 +967,11 @@ func main() {
 	}
 
 	if flagmust != "" {
-		flagmust = string(ckValidListString(flagmust,"must"))
+		flagmust = string(ckValidListString(flagmust, "must"))
 	}
 
-
 	if flagheader != "" {
-		if flaglc && strings.ContainsAny(flagheader,"ABCDEFGHIJKLMNOPRSTUVWXYZ") {
+		if flaglc && strings.ContainsAny(flagheader, "ABCDEFGHIJKLMNOPRSTUVWXYZ") {
 			fmt.Printf("\nWarning: <flagheader> contains uppercase letters, <lowercase> will change them.\n         You will need to edit them in the output if that will be a problem.\n\nEnter \"y\", for yes make all lowercase: ")
 			ans := ""
 
@@ -987,7 +986,7 @@ func main() {
 	}
 
 	if flagfooter != "" {
-		if flaglc && strings.ContainsAny(flagfooter,"ABCDEFGHIJKLMNOPRSTUVWXYZ") {
+		if flaglc && strings.ContainsAny(flagfooter, "ABCDEFGHIJKLMNOPRSTUVWXYZ") {
 			fmt.Printf("\nWarning: <flagfooter> contains uppercase letters, <owercase> will change them.\n         You will need to edit them in the output if that will be a problem.\n\nEnter \"y\", for yes make all lowercase: ")
 			ans := ""
 
@@ -1077,10 +1076,8 @@ func main() {
 	doOutput(wordArray, fp)
 }
 
-//
-// make sure the string can be expanded into visable ASCII since 
+// make sure the string can be expanded into visable ASCII since
 // all Morse is limited to that
-//
 func ckValidListString(ck string, whoAmI string) []rune {
 
 	// need to see if shell or os did a path substitution
@@ -1090,11 +1087,11 @@ func ckValidListString(ck string, whoAmI string) []rune {
 		os.Exit(99)
 	}
 
-	ck = strings.Replace(ck,"d","<KA>",-1) // needed for Farnsworth
+	ck = strings.Replace(ck, "d", "<KA>", -1) // needed for Farnsworth
 	str := strings.ToUpper(ck)
 	str = ps2charReplacer.Replace(str)
 
-	if strings.Contains(str,"<>") {
+	if strings.Contains(str, "<>") {
 		fmt.Printf("\nError: Option <%s> contains an unsupported ProSign or the character \"<\" or\" >\".\n", whoAmI)
 		os.Exit(99)
 	}
@@ -1205,10 +1202,8 @@ func expandIt(lower string, upper string, whoAmI string) string {
 	return outStr
 }
 
-//
 // prints the bufStr adjusting the length per flaglen
 // PRINTIT
-//
 func printStrBuf(strBuf string, fp *os.File) {
 
 	index := 0
@@ -1228,7 +1223,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 			// these two used many times
 			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " |e" + strconv.Itoa(flagLCWOeff) + " "
 			iwrSpd = "|e0 |w" + strconv.Itoa(flagLCWOiwrwpm) + " "
-		} else{
+		} else {
 			// no eff so make same as wpm
 			strBuf = "|e0 |w" + strconv.Itoa(flagLCWOlow) + " " + strBuf
 			origSpd = "|w" + strconv.Itoa(flagLCWOlow) + " "
@@ -1243,11 +1238,11 @@ func printStrBuf(strBuf string, fp *os.File) {
 		}
 
 		for wd, _ := range iwrWordMap {
-			pat := fmt.Sprintf("\\s%s\\s",regexp.QuoteMeta(wd))
+			pat := fmt.Sprintf("\\s%s\\s", regexp.QuoteMeta(wd))
 			re := regexp.MustCompile(pat)
 
-			strBuf = re.ReplaceAllString(strBuf,iwrSpd + wd + "%" + origSpd)
-			strBuf = re.ReplaceAllString(strBuf,iwrSpd + wd + "%" + origSpd)
+			strBuf = re.ReplaceAllString(strBuf, iwrSpd+wd+"%"+origSpd)
+			strBuf = re.ReplaceAllString(strBuf, iwrSpd+wd+"%"+origSpd)
 		}
 
 		strBuf = strings.ReplaceAll(strBuf, "%", " ")
@@ -1273,7 +1268,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	for _, r := range strBuf {
 		// added for use with Precision PC Tutor
-		if flagPhraseLen != 0 && r == ' '  {
+		if flagPhraseLen != 0 && r == ' ' {
 			spaceCount++
 
 			if spaceCount >= flagPhraseLen {
@@ -1308,7 +1303,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 
 	// for MorseNinja
 	if flagtutor == "MORSECODENINJA" || flagtutor == "MCN" && flaglessonend >= 40 {
-		res = strings.ReplaceAll(res,"!","<BK>")
+		res = strings.ReplaceAll(res, "!", "<BK>")
 	}
 
 	if flagTAB {
@@ -1327,6 +1322,11 @@ func printStrBuf(strBuf string, fp *os.File) {
 		res = strings.ToLower(res)
 	}
 
+	if flagzero {
+		fmt.Println("doing zero\n")
+		res = strings.ReplaceAll(res, "\u00D8", "0")
+	}
+
 	if flagoutput == "" {
 		fmt.Printf("%s\n", res)
 		os.Exit(0)
@@ -1337,9 +1337,6 @@ func printStrBuf(strBuf string, fp *os.File) {
 			os.Exit(0)
 		}
 
-		if strings.Contains(res,string('\u00D8')) {
-			res = strings.ReplaceAll(res, "\u00D8", "0")
-		}
 		_, err := fp.WriteString(res)
 		if err != nil {
 			fmt.Println(err)
@@ -1356,13 +1353,12 @@ func flipFlop() bool {
 	return rng.Int()%2 == 0
 }
 
-//
 // called for each field of a delimiter option
 func processDelimiter(inStr string) {
 	// eliminate special case of simple range
 	m := regexp.MustCompile("^([0-9]-[0-9])|([A-Z]-[A-Z])$")
 
-	inStr = strings.ToUpper(inStr) 
+	inStr = strings.ToUpper(inStr)
 	if m.MatchString(inStr) {
 		expandIt(string(inStr[0]), string(inStr[2]), "delimiter_simple")
 		return

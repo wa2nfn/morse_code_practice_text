@@ -1,12 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
-	"fmt"
 )
 
-var groupLengthDelta int 
+var groupLengthDelta int
 
 // make random code groups
 // uses the presaved chars in charSlice based on uniform distribution
@@ -31,7 +31,7 @@ func makeGroups(fp *os.File) {
 		tmpOut, charSlice = makeSingleGroup(charSlice)
 
 		// ***** enhancement for char confusion
-		if flagcc && len(tmpOut) > 3 { 
+		if flagcc && len(tmpOut) > 3 {
 			// skip 2 char str with space
 			locFound := 0
 
@@ -40,7 +40,7 @@ func makeGroups(fp *os.File) {
 				if strings.ContainsRune(string(tmpOut), char) {
 					locFound := strings.IndexRune(string(tmpOut), char)
 					for {
-						index := rng.Intn(len(tmpOut) -1)
+						index := rng.Intn(len(tmpOut) - 1)
 						if index != locFound {
 							tmpOut[index] = subChar
 							break
@@ -153,7 +153,7 @@ func makeSingleGroup(charSlice []rune) ([]rune, []rune) {
 	}
 
 	// choose random group len from min to max
-	if flagcgmax != flagcgmin && flagheadcopy == 0 { 
+	if flagcgmax != flagcgmin && flagheadcopy == 0 {
 		gl = rng.Intn(flagcgmax-flagcgmin+1) + flagcgmin
 	}
 

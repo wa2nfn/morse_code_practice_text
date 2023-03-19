@@ -6,13 +6,13 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"github.com/jwalton/gchalk"
+	"math"
 	"os"
 	"regexp"
 	"strings"
-	"flag"
-	"math"
 )
 
 var (
@@ -47,34 +47,34 @@ func doSendCheck() {
 		validCharPS = sep
 		invalidCharPS = "<>"
 		/*
-		// cannot use lc e or w, conflict with LCWO
+			// cannot use lc e or w, conflict with LCWO
 		*/
 		char2psReplacer = strings.NewReplacer(
-			"(", "^AS", 
-			")", "^AR", 
-			"{", "^BT", 
-			"}", "^KA", 
-			"#", "^HH", 
-			"[", "^SK", 
-			"]", "^SN", 
+			"(", "^AS",
+			")", "^AR",
+			"{", "^BT",
+			"}", "^KA",
+			"#", "^HH",
+			"[", "^SK",
+			"]", "^SN",
 			"0", "\u00D8",
-			"$","^VE",
-			"%","^DU",
-			"&","^SOS")
+			"$", "^VE",
+			"%", "^DU",
+			"&", "^SOS")
 		ps2charReplacer = strings.NewReplacer(
-			"^AS", "(", 
-			"^AR", ")", 
-			"^BT", "{", 
-			"^KA", "}", 
-			"^HH", "#", 
-			"^SK", "[", 
-			"^SN", "]", 
+			"^AS", "(",
+			"^AR", ")",
+			"^BT", "{",
+			"^KA", "}",
+			"^HH", "#",
+			"^SK", "[",
+			"^SN", "]",
 			"\u00D8", "0",
-			"+",")",
-			"=","{",
-			"^VE","$",
-			"^DU","%",
-			"^SOS","&")
+			"+", ")",
+			"=", "{",
+			"^VE", "$",
+			"^DU", "%",
+			"^SOS", "&")
 		gotCarat = true
 	}
 
@@ -169,7 +169,7 @@ func buildSendSlice() []rune {
 
 	charSlice := make([]rune, 0, 50) // may be extra
 
-	var myList string 
+	var myList string
 
 	if flag.Arg(0) != "" {
 		myList = flag.Arg(0)
@@ -200,11 +200,11 @@ func buildSendSlice() []rune {
 		gotDigit = true
 	}
 	/*
-	// special: use lc letters which we will later map to prosigns
-	if strings.Contains(flagsend, "6") {
-		charSlice = append(charSlice, []rune("abcdfgh")...)
-		gotDigit = true
-	}
+		// special: use lc letters which we will later map to prosigns
+		if strings.Contains(flagsend, "6") {
+			charSlice = append(charSlice, []rune("abcdfgh")...)
+			gotDigit = true
+		}
 	*/
 	if strings.Contains(flagsend, "6") {
 		// cut numbers
@@ -267,8 +267,8 @@ func readLines(path []string) {
 	var extraForever bool
 	var captureFile = ""
 	var practiceFile = ""
-	badPS := regexp.MustCompile(`<[^>]*>|\*`)  // find <..--..> errors and anything since supported PD already done
-	hhErr := regexp.MustCompile(`<.{8,8}>`) // find <HH> as code
+	badPS := regexp.MustCompile(`<[^>]*>|\*`) // find <..--..> errors and anything since supported PD already done
+	hhErr := regexp.MustCompile(`<.{8,8}>`)   // find <HH> as code
 
 	gchalk.SetLevel(gchalk.LevelAnsi256)
 
@@ -282,7 +282,7 @@ func readLines(path []string) {
 		}
 
 		// b is already in UC
-		b = bytes.ToUpper(b) 
+		b = bytes.ToUpper(b)
 		// convert any NL to space
 		b = bytes.ReplaceAll(b, []byte("\n"), []byte(" "))
 
@@ -489,7 +489,7 @@ Levenshtein             Practice Text                      CW Capture
 	}
 
 	if extraForever {
-		fmt.Printf("\n %s You sent some %s characters, (column 3) in %s.\n", gchalk.Yellow("Warning:"),colorExtra("extra"), colorExtra("green"))
+		fmt.Printf("\n %s You sent some %s characters, (column 3) in %s.\n", gchalk.Yellow("Warning:"), colorExtra("extra"), colorExtra("green"))
 		fmt.Printf("\n          Or you missed a space and combined two groups.")
 		fmt.Printf("\n          The space should be just before your CW capture groups all turned %s.\n", colorError("red"))
 		fmt.Printf("\n          Edit your capture file <%s>, fix the space error, and rerun.\n", captureFile)
@@ -562,9 +562,9 @@ func timingCheck(practice string, capture string) {
 	var out string
 	var pLen = len(practice)
 	var cLen = len(capture)
-	var min = math.Min(float64(pLen),float64(cLen))
+	var min = math.Min(float64(pLen), float64(cLen))
 
-	strLen = int( math.Min(float64(strLen), float64(min)) )
+	strLen = int(math.Min(float64(strLen), float64(min)))
 	practice = practice[:strLen]
 	capture = capture[:strLen]
 	// now we can compare because we have the smallest length
@@ -584,7 +584,6 @@ func timingCheck(practice string, capture string) {
 			out += char2psReplacer.Replace(string(pChar))
 		}
 	}
-
 
 	fmt.Printf("\n\nBoth practice and capture have been limited to 72 characters.\n")
 	fmt.Printf("\npractice (below):\n\n%s", char2psReplacer.Replace(practice))

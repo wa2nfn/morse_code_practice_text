@@ -1,10 +1,10 @@
 package main
 
-import(
+import (
 	"fmt"
-	"strings"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func licw() string {
@@ -39,7 +39,7 @@ func licw() string {
 	if strings.HasPrefix(flaglesson, "BC1:") {
 
 		if flagtutor == "BC2C" || flagtutor == "BC2S" {
-			flaglesson = strings.TrimPrefix(flaglesson,"BC1:")
+			flaglesson = strings.TrimPrefix(flaglesson, "BC1:")
 			tmpSet = b1seed
 			str = b2seedDbl
 		} else {
@@ -48,9 +48,9 @@ func licw() string {
 		}
 
 	} else if strings.HasPrefix(flaglesson, "BC2:") {
-			fmt.Printf("\nError: lesson value never contains BC2\n")
-			fmt.Printf("lesson value for this tutor can ONLY have these formats: BC1:<ID>, BC1:<ID>:<ID>, <ID>, <ID>:<ID>\n")
-			os.Exit(99)
+		fmt.Printf("\nError: lesson value never contains BC2\n")
+		fmt.Printf("lesson value for this tutor can ONLY have these formats: BC1:<ID>, BC1:<ID>:<ID>, <ID>, <ID>:<ID>\n")
+		os.Exit(99)
 	}
 
 	// char mode, session done later
@@ -59,7 +59,6 @@ func licw() string {
 	} else if flagtutor == "BC2C" {
 		str = b2seedDbl
 	}
-
 
 	if strings.Contains(flaglesson, ":") {
 		op := strings.Split(flaglesson, ":")
@@ -79,7 +78,7 @@ func licw() string {
 
 		if len(op) == 2 && op[1] != "" {
 			Max, error := strconv.Atoi(op[1])
-	
+
 			if error != nil {
 				fmt.Printf("\nError: invalid format for option <lesson>\n")
 				os.Exit(99)
@@ -110,23 +109,23 @@ func licw() string {
 	// different process for session vs char access tutor
 	if flagtutor == "BC1C" || flagtutor == "BC2C" {
 		if max > len(str) {
-			fmt.Printf("\nError: the value max (<min>:<max>) in the lesson pair is too large, max is: %d.\n",len(str))
+			fmt.Printf("\nError: the value max (<min>:<max>) in the lesson pair is too large, max is: %d.\n", len(str))
 			os.Exit(99)
 		}
 		min--
 		max--
 
-		for i,c := range str { 
+		for i, c := range str {
 
-			if i >= min && i <= max { 
+			if i >= min && i <= max {
 				tmpSet += string(c)
 			}
 		}
 	} else {
 		// its BC1S or BC2S
 		num := 0
-		arrBC1S := []string{"REA","TIN","PGS","LCD","HOF","UWB","REA","TIN","PGS","LCD","HOF","UWB"}
-		arrBC2S := []string{"KMY","59,","QXV","73?","+sb","16.","ZJ/","28@","40","KMY","59,","QXV","73?","+sb","16.","ZJ/","28$","40"}
+		arrBC1S := []string{"REA", "TIN", "PGS", "LCD", "HOF", "UWB", "REA", "TIN", "PGS", "LCD", "HOF", "UWB"}
+		arrBC2S := []string{"KMY", "59,", "QXV", "73?", "+sb", "16.", "ZJ/", "28@", "40", "KMY", "59,", "QXV", "73?", "+sb", "16.", "ZJ/", "28$", "40"}
 
 		if flagtutor == "BC1S" {
 			num = len(arrBC1S)
@@ -141,9 +140,9 @@ func licw() string {
 		min--
 		max--
 
-		 // session approach
-		 for i := 0 ; i < num; i++ { 
-			if i >= min && i <= max { 
+		// session approach
+		for i := 0; i < num; i++ {
+			if i >= min && i <= max {
 				if flagtutor == "BC1S" {
 					tmpSet += arrBC1S[i]
 				} else {

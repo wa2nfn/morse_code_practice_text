@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
-	"math/rand"
 )
 
 //
@@ -27,7 +27,7 @@ func lessonlist(fp *os.File) {
 
 	outBuf := ""
 
-	out:
+out:
 	for j := 0; ; {
 		i := len(string(tmpArr))
 		notDone := false
@@ -39,7 +39,7 @@ func lessonlist(fp *os.File) {
 			}
 
 			if j >= flagnum {
-			     break out
+				break out
 			}
 			k++
 			j++
@@ -53,5 +53,5 @@ func lessonlist(fp *os.File) {
 		}
 	}
 
-	printStrBuf(convertRunes(outBuf),fp)
+	printStrBuf(convertRunes(outBuf), fp)
 }

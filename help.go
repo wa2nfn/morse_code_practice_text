@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"strings"
 	"flag"
+	"fmt"
 	"os"
+	"strings"
 )
 
 func doHelp() {
@@ -241,7 +241,8 @@ For certain features, or user convenience, you might specify a text file name in
 		`)
 	} else if flaghelp == "OPTIONS" {
 		fmt.Println("\n\t\tYour command line plus default values are shown below.\n")
-		flag.VisitAll(func(f *flag.Flag) { if f.Name != "help" {
+		flag.VisitAll(func(f *flag.Flag) {
+			if f.Name != "help" {
 				fmt.Printf("%s=%v\n", f.Name, f.Value)
 			}
 		})

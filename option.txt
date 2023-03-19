@@ -69,7 +69,7 @@ cgList="a-z0-9/.,?="
 cgLen=5:5
 
 # Print output in all capitals. (default false = lowercase)
-lowerCase=flase
+lowercase=false
 # Length characters in an output line (max 500). (default 80)
 len=80
 

@@ -14,9 +14,9 @@ import (
 func ckProsign(ps string) bool {
 	ps = strings.ToUpper(ps)
 	switch ps {
-	case "<AR>", "<AS>", "<BT>", "<KA>", "<HH>", "<SK>", "<VA>", "<SN>","<VE>","<DU>", "<SOS>":
+	case "<AR>", "<AS>", "<BT>", "<KA>", "<HH>", "<SK>", "<VA>", "<SN>", "<VE>", "<DU>", "<SOS>":
 		return true
-	case "^AR", "^AS", "^BT", "^KA", "^HH", "^SK", "^VA", "^SN","^VE","^DU", "^SOS": // for g4fon maybe others
+	case "^AR", "^AS", "^BT", "^KA", "^HH", "^SK", "^VA", "^SN", "^VE", "^DU", "^SOS": // for g4fon maybe others
 		return true
 	default:
 		return false
@@ -66,7 +66,7 @@ func doProSigns(file *os.File) {
 			if flagCG || flagMixedMode > 1 || flagpermute != "" {
 				// save in a pair of arrays
 				ps2runeMap[fs] = myRune
-				rune2psMap[myRune] = fs 
+				rune2psMap[myRune] = fs
 				myRune++
 			} else {
 				// so in words

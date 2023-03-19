@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"os"
 	"regexp"
-	"time"
 	"strings"
+	"time"
 )
 
 /*
@@ -24,7 +24,7 @@ func readStringsFile(fp *os.File) {
 	}
 
 	// modify so -lesson can be used with -text
-	if flaglesson  != "0:0" {
+	if flaglesson != "0:0" {
 		// user wants lessons to be used in -in=file
 		flaginlist = flagcglist // swap meaning
 	}
@@ -65,14 +65,14 @@ func readStringsFile(fp *os.File) {
 		"'s", " is",
 		"'d", " would",
 		"'re", " are",
-	"!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
+		"!", "", "#", "", "$", "", "%", "", "&", "", "*", "", "(", "", ")", "", "-", " ", "_", " ", "{", "", "}", "", "`", "", "'", "", ":", "", ";", "", "\"", "", "|", "")
 
 	line := string(content)
 	line = strings.ToLower(line)
 	line = replacer.Replace(line)
 	line = strings.ToUpper(line)
 
-	for _,wd := range strings.Fields(line) {
+	for _, wd := range strings.Fields(line) {
 
 		// input line pruned
 
@@ -147,7 +147,6 @@ func readStringsFile(fp *os.File) {
 		}
 	}
 
-
 	ct := len(wordArray)
 	if ct < flagnum {
 		ct = flagnum - ct
@@ -162,7 +161,7 @@ func readStringsFile(fp *os.File) {
 		rand.Shuffle(len(wordArray), func(i, j int) { wordArray[i], wordArray[j] = wordArray[j], wordArray[i] })
 	}
 
-	// trim 
+	// trim
 	if flagnum > 0 {
 		// if zero we limit to what we found
 		wordArray = wordArray[0:flagnum]
