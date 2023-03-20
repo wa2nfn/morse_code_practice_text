@@ -16,7 +16,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "2.2.4" // 03/18/2023
+	version       = "2.2.5" // 03/20/2023
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -392,7 +392,7 @@ func main() {
 			hadLCWO = true
 		}
 	}
-	flag.Visit(markIt) //WDL
+	flag.Visit(markIt) 
 
 	if flaginlist != inListStr {
 		flaginlist = strings.ToUpper(flaginlist)
@@ -1087,7 +1087,10 @@ func ckValidListString(ck string, whoAmI string) []rune {
 		os.Exit(99)
 	}
 
-	ck = strings.Replace(ck, "d", "<KA>", -1) // needed for Farnsworth
+	if flagtutor == "FW" {
+		// no for other cases or 'd' becomes <KA>
+		ck = strings.Replace(ck, "d", "<KA>", -1) // needed for Farnsworth
+	}
 	str := strings.ToUpper(ck)
 	str = ps2charReplacer.Replace(str)
 
