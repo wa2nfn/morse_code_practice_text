@@ -1326,7 +1326,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 	}
 
 	if flagzero {
-		fmt.Println("doing zero\n")
+		fmt.Println("Converting slashed zeros to standard zeros\n")
 		res = strings.ReplaceAll(res, "\u00D8", "0")
 	}
 
