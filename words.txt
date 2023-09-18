@@ -2142,7 +2142,6 @@ antral
 antrum
 ants
 antwerp
-anus
 anvil
 anvils
 anxieties
@@ -7725,7 +7724,6 @@ certifying
 certitude
 certitudes
 cervical
-cervix
 cess
 cessation
 cessations
@@ -28467,11 +28465,6 @@ labelled
 labelling
 labellings
 labels
-labia
-labial
-labials
-labile
-labium
 laboratories
 laboratory
 laborious
@@ -36742,8 +36735,7 @@ perimeter
 perimeters
 perinatal
 perineal
-perineum
-period
+pneriod
 periodic
 periodical
 periodically
@@ -44885,7 +44877,6 @@ scrolling
 scrolls
 scrooge
 scrooges
-scrotum
 scrub
 scrubbed
 scrubber
@@ -51472,10 +51463,6 @@ testdriving
 tested
 tester
 testers
-testes
-testicle
-testicles
-testicular
 testier
 testiest
 testified
