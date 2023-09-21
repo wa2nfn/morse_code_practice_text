@@ -151,7 +151,7 @@ var (
 	flagFL            bool
 	flaglc            bool
 	flagll            bool
-	flagzero          bool
+	flagslashedzero          bool
 	flagPhraseLen     int
 	isLicw            bool
 	scrambleWord      bool
@@ -244,7 +244,7 @@ func init() {
 	flag.BoolVar(&flagcc, "cc", false, "Emphasize confused character pairs in code groups.")
 	flag.BoolVar(&flagll, "lessonList", false, "Use lesson chars or cglist for ever increasing group length.")
 	flag.IntVar(&flagPhraseLen, "phraseLen", 0, "Number of words/groups per line as a phrase.")
-	flag.BoolVar(&flagzero, "zero", false, "If set, ZERO is displayed as '0', not slashed.")
+	flag.BoolVar(&flagslashedzero, "slashedZero", false, "Default false, if set (-slashedZero), ZERO is displayed WITH a slash: \u00D8.")
 
 	// rune map, validate option string like: cglist, prelist, delimiter
 	runeMap['A'] = struct{}{}
@@ -1325,8 +1325,9 @@ func printStrBuf(strBuf string, fp *os.File) {
 		res = strings.ToLower(res)
 	}
 
-	if flagzero {
-		fmt.Println("Converting slashed zeros to standard zeros\n")
+	if flagslashedzero {
+		fmt.Println("Use -slashedZero, to convert zeros to display without a slashes.\n")
+	} else {
 		res = strings.ReplaceAll(res, "\u00D8", "0")
 	}
 
