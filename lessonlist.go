@@ -13,7 +13,7 @@ func lessonlist(fp *os.File) {
 	tmpArr := []rune(flagcglist)
 
 	if len(flagcglist) < 1 {
-		fmt.Println("\nError: input string too short, increase <lesson> for your <tutor>.\n")
+		fmt.Printf("\nError: input string too short, increase <lesson> for your <tutor>.\n")
 		os.Exit(9)
 	}
 

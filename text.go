@@ -104,7 +104,7 @@ func readStringsFile(fp *os.File) {
 	}
 
 	if len(wordArray) == 0 {
-		fmt.Println("\nThere is nothing to output.\nVerify options (or defaults) are not overly restrictive (inLen, inList, lesson).\nVerify your input file is sufficiently populated with matchable text.\n")
+		fmt.Printf("\nThere is nothing to output.\nVerify options (or defaults) are not overly restrictive (inLen, inList, lesson).\nVerify your input file is sufficiently populated with matchable text.\n")
 
 		if discarded {
 			fmt.Printf("Your input file DID have some text, but nothing matched your criteria.\n")

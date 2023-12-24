@@ -324,7 +324,7 @@ func readLines(path []string) {
 				if strings.ContainsAny(tmp, "<>") {
 					// used ^ sep should use ","
 					fmt.Printf("\n %s Your CW capture file <%s> had unsupported ProSign format\n          characters \"<>\" (i.e. <>).", gchalk.Yellow("Warning:"), captureFile)
-					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%cature.txt,practice.txt).\n", gchalk.Yellow("C:"))
+					fmt.Printf("\n\n          If those are correct for your ProSigns, use a comma \",\"\n          between the file names (i.e.-send=%sature.txt,practice.txt).\n", gchalk.Yellow("C:"))
 
 					os.Exit(88)
 				}

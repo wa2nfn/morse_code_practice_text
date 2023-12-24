@@ -789,12 +789,12 @@ func main() {
 			}
 
 			if flagLCWOiwrwpm <= flagLCWOlow {
-				fmt.Println("\nError: <LCWO_iwr_wpm> must be greater than <LCWO_low>.\n")
+				fmt.Println("\nError: <LCWO_iwr_wpm> must be greater than <LCWO_low>.")
 				os.Exit(123)
 			}
 
 			if flagtext == "" && flaginput == "" {
-				fmt.Println("\nError: The IWR feature requiers <LCWO_iwrFile> and <inFile> or <textFile>\n")
+				fmt.Println("\nError: The IWR feature requiers <LCWO_iwrFile> and <inFile> or <textFile>")
 				os.Exit(123)
 			}
 
@@ -954,9 +954,11 @@ func main() {
 		os.Exit(99)
 	}
 
-	if flagtutor == "" && (flaglesson != "0" || flaglesson != "0:0") {
-		fmt.Printf("\nError: <lesson> requires option <tutor> to have a valid value.\n")
-		os.Exit(98)
+	if flaglesson != "0" && flaglesson != "0:0" {
+		if flagtutor == "" {
+			fmt.Printf("\nError: <lesson> requires option <tutor> to have a valid value.\n")
+			os.Exit(98)
+		}
 	}
 
 	if (flaglesson == "0" || flaglesson == "0:0") && flagCG {
@@ -1106,7 +1108,7 @@ func ckValidListString(ck string, whoAmI string) []rune {
 
 	for _, read := range str {
 		if whoAmI != "delimiter" && read == '*' {
-			fmt.Printf("\nError: Invalid character <%s>, in option <%s>.\nOnly used in delimiter option, as a special case delay for LCWO users.\n", read, whoAmI)
+			fmt.Printf("\nError: Invalid character <%c>, in option <%s>.\nOnly used in delimiter option, as a special case delay for LCWO users.\n", read, whoAmI)
 			os.Exit(98)
 		}
 
@@ -1326,7 +1328,7 @@ func printStrBuf(strBuf string, fp *os.File) {
 	}
 
 	if flagslashedzero {
-		fmt.Println("Use -slashedZero, to convert zeros to display without a slashes.\n")
+		fmt.Println("Use -slashedZero, to convert zeros to display without a slashes.")
 	} else {
 		res = strings.ReplaceAll(res, "\u00D8", "0")
 	}
