@@ -23,6 +23,7 @@ func doHelp() {
 		fmt.Printf("\nLCWO_random: LCWO_low, LCWO_num, LCWO_step (no other LCWO options): (\n\t\teach word has random character speed, between LCWO_low and LCWO_low+(LCWO_num * LCWO_num)\n\t\trequires: LCWO_low, LCWO_step, LCWO_num\n\t\toptional:\n\t\tnon-compatible: LCWO_effective_ramp, LCWO_ramp, LCWO_repeat, LCWO_slow,\n\t\tLCWO_fast, LCWO_sf, LCWO_fs\n")
 
 		fmt.Printf("\nNote: LCWO_sf and LCWO_fs MAY be used outside of LCWO. If used with option mixedMode,\nthese will insert the specified string immediately before and/or after the codeGroup.\nIf LCWO_low and LCWO_step, are used with both the options <in> and <mixedMode>, then plain text is sent at the \nfaster speed of LCWO_low + LCWO_step, while the codeGroup will be sent at the slower speed of LCWO_low.")
+		fmt.Printf("\nLCWO_ws will allow you increase the inter-word spacing (ala Wordsworth) the same as if you used the option in LCWO cw setting page Values like: 0.1, 0.5. 2.3 increase the standard 7 dits by that factor.\n")
 	} else if flaghelp == "TUTORS" {
 		fmt.Println("\n\t\tTUTORS Help Information")
 		fmt.Printf(`

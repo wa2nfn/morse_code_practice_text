@@ -336,6 +336,7 @@ func doOutput(words []string, fp *os.File) {
 	// in case we have mixedMode and speed change need to override speed in header
 	if flagMixedMode > 1 && flagLCWOstep > 0 {
 		strOut = fmt.Sprintf(" |e0 |w%d ", flagLCWOlow+flagLCWOstep)
+		anyLCWO = true
 	}
 
 	// for runtime efficiency?
@@ -372,6 +373,11 @@ func doOutput(words []string, fp *os.File) {
 		// ONLY if lcwo is used
 		// since LCWO made eff=5 default in Convert text to CW in July 2020
 		strOut += " |e0 "
+		if flagLCWOws > 0 {
+			tmp := fmt.Sprintf("%.1f", flagLCWOws)
+			tmp = fmt.Sprintf(" |W%s ",tmp)
+			strOut += tmp
+		}
 	}
 
 	///////////////////////////////////
@@ -635,8 +641,8 @@ func prepWord(wordOut string, lastSpeed int, index int, charSlice []rune, LCWOsp
 		var scrambleOut string
 
 		if scrambleWord {
-			// we will scable the word into a codeGroup and
-			// display it ONCE before the repititions
+			// we will scramble the word into a codeGroup and
+			// display it ONCE before the repetitions
 			// it will NOT change the num count
 			// it must NOT be a linked word with ~
 			// it must be > 2 char

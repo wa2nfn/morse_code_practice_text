@@ -1,5 +1,6 @@
 //
 
+
 package main
 
 import (
@@ -16,7 +17,7 @@ import (
 
 const (
 	program       = "mcpt"
-	version       = "2.2.6" // 01/01/2024
+	version       = "2.2.7" // 01/11/2024
 	maxWordLen    = 60
 	maxUserWords  = 5000
 	maxLineLen    = 500
@@ -107,6 +108,7 @@ var (
 	flagLCWOfast      int
 	flagLCWOrepeat    int
 	flagLCWOeff       int
+	flagLCWOws     	  float64
 	flagLCWOramp      bool
 	flagLCWOrandom    bool
 	flagLCWOefframp   bool
@@ -226,6 +228,7 @@ func init() {
 	flag.BoolVar(&flagLCWOrandom, "LCWO_random", false, "random speed per word (default false).")
 	flag.IntVar(&flagLCWOrepeat, "LCWO_repeat", 0, "times to repeat each word with increasing speed.")
 	flag.IntVar(&flagLCWOeff, "LCWO_effective", 0, "effective (aka Farnsworth) speed must be < LCWO_low (wpm).")
+	flag.Float64Var(&flagLCWOws, "LCWO_ws", 0, "extra word spacing (a way to get Wordsworth).")
 	flag.BoolVar(&flagLCWOefframp, "LCWO_effective_ramp", false, "ramp effective speed (char speed constant) must be < LCWO_low. (default false)")
 	flag.StringVar(&flagLCWOsf, "LCWO_sf", "", "to alert transition from LCWO_low to LCWO_low+LCWO_step for plain text in mixedMode\nor LCWO_slow text to LCWO_fast text,")
 	flag.StringVar(&flagLCWOfs, "LCWO_fs", "", "to alert transition from LCWO_low+LCWO_step speed for plain text to LCWO_low for codeGroup mixedMode\nor LCWO_fast text to LCWO_slow text.")
@@ -399,7 +402,7 @@ func main() {
 	}
 
 	flagtutor = strings.ToUpper(flagtutor)
-	flaglesson = strings.ToUpper(flaglesson)
+	flaglesson = strings.ToUpper(flaglesson) // ?? lesson is nevr alpha
 
 	// handle split length options
 	flagmin, flagmax = minmaxSplit("inLen", flaginlen)
@@ -418,6 +421,12 @@ func main() {
 	//
 	// verify valid options
 	//
+	if flagLCWOws != 0 {
+		if flagLCWOws < 0 {
+			fmt.Printf("\nError: LCWO_ws extra word spacing, format like: 0.5, 1, 2.2 ...")
+			os.Exit(1)
+		}
+	}
 
 	if flag.NArg() > 0 && flagsend == "" && flagopt == "" {
 		fmt.Printf("\nError processing the command line.\n\nYou may have:\n   forgotten a \"-\" before an option\n   or followed a \"-\" with a space\n   or added extra input\n   or put spaces around the \"=\"\n")
@@ -704,6 +713,11 @@ func main() {
 
 		if flagLCWOrepeat > 1 && flagLCWOfast > 0 {
 			fmt.Printf("\nError: LCWO_repeat is mutually exclusive with LCWO_slow.\n")
+			os.Exit(0)
+		}
+
+		if flagLCWOrepeat > 1 && (flagLCWOstep == 0  || flagLCWOlow == 0 ){
+			fmt.Printf("\nError: LCWO_repeat requires LCWO_low and LCWO_step.\n")
 			os.Exit(0)
 		}
 
